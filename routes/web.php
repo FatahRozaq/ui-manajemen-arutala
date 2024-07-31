@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MasterPesertaController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TestController;
 
@@ -18,4 +19,5 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/test', [TestController::class, 'index']);
+Route::get('/', [TestController::class, 'index']);
+Route::get('/peserta', [MasterPesertaController::class, 'index'])->name('peserta.index');

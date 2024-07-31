@@ -271,7 +271,7 @@
     </li>
 
     <li class="nav-item">
-        <a class="nav-link collapsed" href="index.html">
+        <a class="nav-link collapsed" href="{{ route('peserta.index') }}">
         <i class="bi bi-grid"></i>
         <span>Master Peserta</span>
         </a>
