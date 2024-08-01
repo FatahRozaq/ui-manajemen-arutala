@@ -10,4 +10,9 @@ class MasterPelatihanController extends Controller
     {
         return view('master/pelatihan/IndexPelatihan');
     }
+
+    public function form()
+    {
+        return view('master/pelatihan/FormPelatihan');
+    }
 }

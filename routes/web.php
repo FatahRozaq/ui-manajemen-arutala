@@ -5,6 +5,7 @@ use App\Http\Controllers\MasterPelatihanController;
 use App\Http\Controllers\MasterPesertaController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TestController;
+use App\Http\Controllers\MasterMentorController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,3 +26,5 @@ use App\Http\Controllers\TestController;
 Route::get('/peserta', [MasterPesertaController::class, 'index'])->name('peserta.index');
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
 Route::get('/master-pelatihan', [MasterPelatihanController::class, 'index'])->name('pelatihan.index');
+Route::get('/form-pelatihan', [MasterPelatihanController::class, 'form'])->name('pelatihan.form');
+Route::get('/mentor', [MasterMentorController::class, 'index'])->name('mentor.index');

@@ -2,48 +2,53 @@
 
 @section('content')
 
+<div class="pagetitle">
+  <h1>Data Pelatihan</h1>
+</div><!-- End Page Title -->
+
 <section class="section">
-    <div class="row">
-        <div class="col-lg-12">
-
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Pelatihan</h5>
-
-                    <!-- Table with stripped rows -->
-                    <table id="dataPesertaTable" class="table datatable">
-                        <thead>
-                            <tr>
-                                <th>Pelatihan</th>
-                                <th>Batch</th>
-                                <th>Start Date</th>
-                                <th>End Date</th>
-                                <th>Status</th>
-                                <th>Mentor</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- Data will be populated by DataTables -->
-                        </tbody>
-                    </table>
-                    <!-- End Table with stripped rows -->
-
-                </div>
-            </div>
-
-        </div>
-    </div>
+  <div class="row">
+      <div class="col-lg-12">
+          <div class="card" style="padding: 20px">
+              <div class="card-body">
+                  <table id="dataPelatihanTable" class="table table-striped">
+                      <thead>
+                          <tr>
+                              <th>Pelatihan</th>
+                              <th>Badge</th>
+                              <th>Start Date</th>
+                              <th>End Date</th>
+                              <th>Status</th>
+                              <th>Mentor</th>
+                              <th>Aksi</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <!-- Data will be populated by DataTables -->
+                      </tbody>
+                  </table>
+              </div>
+          </div>
+      </div>
+  </div>
 </section>
 
 @endsection
 
 @section('scripts')
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css"/>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+
 <script>
   $(document).ready(function() {
-      $('#dataPesertaTable').DataTable({
-          "ajax": "{{ asset('dummy_data.json') }}",
+      $('#dataPelatihanTable').DataTable({
+          "ajax": "{{ asset('asset/dummy_data.json') }}",
           "columns": [
               { "data": "pelatihan" },    // Pelatihan column
               { "data": "batch" },        // Batch column
@@ -93,3 +98,4 @@
   });
 </script>
 @endsection
+
