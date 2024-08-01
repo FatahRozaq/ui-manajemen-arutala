@@ -1,8 +1,9 @@
 <?php
 
-use App\Http\Controllers\MasterPesertaController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TestController;
+use App\Http\Controllers\MasterMentorController;
+use App\Http\Controllers\MasterPesertaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,3 +22,4 @@ Route::get('/', function () {
 
 Route::get('/', [TestController::class, 'index']);
 Route::get('/peserta', [MasterPesertaController::class, 'index'])->name('peserta.index');
+Route::get('/mentor', [MasterMentorController::class, 'index'])->name('mentor.index');
