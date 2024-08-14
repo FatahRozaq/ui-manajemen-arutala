@@ -1,0 +1,143 @@
+.containerEvent {
+  /* padding: 20px; */
+  background-color: #f4f6fb;
+}
+
+
+
+.title {
+  color: #000A65;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  width: 330px;
+  padding: 5px;
+  border: solid 2px black;
+  cursor: pointer;
+  transition: all 0.3s ease; /* Menambahkan transisi halus */
+}
+
+.card:hover {
+  /* width: 340px; */
+  background-color: #f7f7f7;
+  padding: 10px;
+  box-shadow: 0 16px 16px rgba(0, 0, 0, 0.2); /* Membuat shadow lebih tebal */
+}
+
+
+.event-image {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+h3 {
+  display: flex;
+  flex: start;
+  margin: 15px 0;
+  font-size: 20px;
+  color: #333;
+}
+
+.price {
+  display: flex;
+  flex: start;
+  color: #FF0000;
+  font-weight: bold;
+  font-size: 18px;
+  margin: 10px 0;
+  text-align: center;
+}
+
+.original-price {
+  color: #999;
+  text-decoration: line-through;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 300;
+  margin-left: 10px;
+  margin-top: 5px;
+
+}
+
+.date {
+  display: flex;
+  flex: start;
+  color: #555;
+  margin-top: 10px;
+  font-size: 16px;
+}
+
+.image-title{
+  height: 80%;
+}
+
+.harga-date{
+
+}
+
+
+/* Media query untuk lebar layar di bawah 700px tetapi di atas 375px */
+@media (min-width: 510px) and (max-width: 800px) {
+  .card {
+    width: calc(50% - 20px); /* Mengatur lebar kartu agar ada 2 kartu per baris */
+  }
+}
+
+/* Media query untuk lebar layar di bawah 375px */
+@media (min-width: 375px) and (max-width: 510px) {
+  .card {
+    width: calc(50% - 10px); /* Mengatur lebar kartu menjadi 100% pada layar lebih kecil dari 375px */
+  }
+
+  .containerEvent {
+    width: 100%;
+    padding: -10px;
+  }
+
+  .nama-pelatihan{
+    font-size: 15px;
+  }
+
+  .date {
+  font-size: 12px;
+  }
+
+  .price {
+    display: flex;
+    flex: start;
+    color: #FF0000;
+    font-weight: bold;
+    font-size: 14px;
+    margin: 10px 0;
+    text-align: center;
+  }
+  
+  .original-price {
+    font-size: 12px;
+   
+  }
+
+  .cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+  }
+
+}

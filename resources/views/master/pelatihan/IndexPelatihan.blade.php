@@ -1,9 +1,13 @@
 @extends('layouts.AdminLayouts')
 
+@section('style')
+<link href="{{ asset('assets/css/masterPelatihan.css') }}" rel="stylesheet">
+@endsection
 @section('content')
 
-<div class="pagetitle">
+<div class="pagetitle" style="d-space-between">
   <h1>Data Pelatihan</h1>
+  <button class="btn btn-success"><i class="bi bi-plus-circle-fill" style="font-size:18px; margin-right:3px; margin-top:10px"></i>Tambah Pelatihan</button>
 </div><!-- End Page Title -->
 
 <section class="section">
@@ -15,11 +19,11 @@
                       <thead>
                           <tr>
                               <th>Pelatihan</th>
-                              <th>Badge</th>
+                              <th>Batch</th>
                               <th>Start Date</th>
-                              <th>End Date</th>
+                              {{-- <th>End Date</th> --}}
                               <th>Status</th>
-                              <th>Mentor</th>
+                              {{-- <th>Mentor</th> --}}
                               <th>Aksi</th>
                           </tr>
                       </thead>
@@ -46,34 +50,33 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
 
 <script>
-  $(document).ready(function() {
-      $('#dataPelatihanTable').DataTable({
-          "ajax": "{{ asset('asset/dummy_data.json') }}",
-          "columns": [
-              { "data": "pelatihan" },    // Pelatihan column
-              { "data": "batch" },        // Batch column
-              { "data": "start_date" },   // Start Date column
-              { "data": "end_date" },     // End Date column
-              { "data": "status" },       // Status column
-              { "data": "mentor" },       // Mentor column
-              {                          // Aksi column with action icons
-                  "data": null,
-                  "render": function(data, type, row) {
-                      return `
-                          <a href="#" class="view-icon" data-id="${row.id}" title="View">
-                              <i class="fas fa-eye text-primary"></i>
-                          </a>
-                          <a href="#" class="update-icon" data-id="${row.id}" title="Update">
-                              <i class="fas fa-edit text-warning"></i>
-                          </a>
-                          <a href="#" class="delete-icon" data-id="${row.id}" title="Delete">
-                              <i class="fas fa-trash-alt text-danger"></i>
-                          </a>
-                      `;
-                  }
-              }
-          ]
-      });
+$(document).ready(function() {
+    $('#dataPelatihanTable').DataTable({
+        "ajax": "{{ asset('asset/dummy_data.json') }}",
+        "columns": [
+            { "data": "pelatihan" },
+            { "data": "batch" },
+            { "data": "start_date" },
+            { "data": "status" },
+            {
+                "data": null,
+                "render": function(data, type, row) {
+                    return `
+                        <a href="{{ url('pelatihan') }}/${row.id}" class="view-icon" title="View">
+                            <i class="fas fa-eye text-primary"></i>
+                        </a>
+                        <a href="#" class="update-icon" data-id="${row.id}" title="Update">
+                            <i class="fas fa-edit text-warning"></i>
+                        </a>
+                        <a href="#" class="delete-icon" data-id="${row.id}" title="Delete">
+                            <i class="fas fa-trash-alt text-danger"></i>
+                        </a>
+                    `;
+                }
+            }
+        ]
+    });
+
 
       // Event listener for view icon
       $('#dataPesertaTable').on('click', '.view-icon', function() {

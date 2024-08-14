@@ -1,15 +1,17 @@
 <?php
 
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\MasterPelatihanController;
-use App\Http\Controllers\MasterPesertaController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TestController;
+use Illuminate\Console\Scheduling\Event;
+use App\Http\Controllers\EventController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MasterMentorController;
 use App\Http\Controllers\PendaftaranController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SertifkatController;
+use App\Http\Controllers\MasterPesertaController;
+use App\Http\Controllers\MasterPelatihanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -54,3 +56,12 @@ Route::get('peserta/sertifikat', [SertifkatController::class, 'index'])->name('p
 // Authentication
 Route::get('/login-page', [AuthController::class, 'LoginPage'])->name('login.page');
 Route::get('/register-page', [AuthController::class, 'RegisterPage'])->name('register.page');
+Route::get('/mentor', [MasterMentorController::class, 'index'])->name('mentor.index');
+Route::get('/detailpelatihan', [MasterPelatihanController::class, 'show'])->name('pelatihan.show');
+Route::get('/form-agenda', [MasterPelatihanController::class, 'agendaPelatihan'])->name('pelatihan.agenda');
+
+
+//Daftar Event
+Route::get('/daftar-event', [EventController::class, 'index'])->name('event.index');
+Route::get('/event/{id}',  [EventController::class, 'showEvent'])->name('event.detail');
+Route::get('/my-event',  [EventController::class, 'myEvent'])->name('event.history');

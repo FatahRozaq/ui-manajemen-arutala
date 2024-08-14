@@ -1,0 +1,82 @@
+{
+    "data": [
+        {
+            "id": 1,
+            "pelatihan": "SWQA",
+            "batch": "1",
+            "nama_peserta": "Gian Vilcan",
+            "statusPembayaran": "Sudah"
+        },
+
+        {
+            "id": 2,
+            "pelatihan": "SWQA",
+            "batch": "1",
+            "nama_peserta": "Jhon Doe",
+            "statusPembayaran": "Belum"
+        },
+
+        {
+            "id": 3,
+            "pelatihan": "SWQA",
+            "batch": "1",
+            "nama_peserta": "Jia Juni",
+            "statusPembayaran": "Belum"
+        },
+
+        {
+            "id": 4,
+            "pelatihan": "SWQA",
+            "batch": "1",
+            "nama_peserta": "Huan",
+            "statusPembayaran": "Sudah"
+        },
+
+        {
+            "id": 5,
+            "pelatihan": "SWQA",
+            "batch": "1",
+            "nama_peserta": "Cananda Eka",
+            "statusPembayaran": "Belum"
+        },
+
+        {
+            "id": 6,
+            "pelatihan": "SWQA",
+            "batch": "1",
+            "nama_peserta": "Fatah",
+            "statusPembayaran": "Belum"
+        },
+
+        {
+            "id": 7,
+            "pelatihan": "SWQA",
+            "batch": "1",
+            "nama_peserta": "Naufal SS",
+            "statusPembayaran": "Sudah"
+        },
+
+        {
+            "id": 8,
+            "pelatihan": "SWQA",
+            "batch": "1",
+            "nama_peserta": "Najwan aky",
+            "statusPembayaran": "Sudah"
+        },
+        {
+            "id": 9,
+            "pelatihan": "SWQA",
+            "batch": "1",
+            "nama_peserta": "Adit Riyadi",
+            "statusPembayaran": "Sudah"
+        },
+
+        {
+            "id": 8,
+            "pelatihan": "SWQA",
+            "batch": "1",
+            "nama_peserta": "Baramantia",
+            "statusPembayaran": "Belum"
+        }
+    ]
+}

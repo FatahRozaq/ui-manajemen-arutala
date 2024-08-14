@@ -58,6 +58,9 @@ h6 {
 --------------------------------------------------------------*/
 .pagetitle {
   margin-bottom: 10px;
+  display:flex;
+  justify-content: space-between;
+  width: 100%;
 }
 
 .pagetitle h1 {
@@ -242,8 +245,8 @@ h6 {
 
 .card-title span {
   color: #899bbd;
-  font-size: 14px;
-  font-weight: 400;
+  font-size: 20px;
+  font-weight: 600;
 }
 
 .card-body {
@@ -482,7 +485,7 @@ h6 {
 }
 
 .header-nav .nav-profile span {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 600;
 }
 
@@ -682,7 +685,7 @@ h6 {
 .sidebar-nav .nav-link {
   display: flex;
   align-items: center;
-  font-size: 15px;
+  font-size: 20px;
   font-weight: 600;
   color: #4154f1;
   transition: 0.3;
@@ -692,7 +695,7 @@ h6 {
 }
 
 .sidebar-nav .nav-link i {
-  font-size: 16px;
+  font-size: 20px;
   margin-right: 10px;
   color: #4154f1;
 }

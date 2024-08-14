@@ -1,0 +1,86 @@
+{
+    "data": [
+        {
+            "id": 1,
+            "namaPelatihan": "Bootcamp Software Quality Assurance",
+            "investasi": 480000,
+            "discount": 10,
+            "status": "selesai",
+            "startDate": "24 September 2024",
+            "image": "manual-testing.png",
+            "deskripsi": "Optimalkan karirmu di dunia teknologi dengan mengikuti pelatihan Software Quality Assurance. Pada Bootcamp ini, akan dipelajari hal hal penting yang perlu dikuasai untuk menjamin software yang dikembangkan agar memenuhi kualitas tertentu.",
+            "benefit": [
+                "Materi Pelatihan",
+                "E-Sertifikat Keikutsertaan",
+                "E-Sertifikat Kompetensi",
+                "Free konsultasi seumur hidup",
+                "WAG Alumni",
+                "Informasi Lapangan Kerja QA"
+            ],
+            "materi": [
+                "Manual Testing: Unit Testing, Integration Testing, dan Test Strategy & Plan.",
+                "Automation Testing: Katalon dan Selenium."
+            ],
+            "mentor": [
+                "Muhammad Fatah Rozaq",
+                "Gian Vilcan Patra",
+                "Canandra Eka Mukti"
+            ],
+            "investasi": [
+                480000,
+                "Bawa 6 Teman, Gratis 1 Tiket. Konfirmasi Admin No. 08238819999"
+            ]
+        },
+
+        {
+            "id": 2,
+            "namaPelatihan": "Bootcamp Coding Express",
+            "investasi": 50000,
+            "discount": 10,
+            "status": "Selesai",
+            "startDate": "23 September 2024",
+            "image": "image.png"
+        },
+
+        {
+            "id": 3,
+            "namaPelatihan": "Bootcamp React JS",
+            "investasi": 500000,
+            "discount": 10,
+            "status": "Masa Pendaftaran",
+            "startDate": "20 September 2024",
+            "image": "ReactJS.png"
+        },
+
+        {
+            "id": 4,
+            "namaPelatihan": "Software Quality Assurance Manual & Automation",
+            "investasi": 1000000,
+            "discount": 20,
+            "status": "Sedang Berlangsung",
+            "startDate": "26 Agustus 2024",
+            "image": "automation-testing.png"
+        },
+
+        {
+            "id": 5,
+            "namaPelatihan": "Software Quality Assurance Automation",
+            "investasi": 500000,
+            "discount": 10,
+            "status": "selesai",
+            "startDate": "22 Agustus 2024",
+            "image": "automation-testing.png"
+        },
+
+        {
+            "id": 6,
+            "namaPelatihan": "Bootcamp Software Quality Assurance Manual",
+            "investasi": 500000,
+            "discount": 10,
+            "status": "Masa Pendaftaran",
+            "startDate": "20 Agustus 2024",
+            "image": "manual-testing.png"
+        }
+       
+    ]
+}
