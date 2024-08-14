@@ -5,12 +5,7 @@ Arutala | Detail Data Peserta
 @endsection
 
 @section('style')
-<style>
-    h3 {
-        font-size: 28px;
-        font-weight: 500;
-    }
-</style>
+<link href="{{ asset('assets/css/custom.css') }}" rel="stylesheet">
 @endsection
 
 @section('content')

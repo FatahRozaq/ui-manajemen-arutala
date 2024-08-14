@@ -5,31 +5,7 @@ Arutala | Profile Peserta
 @endsection
 
 @section('style')
-<style>
-    h3 {
-        font-size: 22px;
-        font-weight: 600;
-    }
-
-    hr {
-        border-top: 3px solid #000000;
-    }
-
-    sub-title {
-      color: #344C92;
-    }
-
-    .default {
-        background-color: #344C92;
-        width: 30px;
-        color: white;
-        height: 40px;
-        width: 50px;
-        padding: 10px;
-        border-radius: 5px;
-        margin-right: 10px;
-    }
-</style>
+<link href="{{ asset('assets/css/custom.css') }}" rel="stylesheet">
 @endsection
 
 @section('content')

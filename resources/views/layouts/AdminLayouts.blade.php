@@ -198,9 +198,9 @@
         <li class="nav-item dropdown pe-3">
 
         <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-            <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
             <span class="d-none d-md-block dropdown-toggle ps-2">Admin</span>
-        </a><!-- End Profile Iamge Icon -->
+            <i class="fa-solid fa-circle-user" style="font-size: 30px; margin-left:20px; margin-right:10px;"></i>
+        </a>
 
         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
@@ -262,32 +262,40 @@
     <ul class="sidebar-nav" id="sidebar-nav">
 
     <li class="nav-item">
-        <a class="nav-link" href="{{ route('dashboard.index') }}">
-        <i class="bi bi-grid"></i>
-        <span>Dashboard</span>
+        <a class="nav-link {{ request()->is('/') ? '' : 'collapsed' }}" href="{{ route('dashboard.index') }}">
+            <i class="bi bi-grid"></i>
+            <span>Dashboard</span>
         </a>
     </li><!-- End Dashboard Nav -->
 
     <li class="nav-item">
-        <a class="nav-link collapsed" href="{{ route('pelatihan.index') }}">
-        <i class="bi bi-grid"></i>
-        <span>Master Pelatihan</span>
+        <a class="nav-link {{ request()->is('master-pelatihan*') ? '' : 'collapsed' }}" href="{{ route('pelatihan.index') }}">
+            <i class="fa-solid fa-table-list"></i>
+            <span>Master Pelatihan</span>
+        </a>
+    </li><!-- End Master Pelatihan Nav -->
+
+    <li class="nav-item">
+        <a class="nav-link {{ request()->is('admin/peserta*') ? '' : 'collapsed' }}" href="{{ route('peserta.index') }}">
+            <i class="fa-solid fa-users"></i>
+            <span>Master Peserta</span>
+        </a>
+    </li><!-- End Master Peserta Nav -->
+
+    <li class="nav-item">
+        <a class="nav-link {{ request()->is('admin/mentor*') ? '' : 'collapsed' }}" href="{{ route('mentor.index') }}">
+            <i class="fa-solid fa-chalkboard-user"></i>
+            <span>Master Mentor</span>
         </a>
     </li>
 
     <li class="nav-item">
-        <a class="nav-link collapsed" href="{{ route('peserta.index') }}">
-        <i class="bi bi-grid"></i>
-        <span>Master Peserta</span>
+        <a class="nav-link {{ request()->is('agenda-pelatihan*') ? '' : 'collapsed' }}" href="{{ route('pelatihan.index') }}">
+            <i class="fa-solid fa-calendar-days"></i>
+            <span>Agenda Pelatihan</span>
         </a>
     </li>
 
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="{{ route('mentor.index') }}">
-        <i class="bi bi-grid"></i>
-        <span>Master Mentor</span>
-        </a>
-    </li>
 
 
     </ul>
