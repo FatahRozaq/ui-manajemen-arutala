@@ -47,34 +47,34 @@
 
     </header><!-- End Header -->
 
-    <!-- ======= Sidebar ======= -->
+
   <aside id="sidebar" class="sidebar">
 
     <ul class="sidebar-nav" id="sidebar-nav">
 
     <li class="nav-item">
-        <a class="nav-link" href="{{ route('dashboard.index') }}">
+        <a class="nav-link {{ request()->is('daftar-event*') ? '' : 'collapsed' }}" href="{{ route('event.index') }}">
             <i class="bi bi-card-list"></i>
         <span>Daftar Event</span>
         </a>
-    </li><!-- End Dashboard Nav -->
+    </li>
 
     <li class="nav-item">
-        <a class="nav-link collapsed" href="{{ route('pelatihan.index') }}">
+        <a class="nav-link {{ request()->is('my-event*') ? '' : 'collapsed' }}"  href="{{ route('event.history') }}">
             <i class="bi bi-card-checklist"></i>
         <span>My Event</span>
         </a>
     </li>
 
     <li class="nav-item">
-        <a class="nav-link collapsed" href="{{ route('peserta.index') }}">
+        <a class="nav-link {{ request()->is('peserta/sertifikat*') ? '' : 'collapsed' }}" href="{{ route('peserta.sertifikat') }}">
             <i class="bi bi-file-earmark-check"></i>
         <span>My Certificate</span>
         </a>
     </li>
 
     <li class="nav-item">
-        <a class="nav-link collapsed" href="{{ route('mentor.index') }}">
+        <a class="nav-link {{ request()->is('peserta/profile*') ? '' : 'collapsed' }}" href="{{ route('peserta.profile') }}">
             <i class="bi bi-person-square"></i>
         <span>Data Diri</span>
         </a>
