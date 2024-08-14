@@ -1,0 +1,225 @@
+.event-detail-container {
+    width: 100%;
+}
+
+@media (max-width: 700px) {
+    .event-detail-container {
+        width: 100%;
+        background-color: #fff;
+    }
+}
+
+
+
+.event-detail {
+    background-color: #fff;
+    width: 100%;
+    justify-self: center;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* max-width: 800px; */
+    margin: 0 auto;
+}
+
+.event-header {
+    display: flex;
+    /* justify-content: center; */
+}
+
+.event-title {
+    font-size: 26px;
+    font-weight: bold;
+    color: #002366;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.event-color-blue {
+    color: #002366;
+    font-weight: 600;
+}
+
+.event-image {
+    width: 45%;
+    display:flex;
+}
+
+.image-detail {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.event-body {
+    /* display: flex; */
+    /* flex: start; */
+}
+
+.greeting {
+    font-size: 16px;
+    font-weight: bold;
+    color: #444;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.description {
+    font-size: 18px;
+    color: #555;
+    text-align: start;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.content-section {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.benefit-materi {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.section-benefit {
+    width: 50%;
+}
+
+.section-materi {
+    width: 50%;
+}
+
+@media (max-width: 700px) {
+    .benefit-materi {
+        flex-direction: column;
+    }
+
+    .section {
+        margin-bottom: 20px; /* Tambahkan jarak antara section jika diperlukan */
+    }
+
+    .section-benefit{
+        width: 100%;
+    }
+
+    .section-materi{
+        width: 100%;
+    }
+}
+
+
+.benefits, .materials {
+    width: 45%;
+}
+
+.benefits h3, .materials h3 {
+    font-size: 16px;
+    color: #002366;
+    margin-bottom: 10px;
+}
+
+.benefits ul, .materials ul {
+    list-style: disc;
+    margin-left: 20px;
+    color: #444;
+}
+
+.mentor-investasi {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.section-mentor {
+    width: 50%;
+}
+
+.section-investasi {
+    width: 50%;
+}
+
+@media (max-width: 700px) {
+    .mentor-investasi {
+        flex-direction: column;
+    }
+
+    .section {
+        margin-bottom: 20px; /* Tambahkan jarak antara section jika diperlukan */
+    }
+
+    .section-mentor{
+        width: 100%;
+    }
+
+    .section-investasi{
+        width: 100%;
+    }
+}
+
+.mentor-invest {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.mentors, .investment {
+    width: 45%;
+}
+
+.mentors h3, .investment h3 {
+    font-size: 16px;
+    color: #002366;
+    margin-bottom: 10px;
+}
+
+.mentors ol {
+    list-style: decimal;
+    margin-left: 20px;
+    color: #444;
+}
+
+.price {
+    font-size: 16px;
+    color: #e60000;
+    font-weight: bold;
+}
+
+.original-price {
+    text-decoration: line-through;
+    color: #999;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.investment-desc {
+    font-size: 14px;
+    color: #555;
+    margin-top: 10px;
+}
+
+.event-footer {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.register-button {
+    display: flex;
+    width: 20%;
+    text-align: center;
+    justify-content: center;
+    background-color: #002366;
+    color: #fff;
+    padding: 10px 0;
+    border-radius: 5px;
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-decoration: none;
+    margin-top: 20px;
+}

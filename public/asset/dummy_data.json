@@ -1,48 +1,103 @@
 {
     "data": [
         {
-            "pelatihan": "Unity Pugh",
-            "batch": "9958",
+            "pelatihan": "SWQA",
+            "batch": "1",
             "start_date": "2005/02/11",
             "end_date": "2005/02/11",
             "status": "Selesai",
             "mentor": "Mentor"
         },
+
         {
-            "pelatihan": "Theodore Duran",
-            "batch": "8971",
+            "pelatihan": "Digital Bootcamp",
+            "batch": "1",
             "start_date": "2005/02/11",
             "end_date": "1999/04/07",
             "status": "Planning",
             "mentor": "Mentor"
         },
         {
-            "pelatihan": "Kylie Bishop",
-            "batch": "3147",
+            "pelatihan": "Coding Express",
+            "batch": "2",
             "start_date": "2005/02/11",
             "end_date": "2005/09/08",
             "status": "Sedang Berlangsung",
             "mentor": "Mentor"
         },
         {
-            "pelatihan": "Willow Gilliam",
-            "batch": "3497",
+            "pelatihan": "Coding Express",
+            "batch": "3",
             "start_date": "2005/02/11",
             "end_date": "2009/29/11",
             "status": "Selesai",
             "mentor": "Mentor"
         },
         {
-            "pelatihan": "Blossom Dickerson",
-            "batch": "5018",
+            "pelatihan": "Digital Bootcamp",
+            "batch": "2",
             "start_date": "2005/02/11",
             "end_date": "2006/11/09",
             "status": "Masa Pendaftaran",
             "mentor": "Mentor"
         },
         {
-            "pelatihan": "Elliott Snyder",
-            "batch": "3925",
+            "pelatihan": "Laravel STTP",
+            "batch": "1",
+            "start_date": "2005/02/11",
+            "end_date": "2006/03/08",
+            "status": "Selesai",
+            "mentor": "Mentor"
+        },
+
+        {
+            "pelatihan": "Sertifikasi POlban",
+            "batch": "1",
+            "start_date": "2005/02/11",
+            "end_date": "2006/03/08",
+            "status": "Selesai",
+            "mentor": "Mentor"
+        },
+
+        {
+            "pelatihan": "Sertifikasi Laravel",
+            "batch": "2",
+            "start_date": "2005/02/11",
+            "end_date": "2006/03/08",
+            "status": "Selesai",
+            "mentor": "Mentor"
+        },
+
+        {
+            "pelatihan": "Digital Bootcamp",
+            "batch": "3",
+            "start_date": "2005/02/11",
+            "end_date": "2006/03/08",
+            "status": "Selesai",
+            "mentor": "Mentor"
+        },
+
+        {
+            "pelatihan": "SWQA",
+            "batch": "3",
+            "start_date": "2005/02/11",
+            "end_date": "2006/03/08",
+            "status": "Selesai",
+            "mentor": "Mentor"
+        },
+
+        {
+            "pelatihan": "Digital Bootcamp",
+            "batch": "4",
+            "start_date": "2005/02/11",
+            "end_date": "2006/03/08",
+            "status": "Selesai",
+            "mentor": "Mentor"
+        }
+        ,
+        {
+            "pelatihan": "Laravel STTP",
+            "batch": "2",
             "start_date": "2005/02/11",
             "end_date": "2006/03/08",
             "status": "Selesai",

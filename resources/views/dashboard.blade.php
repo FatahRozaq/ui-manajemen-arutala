@@ -10,7 +10,7 @@
 
   <section class="section dashboard">
     <div class="row">
-    <div class="col-xxl-3 col-md-1">
+    <div class="col-xxl-3 col-xl-3">
       <div class="card info-card sales-card">
 
         <div class="filter">
@@ -48,7 +48,7 @@
     </div><!-- End Sales Card -->
 
     <!-- Revenue Card -->
-    <div class="col-xxl-3 col-md-1">
+    <div class="col-xxl-2 col-xl-3">
       <div class="card info-card revenue-card">
 
         <div class="filter">
@@ -83,7 +83,7 @@
     </div><!-- End Revenue Card -->
 
     <!-- Customers Card -->
-    <div class="col-xxl-3 col-xl-12">
+    <div class="col-xxl-3 col-xl-3">
 
       <div class="card info-card customers-card">
 
@@ -110,7 +110,6 @@
             <div class="ps-3">
               <h6>1244</h6>
               <span class="text-danger small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">decrease</span>
-
             </div>
           </div>
 
@@ -119,22 +118,68 @@
 
     </div><!-- End Customers Card -->
 
-    <div class="col-xxl-3 col-xl-12">
+    <div class="col-xxl-3 col-xl-3">
 
       <div class="card info-card customers-card">
 
         <div class="filter">
           <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow wide-dropdown">
             <li class="dropdown-header text-start">
               <h6>Filter</h6>
             </li>
-
-            <li><a class="dropdown-item" href="#">Today</a></li>
-            <li><a class="dropdown-item" href="#">This Month</a></li>
-            <li><a class="dropdown-item" href="#">This Year</a></li>
+            <li class="dropdown-item">
+              <label for="year">Tahun:</label>
+              <select id="year" class="form-select">
+                <option value="2020">2020</option>
+                <option value="2021">2021</option>
+                <option value="2022">2022</option>
+                <option value="2023">2023</option>
+              </select>
+            </li>
+            <li class="dropdown-item d-flex justify-content-between align-items-center">
+              <div>
+                <label for="start-month">Bulan Awal:</label>
+                <select id="start-month" class="form-select">
+                  <option value="1">Januari</option>
+                  <option value="2">Februari</option>
+                  <option value="3">Maret</option>
+                  <option value="4">April</option>
+                  <option value="5">Mei</option>
+                  <option value="6">Juni</option>
+                  <option value="7">Juli</option>
+                  <option value="8">Agustus</option>
+                  <option value="9">September</option>
+                  <option value="10">Oktober</option>
+                  <option value="11">November</option>
+                  <option value="12">Desember</option>
+                </select>
+              </div>
+              <div>
+                <label for="end-month">Bulan Akhir:</label>
+                <select id="end-month" class="form-select">
+                  <option value="1">Januari</option>
+                  <option value="2">Februari</option>
+                  <option value="3">Maret</option>
+                  <option value="4">April</option>
+                  <option value="5">Mei</option>
+                  <option value="6">Juni</option>
+                  <option value="7">Juli</option>
+                  <option value="8">Agustus</option>
+                  <option value="9">September</option>
+                  <option value="10">Oktober</option>
+                  <option value="11">November</option>
+                  <option value="12">Desember</option>
+                </select>
+              </div>
+            </li>
+            <li class="dropdown-footer text-end">
+              <button class="btn btn-primary apply-btn">Apply</button>
+            </li>
           </ul>
         </div>
+        
+        
 
         <div class="card-body">
           <h5 class="card-title">Customers <span>| This Year</span></h5>
@@ -363,7 +408,7 @@
                       Perguruan Tinggi
                     </th>
                     <th>Total Peserta</th>
-                    <th>Persentase</th>
+                    
           
                   </tr>
                 </thead>
@@ -371,62 +416,50 @@
                   <tr>
                     <td>Politeknik Negeri Bandung</td>
                     <td>9958</td>
-                    <td>30%</td>
                   </tr>
                   <tr>
                     <td>Institut Negeri Bandung</td>
                     <td>8971</td>
-                    <td>30%</td>
                   </tr>
                   <tr>
                     <td>Universitas Gadjah Mada</td>
                     <td>3147</td>
-                    <td>30%</td>
                   </tr>
                   <tr>
                     <td>Universitas Indonesia</td>
                     <td>3497</td>
-                    <td>30%</td>
                   </tr>
                   <tr>
                     <td>Blossom Dickerson</td>
                     <td>5018</td>
-                    <td>30%</td>
                   </tr>
                   <tr>
                     <td>Elliott Snyder</td>
                     <td>3925</td>
-                    <td>30%</td>
                   </tr>
                   <tr>
                     <td>Castor Pugh</td>
                     <td>9488</td>
-                    <td>30%</td>
                   </tr>
                   <tr>
                     <td>Pearl Carlson</td>
                     <td>6231</td>
-                    <td>30%</td>
                   </tr>
                   <tr>
                     <td>Deirdre Bridges</td>
                     <td>1579</td>
-                    <td>30%</td>
                   </tr>
                   <tr>
                     <td>Daniel Baldwin</td>
                     <td>6095</td>
-                    <td>30%</td>
                   </tr>
                   <tr>
                     <td>Phelan Kane</td>
                     <td>9519</td>
-                    <td>30%</td>
                   </tr>
                   <tr>
                     <td>Quentin Salas</td>
                     <td>1339</td>
-                    <td>30%</td>
                   </tr>
                 </tbody>
               </table>
@@ -435,90 +468,7 @@
             </div>
           </div>
 
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Jumlah Peserta Berdasarkan Jurusan</h5>
-              {{-- <p></p> --}}
-
-              <!-- Table with stripped rows -->
-              <table class="table datatable">
-                <thead>
-                  <tr>
-                    <th>
-                      Jurusan
-                    </th>
-                    <th>Total Peserta</th>
-                    <th>Persentase</th>
           
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>Teknik Informatika</td>
-                    <td>9958</td>
-                    <td>30%</td>
-                  </tr>
-                  <tr>
-                    <td>Sistem Informasi</td>
-                    <td>8971</td>
-                    <td>30%</td>
-                  </tr>
-                  <tr>
-                    <td>Manajemen</td>
-                    <td>3147</td>
-                    <td>30%</td>
-                  </tr>
-                  <tr>
-                    <td>Manajemen Informasi</td>
-                    <td>3497</td>
-                    <td>30%</td>
-                  </tr>
-                  <tr>
-                    <td>Ilmu Komputer</td>
-                    <td>5018</td>
-                    <td>30%</td>
-                  </tr>
-                  <tr>
-                    <td>Elliott Snyder</td>
-                    <td>3925</td>
-                    <td>30%</td>
-                  </tr>
-                  <tr>
-                    <td>Castor Pugh</td>
-                    <td>9488</td>
-                    <td>30%</td>
-                  </tr>
-                  <tr>
-                    <td>Pearl Carlson</td>
-                    <td>6231</td>
-                    <td>30%</td>
-                  </tr>
-                  <tr>
-                    <td>Deirdre Bridges</td>
-                    <td>1579</td>
-                    <td>30%</td>
-                  </tr>
-                  <tr>
-                    <td>Daniel Baldwin</td>
-                    <td>6095</td>
-                    <td>30%</td>
-                  </tr>
-                  <tr>
-                    <td>Phelan Kane</td>
-                    <td>9519</td>
-                    <td>30%</td>
-                  </tr>
-                  <tr>
-                    <td>Quentin Salas</td>
-                    <td>1339</td>
-                    <td>30%</td>
-                  </tr>
-                </tbody>
-              </table>
-              <!-- End Table with stripped rows -->
-
-            </div>
-          </div>
 
           <div class="card">
             <div class="card-body">
@@ -533,7 +483,7 @@
                       Aktivitas
                     </th>
                     <th>Total Peserta</th>
-                    <th>Persentase</th>
+                   
           
                   </tr>
                 </thead>
@@ -541,62 +491,50 @@
                   <tr>
                     <td>Freelance</td>
                     <td>9958</td>
-                    <td>30%</td>
                   </tr>
                   <tr>
                     <td>Karyawan</td>
                     <td>8971</td>
-                    <td>30%</td>
                   </tr>
                   <tr>
                     <td>Fresh Graduate</td>
                     <td>3147</td>
-                    <td>30%</td>
                   </tr>
                   <tr>
                     <td>Mahasiswa</td>
                     <td>3497</td>
-                    <td>30%</td>
                   </tr>
                   <tr>
                     <td>Administrasi</td>
                     <td>5018</td>
-                    <td>30%</td>
                   </tr>
                   <tr>
                     <td>Elliott Snyder</td>
                     <td>3925</td>
-                    <td>30%</td>
                   </tr>
                   <tr>
                     <td>Castor Pugh</td>
                     <td>9488</td>
-                    <td>30%</td>
                   </tr>
                   <tr>
                     <td>Pearl Carlson</td>
                     <td>6231</td>
-                    <td>30%</td>
                   </tr>
                   <tr>
                     <td>Deirdre Bridges</td>
                     <td>1579</td>
-                    <td>30%</td>
                   </tr>
                   <tr>
                     <td>Daniel Baldwin</td>
                     <td>6095</td>
-                    <td>30%</td>
                   </tr>
                   <tr>
                     <td>Phelan Kane</td>
                     <td>9519</td>
-                    <td>30%</td>
                   </tr>
                   <tr>
                     <td>Quentin Salas</td>
                     <td>1339</td>
-                    <td>30%</td>
                   </tr>
                 </tbody>
               </table>
@@ -607,8 +545,8 @@
 
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title">Datatables</h5>
-              <p>Daftar Perusahaan yang ikut</p>
+              <h5 class="card-title">Daftar Perusahaan yang ikut</h5>
+              <p></p>
 
               <!-- Table with stripped rows -->
               <table class="table datatable">
@@ -618,7 +556,7 @@
                       Perusahaan
                     </th>
                     <th>Total Peserta</th>
-                    <th>Persentase</th>
+                    
           
                   </tr>
                 </thead>
@@ -626,62 +564,62 @@
                   <tr>
                     <td>Telkom Indonesia</td>
                     <td>9958</td>
-                    <td>30%</td>
+                    
                   </tr>
                   <tr>
                     <td>PT Padepokan Tujuh Sembilan</td>
                     <td>8971</td>
-                    <td>30%</td>
+                    
                   </tr>
                   <tr>
                     <td>Yukuensi</td>
                     <td>3147</td>
-                    <td>30%</td>
+                    
                   </tr>
                   <tr>
                     <td>Mitra Inegrasi Informatika</td>
                     <td>3497</td>
-                    <td>30%</td>
+                    
                   </tr>
                   <tr>
                     <td>PT Mitra Seribu Saudara</td>
                     <td>5018</td>
-                    <td>30%</td>
+                    
                   </tr>
                   <tr>
                     <td>Elliott Snyder</td>
                     <td>3925</td>
-                    <td>30%</td>
+                    
                   </tr>
                   <tr>
                     <td>Castor Pugh</td>
                     <td>9488</td>
-                    <td>30%</td>
+                    
                   </tr>
                   <tr>
                     <td>Pearl Carlson</td>
                     <td>6231</td>
-                    <td>30%</td>
+                    
                   </tr>
                   <tr>
                     <td>Deirdre Bridges</td>
                     <td>1579</td>
-                    <td>30%</td>
+                    
                   </tr>
                   <tr>
                     <td>Daniel Baldwin</td>
                     <td>6095</td>
-                    <td>30%</td>
+                    
                   </tr>
                   <tr>
                     <td>Phelan Kane</td>
                     <td>9519</td>
-                    <td>30%</td>
+                    
                   </tr>
                   <tr>
                     <td>Quentin Salas</td>
                     <td>1339</td>
-                    <td>30%</td>
+                    
                   </tr>
                 </tbody>
               </table>
@@ -710,59 +648,66 @@
               </div>
 
               <div class="card-body pb-0">
-                <h5 class="card-title">Informasi Pelatihan <span>| Today</span></h5>
+                <h5 class="card-title">Agenda Pelatihan</h5>
 
                 <table class="table table-borderless">
                   <thead>
                     <tr>
-                      <th scope="col">Gambar</th>
+                      {{-- <th scope="col">Gambar</th> --}}
                       <th scope="col">Nama Pelatihan</th>
                       <th scope="col">Batch</th>
                       <th scope="col">Start</th>
                       <th scope="col">End</th>
+                      <th scope="col">Total Pendaftar</th>
                       <th scope="col">Total Peserta</th>
+                      
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
-                      <th scope="row"><a href="#"><img src="assets/img/product-1.jpg" alt=""></a></th>
+                      {{-- <th scope="row"><a href="#"><img src="assets/img/product-1.jpg" alt=""></a></th> --}}
                       <td><a href="#" class="text-primary fw-bold">SWQA</a></td>
                       <td>2</td>
                       <td >07/08/2023</td>
                       <td>21/08/2023</td>
                       <td>102</td>
+                      <td>80</td>
                     </tr>
                     <tr>
-                      <th scope="row"><a href="#"><img src="assets/img/product-2.jpg" alt=""></a></th>
+                      {{-- <th scope="row"><a href="#"><img src="assets/img/product-2.jpg" alt=""></a></th> --}}
                       <td><a href="#" class="text-primary fw-bold">Digital Bootcamp-Kelas Arutala</a></td>
                       <td>2</td>
                       <td>07/08/2023</td>
                       <td>21/08/2023</td>
                       <td>102</td>
+                      <td>80</td>
                     </tr>
                     <tr>
-                      <th scope="row"><a href="#"><img src="assets/img/product-3.jpg" alt=""></a></th>
+                      {{-- <th scope="row"><a href="#"><img src="assets/img/product-3.jpg" alt=""></a></th> --}}
                       <td><a href="#" class="text-primary fw-bold">Coding Express</a></td>
                       <td>1</td>
                       <td >07/08/2023</td>
                       <td>21/08/2023</td>
                       <td>102</td>
+                      <td>80</td>
                     </tr>
                     <tr>
-                      <th scope="row"><a href="#"><img src="assets/img/product-4.jpg" alt=""></a></th>
+                      {{-- <th scope="row"><a href="#"><img src="assets/img/product-4.jpg" alt=""></a></th> --}}
                       <td><a href="#" class="text-primary fw-bold">CI/CD & UI Testing</a></td>
                       <td>1</td>
                       <td >07/08/2023</td>
                       <td>21/08/2023</td>
                       <td>102</td>
+                      <td>80</td>
                     </tr>
                     <tr>
-                      <th scope="row"><a href="#"><img src="assets/img/product-5.jpg" alt=""></a></th>
+                      {{-- <th scope="row"><a href="#"><img src="assets/img/product-5.jpg" alt=""></a></th> --}}
                       <td><a href="#" class="text-primary fw-bold">Spring Boot</a></td>
                       <td>1</td>
                       <td >07/08/2023</td>
                       <td>21/08/2023</td>
                       <td>102</td>
+                      <td>80</td>
                     </tr>
                   </tbody>
                 </table>
