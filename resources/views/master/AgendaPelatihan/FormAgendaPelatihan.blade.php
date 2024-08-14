@@ -1,7 +1,7 @@
 @extends('layouts.AdminLayouts')
 
 @section('content')
-<<style>
+<style>
     .dropdown-menu {
         width: 90%;
         max-height: 150px;
@@ -65,7 +65,7 @@
                         <div class="form-group row position-relative">
                           <label for="trainingInput" class="col-sm-3 col-form-label">Nama Pelatihan</label>
                           <div class="col-sm-9">
-                              <input type="text" class="form-control disable" id="trainingInput">
+                              <input type="text" class="form-control disable" id="trainingInput" value="Nama Pelatihan" aria-label="Disabled input example" disabled readonly>
                               <div class="dropdown-menu" id="trainingDropdown"></div>
                           </div>
                       </div>
@@ -73,7 +73,7 @@
                       <div class="form-group row position-relative">
                         <label for="trainingInput" class="col-sm-3 col-form-label">Batch</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control disable" id="trainingInput">
+                            <input type="text" class="form-control disable" id="trainingInput" value="2" aria-label="Disabled input example" disabled readonly>
                             <div class="dropdown-menu" id="trainingDropdown"></div>
                         </div>
                     </div>
@@ -103,18 +103,31 @@
                     </div>
 
                     <div id="materiContainer">
+                        <!-- Input untuk data numerik -->
                         <div class="form-group row position-relative mb-1">
-                          <label class="col-sm-3 col-form-label">Investasi</label>
-                          <div class="col-sm-9 input-group">
-                              <input type="text" class="form-control">
-                              <div class="input-group-append">
-                                <button class="btn btn-outline-success add-materi" type="button"><i class="bi bi-plus-circle"></i></button>
-                              </div>
-                          </div>
+                            <label class="col-sm-3 col-form-label">Investasi (Numerik)</label>
+                            <div class="col-sm-9 input-group">
+                                <input type="number" class="form-control">
+                                <div class="input-group-append">
+                                    
+                                </div>
+                            </div>
                         </div>
-                      </div>
+                    
+                        <!-- Input untuk data string -->
+                        <div class="form-group row position-relative mb-1">
+                            <label class="col-sm-3 col-form-label">Investasi (String)</label>
+                            <div class="col-sm-9 input-group">
+                                <input type="text" class="form-control">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-success add-materi" type="button"><i class="bi bi-plus-circle"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
 
-                      <div class="form-group row position-relative">
+                      <div class="form-group row position-relative mt-3">
                         <label for="trainingInput" class="col-sm-3 col-form-label">Diskon %</label>
                         <div class="col-sm-9">
                             <input type="number" class="form-control disable" id="trainingInput">
@@ -124,6 +137,18 @@
 
                     <div class="form-group row position-relative">
                         <label for="trainingInput" class="col-sm-3 col-form-label">Status</label>
+                        <div class="col-sm-9">
+                        <select class="form-control" id="exampleFormControlSelect1">
+                            <option>Planning</option>
+                            <option>Masa Pendaftaran</option>
+                            <option>Sedang Berlangsung</option>
+                            <option>Selesai</option>
+                          </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row position-relative mt-3">
+                        <label for="trainingInput" class="col-sm-3 col-form-label">Link Mayar</label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" id="trainingInput">
                             <div class="dropdown-menu" id="trainingDropdown"></div>
