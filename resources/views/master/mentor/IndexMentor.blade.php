@@ -1,10 +1,17 @@
 @extends('layouts/AdminLayouts')
 
+@section('title')
+Arutala | Data Mentor
+@endsection
 @section('content')
 
-<div class="pagetitle">
-    <h1>Data Peserta</h1>
-</div><!-- End Page Title -->
+<div class="pagetitle d-flex justify-content-between align-items-center">
+    <h1>Data Mentor</h1>
+    <a href="{{ route('mentor.add') }}" class="btn btn-success d-flex align-items-center" style="border-radius: 10px;">
+        <i class="fa-solid fa-circle-plus mr-2"></i>
+        Tambah Mentor
+    </a>
+</div>
 
 <section class="section">
     <div class="row">
@@ -14,7 +21,7 @@
                     <table id="dataPesertaTable" class="table table-striped">
                         <thead>
                             <tr>
-                                <th>Name</th>
+                                <th>Nama</th>
                                 <th>Email</th>
                                 <th>Kontak</th>
                                 <th>Aktifitas</th>
@@ -56,7 +63,7 @@
                     "data": null,
                     "render": function(data, type, row) {
                         return `
-                            <a href="#" class="view-icon" data-id="${row.id}" title="View">
+                            <a href="{{ route('mentor.detail') }}" class="view-icon" data-id="${row.id}" title="View">
                                 <i class="fas fa-eye text-primary"></i>
                             </a>
                             <a href="#" class="update-icon" data-id="${row.id}" title="Update">
@@ -72,11 +79,11 @@
         });
 
         // Event listener for view icon
-        $('#dataPesertaTable').on('click', '.view-icon', function() {
-            var id = $(this).data('id');
-            alert('View icon clicked for ID: ' + id);
-            // Add your view logic here
-        });
+        // $('#dataPesertaTable').on('click', '.view-icon', function() {
+        //     var id = $(this).data('id');
+        //     alert('View icon clicked for ID: ' + id);
+        //     // Add your view logic here
+        // });
 
         // Event listener for update icon
         $('#dataPesertaTable').on('click', '.update-icon', function() {

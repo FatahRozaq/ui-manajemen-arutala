@@ -10,4 +10,9 @@ class MasterPesertaController extends Controller
     {
         return view('master/peserta/IndexPeserta');
     }
+
+    public function detail()
+    {
+        return view('master/peserta/DetailPeserta');
+    }
 }

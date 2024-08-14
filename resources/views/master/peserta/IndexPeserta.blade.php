@@ -1,10 +1,26 @@
 @extends('layouts/AdminLayouts')
 
+@section('title')
+Arutala | Data Peserta
+@endsection
+
 @section('content')
 
-<div class="pagetitle">
-    <h1>Data Peserta</h1>
-</div><!-- End Page Title -->
+<div class="pagetitle d-flex justify-content-between align-items-center">
+    <h1>Data Peserta Pelatihan</h1>
+    
+    <div class="button-group d-flex">
+    <a href="{{ route('mentor.add') }}" class="btn btn-primary d-flex align-items-center mr-2" style="border-radius: 10px;">
+        <i class="fa-solid fa-upload mr-2"></i>
+        Import Data
+    </a>
+
+    <a href="{{ route('mentor.add') }}" class="btn btn-success d-flex align-items-center" style="border-radius: 10px;">
+        <i class="fa-solid fa-file-export mr-2"></i>
+        Export Data
+    </a>
+</div>
+</div>
 
 <section class="section">
     <div class="row">
@@ -14,7 +30,7 @@
                     <table id="dataPesertaTable" class="table table-striped">
                         <thead>
                             <tr>
-                                <th>Name</th>
+                                <th>Nama</th>
                                 <th>Email</th>
                                 <th>Kontak</th>
                                 <th>Aktifitas</th>
@@ -56,7 +72,7 @@
                     "data": null,
                     "render": function(data, type, row) {
                         return `
-                            <a href="#" class="view-icon" data-id="${row.id}" title="View">
+                            <a href="{{ route('peserta.detail') }}" class="view-icon" data-id="${row.id}" title="View">
                                 <i class="fas fa-eye text-primary"></i>
                             </a>
                             <a href="#" class="update-icon" data-id="${row.id}" title="Update">
@@ -72,11 +88,11 @@
         });
 
         // Event listener for view icon
-        $('#dataPesertaTable').on('click', '.view-icon', function() {
-            var id = $(this).data('id');
-            alert('View icon clicked for ID: ' + id);
-            // Add your view logic here
-        });
+        // $('#dataPesertaTable').on('click', '.view-icon', function() {
+        //     var id = $(this).data('id');
+        //     alert('View icon clicked for ID: ' + id);
+        //     // Add your view logic here
+        // });
 
         // Event listener for update icon
         $('#dataPesertaTable').on('click', '.update-icon', function() {

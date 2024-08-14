@@ -1,0 +1,325 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Open Sans', sans-serif;
+    height: 100vh; /* Ensures body takes up full height */
+}
+
+.container {
+    display: flex;
+    width: 100%;
+    height: 100vh; /* Full height of the viewport */
+}
+
+.company-side {
+    width: 40%;
+    background: linear-gradient(120deg, #6994E3 0%, #14205C 93%, #091249 100%);
+    /* background: linear-gradient(135deg, #6994E3 0%, #14205C 50%, #091249 100%); */
+    display: flex; /* Flexbox to center the content */
+    justify-content: center;
+    align-items: center; /* Center vertically */
+}
+
+.company-side .logo img {
+    width: 300px;
+    height: 300px;
+}
+
+.form-side {
+    width: 60%;
+    display: flex;
+    padding: 0 80px;
+    padding-top: 150px;
+    flex-direction: column;
+}
+
+.form-daftar {
+    padding-top: 20px;
+}
+
+.form-title {
+    font-size: 40px;
+    font-weight: bold;
+}
+
+.form-group {
+    position: relative;
+    margin: 20px 0;
+}
+
+.no-kontak {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+.no-kontak .default {
+    background-color: #344C92;
+    width: 30px;
+    color: white;
+    height: 50px;
+    width: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+}
+
+.form-control {
+    width: 100%;
+    height: 50px;
+    padding: 10px;
+    font-size: 1em;
+    border: 1px solid #344C92; 
+    border-radius: 5px; 
+    background-color: #fff;
+    color: #333; 
+    transition: border-color 0.3s ease;
+}
+
+.form-control::placeholder {
+    color: #ccc; 
+}
+
+/* Label Styling */
+.form-label {
+    position: absolute;
+    top: -7px; 
+    left: 10px;
+    background-color: #fff; /* White background to overlap input */
+    padding: 0 5px;
+    font-size: 0.9em;
+    color: #344C92; /* Light blue color for the label */
+    pointer-events: none; /* Prevent label interaction */
+    transition: top 0.3s ease, font-size 0.3s ease;
+}
+
+.form-label.kontak{
+    left: 65px;
+}
+
+/* Focused Input */
+.form-control:focus {
+    outline: none;
+    border-color: #6994E3; /* Maintain the same border color on focus */
+}
+
+.form-control:focus + .form-label,
+.form-control:not(:placeholder-shown) + .form-label {
+    top: -12px; /* Keep the label above the input when focused or filled */
+    font-size: 0.9em; /* Smaller label font size */
+    color: #6994E3; /* Maintain label color */
+}
+
+.form-daftar button {
+    width: 100%;
+    height: 50px;
+    padding: 10px;
+    font-size: 20px;
+    border: 1px solid #344C92; 
+    border-radius: 5px; 
+    background-color: #344C92;
+    color: white; 
+    transition: border-color 0.3s ease;
+    font-weight: bold;
+}
+
+.form-daftar button:hover {
+    background-color: #5367C4; /* Lighter blue */
+    border-color: #5367C4; /* Match border with background */
+    cursor: pointer;
+}
+
+.input-group {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-group-append {
+    position: absolute;
+    right: 10px;
+    cursor: pointer;
+    color: #aaa;
+    font-size: 1.2em;
+    transition: color 0.3s ease;
+}
+
+.input-group-append:hover {
+    color: #344C92; /* Change color on hover */
+}
+
+/* Icon Styling */
+.toggle-password {
+    color: #aaa; /* Initial color */
+}
+
+.toggle-password:hover {
+    color: #344C92; /* Hover color */
+}
+
+.separator {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 20px 0;
+}
+
+.separator::before,
+.separator::after {
+    content: "";
+    flex: 1;
+    border-bottom: 1px solid #ccc;
+    margin: 0 10px;
+}
+
+.separator span {
+    font-weight: bold;
+    color: #333; /* Dark text color */
+}
+
+
+.daftar {
+    width: 100%;
+    height: 50px;
+    padding: 10px;
+    font-size: 20px;
+    border: 1px solid #344C92; 
+    border-radius: 5px; 
+    background-color: white;
+    color: #344C92; 
+    transition: border-color 0.3s ease;
+    font-weight: bold;
+}
+
+.daftar:hover {
+    background-color: #5367C4; /* Lighter blue */
+    border-color: #5367C4; /* Match border with background */
+    cursor: pointer;
+    color: white;
+}
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .company-side {
+        width: 100%;
+        height: 300px;
+        padding: 20px;
+    }
+
+    .company-side .logo img {
+        width: 250px;
+        height: 250px;
+    }
+
+    .form-side {
+        width: 100%;
+        padding: 20px;
+    }
+
+    .form-title {
+        font-size: 30px;
+    }
+
+    .form-group {
+        margin: 15px 0;
+    }
+
+    .form-daftar button {
+        font-size: 18px;
+    }
+
+    .daftar {
+        font-size: 18px;
+    }
+
+    .form-group {
+        margin-top: 20px;
+    }
+
+    .form-side {
+        padding: 0 50px;
+        padding-top: 40px;
+    }
+
+    .form-title {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .form-daftar button {
+        margin-top: 30px;
+    }
+}
+
+@media (max-width: 500px) {
+    .container {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .company-side {
+        width: 100%;
+        height: 200px;
+        padding: 10px;
+    }
+
+    .company-side .logo img {
+        width: 200px;
+        height: 200px;
+    }
+
+    .form-side {
+        width: 100%;
+        padding: 10px;
+    }
+
+    .form-title {
+        font-size: 25px;
+    }
+
+    .form-group {
+        margin: 10px 0;
+    }
+
+    .form-daftar button {
+        font-size: 16px;
+    }
+
+    .daftar {
+        font-size: 16px;
+    }
+
+    .form-group {
+        margin-top: 20px;
+    }
+
+    .form-side {
+        padding: 0 50px;
+        padding-top: 40px;
+    }
+
+    .form-title {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .form-daftar button {
+        margin-top: 30px;
+    }
+}

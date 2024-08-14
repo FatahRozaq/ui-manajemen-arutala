@@ -10,4 +10,19 @@ class MasterMentorController extends Controller
     {
         return view('master/mentor/IndexMentor');
     }
+
+    public function detail()
+    {
+        return view('master/mentor/DetailMentor');
+    }
+
+    public function update()
+    {
+        return view('master/mentor/UpdateDataMentor');
+    }
+
+    public function add()
+    {
+        return view('master/mentor/TambahMentor');
+    }
 }
