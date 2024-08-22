@@ -20,8 +20,8 @@
                           <tr>
                               <th>Pelatihan</th>
                               <th>Batch</th>
+                              <th>Peserta</th>
                               <th>Start Date</th>
-                              {{-- <th>End Date</th> --}}
                               <th>Status</th>
                               {{-- <th>Mentor</th> --}}
                               <th>Aksi</th>
@@ -56,6 +56,7 @@ $(document).ready(function() {
         "columns": [
             { "data": "pelatihan" },
             { "data": "batch" },
+            { "data": "peserta" },
             { "data": "start_date" },
             { "data": "status" },
             {

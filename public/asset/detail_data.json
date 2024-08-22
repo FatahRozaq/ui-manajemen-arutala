@@ -5,6 +5,7 @@
             "pelatihan": "SWQA",
             "batch": "1",
             "nama_peserta": "Gian Vilcan",
+            "no_kontak": "+62 821-9876-5432",
             "statusPembayaran": "Sudah"
         },
 
@@ -13,6 +14,7 @@
             "pelatihan": "SWQA",
             "batch": "1",
             "nama_peserta": "Jhon Doe",
+            "no_kontak": "+62 821-9876-5432",
             "statusPembayaran": "Belum"
         },
 
@@ -21,6 +23,7 @@
             "pelatihan": "SWQA",
             "batch": "1",
             "nama_peserta": "Jia Juni",
+            "no_kontak": "+62 821-9876-5432",
             "statusPembayaran": "Belum"
         },
 
@@ -29,6 +32,7 @@
             "pelatihan": "SWQA",
             "batch": "1",
             "nama_peserta": "Huan",
+            "no_kontak": "+62 821-9876-5432",
             "statusPembayaran": "Sudah"
         },
 
@@ -37,6 +41,7 @@
             "pelatihan": "SWQA",
             "batch": "1",
             "nama_peserta": "Cananda Eka",
+            "no_kontak": "+62 821-9876-5432",
             "statusPembayaran": "Belum"
         },
 
@@ -45,6 +50,7 @@
             "pelatihan": "SWQA",
             "batch": "1",
             "nama_peserta": "Fatah",
+            "no_kontak": "+62 821-9876-5432",
             "statusPembayaran": "Belum"
         },
 
@@ -53,6 +59,7 @@
             "pelatihan": "SWQA",
             "batch": "1",
             "nama_peserta": "Naufal SS",
+            "no_kontak": "+62 821-9876-5432",
             "statusPembayaran": "Sudah"
         },
 
@@ -61,6 +68,7 @@
             "pelatihan": "SWQA",
             "batch": "1",
             "nama_peserta": "Najwan aky",
+            "no_kontak": "+62 821-9876-5432",
             "statusPembayaran": "Sudah"
         },
         {
@@ -68,6 +76,7 @@
             "pelatihan": "SWQA",
             "batch": "1",
             "nama_peserta": "Adit Riyadi",
+            "no_kontak": "+62 821-9876-5432",
             "statusPembayaran": "Sudah"
         },
 
@@ -76,7 +85,154 @@
             "pelatihan": "SWQA",
             "batch": "1",
             "nama_peserta": "Baramantia",
+            "no_kontak": "+62 821-9876-5432",
             "statusPembayaran": "Belum"
+        },
+
+        {
+            "id": 9,
+            "pelatihan": "SWQA",
+            "batch": "1",
+            "nama_peserta": "Baramantio",
+            "no_kontak": "+62 821-9876-5432",
+            "statusPembayaran": "Sudah"
+        },
+
+        {
+            "id": 10,
+            "pelatihan": "SWQA",
+            "batch": "1",
+            "nama_peserta": "Jonandar",
+            "no_kontak": "+62 821-9876-5432",
+            "statusPembayaran": "Belum"
+        }, 
+
+        {
+            "id": 11,
+            "pelatihan": "SWQA",
+            "batch": "1",
+            "nama_peserta": "Trevor Yulistius",
+            "no_kontak": "+62 821-9876-5432",
+            "statusPembayaran": "Belum"
+        },
+
+        {
+            "id": 12,
+            "pelatihan": "SWQA",
+            "batch": "1",
+            "nama_peserta": "Mica Eh",
+            "no_kontak": "+62 821-9876-5432",
+            "statusPembayaran": "Sudah"
+        },
+
+        {
+            "id": 13,
+            "pelatihan": "SWQA",
+            "batch": "1",
+            "nama_peserta": "Sawfa Jiko",
+            "no_kontak": "+62 821-9876-5432",
+            "statusPembayaran": "Sudah"
+        },
+
+        {
+            "id": 14,
+            "pelatihan": "SWQA",
+            "batch": "1",
+            "nama_peserta": "Lulu Lundara",
+            "no_kontak": "+62 821-9876-5432",
+            "statusPembayaran": "Belum"
+        },
+
+        {
+            "id": 15,
+            "pelatihan": "SWQA",
+            "batch": "1",
+            "nama_peserta": "Kalea Der",
+            "no_kontak": "+62 821-9876-5432",
+            "statusPembayaran": "Belum"
+        },
+
+        {
+            "id": 16,
+            "pelatihan": "SWQA",
+            "batch": "1",
+            "nama_peserta": "Julier",
+            "no_kontak": "+62 821-9876-5432",
+            "statusPembayaran": "Sudah"
+        },
+
+        {
+            "id": 17,
+            "pelatihan": "SWQA",
+            "batch": "1",
+            "nama_peserta": "jokur dan",
+            "no_kontak": "+62 821-9876-5432",
+            "statusPembayaran": "Belum"
+        }, 
+
+        {
+            "id": 18,
+            "pelatihan": "SWQA",
+            "batch": "1",
+            "nama_peserta": "Yosua Balingga",
+            "no_kontak": "+62 821-9876-5432",
+            "statusPembayaran": "Sudah"
+        },
+
+        {
+            "id": 19,
+            "pelatihan": "SWQA",
+            "batch": "1",
+            "nama_peserta": "Naudal Fafil",
+            "no_kontak": "+62 821-9876-5432",
+            "statusPembayaran": "Belum"
+        },
+
+        {
+            "id": 20,
+            "pelatihan": "SWQA",
+            "batch": "1",
+            "nama_peserta": "Aramana",
+            "no_kontak": "+62 821-9876-5432",
+            "statusPembayaran": "Sudah"
+        },
+
+        {
+            "id": 21,
+            "pelatihan": "SWQA",
+            "batch": "1",
+            "nama_peserta": "Maharajaa",
+            "no_kontak": "+62 821-9876-5432",
+            "statusPembayaran": "Belum"
+        },
+
+        {
+            "id": 22,
+            "pelatihan": "SWQA",
+            "batch": "1",
+            "nama_peserta": "Braithwaite",
+            "no_kontak": "+62 821-9876-5432",
+            "statusPembayaran": "Sudah"
+        },
+
+        {
+            "id": 23,
+            "pelatihan": "SWQA",
+            "batch": "1",
+            "nama_peserta": "Cristo Ronaldo",
+            "no_kontak": "+62 821-9876-5432",
+            "statusPembayaran": "Belum"
+        },
+
+        {
+            "id": 24,
+            "pelatihan": "SWQA",
+            "batch": "1",
+            "nama_peserta": "Baramantia",
+            "no_kontak": "+62 821-9876-5432",
+            "statusPembayaran": "Anthony Armando"
         }
+
+
     ]
 }
