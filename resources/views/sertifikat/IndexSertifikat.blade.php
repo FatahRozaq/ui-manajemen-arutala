@@ -1,4 +1,4 @@
-@extends('layouts.AdminLayouts')
+@extends('layouts.PesertaLayouts')
 
 @section('title')
 Arutala | Sertifikat Peserta

@@ -1,7 +1,11 @@
 <?php
 
+use App\Http\Controllers\Api\ApiAuthController;
+use Spatie\FlareClient\Api;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\ApiMentorController;
+use App\Http\Controllers\Api\ApiProfilePeserta;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,4 +20,21 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+Route::post('/register', [ApiAuthController::class, 'register']);
+Route::post('/login', [ApiAuthController::class, 'login']);
+Route::post('/logout', [ApiAuthController::class, 'logout'])->middleware('auth:sanctum');
+
+Route::prefix('mentor')->group(function () {
+    Route::get('/', [ApiMentorController::class, 'index']);
+    Route::post('/tambah', [ApiMentorController::class, 'store']);
+    Route::get('/{id}', [ApiMentorController::class, 'show']);
+    Route::put('/update/{id}', [ApiMentorController::class, 'update']);
+    Route::delete('/delete/{id}', [ApiMentorController::class, 'destroy']);
+});
+
+Route::middleware('auth:sanctum')->prefix('profile')->group(function () {
+    Route::put('update', [ApiProfilePeserta::class, 'update']); 
+    Route::get('/', [ApiProfilePeserta::class, 'show']); 
 });

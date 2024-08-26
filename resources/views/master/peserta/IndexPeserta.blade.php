@@ -31,6 +31,7 @@ Arutala | Data Peserta
                         <thead>
                             <tr>
                                 <th>Nama</th>
+                                <th>Jumlah Pelatihan</th>
                                 <th>Email</th>
                                 <th>Kontak</th>
                                 <th>Aktifitas</th>
@@ -64,7 +65,8 @@ Arutala | Data Peserta
         $('#dataPesertaTable').DataTable({
             "ajax": "{{ asset('data/DataPeserta.json') }}",
             "columns": [
-                { "data": "name" },         // Name column
+                { "data": "name" },
+                { "data": "jumlah_pelatihan"},
                 { "data": "email" },        // Email column
                 { "data": "kontak" },       // Kontak column
                 { "data": "aktifitas" },    // Aktifitas column

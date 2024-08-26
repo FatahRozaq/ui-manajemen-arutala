@@ -3,6 +3,7 @@
         {
             "id": 1,
             "name": "Unity Pugh",
+            "jumlah_pelatihan": 3,
             "email": "unity.pugh@example.com",
             "kontak": "+62 812-3456-7890",
             "aktifitas": "Mahasiswa"
@@ -10,6 +11,7 @@
         {
             "id": 2,
             "name": "Theodore Duran",
+            "jumlah_pelatihan": 2,
             "email": "theodore.duran@example.com",
             "kontak": "+62 821-9876-5432",
             "aktifitas": "Siswa"
@@ -17,6 +19,7 @@
         {
             "id": 3,
             "name": "Kylie Bishop",
+            "jumlah_pelatihan": 3,
             "email": "kylie.bishop@example.com",
             "kontak": "+62 813-2222-4444",
             "aktifitas": "Karyawan"
@@ -24,6 +27,7 @@
         {
             "id": 4,
             "name": "Willow Gilliam",
+            "jumlah_pelatihan": 3,
             "email": "willow.gilliam@example.com",
             "kontak": "+62 822-3333-5555",
             "aktifitas": "Mahasiswa"
@@ -31,6 +35,7 @@
         {
             "id": 5,
             "name": "Blossom Dickerson",
+            "jumlah_pelatihan": 3,
             "email": "blossom.dickerson@example.com",
             "kontak": "+62 814-4444-6666",
             "aktifitas": "Karyawan"
@@ -38,6 +43,7 @@
         {
             "id": 6,
             "name": "Elliott Snyder",
+            "jumlah_pelatihan": 2,
             "email": "elliott.snyder@example.com",
             "kontak": "+62 815-5555-7777",
             "aktifitas": "Siswa"
@@ -45,6 +51,7 @@
         {
             "id": 7,
             "name": "Castor Pugh",
+            "jumlah_pelatihan": 1,
             "email": "castor.pugh@example.com",
             "kontak": "+62 816-6666-8888",
             "aktifitas": "Mahasiswa"
@@ -52,6 +59,7 @@
         {
             "id": 8,
             "name": "Pearl Carlson",
+            "jumlah_pelatihan": 3,
             "email": "pearl.carlson@example.com",
             "kontak": "+62 817-7777-9999",
             "aktifitas": "Karyawan"
@@ -59,6 +67,7 @@
         {
             "id": 9,
             "name": "Deirdre Bridges",
+            "jumlah_pelatihan": 3,
             "email": "deirdre.bridges@example.com",
             "kontak": "+62 818-8888-0000",
             "aktifitas": "Mahasiswa"
@@ -66,6 +75,7 @@
         {
             "id": 10,
             "name": "Daniel Baldwin",
+            "jumlah_pelatihan": 3,
             "email": "daniel.baldwin@example.com",
             "kontak": "+62 819-9999-1111",
             "aktifitas": "Siswa"
@@ -73,6 +83,7 @@
         {
             "id": 11,
             "name": "Alison O'Neal",
+            "jumlah_pelatihan": 3,
             "email": "alison.oneal@example.com",
             "kontak": "+62 811-1111-2222",
             "aktifitas": "Karyawan"
@@ -80,6 +91,7 @@
         {
             "id": 12,
             "name": "Gregory Osborne",
+            "jumlah_pelatihan": 3,
             "email": "gregory.osborne@example.com",
             "kontak": "+62 812-2222-3333",
             "aktifitas": "Mahasiswa"
@@ -87,6 +99,7 @@
         {
             "id": 13,
             "name": "Madeline Rhodes",
+            "jumlah_pelatihan": 3,
             "email": "madeline.rhodes@example.com",
             "kontak": "+62 813-3333-4444",
             "aktifitas": "Siswa"
@@ -94,6 +107,7 @@
         {
             "id": 14,
             "name": "Xavier Lopez",
+            "jumlah_pelatihan": 3,
             "email": "xavier.lopez@example.com",
             "kontak": "+62 814-4444-5555",
             "aktifitas": "Karyawan"
@@ -101,6 +115,7 @@
         {
             "id": 15,
             "name": "Felicia Swanson",
+            "jumlah_pelatihan": 3,
             "email": "felicia.swanson@example.com",
             "kontak": "+62 815-5555-6666",
             "aktifitas": "Mahasiswa"
@@ -108,6 +123,7 @@
         {
             "id": 16,
             "name": "Nolan Fletcher",
+            "jumlah_pelatihan": 3,
             "email": "nolan.fletcher@example.com",
             "kontak": "+62 816-6666-7777",
             "aktifitas": "Siswa"
@@ -115,6 +131,7 @@
         {
             "id": 17,
             "name": "Veronica Leach",
+            "jumlah_pelatihan": 3,
             "email": "veronica.leach@example.com",
             "kontak": "+62 817-7777-8888",
             "aktifitas": "Karyawan"
@@ -122,6 +139,7 @@
         {
             "id": 18,
             "name": "Tristan Wolfe",
+            "jumlah_pelatihan": 3,
             "email": "tristan.wolfe@example.com",
             "kontak": "+62 818-8888-9999",
             "aktifitas": "Mahasiswa"
@@ -129,6 +147,7 @@
         {
             "id": 19,
             "name": "Lila Tran",
+            "jumlah_pelatihan": 3,
             "email": "lila.tran@example.com",
             "kontak": "+62 819-9999-0000",
             "aktifitas": "Siswa"
@@ -136,6 +155,7 @@
         {
             "id": 20,
             "name": "Mason Jensen",
+            "jumlah_pelatihan": 3,
             "email": "mason.jensen@example.com",
             "kontak": "+62 811-0000-1111",
             "aktifitas": "Karyawan"

@@ -6,27 +6,28 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
+    public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
-            $table->timestamps();
+        Schema::create('pendaftar', function (Blueprint $table) {
+            $table->id('id_pendafar');
+            $table->string('nama', 255)->nullable();
+            $table->string('email', 255)->unique();
+            $table->string('password', 255);
+            $table->string('no_kontak', 25);
+            $table->string('aktivitas', 15)->nullable();
+            $table->string('nama_instansi', 50)->nullable();
+            $table->string('provinsi', 50)->nullable();
+            $table->string('kab_kota', 50)->nullable();
+            $table->string('linkedin', 50)->nullable();
+            $table->string('created_by', 255)->nullable();
+            $table->timestamp('created_time')->nullable();
+            $table->string('modified_by', 255)->nullable();
+            $table->timestamp('modified_time')->nullable();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
+    public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('pendaftar');
     }
 };
