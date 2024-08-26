@@ -21,14 +21,16 @@
   
     /* Styling for the selected item in Selectize */
     /* Background color for selected mentor item */
-    .selectize-control.multi .selectize-input > .item {
-        background-color: rgba(255, 0, 0, 0.7) !important;; /* Red color with transparency */
+
+    .selectize-control.multi .selectize-input > .item{
+        background: #e2e2e2;
         color: #000; /* Optional: White text color for better contrast */
         border-radius: 20px;
         padding-right: 25px; /* Space for the close icon */
         position: relative;
+        border-color: none;
+        border: none;
     }
-
   
     /* Styling for the remove icon */
     .selectize-control .selectize-input.items.has-items .item .remove {
@@ -41,7 +43,7 @@
     }
   
     .selectize-control .selectize-input.items.has-items .item .remove:hover {
-        color: #ff0000; /* Change color on hover */
+        /* color: #ff0000; Change color on hover */
     }
 
     
@@ -206,7 +208,7 @@
             placeholder: 'Pilih mentor...',
             render: {
                 item: function(data, escape) {
-                    return '<div class="item">' + escape(data.name) + '<span class="remove bi bi-x"></span></div>';
+                    return '<div class="item">' + escape(data.name) + '<span class="remove bi bi-x" style="font-size:16px"></span></div>';
                 }
             },
             onItemRemove: function(value) {

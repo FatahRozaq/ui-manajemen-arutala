@@ -8,11 +8,11 @@ use Illuminate\Notifications\Notifiable;
 
 class Pendaftar extends Authenticatable
 {
-    use HasApiTokens, Notifiable;
+    use HasApiTokens, Notifiable, HasFactory;
 
-    protected $table = 'pendaftar';  // Nama tabel
+    protected $table = 'pendaftar';
 
-    protected $primaryKey = 'id_pendaftar';  // Primary key
+    protected $primaryKey = 'id_pendaftar'; 
 
     protected $fillable = [
         'nama',
@@ -31,9 +31,10 @@ class Pendaftar extends Authenticatable
         'is_deleted'
     ];
 
-    public $timestamps = false;  // Menonaktifkan timestamp default Laravel
+    // public $timestamps = false;  
 
     const CREATED_AT = 'created_time';
     const UPDATED_AT = 'modified_time';
-}
 
+    // public $timestamps = false;
+}

@@ -3,6 +3,7 @@
         {
             "pelatihan": "SWQA",
             "batch": "1",
+            "peserta": "60",
             "start_date": "2005/02/11",
             "end_date": "2005/02/11",
             "status": "Selesai",
@@ -12,6 +13,7 @@
         {
             "pelatihan": "Digital Bootcamp",
             "batch": "1",
+            "peserta": "61",
             "start_date": "2005/02/11",
             "end_date": "1999/04/07",
             "status": "Planning",
@@ -20,6 +22,7 @@
         {
             "pelatihan": "Coding Express",
             "batch": "2",
+            "peserta": "130",
             "start_date": "2005/02/11",
             "end_date": "2005/09/08",
             "status": "Sedang Berlangsung",
@@ -28,6 +31,7 @@
         {
             "pelatihan": "Coding Express",
             "batch": "3",
+            "peserta": "54",
             "start_date": "2005/02/11",
             "end_date": "2009/29/11",
             "status": "Selesai",
@@ -36,6 +40,7 @@
         {
             "pelatihan": "Digital Bootcamp",
             "batch": "2",
+            "peserta": "143",
             "start_date": "2005/02/11",
             "end_date": "2006/11/09",
             "status": "Masa Pendaftaran",
@@ -44,6 +49,7 @@
         {
             "pelatihan": "Laravel STTP",
             "batch": "1",
+            "peserta": "102",
             "start_date": "2005/02/11",
             "end_date": "2006/03/08",
             "status": "Selesai",
@@ -53,6 +59,7 @@
         {
             "pelatihan": "Sertifikasi POlban",
             "batch": "1",
+            "peserta": "224",
             "start_date": "2005/02/11",
             "end_date": "2006/03/08",
             "status": "Selesai",
@@ -62,6 +69,7 @@
         {
             "pelatihan": "Sertifikasi Laravel",
             "batch": "2",
+            "peserta": "87",
             "start_date": "2005/02/11",
             "end_date": "2006/03/08",
             "status": "Selesai",
@@ -71,6 +79,7 @@
         {
             "pelatihan": "Digital Bootcamp",
             "batch": "3",
+            "peserta": "91",
             "start_date": "2005/02/11",
             "end_date": "2006/03/08",
             "status": "Selesai",
@@ -80,6 +89,7 @@
         {
             "pelatihan": "SWQA",
             "batch": "3",
+            "peserta": "63",
             "start_date": "2005/02/11",
             "end_date": "2006/03/08",
             "status": "Selesai",
@@ -89,6 +99,7 @@
         {
             "pelatihan": "Digital Bootcamp",
             "batch": "4",
+            "peserta": "56",
             "start_date": "2005/02/11",
             "end_date": "2006/03/08",
             "status": "Selesai",
@@ -98,6 +109,7 @@
         {
             "pelatihan": "Laravel STTP",
             "batch": "2",
+            "peserta": "67",
             "start_date": "2005/02/11",
             "end_date": "2006/03/08",
             "status": "Selesai",

@@ -11,6 +11,7 @@ class Mentor extends Model
 
     protected $table = 'mentor';
     protected $primaryKey = 'id_mentor';
+
     protected $fillable = [
         'nama_mentor',
         'email',
@@ -25,4 +26,6 @@ class Mentor extends Model
 
     const CREATED_AT = 'created_time';
     const UPDATED_AT = 'modified_time';
+
+    public $timestamps = false;
 }
