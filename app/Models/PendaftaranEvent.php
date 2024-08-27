@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Pendaftaran_Event extends Model
+class PendaftaranEvent extends Model
 {
     use HasFactory;
 
@@ -20,18 +20,17 @@ class Pendaftaran_Event extends Model
         'created_by',
         'created_time',
         'modified_by',
-        'modified_time'
+        'modified_time',
+        'is_deleted'
     ];
 
     public $timestamps = false;
 
-    // Relasi dengan model Pendaftar
     public function pendaftar()
     {
         return $this->belongsTo(Pendaftar::class, 'id_peserta');
     }
 
-    // Relasi dengan model AgendaPelatihan
     public function agendaPelatihan()
     {
         return $this->belongsTo(AgendaPelatihan::class, 'id_agenda');

@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\ApiProfilePeserta;
 use App\Http\Controllers\Api\ApiAgendaController;
 use App\Http\Controllers\Api\ApiLamanPesertaController;
 use App\Http\Controllers\Api\ApiMasterPelatihanController;
+use App\Http\Controllers\Api\ApiPendaftaranEventController;
 use App\Http\Controllers\Api\ApiPesertaPelatihanController;
 
 
@@ -42,6 +43,11 @@ Route::prefix('mentor')->group(function () {
 Route::middleware('auth:sanctum')->prefix('profile')->group(function () {
     Route::put('update', [ApiProfilePeserta::class, 'update']); 
     Route::get('/', [ApiProfilePeserta::class, 'show']); 
+});
+
+Route::middleware('auth:sanctum')->prefix('pendaftaran-event')->group(function () {
+    Route::get('/{idAgenda}', [ApiPendaftaranEventController::class, 'show']);
+    Route::post('/daftar', [ApiPendaftaranEventController::class, 'store']);
 });
 
 
