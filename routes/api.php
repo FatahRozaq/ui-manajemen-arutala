@@ -40,6 +40,10 @@ Route::prefix('mentor')->group(function () {
     Route::delete('/delete/{id}', [ApiMentorController::class, 'destroy']);
 });
 
+Route::prefix('pendaftar')->group(function () {
+    // Route::get('/', [Api])
+});
+
 Route::middleware('auth:sanctum')->prefix('profile')->group(function () {
     Route::put('update', [ApiProfilePeserta::class, 'update']); 
     Route::get('/', [ApiProfilePeserta::class, 'show']); 
