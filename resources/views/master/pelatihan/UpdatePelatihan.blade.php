@@ -20,7 +20,7 @@
 </style>
 
 <div class="pagetitle">
-    <h1>Form Pelatihan</h1>
+    <h1>Update Pelatihan</h1>
 </div><!-- End Page Title -->
 
 <section class="section">
@@ -28,10 +28,10 @@
         <div class="col-lg-8">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">General Form Elements</h5>
+                    <h5 class="card-title">Update Form Elements</h5>
 
-                    <!-- General Form Elements -->
-                    <form id="formPelatihan">
+                    <!-- Update Form Elements -->
+                    <form id="formUpdatePelatihan">
                         <!-- Nama Pelatihan -->
                         <div class="form-group row position-relative">
                             <label for="trainingInput" class="col-sm-3 col-form-label">Nama Pelatihan</label>
@@ -47,6 +47,7 @@
                           <label for="formFile" class="col-form-label col-sm-3">Gambar</label>
                           <div class="col-sm-9">
                             <input class="form-control" type="file" id="formFile" name="gambar_pelatihan">
+                            <img id="existingImage" src="#" alt="Gambar Pelatihan" style="width: 100px; margin-top: 10px;">
                           </div>
                         </div>
 
@@ -83,7 +84,7 @@
                         </div>
 
                         <div class="button-submit mt-4">
-                          <button class="btn btn-success col-sm-3" type="button" id="submitPelatihan">Submit</button>
+                          <button class="btn btn-success col-sm-3" type="button" id="updatePelatihan">Update</button>
                         </div>
 
                         </form>
@@ -96,80 +97,62 @@
 @endsection
 
 @section('scripts')
-<!-- Pastikan jQuery dimuat sebelum Selectize -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/selectize@0.12.6/dist/css/selectize.default.css">
-<script src="https://cdn.jsdelivr.net/npm/selectize@0.12.6/dist/js/standalone/selectize.min.js"></script>
-
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
 <script>
  document.addEventListener('DOMContentLoaded', function () {
-    var trainingInput = document.getElementById('trainingInput');
-    var trainingDropdown = document.getElementById('trainingDropdown');
-    var nameError = document.getElementById('nameError');
-    var trainings = [];
+    var pelatihanId = {{ $id }}; // ID pelatihan yang akan diupdate
 
-    // Fetch data pelatihan dari API
-    axios.get('/api/pelatihan/daftar-pelatihan')
+    // Fetch detail pelatihan dari API dan isi form
+    axios.get(`/api/pelatihan/detail-pelatihan/${pelatihanId}`)
         .then(function(response) {
-            trainings = response.data.data.map(function(pelatihan) {
-                return pelatihan.nama_pelatihan.toLowerCase();
+            var data = response.data.data;
+            $('#trainingInput').val(data.nama_pelatihan);
+            $('#existingImage').attr('src', `/uploads/${data.gambar_pelatihan}`);
+            $('#exampleFormControlTextarea1').val(data.deskripsi);
+            
+            // Isi materi
+            data.materi.forEach(function(materi, index) {
+                if (index === 0) {
+                    $('input[name="materi[]"]').val(materi);
+                } else {
+                    $('#materiContainer').append(`
+                        <div class="form-group row position-relative mb-1">
+                            <label class="col-sm-3 col-form-label"></label>
+                            <div class="col-sm-9 input-group">
+                                <input type="text" class="form-control materi" name="materi[]" value="${materi}">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary remove-materi" type="button"><i class="bi bi-dash-circle"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    `);
+                }
+            });
+
+            // Isi benefit
+            data.benefit.forEach(function(benefit, index) {
+                if (index === 0) {
+                    $('input[name="benefit[]"]').val(benefit);
+                } else {
+                    $('#benefitContainer').append(`
+                        <div class="form-group row position-relative mb-1">
+                            <label class="col-sm-3 col-form-label"></label>
+                            <div class="col-sm-9 input-group">
+                                <input type="text" class="form-control benefit" name="benefit[]" value="${benefit}">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary remove-benefit" type="button"><i class="bi bi-dash-circle"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    `);
+                }
             });
         })
         .catch(function(error) {
-            console.log('Error fetching data pelatihan:', error);
+            console.log('Error fetching detail pelatihan:', error);
         });
-
-    trainingInput.addEventListener('input', function () {
-        var inputValue = trainingInput.value.toLowerCase();
-        trainingDropdown.innerHTML = ''; // Kosongkan dropdown
-        
-        // Periksa apakah nama pelatihan sudah ada
-        if (trainings.includes(inputValue)) {
-            nameError.style.display = 'block'; // Tampilkan pesan kesalahan
-        } else {
-            nameError.style.display = 'none'; // Sembunyikan pesan kesalahan
-        }
-
-        if (inputValue.length > 0) {
-            var matchedTrainings = trainings.filter(function (training) {
-                return training.includes(inputValue);
-            });
-            
-            matchedTrainings.forEach(function (training) {
-                var option = document.createElement('a');
-                option.classList.add('dropdown-item');
-                option.href = '#';
-                option.textContent = training;
-                option.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    trainingInput.value = training;
-                    trainingDropdown.classList.remove('show');
-                    nameError.style.display = 'none'; // Sembunyikan pesan kesalahan
-                });
-                trainingDropdown.appendChild(option);
-            });
-            
-            if (matchedTrainings.length === 0) {
-                var noMatchOption = document.createElement('a');
-                noMatchOption.classList.add('dropdown-item', 'disabled');
-                noMatchOption.href = '#';
-                noMatchOption.textContent = 'Tambah: ' + trainingInput.value;
-                trainingDropdown.appendChild(noMatchOption);
-            }
-            
-            trainingDropdown.classList.add('show');
-        } else {
-            trainingDropdown.classList.remove('show');
-        }
-    });
-    
-    document.addEventListener('click', function (e) {
-        if (!trainingInput.contains(e.target) && !trainingDropdown.contains(e.target)) {
-            trainingDropdown.classList.remove('show');
-        }
-    });
 
     // Tambah kolom baru pada Materi
     $('#materiContainer').on('click', '.add-materi', function () {
@@ -192,6 +175,7 @@
         $(this).closest('.form-group').remove();
     });
 
+    // Tambah kolom baru pada Benefit
     $('#benefitContainer').on('click', '.add-benefit', function () {
         var newBenefitRow = `
             <div class="form-group row position-relative mb-1">
@@ -212,32 +196,23 @@
         $(this).closest('.form-group').remove();
     });
 
-    // Submit form menggunakan Axios
-    $('#submitPelatihan').click(function() {
-    // Ambil data dari form
-    var formData = new FormData($('#formPelatihan')[0]);
+    // Submit form update menggunakan Axios
+    $('#updatePelatihan').click(function() {
+        var formData = new FormData($('#formUpdatePelatihan')[0]);
 
-    // Kirim data menggunakan Axios
-    axios.post('/api/pelatihan/tambah-pelatihan', formData)
-        .then(function(response) {
-            alert('Pelatihan berhasil ditambahkan!');
-            console.log(response.data);
+        axios.put(`/api/pelatihan/update-pelatihan/${pelatihanId}`, formData)
+            .then(function(response) {
+                alert('Pelatihan berhasil diupdate!');
+                console.log(response.data);
 
-            // Redirect ke halaman master pelatihan
-            // window.location.href = '/master-pelatihan';
-        })
-        .catch(function(error) {
-            if (error.response && error.response.data.errors && error.response.data.errors.nama_pelatihan) {
-                nameError.textContent = error.response.data.errors.nama_pelatihan[0];
-                nameError.style.display = 'block';
-            } else {
-                alert('Gagal menambahkan pelatihan. Coba lagi.');
-                console.log(error.response.data);
-            }
-        });
-});
-
-
+                // Redirect ke halaman master pelatihan
+                window.location.href = '/master-pelatihan';
+            })
+            .catch(function(error) {
+                console.log('Error updating pelatihan:', error);
+                alert('Gagal mengupdate pelatihan. Coba lagi.');
+            });
+    });
 });
   
 </script>

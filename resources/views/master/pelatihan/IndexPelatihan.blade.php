@@ -3,11 +3,15 @@
 @section('style')
 <link href="{{ asset('assets/css/masterPelatihan.css') }}" rel="stylesheet">
 @endsection
+
 @section('content')
 
 <div class="pagetitle" style="d-space-between">
-  <h1>Data Pelatihan</h1>
-  <button class="btn btn-success"><i class="bi bi-plus-circle-fill" style="font-size:18px; margin-right:3px; margin-top:10px"></i>Tambah Pelatihan</button>
+    <h1>Data Pelatihan</h1>
+    <a href="/form-pelatihan" class="btn btn-success">
+      <i class="bi bi-plus-circle-fill" style="font-size:18px; margin-right:3px; margin-top:10px"></i>
+      Tambah Pelatihan
+    </a>
 </div><!-- End Page Title -->
 
 <section class="section">
@@ -18,12 +22,9 @@
                   <table id="dataPelatihanTable" class="table table-striped">
                       <thead>
                           <tr>
+                              <th>Gambar</th>
                               <th>Pelatihan</th>
-                              <th>Batch</th>
-                              <th>Peserta</th>
-                              <th>Start Date</th>
-                              <th>Status</th>
-                              {{-- <th>Mentor</th> --}}
+                              <th>Jumlah Batch</th>
                               <th>Aksi</th>
                           </tr>
                       </thead>
@@ -49,57 +50,57 @@
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
 
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
 <script>
 $(document).ready(function() {
-    $('#dataPelatihanTable').DataTable({
-        "ajax": "{{ asset('asset/dummy_data.json') }}",
-        "columns": [
-            { "data": "pelatihan" },
-            { "data": "batch" },
-            { "data": "peserta" },
-            { "data": "start_date" },
-            { "data": "status" },
-            {
-                "data": null,
-                "render": function(data, type, row) {
-                    return `
-                        <a href="{{ url('pelatihan') }}/${row.id}" class="view-icon" title="View">
-                            <i class="fas fa-eye text-primary"></i>
-                        </a>
-                        <a href="#" class="update-icon" data-id="${row.id}" title="Update">
-                            <i class="fas fa-edit text-warning"></i>
-                        </a>
-                        <a href="#" class="delete-icon" data-id="${row.id}" title="Delete">
-                            <i class="fas fa-trash-alt text-danger"></i>
-                        </a>
-                    `;
-                }
-            }
-        ]
-    });
+    // Fetch data using Axios
+    axios.get('/api/pelatihan/daftar-pelatihan')
+        .then(function(response) {
+            let responseData = [];
 
+            // Format the data according to the DataTables structure
+            response.data.data.forEach(item => {
+                responseData.push({
+                    gambar: `<img src="/uploads/${item.gambar_pelatihan}" alt="Gambar Pelatihan" style="width: 70px; height: auto;">`,
+                    pelatihan: item.nama_pelatihan,
+                    jumlah_batch: item.jumlah_batch,
+                    id: item.id_pelatihan
+                });
+            });
 
-      // Event listener for view icon
-      $('#dataPesertaTable').on('click', '.view-icon', function() {
-          var id = $(this).data('id');
-          alert('View icon clicked for ID: ' + id);
-          // Add your view logic here
-      });
+            // Initialize DataTables with the fetched data
+            $('#dataPelatihanTable').DataTable({
+                data: responseData,
+                columns: [
+                    { data: 'gambar', orderable: false },
+                    { data: 'pelatihan' },
+                    { data: 'jumlah_batch' },
+                    {
+                        data: null,
+                        render: function(data, type, row) {
+                            return `
+                                <a href="/pelatihan/detail-pelatihan/${row.id}" class="view-icon" title="View">
+                                    <i class="fas fa-eye text-primary"></i>
+                                </a>
+                                <a href="/pelatihan/update-pelatihan/${row.id}" class="update-icon" data-id="${row.id}" title="Update">
+                                    <i class="fas fa-edit text-warning"></i>
+                                </a>
+                                <a href="#" class="delete-icon" data-id="${row.id}" title="Delete">
+                                    <i class="fas fa-trash-alt text-danger"></i>
+                                </a>
+                            `;
+                        }
 
-      // Event listener for update icon
-      $('#dataPesertaTable').on('click', '.update-icon', function() {
-          var id = $(this).data('id');
-          alert('Update icon clicked for ID: ' + id);
-          // Add your update logic here
-      });
+                    }
+                ]
+            });
+        })
+        .catch(function(error) {
+            console.log('Error fetching data:', error);
+        });
 
-      // Event listener for delete icon
-      $('#dataPesertaTable').on('click', '.delete-icon', function() {
-          var id = $(this).data('id');
-          alert('Delete icon clicked for ID: ' + id);
-          // Add your delete logic here
-      });
-  });
+  
+});
 </script>
 @endsection
-

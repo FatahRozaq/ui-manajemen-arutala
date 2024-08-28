@@ -69,7 +69,7 @@ Route::prefix('pelatihan')->group(function () {
     Route::get('/daftar-pelatihan', [ApiMasterPelatihanController::class, 'index']);
     Route::post('/tambah-pelatihan', [ApiMasterPelatihanController::class, 'store']);
     Route::put('/update-pelatihan/{id}', [ApiMasterPelatihanController::class, 'update']);
-    Route::get('/detail-pelatihan/{id}', [ApiMasterPelatihanController::class, 'show']);
+    Route::get('/detail-pelatihan/{id}', [ApiMasterPelatihanController::class, 'show'])->name('pelatihan.showPelatihan');
     Route::delete('/delete-pelatihan/{id}', [ApiMasterPelatihanController::class, 'destroy']);
 });
 

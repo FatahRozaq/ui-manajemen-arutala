@@ -32,6 +32,9 @@ use App\Http\Controllers\MasterPelatihanController;
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
 Route::get('/master-pelatihan', [MasterPelatihanController::class, 'index'])->name('pelatihan.index');
 Route::get('/form-pelatihan', [MasterPelatihanController::class, 'form'])->name('pelatihan.form');
+Route::get('/pelatihan/detail-pelatihan/{id}', [MasterPelatihanController::class, 'showPelatihan'])->name('pelatihan.showPelatihan');
+Route::get('/pelatihan/update-pelatihan/{id}', [MasterPelatihanController::class, 'updatePelatihan'])->name('pelatihan.updatePelatihan');
+
 
 // Admin Routes Group
 Route::prefix('admin')->group(function () {
@@ -49,7 +52,6 @@ Route::prefix('admin')->group(function () {
         Route::get('/tambah', [MasterMentorController::class, 'add'])->name('mentor.add');
         Route::get('/update', [MasterMentorController::class, 'update'])->name('mentor.update');
     });
-    
 });
 
 // Peserta Routes Group
@@ -70,7 +72,6 @@ Route::prefix('peserta')->group(function () {
     Route::prefix('sertifikat')->group(function () {
         Route::get('/', [SertifkatController::class, 'index'])->name('peserta.sertifikat');
     });
-
 });
 
 // Authentication

@@ -16,6 +16,17 @@ class MasterPelatihanController extends Controller
         return view('master/pelatihan/FormPelatihan');
     }
 
+    public function showPelatihan()
+    {
+        return view('master/pelatihan/DetailPelatihan');
+    }
+
+    public function updatePelatihan()
+    {
+        return view('master/pelatihan/UpdatePelatihan');
+    }
+
+
     public function show()
     {
         return view('master/AgendaPelatihan/IndexDetailAgenda');
