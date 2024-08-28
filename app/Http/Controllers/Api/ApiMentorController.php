@@ -40,7 +40,7 @@ class ApiMentorController extends Controller
             'nama_mentor' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:mentor',
             'no_kontak' => 'required|string|max:25',
-            'aktivitas' => 'nullable|string|max:15',
+            'aktivitas' => 'required|string|max:15',
         ], [
             'nama_mentor.required' => 'Nama mentor harus diisi.',
             'nama_mentor.string' => 'Nama mentor harus berupa string.',

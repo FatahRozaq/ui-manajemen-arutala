@@ -1,9 +1,8 @@
-@extends('layouts.AdminLayouts')
+@extends('layouts/AdminLayouts')
 
 @section('title')
 Arutala | Data Mentor
 @endsection
-
 @section('content')
 
 <div class="pagetitle d-flex justify-content-between align-items-center">
@@ -50,36 +49,27 @@ Arutala | Data Mentor
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
 <!-- Font Awesome for icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
-<!-- SweetAlert2 -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
 <script>
     $(document).ready(function() {
         $('#dataPesertaTable').DataTable({
-            "ajax": {
-                "url": "/api/mentor", // URL endpoint API
-                "type": "GET",
-                "dataSrc": function (json) {
-                    return json.data; // Akses data dari response API
-                }
-            },
+            "ajax": "{{ asset('data/DataPeserta.json') }}",
             "columns": [
-                { "data": "nama_mentor" }, // Nama column sesuai dengan nama field di database
-                { "data": "email" },       // Email column
-                { "data": "no_kontak" },   // Kontak column
-                { "data": "aktivitas" },   // Aktifitas column
-                {                         // Aksi column with action icons
+                { "data": "name" },         // Name column
+                { "data": "email" },        // Email column
+                { "data": "kontak" },       // Kontak column
+                { "data": "aktifitas" },    // Aktifitas column
+                {                          // Aksi column with action icons
                     "data": null,
                     "render": function(data, type, row) {
                         return `
-                            <a href="/admin/mentor/detail?id=${row.id_mentor}" class="view-icon" title="View">
+                            <a href="{{ route('mentor.detail') }}" class="view-icon" data-id="${row.id}" title="View">
                                 <i class="fas fa-eye text-primary"></i>
                             </a>
-                            <a href="/admin/mentor/update?id=${row.id_mentor}" class="update-icon" title="Update">
+                            <a href="#" class="update-icon" data-id="${row.id}" title="Update">
                                 <i class="fas fa-edit text-warning"></i>
                             </a>
-                            <a href="#" class="delete-icon" data-id="${row.id_mentor}" title="Delete">
+                            <a href="#" class="delete-icon" data-id="${row.id}" title="Delete">
                                 <i class="fas fa-trash-alt text-danger"></i>
                             </a>
                         `;
@@ -88,39 +78,26 @@ Arutala | Data Mentor
             ]
         });
 
+        // Event listener for view icon
+        // $('#dataPesertaTable').on('click', '.view-icon', function() {
+        //     var id = $(this).data('id');
+        //     alert('View icon clicked for ID: ' + id);
+        //     // Add your view logic here
+        // });
+
+        // Event listener for update icon
+        $('#dataPesertaTable').on('click', '.update-icon', function() {
+            var id = $(this).data('id');
+            alert('Update icon clicked for ID: ' + id);
+            // Add your update logic here
+        });
+
         // Event listener for delete icon
         $('#dataPesertaTable').on('click', '.delete-icon', function() {
             var id = $(this).data('id');
-            Swal.fire({
-                title: 'Apakah Anda yakin?',
-                text: "Anda tidak akan dapat mengembalikan ini!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, hapus!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    axios.delete(`/api/mentor/delete/${id}`)
-                        .then(response => {
-                            Swal.fire(
-                                'Terhapus!',
-                                response.data.message,
-                                'success'
-                            )
-                            $('#dataPesertaTable').DataTable().ajax.reload(); // Reload table data
-                        })
-                        .catch(error => {
-                            Swal.fire(
-                                'Gagal!',
-                                'Gagal menghapus data: ' + error.response.data.message,
-                                'error'
-                            );
-                        });
-                }
-            });
+            alert('Delete icon clicked for ID: ' + id);
+            // Add your delete logic here
         });
-
     });
 </script>
 @endsection

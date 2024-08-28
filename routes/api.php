@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\ApiProfilePeserta;
 use App\Http\Controllers\Api\ApiAgendaController;
 use App\Http\Controllers\Api\ApiLamanPesertaController;
 use App\Http\Controllers\Api\ApiMasterPelatihanController;
+use App\Http\Controllers\Api\ApiMasterPendaftar;
 use App\Http\Controllers\Api\ApiPendaftaranEventController;
 use App\Http\Controllers\Api\ApiPesertaPelatihanController;
 
@@ -41,7 +42,14 @@ Route::prefix('mentor')->group(function () {
 });
 
 Route::prefix('pendaftar')->group(function () {
-    // Route::get('/', [Api])
+    Route::get('/', [ApiMasterPendaftar::class, 'index']);
+    Route::get('/{idPendaftar}', [ApiMasterPendaftar::class, 'show']);
+    Route::get('/export/csv', [ApiMasterPendaftar::class, 'exportCsv']);
+    Route::get('/export/excel', [ApiMasterPendaftar::class, 'exportExcel']);
+    Route::post('/import/csv', [ApiMasterPendaftar::class, 'importCsv']);
+    Route::post('/import/excel', [ApiMasterPendaftar::class, 'importExcel']);
+    Route::delete('/{idPendaftar}', [ApiMasterPendaftar::class, 'delete']);
+    Route::put('/{idPendaftar}', [ApiMasterPendaftar::class, 'update']);
 });
 
 Route::middleware('auth:sanctum')->prefix('profile')->group(function () {

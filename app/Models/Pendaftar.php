@@ -38,4 +38,10 @@ class Pendaftar extends Authenticatable
     const UPDATED_AT = 'modified_time';
 
     // public $timestamps = false;
+
+    public function pendaftaranEvent()
+    {
+        return $this->hasMany(PendaftaranEvent::class, 'id_peserta', 'id_pendaftar');
+    }
+
 }
