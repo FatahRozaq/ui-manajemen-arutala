@@ -325,5 +325,7 @@
     <script src="{{ asset('assets/js/main.js') }}"></script>
 
     @yield('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </body>
 </html>
