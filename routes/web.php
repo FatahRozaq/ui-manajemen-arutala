@@ -33,7 +33,7 @@ Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
 Route::get('/master-pelatihan', [MasterPelatihanController::class, 'index'])->name('pelatihan.index');
 Route::get('/form-pelatihan', [MasterPelatihanController::class, 'form'])->name('pelatihan.form');
 Route::get('/pelatihan/detail-pelatihan/{id}', [MasterPelatihanController::class, 'showPelatihan'])->name('pelatihan.showPelatihan');
-Route::get('/pelatihan/update-pelatihan/{id}', [MasterPelatihanController::class, 'updatePelatihan'])->name('pelatihan.updatePelatihan');
+Route::get('/pelatihan/update-pelatihan', [MasterPelatihanController::class, 'updatePelatihan'])->name('pelatihan.updatePelatihan');
 
 
 // Admin Routes Group

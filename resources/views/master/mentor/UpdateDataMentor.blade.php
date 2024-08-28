@@ -86,6 +86,8 @@ Arutala | Edit Data Mentor
         const urlParams = new URLSearchParams(window.location.search);
         const mentorId = urlParams.get('id');
 
+        console.log(urlParams)
+
         const form = document.getElementById('editMentorForm');
 
         axios.get(`/api/mentor/${mentorId}`)

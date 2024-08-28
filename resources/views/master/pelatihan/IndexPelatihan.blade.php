@@ -6,9 +6,9 @@
 
 @section('content')
 
-<div class="pagetitle" style="d-space-between">
+<div class="pagetitle d-flex justify-content-between align-items-center">
     <h1>Data Pelatihan</h1>
-    <a href="/form-pelatihan" class="btn btn-success">
+    <a href="/form-pelatihan" class="btn btn-success d-flex align-items-center" style="border-radius: 10px;">
       <i class="bi bi-plus-circle-fill" style="font-size:18px; margin-right:3px; margin-top:10px"></i>
       Tambah Pelatihan
     </a>
@@ -41,66 +41,90 @@
 @endsection
 
 @section('scripts')
-
+<!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
+<!-- DataTables CSS and JS -->
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css"/>
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
-
+<!-- Font Awesome for icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
-
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
 <script>
-$(document).ready(function() {
-    // Fetch data using Axios
-    axios.get('/api/pelatihan/daftar-pelatihan')
-        .then(function(response) {
-            let responseData = [];
-
-            // Format the data according to the DataTables structure
-            response.data.data.forEach(item => {
-                responseData.push({
-                    gambar: `<img src="/uploads/${item.gambar_pelatihan}" alt="Gambar Pelatihan" style="width: 70px; height: auto;">`,
-                    pelatihan: item.nama_pelatihan,
-                    jumlah_batch: item.jumlah_batch,
-                    id: item.id_pelatihan
-                });
-            });
-
-            // Initialize DataTables with the fetched data
-            $('#dataPelatihanTable').DataTable({
-                data: responseData,
-                columns: [
-                    { data: 'gambar', orderable: false },
-                    { data: 'pelatihan' },
-                    { data: 'jumlah_batch' },
-                    {
-                        data: null,
-                        render: function(data, type, row) {
-                            return `
-                                <a href="/pelatihan/detail-pelatihan/${row.id}" class="view-icon" title="View">
-                                    <i class="fas fa-eye text-primary"></i>
-                                </a>
-                                <a href="/pelatihan/update-pelatihan/${row.id}" class="update-icon" data-id="${row.id}" title="Update">
-                                    <i class="fas fa-edit text-warning"></i>
-                                </a>
-                                <a href="#" class="delete-icon" data-id="${row.id}" title="Delete">
-                                    <i class="fas fa-trash-alt text-danger"></i>
-                                </a>
-                            `;
-                        }
-
+    $(document).ready(function() {
+        $('#dataPelatihanTable').DataTable({
+            "ajax": {
+                "url": "/api/pelatihan/daftar-pelatihan", // URL endpoint API
+                "type": "GET",
+                "dataSrc": function (json) {
+                    return json.data; // Akses data dari response API
+                }
+            },
+            "columns": [
+                { 
+                    "data": "gambar_pelatihan",
+                    "render": function(data, type, row) {
+                        return `<img src="/uploads/${data}" alt="Gambar Pelatihan" style="width: 70px; height: auto;">`;
+                    },
+                    "orderable": false
+                },
+                { "data": "nama_pelatihan" }, // Nama pelatihan
+                { "data": "jumlah_batch" },   // Jumlah batch
+                {                         // Aksi dengan ikon
+                    "data": null,
+                    "render": function(data, type, row) {
+                        return `
+                            <a href="/pelatihan/detail-pelatihan/${row.id_pelatihan}" class="view-icon" title="View">
+                                <i class="fas fa-eye text-primary"></i>
+                            </a>
+                            <a href="/pelatihan/update-pelatihan?id=${row.id_pelatihan}" class="update-icon" title="Update">
+                                <i class="fas fa-edit text-warning"></i>
+                            </a>
+                            <a href="#" class="delete-icon" data-id="${row.id_pelatihan}" title="Delete">
+                                <i class="fas fa-trash-alt text-danger"></i>
+                            </a>
+                        `;
                     }
-                ]
-            });
-        })
-        .catch(function(error) {
-            console.log('Error fetching data:', error);
+                }
+            ]
         });
 
-  
-});
+        // Event listener for delete icon
+        $('#dataPelatihanTable').on('click', '.delete-icon', function() {
+            var id = $(this).data('id');
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: "Anda tidak akan dapat mengembalikan ini!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, hapus!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    axios.delete(`/api/pelatihan/delete/${id}`)
+                        .then(response => {
+                            Swal.fire(
+                                'Terhapus!',
+                                response.data.message,
+                                'success'
+                            )
+                            $('#dataPelatihanTable').DataTable().ajax.reload(); // Reload table data
+                        })
+                        .catch(error => {
+                            Swal.fire(
+                                'Gagal!',
+                                'Gagal menghapus data: ' + error.response.data.message,
+                                'error'
+                            );
+                        });
+                }
+            });
+        });
+
+    });
 </script>
 @endsection

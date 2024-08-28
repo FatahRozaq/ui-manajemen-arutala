@@ -109,6 +109,8 @@ document.addEventListener('DOMContentLoaded', function () {
     var trainingInput = document.getElementById('trainingInput');
     var nameError = document.getElementById('nameError');
 
+    console.log(pelatihanId)
+
     // Fetch detail pelatihan dari API
     axios.get(`/api/pelatihan/detail-pelatihan/${pelatihanId}`)
         .then(function(response) {
