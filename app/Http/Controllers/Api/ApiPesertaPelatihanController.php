@@ -4,21 +4,38 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Pendaftaran_Event;
+use App\Models\PendaftaranEvent;
 use App\Models\AgendaPelatihan;
+
 
 class ApiPesertaPelatihanController extends Controller
 {
-    public function getPesertaByAgenda($id_agenda)
+    public function getPesertaByAgenda(Request $request, $id_agenda)
     {
         try {
             // Cari agenda berdasarkan ID
             $agenda = AgendaPelatihan::with('pelatihan')->findOrFail($id_agenda);
 
             // Ambil data pendaftaran event yang terkait dengan agenda ini
-            $pendaftaranEvents = Pendaftaran_Event::with('pendaftar')
-                ->where('id_agenda', $id_agenda)
-                ->get();
+            $pendaftaranEventsQuery = PendaftaranEvent::with('pendaftar')
+                ->where('id_agenda', $id_agenda);
+
+            // Filter berdasarkan nama pelatihan jika diberikan
+            if ($request->has('nama_pelatihan')) {
+                $pendaftaranEventsQuery->whereHas('agendaPelatihan.pelatihan', function ($query) use ($request) {
+                    $query->where('nama_pelatihan', $request->input('nama_pelatihan'));
+                });
+            }
+
+            // Filter berdasarkan batch jika diberikan
+            if ($request->has('batch')) {
+                $pendaftaranEventsQuery->whereHas('agendaPelatihan', function ($query) use ($request) {
+                    $query->where('batch', $request->input('batch'));
+                });
+            }
+
+            // Dapatkan data pendaftaran event berdasarkan filter
+            $pendaftaranEvents = $pendaftaranEventsQuery->get();
 
             // Siapkan data response
             $data = $pendaftaranEvents->map(function ($event) use ($agenda) {
@@ -49,6 +66,8 @@ class ApiPesertaPelatihanController extends Controller
         }
     }
 
+
+
     public function updateStatusPembayaran(Request $request, $id_pendaftaran)
     {
         try {
@@ -58,7 +77,7 @@ class ApiPesertaPelatihanController extends Controller
             ]);
 
             // Cari pendaftaran_event berdasarkan ID
-            $pendaftaranEvent = Pendaftaran_Event::findOrFail($id_pendaftaran);
+            $pendaftaranEvent = PendaftaranEvent::findOrFail($id_pendaftaran);
 
             // Update status pembayaran
             $pendaftaranEvent->status_pembayaran = $request->input('status_pembayaran');

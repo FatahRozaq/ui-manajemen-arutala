@@ -93,6 +93,7 @@ class ApiAgendaController extends Controller
                     'end_pendaftaran' => $agenda->end_pendaftaran,
                     'link_mayar' => $agenda->link_mayar,
                     'id_mentor' => json_decode($agenda->id_mentor),
+                    'is_deleted' => $agenda->is_deleted,
                 ],
                 'message' => 'Agenda pelatihan berhasil ditambahkan',
                 'statusCode' => 201,
@@ -247,6 +248,7 @@ class ApiAgendaController extends Controller
                     'end_pendaftaran' => $agenda->end_pendaftaran,
                     'link_mayar' => $agenda->link_mayar,
                     'id_mentor' => json_decode($agenda->id_mentor),
+                    'is_deleted' => $agenda->is_deleted
                 ],
                 'message' => 'Detail agenda pelatihan berhasil ditemukan',
                 'statusCode' => 200,

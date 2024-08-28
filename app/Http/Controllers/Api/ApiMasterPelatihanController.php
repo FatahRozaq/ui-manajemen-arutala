@@ -168,11 +168,13 @@ class ApiMasterPelatihanController extends Controller
             // Return response dengan data pelatihan yang ditemukan
             return response()->json([
                 'data' => [
+                    'id_pelatihan' => $pelatihan->id_pelatihan,
                     'nama_pelatihan' => $pelatihan->nama_pelatihan,
                     'gambar_pelatihan' => $pelatihan->gambar_pelatihan,
                     'deskripsi' => $pelatihan->deskripsi,
                     'materi' => json_decode($pelatihan->materi),
                     'benefit' => json_decode($pelatihan->benefit),
+                    'is_deleted' => $pelatihan->is_deleted,
                 ],
                 'message' => 'Detail pelatihan berhasil ditemukan',
                 'statusCode' => 200,

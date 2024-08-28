@@ -28,6 +28,7 @@ class ApiLamanPesertaController extends Controller
                     'investasi_info' => json_decode($agenda->investasi_info),
                     'diskon' => $agenda->diskon,
                     'start_date' => $agenda->start_date,
+                    'is_deleted' => $agenda->is_deleted,
                 ];
             });
 
