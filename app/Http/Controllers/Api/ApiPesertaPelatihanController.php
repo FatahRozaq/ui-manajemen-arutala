@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\PendaftaranEvent;
 use App\Models\AgendaPelatihan;
+use App\Models\PendaftaranEvent;
+use App\Http\Controllers\Controller;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\PesertaPelatihanExport;
 
 
 class ApiPesertaPelatihanController extends Controller
@@ -162,5 +164,31 @@ class ApiPesertaPelatihanController extends Controller
                 'error' => $e->getMessage()
             ], 500);
         }
+    }
+
+    public function exportExcel(Request $request)
+    {
+        // Ambil parameter filter dari request
+        $namaPelatihan = $request->query('nama_pelatihan');
+        $batch = $request->query('batch');
+
+        // Validasi parameter filter jika diperlukan
+        if (empty($namaPelatihan) || empty($batch)) {
+            return redirect()->back()->with('error', 'Filter pelatihan dan batch harus dipilih untuk ekspor.');
+        }
+
+        // Gunakan filter untuk mendapatkan data peserta yang sudah bayar dan belum bayar
+        $pendaftaranEventsQuery = PendaftaranEvent::with('pendaftar')
+            ->whereHas('agendaPelatihan.pelatihan', function ($query) use ($namaPelatihan) {
+                $query->where('nama_pelatihan', $namaPelatihan);
+            })
+            ->whereHas('agendaPelatihan', function ($query) use ($batch) {
+                $query->where('batch', $batch);
+            });
+
+        $pendaftaranEvents = $pendaftaranEventsQuery->get();
+
+        // Ekspor data peserta yang sudah bayar dan belum bayar
+        return Excel::download(new PesertaPelatihanExport($pendaftaranEvents), 'DataPesertaPelatihan.xlsx');
     }
 }

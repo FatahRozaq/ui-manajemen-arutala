@@ -86,8 +86,10 @@ Route::prefix('peserta-pelatihan')->group(function () {
     Route::get('/agenda/{id_agenda}/peserta', [ApiPesertaPelatihanController::class, 'getPesertaByAgenda']);
     Route::put('/update-status-pembayaran/{id_pendaftaran}', [ApiPesertaPelatihanController::class, 'updateStatusPembayaran']);
 });
+
 Route::get('/peserta-pelatihan/pelatihan-batch', [ApiPesertaPelatihanController::class, 'getPelatihanDanBatch']);
 Route::get('/peserta-pelatihan/get-agenda-id', [ApiPesertaPelatihanController::class, 'getAgendaId']);
+Route::get('/peserta-pelatihan/export', [ApiPesertaPelatihanController::class, 'exportExcel']);
 
 
 

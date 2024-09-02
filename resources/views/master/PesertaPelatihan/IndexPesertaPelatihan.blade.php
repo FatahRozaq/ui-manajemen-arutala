@@ -16,9 +16,15 @@
     <button type="button" class="btn btn-secondary mb-2" data-bs-toggle="modal" data-bs-target="#filterModal">
         Filter
     </button>
-    <button type="button" class="btn btn-success mb-2">
-        Import
-    </button>
+    <form id="exportForm" class="d-inline">
+        @csrf
+        <input type="hidden" name="nama_pelatihan" id="exportPelatihan">
+        <input type="hidden" name="batch" id="exportBatch">
+        <button type="button" id="exportButton" class="btn btn-success mb-2">
+            Export
+        </button>
+    </form>
+    
 </div>
 
 <!-- Modal untuk Filter -->
@@ -262,6 +268,38 @@
             $('#filterModal').modal('hide');
         });
     });
+
+    $(document).ready(function() {
+    // Handler untuk tombol "Terapkan" (apply filter)
+    $('#applyFilter').on('click', function() {
+        const pelatihan = $('#pelatihan').val();
+        const batch = $('#batch').val();
+
+        // Set nilai input hidden untuk ekspor
+        $('#exportPelatihan').val(pelatihan);
+        $('#exportBatch').val(batch);
+
+        // Panggil fungsi fetchData untuk memuat data yang difilter ke tabel
+        fetchData(pelatihan, batch);
+        $('#filterModal').modal('hide');
+    });
+
+    // Handler untuk tombol "Export" (export data)
+    $('#exportButton').on('click', function() {
+        const pelatihan = $('#pelatihan').val();
+        const batch = $('#batch').val();
+
+        if (pelatihan && batch) {
+            // Redirect untuk ekspor data sesuai filter
+            window.location.href = `/api/peserta-pelatihan/export?nama_pelatihan=${pelatihan}&batch=${batch}`;
+        } else {
+            alert('Harap pilih filter pelatihan dan batch sebelum mengimpor data.');
+        }
+    });
+});
+
 </script>
+
+
 @endsection
 

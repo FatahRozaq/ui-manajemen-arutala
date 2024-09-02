@@ -14,6 +14,7 @@ use App\Http\Controllers\MasterPesertaController;
 use App\Http\Controllers\AgendaPelatihanController;
 use App\Http\Controllers\MasterPelatihanController;
 use App\Http\Controllers\PesertaPelatihanController;
+use App\Http\Controllers\Api\ApiPesertaPelatihanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -92,3 +93,5 @@ Route::get('/updatestatus', [PesertaPelatihanController::class, 'show'])->name('
 Route::get('/daftar-event', [EventController::class, 'index'])->name('event.index');
 Route::get('/detail-event/{id}', [EventController::class, 'showEvent'])->name('detail.event');
 Route::get('/my-event',  [EventController::class, 'myEvent'])->name('event.history');
+
+Route::get('/export-peserta-pelatihan', [ApiPesertaPelatihanController::class, 'exportExcel']);
