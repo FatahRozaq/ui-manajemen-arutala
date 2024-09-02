@@ -11,6 +11,50 @@ use Illuminate\Support\Facades\DB;
 
 class ApiAgendaController extends Controller
 {
+
+    public function index()
+    {
+        try {
+            // Ambil semua agenda pelatihan yang tidak dihapus
+            $agendas = AgendaPelatihan::with('pelatihan')
+                ->where('is_deleted', false)
+                ->get();
+
+            // Siapkan data untuk response
+            $responseData = $agendas->map(function ($agenda) {
+                // Hitung jumlah peserta untuk agenda ini
+                $jumlahPeserta = $agenda->pendaftaranEvent()->count();
+
+                return [
+                    'id_agenda' => $agenda->id_agenda,
+                    'nama_pelatihan' => $agenda->pelatihan->nama_pelatihan,
+                    'batch' => $agenda->batch,
+                    'start_date' => $agenda->start_date,
+                    'end_date' => $agenda->end_date,
+                    'jumlah_peserta' => $jumlahPeserta,
+                    'status' => $agenda->status
+                ];
+            });
+
+            // Return response dengan data agenda pelatihan
+            return response()->json([
+                'data' => $responseData,
+                'message' => 'Daftar agenda pelatihan berhasil ditemukan',
+                'statusCode' => 200,
+                'status' => 'success'
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'data' => null,
+                'message' => 'Gagal mengambil daftar agenda pelatihan',
+                'statusCode' => 500,
+                'status' => 'error',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+
     public function storeAgenda(Request $request)
     {
         DB::beginTransaction();
@@ -229,13 +273,17 @@ class ApiAgendaController extends Controller
     public function detailAgenda($id)
     {
         try {
-            // Cari agenda berdasarkan ID
+            // Retrieve the agenda with its mentors
             $agenda = AgendaPelatihan::findOrFail($id);
 
-            // Return response dengan data detail agenda
+            // Get related mentors
+            $mentors = $agenda->mentors();
+
+            // Return response with agenda and mentor details
             return response()->json([
                 'data' => [
-                    'nama_pelatihan' => $agenda->pelatihan->nama_pelatihan, // Mengambil nama pelatihan dari relasi Pelatihan
+                    'id_agenda' => $agenda->id_agenda,
+                    'nama_pelatihan' => $agenda->pelatihan->nama_pelatihan,
                     'batch' => $agenda->batch,
                     'start_date' => $agenda->start_date,
                     'end_date' => $agenda->end_date,
@@ -244,10 +292,8 @@ class ApiAgendaController extends Controller
                     'investasi_info' => json_decode($agenda->investasi_info),
                     'diskon' => $agenda->diskon,
                     'status' => $agenda->status,
-                    'start_pendaftaran' => $agenda->start_pendaftaran,
-                    'end_pendaftaran' => $agenda->end_pendaftaran,
                     'link_mayar' => $agenda->link_mayar,
-                    'id_mentor' => json_decode($agenda->id_mentor),
+                    'mentors' => $mentors,
                     'is_deleted' => $agenda->is_deleted
                 ],
                 'message' => 'Detail agenda pelatihan berhasil ditemukan',
@@ -264,6 +310,7 @@ class ApiAgendaController extends Controller
             ], 404);
         }
     }
+
 
     public function deleteAgenda($id)
     {

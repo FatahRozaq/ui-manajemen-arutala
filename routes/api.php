@@ -75,6 +75,7 @@ Route::prefix('pelatihan')->group(function () {
 
 
 Route::prefix('agenda')->group(function () {
+    Route::get('/index', [ApiAgendaController::class, 'index']);
     Route::post('/tambah-agenda', [ApiAgendaController::class, 'storeAgenda']);
     Route::put('/update-agenda/{id}', [ApiAgendaController::class, 'updateAgenda']);
     Route::get('/detail-agenda/{id}', [ApiAgendaController::class, 'detailAgenda']);
@@ -85,9 +86,14 @@ Route::prefix('peserta-pelatihan')->group(function () {
     Route::get('/agenda/{id_agenda}/peserta', [ApiPesertaPelatihanController::class, 'getPesertaByAgenda']);
     Route::put('/update-status-pembayaran/{id_pendaftaran}', [ApiPesertaPelatihanController::class, 'updateStatusPembayaran']);
 });
+Route::get('/peserta-pelatihan/pelatihan-batch', [ApiPesertaPelatihanController::class, 'getPelatihanDanBatch']);
+Route::get('/peserta-pelatihan/get-agenda-id', [ApiPesertaPelatihanController::class, 'getAgendaId']);
+
+
 
 Route::prefix('laman-peserta')->group(function () {
     Route::get('/daftar-event', [ApiLamanPesertaController::class, 'getPelatihanDetails']);
+    Route::get('/event-detail/{id}', [ApiLamanPesertaController::class, 'getEventDetail'])->name('laman-peserta.event-detail');
 });
 
 Route::prefix('my-events')->group(function () {

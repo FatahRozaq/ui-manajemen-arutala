@@ -1,17 +1,19 @@
 <?php
 
-use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TestController;
 use Illuminate\Console\Scheduling\Event;
 use App\Http\Controllers\EventController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\MasterMentorController;
-use App\Http\Controllers\PendaftaranController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\SertifkatController;
+use App\Http\Controllers\PendaftaranController;
+use App\Http\Controllers\MasterMentorController;
 use App\Http\Controllers\MasterPesertaController;
+use App\Http\Controllers\AgendaPelatihanController;
 use App\Http\Controllers\MasterPelatihanController;
+use App\Http\Controllers\PesertaPelatihanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,6 +36,8 @@ Route::get('/master-pelatihan', [MasterPelatihanController::class, 'index'])->na
 Route::get('/form-pelatihan', [MasterPelatihanController::class, 'form'])->name('pelatihan.form');
 Route::get('/pelatihan/detail-pelatihan/{id}', [MasterPelatihanController::class, 'showPelatihan'])->name('pelatihan.showPelatihan');
 Route::get('/pelatihan/update-pelatihan', [MasterPelatihanController::class, 'updatePelatihan'])->name('pelatihan.updatePelatihan');
+
+Route::get('/agenda/detail', [AgendaPelatihanController::class, 'show'])->name('agenda.show');
 
 
 // Admin Routes Group
@@ -78,10 +82,13 @@ Route::prefix('peserta')->group(function () {
 Route::get('/login-page', [AuthController::class, 'LoginPage'])->name('login.page');
 Route::get('/register-page', [AuthController::class, 'RegisterPage'])->name('register.page');
 Route::get('/detailpelatihan', [MasterPelatihanController::class, 'show'])->name('pelatihan.show');
-Route::get('/form-agenda', [MasterPelatihanController::class, 'agendaPelatihan'])->name('pelatihan.agenda');
+Route::get('/form-agenda', [AgendaPelatihanController::class, 'formAgenda'])->name('agenda.form');
+Route::get('/agendapelatihan', [AgendaPelatihanController::class, 'index'])->name('agenda.index');
 
+Route::get('/pesertapelatihan', [PesertaPelatihanController::class, 'index'])->name('peserta.index');
+Route::get('/updatestatus', [PesertaPelatihanController::class, 'show'])->name('peserta.show');
 
 //Daftar Event
 Route::get('/daftar-event', [EventController::class, 'index'])->name('event.index');
-Route::get('/event/{id}',  [EventController::class, 'showEvent'])->name('event.detail');
+Route::get('/detail-event/{id}', [EventController::class, 'showEvent'])->name('detail.event');
 Route::get('/my-event',  [EventController::class, 'myEvent'])->name('event.history');

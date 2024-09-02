@@ -34,12 +34,19 @@ class ApiPesertaPelatihanController extends Controller
                 });
             }
 
+            // **Tambahkan filter berdasarkan `id_pendaftaran` jika ada**
+            if ($request->has('id_pendaftaran')) {
+                $pendaftaranEventsQuery->where('id_pendaftaran', $request->input('id_pendaftaran'));
+            }
+
             // Dapatkan data pendaftaran event berdasarkan filter
             $pendaftaranEvents = $pendaftaranEventsQuery->get();
 
             // Siapkan data response
             $data = $pendaftaranEvents->map(function ($event) use ($agenda) {
                 return [
+                    'id_pendaftaran' => $event->id_pendaftaran,
+                    'id_agenda' => $event->id_agenda,
                     'nama_pelatihan' => $agenda->pelatihan->nama_pelatihan,
                     'batch' => $agenda->batch,
                     'nama_peserta' => $event->pendaftar->nama,
@@ -66,6 +73,64 @@ class ApiPesertaPelatihanController extends Controller
         }
     }
 
+    public function getAgendaId(Request $request)
+    {
+        $namaPelatihan = $request->query('nama_pelatihan');
+        $batch = $request->query('batch');
+
+        if (empty($namaPelatihan) || empty($batch)) {
+            return response()->json(['message' => 'Parameter nama_pelatihan atau batch hilang'], 400);
+        }
+
+        // Cari agenda berdasarkan nama pelatihan dan batch
+        $agenda = AgendaPelatihan::whereHas('pelatihan', function ($query) use ($namaPelatihan) {
+            $query->where('nama_pelatihan', $namaPelatihan);
+        })
+            ->where('batch', $batch)
+            ->first();
+
+        if ($agenda) {
+            return response()->json(['id_agenda' => $agenda->id_agenda], 200);
+        } else {
+            return response()->json(['message' => 'Agenda tidak ditemukan'], 404);
+        }
+    }
+
+
+
+    public function getPelatihanDanBatch()
+    {
+        try {
+            // Ambil semua pelatihan yang ada
+            $pelatihanList = AgendaPelatihan::with('pelatihan')
+                ->where('is_deleted', false)
+                ->get()
+                ->groupBy('id_pelatihan')
+                ->map(function ($agendaGroup) {
+                    return [
+                        'id_pelatihan' => $agendaGroup->first()->id_pelatihan,
+                        'nama_pelatihan' => $agendaGroup->first()->pelatihan->nama_pelatihan,
+                        'batches' => $agendaGroup->pluck('batch')->unique()->values()->toArray(),
+                    ];
+                })
+                ->values();
+
+            return response()->json([
+                'data' => $pelatihanList,
+                'message' => 'Data pelatihan dan batch berhasil ditemukan',
+                'statusCode' => 200,
+                'status' => 'success'
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'data' => null,
+                'message' => 'Gagal menemukan data pelatihan dan batch',
+                'statusCode' => 500,
+                'status' => 'error',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
 
 
     public function updateStatusPembayaran(Request $request, $id_pendaftaran)

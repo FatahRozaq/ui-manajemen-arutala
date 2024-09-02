@@ -159,11 +159,11 @@
 
                         <!-- Mentor -->
                         <div class="form-group row position-relative">
-                            <label for="mentorInput" class="col-sm-3">Mentor</label>
-                            <div class="col-sm-9">
-                                <select id="mentorInput" class="form" multiple></select>
-                            </div>
-                        </div>
+                          <label for="mentorInput" class="col-sm-3">Mentor</label>
+                          <div class="col-sm-9">
+                              <select id="mentorInput" class="form" multiple></select>
+                          </div>
+                      </div>
 
 
                         <!-- Submit -->
@@ -204,7 +204,7 @@
             labelField: 'name',
             valueField: 'id',
             searchField: ['name'],
-            create: true,
+            create: false,
             placeholder: 'Pilih mentor...',
             render: {
                 item: function(data, escape) {

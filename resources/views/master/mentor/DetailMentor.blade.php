@@ -59,29 +59,90 @@ Arutala | Detail Data Mentor
 
 @section('scripts')
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Ambil ID mentor dari query parameter di URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const mentorId = urlParams.get('id');
+    $(document).ready(function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const agendaId = urlParams.get('id');
 
-        if (mentorId) {
-            axios.get(`/api/mentor/${mentorId}`)
-                .then(function (response) {
-                    var mentor = response.data.data;
-                    document.getElementById('inputNamaMentor').value = mentor.nama_mentor;
-                    document.getElementById('inputEmail').value = mentor.email;
-                    document.getElementById('inputKontak').value = mentor.no_kontak;
-                    document.getElementById('inputAktivitas').value = mentor.aktivitas;
+    // Initialize Selectize for mentor input before using it
+    let selectizeControl = $('#mentorInput').selectize()[0].selectize;
 
-                    // Set href untuk tombol update
-                    document.getElementById('updateMentorLink').href = `/admin/mentor/update?id=${mentorId}`;
-                })
-                .catch(function (error) {
-                    console.error('Error fetching mentor data:', error);
-                });
-        } else {
-            console.error('Mentor ID not found in URL');
-        }
+    if (agendaId) {
+        axios.get(`/api/agenda/detail-agenda/${agendaId}`)
+            .then(function(response) {
+                const data = response.data.data;
+
+                // Populate form fields with data from the response
+                $('#namaPelatihanInput').val(data.nama_pelatihan);
+                $('#batchInput').val(data.batch);
+                $('#startDateInput').val(data.start_date);
+                $('#endDateInput').val(data.end_date);
+
+                // Populate sesi fields
+                const sesiContainer = $('#sesiContainer');
+                sesiContainer.empty();  // Clear existing inputs
+                if (data.sesi && data.sesi.length > 0) {
+                    data.sesi.forEach((sesiItem, index) => {
+                        sesiContainer.append(`
+                            <div class="form-group row position-relative mb-1">
+                                <label class="col-sm-3 col-form-label">${index === 0 ? 'Sesi' : ''}</label>
+                                <div class="col-sm-9 input-group">
+                                    <input type="text" class="form-control" value="${sesiItem}" aria-label="readonly input example" readonly>
+                                </div>
+                            </div>
+                        `);
+                    });
+                }
+
+                // Populate investasi_info fields
+                const investasiInfoContainer = $('#investasiInfoContainer');
+                investasiInfoContainer.empty();  // Clear existing inputs
+                if (data.investasi_info && data.investasi_info.length > 0) {
+                    data.investasi_info.forEach((investasiInfoItem, index) => {
+                        investasiInfoContainer.append(`
+                            <div class="form-group row position-relative mb-1">
+                                <label class="col-sm-3 col-form-label">${index === 0 ? 'Investasi Info' : ''}</label>
+                                <div class="col-sm-9 input-group">
+                                    <input type="text" class="form-control" value="${investasiInfoItem}" aria-label="readonly input example" readonly>
+                                </div>
+                            </div>
+                        `);
+                    });
+                }
+
+                $('#investasiInput').val(data.investasi);
+                $('#diskonInput').val(data.diskon);
+                $('#statusInput').val(data.status);
+                $('#linkMayarInput').val(data.link_mayar);
+
+                // Ensure selectizeControl is properly initialized before using it
+                if (selectizeControl) {
+                    selectizeControl.clearOptions();
+                    if (data.id_mentor) {
+                        data.id_mentor.forEach(function(mentorId) {
+                            selectizeControl.addItem(mentorId);
+                        });
+                    }
+                }
+            })
+            .catch(function(error) {
+                console.error('Error fetching agenda data:', error);
+                alert('Gagal mengambil detail agenda.');
+            });
+    } else {
+        console.error('Invalid or missing agenda ID.');
+        alert('Agenda ID tidak valid atau tidak ditemukan.');
+    }
+
+    // Remove sesi field
+    $(document).on('click', '.remove-sesi', function() {
+        $(this).closest('.form-group').remove();
     });
+
+    // Remove investasi info field
+    $(document).on('click', '.remove-investasi', function() {
+        $(this).closest('.form-group').remove();
+    });
+});
+
 </script>
 @endsection

@@ -25,15 +25,4 @@ class MasterPelatihanController extends Controller
     {
         return view('master/pelatihan/UpdatePelatihan');
     }
-
-
-    public function show()
-    {
-        return view('master/AgendaPelatihan/IndexDetailAgenda');
-    }
-
-    public function agendaPelatihan()
-    {
-        return view('master/AgendaPelatihan/FormAgendaPelatihan');
-    }
 }
