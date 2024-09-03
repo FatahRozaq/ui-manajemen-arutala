@@ -21,4 +21,9 @@ class AgendaPelatihanController extends Controller
     {
         return view('master/AgendaPelatihan/FormAgendaPelatihan');
     }
+
+    public function updateAgenda()
+    {
+        return view('master/AgendaPelatihan/UpdateAgendaPelatihan');
+    }
 }

@@ -112,7 +112,6 @@ class ApiMasterPelatihanController extends Controller
         }
     }
 
-
     public function show($id)
     {
         try {
@@ -181,8 +180,6 @@ class ApiMasterPelatihanController extends Controller
 
 
             $pelatihan->save();
-
-
 
 
             // Return response dengan data yang baru diperbarui

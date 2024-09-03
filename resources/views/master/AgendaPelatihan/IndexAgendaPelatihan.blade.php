@@ -4,6 +4,10 @@
 
 <div class="pagetitle">
   <h1>Data Pelatihan</h1>
+  <a href="/form-agenda" class="btn btn-success d-flex align-items-center" style="border-radius: 10px;">
+    <i class="bi bi-plus-circle-fill" style="font-size:18px; margin-right:3px; margin-top:10px"></i>
+    Tambah Agenda
+  </a>
 </div><!-- End Page Title -->
 
 <section class="section">
@@ -73,7 +77,7 @@ $(document).ready(function() {
                      <a href="/agenda/detail?id=${row.id_agenda}" class="view-icon" title="View">
                                 <i class="fas fa-eye text-primary"></i>
                             </a>
-                        <a href="#" class="update-icon" data-id="${row.id}" title="Update">
+                        <a href="/agenda/update-agenda?id=${row.id_agenda}" title="Update">
                             <i class="fas fa-edit text-warning"></i>
                         </a>
                         <a href="#" class="delete-icon" data-id="${row.id}" title="Delete">

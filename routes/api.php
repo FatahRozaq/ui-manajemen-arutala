@@ -76,11 +76,16 @@ Route::prefix('pelatihan')->group(function () {
 
 Route::prefix('agenda')->group(function () {
     Route::get('/index', [ApiAgendaController::class, 'index']);
-    Route::post('/tambah-agenda', [ApiAgendaController::class, 'storeAgenda']);
+    Route::post('/tambah-agenda', [ApiAgendaController::class, 'storeAgenda'])->name('agenda.tambah');
     Route::put('/update-agenda/{id}', [ApiAgendaController::class, 'updateAgenda']);
     Route::get('/detail-agenda/{id}', [ApiAgendaController::class, 'detailAgenda']);
     Route::delete('/delete-agenda/{id}', [ApiAgendaController::class, 'deleteAgenda']);
 });
+
+Route::get('/pelatihan-mentor-data', [ApiAgendaController::class, 'getPelatihanMentorData']);
+
+
+
 
 Route::prefix('peserta-pelatihan')->group(function () {
     Route::get('/agenda/{id_agenda}/peserta', [ApiPesertaPelatihanController::class, 'getPesertaByAgenda']);
@@ -90,7 +95,6 @@ Route::prefix('peserta-pelatihan')->group(function () {
 Route::get('/peserta-pelatihan/pelatihan-batch', [ApiPesertaPelatihanController::class, 'getPelatihanDanBatch']);
 Route::get('/peserta-pelatihan/get-agenda-id', [ApiPesertaPelatihanController::class, 'getAgendaId']);
 Route::get('/peserta-pelatihan/export', [ApiPesertaPelatihanController::class, 'exportExcel']);
-
 
 
 Route::prefix('laman-peserta')->group(function () {

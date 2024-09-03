@@ -84,6 +84,7 @@ Route::get('/login-page', [AuthController::class, 'LoginPage'])->name('login.pag
 Route::get('/register-page', [AuthController::class, 'RegisterPage'])->name('register.page');
 Route::get('/detailpelatihan', [MasterPelatihanController::class, 'show'])->name('pelatihan.show');
 Route::get('/form-agenda', [AgendaPelatihanController::class, 'formAgenda'])->name('agenda.form');
+Route::get('agenda/update-agenda', [AgendaPelatihanController::class, 'updateAgenda'])->name('agenda.update');
 Route::get('/agendapelatihan', [AgendaPelatihanController::class, 'index'])->name('agenda.index');
 
 Route::get('/pesertapelatihan', [PesertaPelatihanController::class, 'index'])->name('peserta.index');

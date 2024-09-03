@@ -28,4 +28,9 @@ class Mentor extends Model
     const UPDATED_AT = 'modified_time';
 
     public $timestamps = false;
+
+    public function agendas()
+    {
+        return $this->belongsToMany(AgendaPelatihan::class, 'agenda_mentor', 'id_mentor', 'id_agenda');
+    }
 }

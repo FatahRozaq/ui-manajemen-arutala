@@ -66,7 +66,7 @@ class ApiAgendaController extends Controller
                 'end_date' => 'required|date',
                 'sesi' => 'required|array',
                 'investasi' => 'required|integer',
-                'investasi_info' => 'required|array',
+                'investasi_info' => 'required|array|max:255',
                 'diskon' => 'nullable|integer',
                 'status' => 'required|string|max:255',
                 'start_pendaftaran' => 'required|date',
@@ -237,11 +237,13 @@ class ApiAgendaController extends Controller
             // Simpan perubahan
             $agenda->save();
 
+            // Komit transaksi
             DB::commit();
 
             // Return response dengan data yang telah diupdate
             return response()->json([
                 'data' => [
+                    'id_agenda' => $agenda->id_agenda,
                     'nama_pelatihan' => $agenda->pelatihan->nama_pelatihan,
                     'start_date' => $agenda->start_date,
                     'end_date' => $agenda->end_date,
@@ -260,7 +262,7 @@ class ApiAgendaController extends Controller
                 'status' => 'success'
             ], 200);
         } catch (\Exception $e) {
-            DB::rollBack();
+            DB::rollBack(); // Jika ada error, rollback transaksi
             return response()->json([
                 'message' => 'Gagal mengupdate agenda pelatihan',
                 'statusCode' => 500,
@@ -270,16 +272,40 @@ class ApiAgendaController extends Controller
         }
     }
 
+
+    public function getPelatihanMentorData()
+    {
+        try {
+            // Ambil data pelatihan dan mentor dari database
+            $pelatihans = Pelatihan::all(['nama_pelatihan']);
+            $mentors = Mentor::all(['id_mentor', 'nama_mentor']);
+
+            // Kirim data dalam format JSON
+            return response()->json([
+                'pelatihans' => $pelatihans,
+                'mentors' => $mentors
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Gagal mengambil data pelatihan dan mentor',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+
+
     public function detailAgenda($id)
     {
         try {
-            // Retrieve the agenda with its mentors
-            $agenda = AgendaPelatihan::findOrFail($id);
+            $agenda = AgendaPelatihan::with('pelatihan')->findOrFail($id);
 
-            // Get related mentors
-            $mentors = $agenda->mentors();
+            // Ambil ID mentor dari kolom JSON
+            $mentorIds = json_decode($agenda->id_mentor);
 
-            // Return response with agenda and mentor details
+            // Ambil detail mentor berdasarkan ID
+            $mentors = Mentor::whereIn('id_mentor', $mentorIds)->get(['id_mentor', 'nama_mentor']);
+
             return response()->json([
                 'data' => [
                     'id_agenda' => $agenda->id_agenda,
@@ -287,6 +313,8 @@ class ApiAgendaController extends Controller
                     'batch' => $agenda->batch,
                     'start_date' => $agenda->start_date,
                     'end_date' => $agenda->end_date,
+                    'start_pendaftaran' => $agenda->start_pendaftaran,
+                    'end_pendaftaran' => $agenda->end_pendaftaran,
                     'sesi' => json_decode($agenda->sesi),
                     'investasi' => $agenda->investasi,
                     'investasi_info' => json_decode($agenda->investasi_info),
@@ -310,6 +338,7 @@ class ApiAgendaController extends Controller
             ], 404);
         }
     }
+
 
 
     public function deleteAgenda($id)

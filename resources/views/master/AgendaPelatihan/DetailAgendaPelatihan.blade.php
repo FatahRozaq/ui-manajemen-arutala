@@ -40,6 +40,23 @@
     .selectize-control .selectize-input.items.has-items .item .remove:hover {
         color: #ff0000;
     }
+
+    /* CSS untuk membuat form-mentor tidak dapat diinput */
+.form-mentor.selectize-control.multi .selectize-input {
+    pointer-events: none; /* Menonaktifkan interaksi pengguna */
+    color: #000; /* Warna teks hitam */
+    cursor: not-allowed; /* Mengubah kursor menjadi tanda larangan */
+}
+
+.form-mentor.selectize-control.multi .selectize-input > .item {
+    background-color: #e2e2e2; /* Warna abu-abu untuk item */
+    color: #000; /* Warna hitam untuk teks item */
+    border-radius: 20px;
+    padding-right: 25px;
+    position: relative;
+    border: none;
+}
+
 </style>
 
 <div class="pagetitle">
@@ -89,12 +106,7 @@
 
                         <!-- Sesi -->
                         <div id="sesiContainer">
-                            <div class="form-group row position-relative">
-                                <label for="sesiInput" class="col-sm-3 col-form-label">Sesi</label>
-                                <div class="col-sm-9">
-                                    <input type="text" class="form-control disable" id="sesiInput" aria-label="readonly input example" readonly>
-                                </div>
-                            </div>
+                            <!-- Sesi fields will be populated here -->
                         </div>
 
                         <!-- Investasi (Numerik) -->
@@ -107,12 +119,7 @@
 
                         <!-- Investasi (String) -->
                         <div id="investasiInfoContainer">
-                            <div class="form-group row position-relative mb-1 mt-3">
-                                <label for="investasiInfoInput" class="col-sm-3 col-form-label">Investasi Info</label>
-                                <div class="col-sm-9 input-group">
-                                    <input type="text" class="form-control" id="investasiInfoInput" aria-label="readonly input example" readonly>
-                                </div>
-                            </div>
+                            <!-- Investasi info fields will be populated here -->
                         </div>
 
                         <!-- Diskon -->
@@ -136,6 +143,20 @@
                             </div>
                         </div>
 
+                        <div class="form-group row position-relative">
+                            <label for="endDateInput" class="col-sm-3 col-form-label">Start Pendaftaran</label>
+                            <div class="col-sm-9">
+                                <input type="date" class="form-control disable" id="startPendaftaranInput" aria-label="readonly input example" readonly>
+                            </div>
+                        </div>
+
+                        <div class="form-group row position-relative">
+                            <label for="endDateInput" class="col-sm-3 col-form-label">End Pendaftaran</label>
+                            <div class="col-sm-9">
+                                <input type="date" class="form-control disable" id="endPendaftaranInput" aria-label="readonly input example" readonly>
+                            </div>
+                        </div>
+
                         <!-- Link Mayar -->
                         <div class="form-group row position-relative mt-3">
                             <label for="linkMayarInput" class="col-sm-3 col-form-label">Link Mayar</label>
@@ -148,13 +169,8 @@
                         <div class="form-group row position-relative">
                             <label for="mentorInput" class="col-sm-3 col-form-label">Mentor</label>
                             <div class="col-sm-9">
-                                <select id="mentorInput" class="form" multiple></select>
+                                <select id="mentorInput" class="form-mentor" multiple aria-label="readonly input example" readonly></select>
                             </div>
-                        </div>
-
-                        <!-- Submit -->
-                        <div class="button-submit mt-4">
-                            <button class="btn btn-success col-sm-3" type="button">Submit</button>
                         </div>
 
                     </form>
@@ -178,14 +194,14 @@ $(document).ready(function() {
 
     // Initialize Selectize for mentor selection
     let selectizeControl = $('#mentorInput').selectize({
-        valueField: 'id',
-        labelField: 'name',
-        searchField: ['name'],
-        placeholder: 'Pilih mentor...',
+        valueField: 'id_mentor',
+        labelField: 'nama_mentor',
+        searchField: ['nama_mentor'],
+        // placeholder: 'Pilih mentor...',
         create: false,
         render: {
             item: function(data, escape) {
-                return '<div class="item">' + escape(data.name) + '<span class="remove bi bi-x" style="font-size:16px"></span></div>';
+                return '<div class="item">' + escape(data.nama_mentor) + '<span class="remove" style="font-size:16px"></span></div>';
             }
         }
     })[0].selectize;
@@ -211,6 +227,8 @@ $(document).ready(function() {
                 $('#batchInput').val(data.batch);
                 $('#startDateInput').val(data.start_date);
                 $('#endDateInput').val(data.end_date);
+                $('#startPendaftaranInput').val(data.start_pendaftaran);
+                $('#endPendaftaranInput').val(data.end_pendaftaran);
 
                 // Populate sesi fields
                 const sesiContainer = $('#sesiContainer');
@@ -222,9 +240,6 @@ $(document).ready(function() {
                                 <label class="col-sm-3 col-form-label">${index === 0 ? 'Sesi' : ''}</label>
                                 <div class="col-sm-9 input-group">
                                     <input type="text" class="form-control" value="${sesiItem}" aria-label="readonly input example" readonly>
-                                    <div class="input-group-append">
-                                        
-                                    </div>
                                 </div>
                             </div>
                         `);
@@ -241,9 +256,6 @@ $(document).ready(function() {
                                 <label class="col-sm-3 col-form-label">${index === 0 ? 'Investasi Info' : ''}</label>
                                 <div class="col-sm-9 input-group">
                                     <input type="text" class="form-control" value="${investasiInfoItem}" aria-label="readonly input example" readonly>
-                                    <div class="input-group-append">
-                                        
-                                    </div>
                                 </div>
                             </div>
                         `);
@@ -258,9 +270,10 @@ $(document).ready(function() {
                 // Populate mentor selectize field with selected mentors
                 if (data.mentors && data.mentors.length > 0) {
                     data.mentors.forEach(function(mentor) {
-                        selectizeControl.addItem(mentor.id);
+                        selectizeControl.addItem(mentor.id_mentor);
                     });
                 }
+                
             })
             .catch(function(error) {
                 console.error('Error fetching agenda data:', error);
@@ -270,18 +283,6 @@ $(document).ready(function() {
         console.error('Invalid or missing agenda ID.');
         alert('Agenda ID tidak valid atau tidak ditemukan.');
     }
-
-    // Remove sesi field
-    $(document).on('click', '.remove-sesi', function() {
-        $(this).closest('.form-group').remove();
-    });
-
-    // Remove investasi info field
-    $(document).on('click', '.remove-investasi', function() {
-        $(this).closest('.form-group').remove();
-    });
 });
-
-
 </script>
 @endsection
