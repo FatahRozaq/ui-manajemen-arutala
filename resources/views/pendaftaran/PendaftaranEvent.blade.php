@@ -79,7 +79,7 @@ Arutala | Pendaftaran Event
                         <hr>
                         <input type="hidden" name="id_agenda" id="id_agenda" value="">
                         <div class="column mb-4">
-                            <label for="nama" class="col-sm-4 col-form-label font-weight-bold">Nama Peserta</label>
+                            <label for="nama" class="col-sm-4 col-form-label font-weight-bold">Nama Lengkap</label>
                             <div class="col-sm-12">
                                 <input type="text" name="nama" id="nama" class="form-control" value="">
                                 <span class="text-error" id="error-nama"></span>
@@ -174,7 +174,6 @@ Arutala | Pendaftaran Event
         let selectedProvinsi = null;
         let selectedKabupaten = null;
 
-        // Ambil data profil saat halaman dimuat
         const token = localStorage.getItem('auth_token');
         const urlParams = new URLSearchParams(window.location.search);
         const idAgenda = urlParams.get('idAgenda');
@@ -216,7 +215,6 @@ Arutala | Pendaftaran Event
 
             toggleNamaInstansi(pendaftar.aktivitas);
 
-            // Panggil fungsi untuk memuat data provinsi dan kabupaten
             loadProvinsi(selectedProvinsi, selectedKabupaten);
         })
         .catch(function(error) {

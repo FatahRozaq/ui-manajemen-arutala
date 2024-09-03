@@ -1,4 +1,4 @@
-@extends('layouts.AdminLayouts')
+@extends('layouts.PesertaLayouts')
 
 @section('style')
 <link href="{{ asset('assets/css/detailEvent.css') }}" rel="stylesheet">
@@ -44,7 +44,7 @@
         </div>
         
         <div class="event-footer">
-            <button class="register-button">DAFTAR</button>
+            <button class="register-button" onclick="daftar()">DAFTAR</button>
         </div>
     </div>
 </div>
@@ -130,5 +130,14 @@
                 console.error('Error fetching event detail:', error);
             });
     });
+
+    function daftar() {
+        const eventId = window.location.pathname.split('/').pop();
+        if (eventId) {
+            window.location.href = `/peserta/pendaftaran?idAgenda=${eventId}`;
+        } else {
+            alert('ID Agenda tidak ditemukan. Silakan coba lagi.');
+        }
+    }
 </script>
 @endsection
