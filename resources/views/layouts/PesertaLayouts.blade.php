@@ -20,74 +20,73 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <!-- Template Main CSS File -->
     <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
 </head>
 <body>
     <!-- ======= Header ======= -->
-  <header id="header" class="header fixed-top d-flex align-items-center">
+    <header id="header" class="header fixed-top d-flex align-items-center">
 
-    <div class="d-flex align-items-center justify-content-between">
-    <a href="index.html" class="logo d-flex align-items-center">
-        <img src="assets/img/logo.png" alt="">
-        <span class="d-none d-lg-block">NiceAdmin</span>
-    </a>
-    <i class="bi bi-list toggle-sidebar-btn"></i>
-    </div><!-- End Logo -->
+        <div class="d-flex align-items-center justify-content-between">
+            <a href="index.html" class="logo d-flex align-items-center">
+                <img src="{{ asset('assets/img/logo.png') }}" alt="">
+                <span class="d-none d-lg-block">NiceAdmin</span>
+            </a>
+            <i class="bi bi-list toggle-sidebar-btn"></i>
+        </div><!-- End Logo -->
 
-    
-
-    <nav class="header-nav ms-auto">
-    <ul class="d-flex align-items-center">
-        <div class="profile" style="width:20%; display:flex; align-items:center; ">
-        <h5 style="margin-right: 1rem">Hello, Nama </h5>
-        <i class="bi bi-person-circle" style="font-size: 34px; color:blue"></i>
-        </div>
-
-    </ul>
-    </nav><!-- End Icons Navigation -->
+        <nav class="header-nav ms-auto">
+            <ul class="d-flex align-items-center">
+                <div class="profile" style="width:20%; display:flex; align-items:center;">
+                    <h5 style="margin-right: 1rem">Hello, Nama</h5>
+                    <i class="bi bi-person-circle" style="font-size: 34px; color:blue"></i>
+                </div>
+            </ul>
+        </nav><!-- End Icons Navigation -->
 
     </header><!-- End Header -->
 
+    <!-- ======= Sidebar ======= -->
+    <aside id="sidebar" class="sidebar">
 
-  <aside id="sidebar" class="sidebar">
+        <ul class="sidebar-nav" id="sidebar-nav">
 
-    <ul class="sidebar-nav" id="sidebar-nav">
+            <li class="nav-item">
+                <a class="nav-link {{ request()->is('daftar-event*') ? '' : 'collapsed' }}" href="{{ route('event.index') }}">
+                    <i class="bi bi-card-list"></i>
+                    <span>Daftar Event</span>
+                </a>
+            </li>
 
-    <li class="nav-item">
-        <a class="nav-link {{ request()->is('daftar-event*') ? '' : 'collapsed' }}" href="{{ route('event.index') }}">
-            <i class="bi bi-card-list"></i>
-        <span>Daftar Event</span>
-        </a>
-    </li>
+            <li class="nav-item">
+                <a class="nav-link {{ request()->is('my-event*') ? '' : 'collapsed' }}" href="{{ route('event.history') }}">
+                    <i class="bi bi-card-checklist"></i>
+                    <span>My Event</span>
+                </a>
+            </li>
 
-    <li class="nav-item">
-        <a class="nav-link {{ request()->is('my-event*') ? '' : 'collapsed' }}"  href="{{ route('event.history') }}">
-            <i class="bi bi-card-checklist"></i>
-        <span>My Event</span>
-        </a>
-    </li>
+            <li class="nav-item">
+                <a class="nav-link {{ request()->is('peserta/sertifikat*') ? '' : 'collapsed' }}" href="{{ route('peserta.sertifikat') }}">
+                    <i class="bi bi-file-earmark-check"></i>
+                    <span>My Certificate</span>
+                </a>
+            </li>
 
-    <li class="nav-item">
-        <a class="nav-link {{ request()->is('peserta/sertifikat*') ? '' : 'collapsed' }}" href="{{ route('peserta.sertifikat') }}">
-            <i class="bi bi-file-earmark-check"></i>
-        <span>My Certificate</span>
-        </a>
-    </li>
+            <li class="nav-item">
+                <a class="nav-link {{ request()->is('peserta/profile*') ? '' : 'collapsed' }}" href="{{ route('peserta.profile') }}">
+                    <i class="bi bi-person-square"></i>
+                    <span>Data Diri</span>
+                </a>
+            </li>
 
-    <li class="nav-item">
-        <a class="nav-link {{ request()->is('peserta/profile*') ? '' : 'collapsed' }}" href="{{ route('peserta.profile') }}">
-            <i class="bi bi-person-square"></i>
-        <span>Data Diri</span>
-        </a>
-    </li>
+            <!-- Link Logout menggunakan performLogout() -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" onclick="event.preventDefault(); performLogout();">
+                    <i class="bi bi-box-arrow-right" style="color: red;"></i>
+                    <span>Logout</span>
+                </a>
+            </li>
 
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="{{ route('mentor.index') }}">
-            <i class="bi bi-box-arrow-right"  style="color: red;"></i>
-        <span>Logout</span>
-        </a>
-    </li>
-
-    </ul>
+        </ul>
 
     </aside><!-- End Sidebar-->
 
@@ -98,14 +97,10 @@
     <!-- ======= Footer ======= -->
     <footer id="footer" class="footer">
         <div class="copyright">
-        &copy; Copyright <strong><span>NiceAdmin</span></strong>. All Rights Reserved
+            &copy; Copyright <strong><span>NiceAdmin</span></strong>. All Rights Reserved
         </div>
         <div class="credits">
-        <!-- All the links in the footer should remain intact. -->
-        <!-- You can delete the links only if you purchased the pro version. -->
-        <!-- Licensing information: https://bootstrapmade.com/license/ -->
-        <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
-        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+            Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
         </div>
     </footer><!-- End Footer -->
 
@@ -125,5 +120,39 @@
     <script src="{{ asset('assets/js/main.js') }}"></script>
 
     @yield('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <!-- Script Logout -->
+    <script>
+        function performLogout() {
+            // Menghapus token dari localStorage
+            localStorage.removeItem('auth_token');
+            localStorage.removeItem('auth_user');
+
+            // Kirim permintaan logout ke server
+            axios.post('/logout')
+                .then(response => {
+                    Swal.fire({
+                        title: 'Logout Berhasil!',
+                        text: 'Anda telah keluar dari website Arutala',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = '/login-page';
+                        }
+                    });
+                })
+                .catch(error => {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: 'Terjadi kesalahan saat logout.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                });
+        }
+    </script>
 </body>
 </html>

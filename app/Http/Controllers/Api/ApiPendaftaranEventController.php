@@ -49,12 +49,21 @@ class ApiPendaftaranEventController extends Controller
     public function store(Request $request)
     {
         try {
-            $request->validate([
+            $validator = Validator::make($request->all(), [
                 'id_agenda' => 'required|exists:agenda_pelatihan,id_agenda',
                 'status_pembayaran' => 'required|string|max:255',
                 'nama' => 'required|string|max:255',
                 'email' => 'required|email|max:255',
-                'no_kontak' => 'required|string|max:25',
+                'no_kontak' => [
+                    'required',
+                    'string',
+                    'max:25',
+                    function ($attribute, $value, $fail) {
+                        if (preg_match('/^0/', $value) || preg_match('/^62/', $value) || preg_match('/^\+62/', $value)) {
+                            $fail('Nomor kontak tidak boleh diawali dengan 0, 62, atau +62.');
+                        }
+                    }
+                ],
                 'aktivitas' => 'required|string|max:255',
                 'nama_instansi' => 'nullable|string|max:255',
                 'provinsi' => 'required|string|max:255',
@@ -82,13 +91,22 @@ class ApiPendaftaranEventController extends Controller
                 'kab_kota.string' => 'Kab/Kota harus berupa teks.',
             ]);
 
+            if ($validator->fails()) {
+                return response()->json([
+                    'message' => 'Validasi gagal',
+                    'statusCode' => Response::HTTP_UNPROCESSABLE_ENTITY,
+                    'status' => 'error',
+                    'errors' => $validator->errors()
+                ], Response::HTTP_UNPROCESSABLE_ENTITY);
+            }
+
             $pendaftar = Pendaftar::find(Auth::id());
 
             if ($pendaftar) {
                 $pendaftar->update([
                     'nama' => $request->nama,
                     'email' => $request->email,
-                    'no_kontak' => $request->no_kontak,
+                    'no_kontak' => '+62' . ltrim($request->no_kontak, '0'), // Menambahkan +62 dan menghapus awalan 0
                     'aktivitas' => $request->aktivitas,
                     'nama_instansi' => $request->nama_instansi,
                     'provinsi' => $request->provinsi,
@@ -141,6 +159,8 @@ class ApiPendaftaranEventController extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+
 
 
 

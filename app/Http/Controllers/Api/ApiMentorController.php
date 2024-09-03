@@ -39,7 +39,12 @@ class ApiMentorController extends Controller
         $validator = Validator::make($request->all(), [
             'nama_mentor' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:mentor',
-            'no_kontak' => 'required|string|max:25',
+            'no_kontak' => [
+                    'required',
+                    'string',
+                    'regex:/^(?!0|62|\+62)[0-9]+$/',
+                    'max:25'
+            ],
             'aktivitas' => 'required|string|max:15',
         ], [
             'nama_mentor.required' => 'Nama mentor harus diisi.',
@@ -52,6 +57,7 @@ class ApiMentorController extends Controller
             'no_kontak.required' => 'Nomor kontak harus diisi.',
             'no_kontak.string' => 'Nomor kontak harus berupa string.',
             'no_kontak.max' => 'Nomor kontak tidak boleh lebih dari 25 karakter.',
+            'no_kontak.regex' => 'Nomor kontak tidak boleh diawali dengan 0, 62, atau +62 dan hanya boleh berisi angka.',
             'aktivitas.string' => 'Aktivitas harus berupa string.',
             'aktivitas.max' => 'Aktivitas tidak boleh lebih dari 15 karakter.',
         ]);
@@ -65,11 +71,13 @@ class ApiMentorController extends Controller
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
+        $no_kontak = '+62' . ltrim($request->input('no_kontak'), '0');
+
         try {
             $mentor = Mentor::create([
                 'nama_mentor' => $request->nama_mentor,
                 'email' => $request->email,
-                'no_kontak' => $request->no_kontak,
+                'no_kontak' => $no_kontak,
                 'aktivitas' => $request->aktivitas,
                 'created_by' => 'Admin',
                 'created_time' => Carbon::now(),
@@ -107,6 +115,8 @@ class ApiMentorController extends Controller
                 ], Response::HTTP_NOT_FOUND);
             }
 
+            $mentor->no_kontak = ltrim($mentor->no_kontak, '+62');
+
             return response()->json([
                 'data' => $mentor,
                 'message' => 'Mentor berhasil diambil',
@@ -128,7 +138,12 @@ class ApiMentorController extends Controller
         $validator = Validator::make($request->all(), [
             'nama_mentor' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:mentor,email,' . $id . ',id_mentor',
-            'no_kontak' => 'required|string|max:25',
+            'no_kontak' => [
+                    'required',
+                    'string',
+                    'regex:/^(?!0|62|\+62)[0-9]+$/',
+                    'max:25'
+                ],
             'aktivitas' => 'nullable|string|max:15',
         ], [
             'nama_mentor.required' => 'Nama mentor harus diisi.',
@@ -141,6 +156,7 @@ class ApiMentorController extends Controller
             'no_kontak.required' => 'Nomor kontak harus diisi.',
             'no_kontak.string' => 'Nomor kontak harus berupa string.',
             'no_kontak.max' => 'Nomor kontak tidak boleh lebih dari 25 karakter.',
+            'no_kontak.regex' => 'Nomor kontak tidak boleh diawali dengan 0, 62, atau +62 dan hanya boleh berisi angka.',
             'aktivitas.string' => 'Aktivitas harus berupa string.',
             'aktivitas.max' => 'Aktivitas tidak boleh lebih dari 15 karakter.',
         ]);
@@ -167,10 +183,12 @@ class ApiMentorController extends Controller
                 ], Response::HTTP_NOT_FOUND);
             }
 
+
+
             $mentor->update([
                 'nama_mentor' => $request->nama_mentor,
                 'email' => $request->email,
-                'no_kontak' => $request->no_kontak,
+                'no_kontak' => '+62' . ltrim($request->input('no_kontak'), '0'),
                 'aktivitas' => $request->aktivitas,
                 'modified_by' => 'Admin',
                 'modified_time' => Carbon::now(),

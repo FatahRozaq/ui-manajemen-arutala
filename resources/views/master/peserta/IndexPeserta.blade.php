@@ -1,4 +1,4 @@
-@extends('layouts/AdminLayouts')
+@extends('layouts.AdminLayouts')
 
 @section('title')
 Arutala | Data Peserta
@@ -10,16 +10,22 @@ Arutala | Data Peserta
     <h1>Data Peserta Pelatihan</h1>
     
     <div class="button-group d-flex">
-    <a href="{{ route('mentor.add') }}" class="btn btn-primary d-flex align-items-center mr-2" style="border-radius: 10px;">
-        <i class="fa-solid fa-upload mr-2"></i>
-        Import Data
-    </a>
-
-    <a href="{{ route('mentor.add') }}" class="btn btn-success d-flex align-items-center" style="border-radius: 10px;">
-        <i class="fa-solid fa-file-export mr-2"></i>
-        Export Data
-    </a>
-</div>
+        <!-- Form untuk Import Excel -->
+        <form id="importForm" action="{{ url('api/pendaftar/import/excel') }}" method="POST" enctype="multipart/form-data" style="display: inline; margin-right:10px">
+            @csrf
+            <input type="file" name="file" style="display: none;" id="fileInput">
+            <button type="button" class="btn btn-primary d-flex align-items-center" style="border-radius: 10px;" onclick="document.getElementById('fileInput').click();">
+                <i class="fa-solid fa-upload mr-2"></i>
+                Import Data
+            </button>
+        </form>
+        
+        <!-- Tautan untuk Export Excel -->
+        <a id="exportBtn" href="{{ url('api/pendaftar/export/excel') }}" class="btn btn-success d-flex align-items-center" style="border-radius: 10px;">
+            <i class="fa-solid fa-file-export mr-2"></i>
+            Export Data
+        </a>
+    </div>
 </div>
 
 <section class="section">
@@ -39,7 +45,7 @@ Arutala | Data Peserta
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- Data will be populated by DataTables -->
+                            <!-- Data akan diisi oleh DataTables -->
                         </tbody>
                     </table>
                 </div>
@@ -53,34 +59,45 @@ Arutala | Data Peserta
 @section('scripts')
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<!-- DataTables CSS and JS -->
+<!-- DataTables CSS dan JS -->
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css"/>
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
-<!-- Font Awesome for icons -->
+<!-- Font Awesome untuk ikon -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!-- Axios -->
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
 <script>
     $(document).ready(function() {
+        // Set CSRF Token untuk Axios
+        axios.defaults.headers.common['X-CSRF-TOKEN'] = $('meta[name="csrf-token"]').attr('content');
+
+        // Inisialisasi DataTables
         $('#dataPesertaTable').DataTable({
-            "ajax": "{{ asset('data/DataPeserta.json') }}",
+            "ajax": {
+                "url": "{{ url('api/pendaftar') }}", // Endpoint API untuk memuat data
+                "dataSrc": "data"
+            },
             "columns": [
-                { "data": "name" },
-                { "data": "jumlah_pelatihan"},
-                { "data": "email" },        // Email column
-                { "data": "kontak" },       // Kontak column
-                { "data": "aktifitas" },    // Aktifitas column
-                {                          // Aksi column with action icons
+                { "data": "nama" },
+                { "data": "jumlah_pelatihan" },
+                { "data": "email" },
+                { "data": "no_kontak" },
+                { "data": "aktivitas" },
+                {
                     "data": null,
                     "render": function(data, type, row) {
                         return `
-                            <a href="{{ route('peserta.detail') }}" class="view-icon" data-id="${row.id}" title="View">
+                            <a href="{{ url('admin/peserta/detail?idPendaftar=${row.id_pendaftar}') }}" class="view-icon" title="View">
                                 <i class="fas fa-eye text-primary"></i>
                             </a>
-                            <a href="#" class="update-icon" data-id="${row.id}" title="Update">
+                            <a href="#" class="update-icon" data-id="${row.id_pendaftar}" title="Update">
                                 <i class="fas fa-edit text-warning"></i>
                             </a>
-                            <a href="#" class="delete-icon" data-id="${row.id}" title="Delete">
+                            <a href="#" class="delete-icon" data-id="${row.id_pendaftar}" title="Delete">
                                 <i class="fas fa-trash-alt text-danger"></i>
                             </a>
                         `;
@@ -89,25 +106,91 @@ Arutala | Data Peserta
             ]
         });
 
-        // Event listener for view icon
-        // $('#dataPesertaTable').on('click', '.view-icon', function() {
-        //     var id = $(this).data('id');
-        //     alert('View icon clicked for ID: ' + id);
-        //     // Add your view logic here
-        // });
-
-        // Event listener for update icon
-        $('#dataPesertaTable').on('click', '.update-icon', function() {
-            var id = $(this).data('id');
-            alert('Update icon clicked for ID: ' + id);
-            // Add your update logic here
-        });
-
-        // Event listener for delete icon
+        // Event listener untuk ikon delete
         $('#dataPesertaTable').on('click', '.delete-icon', function() {
             var id = $(this).data('id');
-            alert('Delete icon clicked for ID: ' + id);
-            // Add your delete logic here
+
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: "Anda tidak akan dapat mengembalikan data ini!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, hapus!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    axios.delete(`/api/pendaftar/${id}`)
+                        .then(response => {
+                            Swal.fire(
+                                'Dihapus!',
+                                response.data.message,
+                                'success'
+                            );
+                            $('#dataPesertaTable').DataTable().ajax.reload(); // Reload tabel setelah hapus
+                        })
+                        .catch(error => {
+                            Swal.fire(
+                                'Gagal!',
+                                'Gagal menghapus data: ' + error.response.data.message,
+                                'error'
+                            );
+                        });
+                }
+            });
+        });
+
+        // Menangani proses impor
+        $('#fileInput').change(function() {
+            var formData = new FormData($('#importForm')[0]);
+            
+            axios.post("{{ url('api/pendaftar/import/excel') }}", formData)
+                .then(response => {
+                    Swal.fire(
+                        'Berhasil!',
+                        'Data berhasil diimpor.',
+                        'success'
+                    );
+                })
+                .catch(error => {
+                    Swal.fire(
+                        'Gagal!',
+                        'Gagal mengimpor data: ' + (error.response.data.message || 'Terjadi kesalahan.'),
+                        'error'
+                    );
+                });
+        });
+
+        // Menangani proses ekspor
+        $('#exportBtn').click(function(event) {
+            event.preventDefault();
+            axios.get("{{ url('api/pendaftar/export/excel') }}", { responseType: 'blob' })
+                .then(response => {
+                    const url = window.URL.createObjectURL(new Blob([response.data]));
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.setAttribute('download', 'Pendaftar.xlsx');
+                    document.body.appendChild(link);
+                    link.click();
+                    Swal.fire(
+                        'Berhasil!',
+                        'Data berhasil diekspor.',
+                        'success'
+                    );
+                })
+                .catch(error => {
+                    Swal.fire(
+                        'Gagal!',
+                        'Gagal mengekspor data: ' + (error.response.data.message || 'Terjadi kesalahan.'),
+                        'error'
+                    );
+                });
+        });
+
+        // Event listener untuk ikon update
+        $('#dataPesertaTable').on('click', '.update-icon', function() {
+            var id = $(this).data('id');
+            Swal.fire('Update icon clicked for ID: ' + id);
         });
     });
 </script>

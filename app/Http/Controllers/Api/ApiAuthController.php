@@ -25,21 +25,28 @@ class ApiAuthController extends Controller
                 'password.string' => 'Password harus berupa teks.',
                 'password.min' => 'Password harus terdiri dari minimal 8 karakter.',
                 'no_kontak.required' => 'Nomor kontak wajib diisi.',
-                'no_kontak.regex' => 'Nomor kontak hanya boleh berisi angka.',
+                'no_kontak.regex' => 'Nomor kontak tidak boleh diawali dengan 0, 62, atau +62 dan hanya boleh berisi angka.',
                 'no_kontak.max' => 'Nomor kontak tidak boleh lebih dari 25 karakter.',
             ];
 
             $request->validate([
                 'email' => 'required|string|email|max:255|unique:pendaftar',
                 'password' => 'required|string|min:8',
-                'no_kontak' => 'required|string|regex:/^[0-9]+$/|max:25',
+                'no_kontak' => [
+                    'required',
+                    'string',
+                    'regex:/^(?!0|62|\+62)[0-9]+$/',
+                    'max:25'
+                ],
             ], $messages);
+
+            $no_kontak = '+62' . ltrim($request->input('no_kontak'), '0');
 
             $pendaftar = Pendaftar::create([
                 'nama' => $request->nama,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
-                'no_kontak' => $request->no_kontak,
+                'no_kontak' => $no_kontak,
                 'created_by' => 'Pendaftar', 
                 'created_time' => Carbon::now(),
             ]);
@@ -57,7 +64,7 @@ class ApiAuthController extends Controller
         } catch (ValidationException $e) {
             return response()->json([
                 'message' => 'Pendaftaran gagal',
-                'error' => $e->errors(),  // Memastikan semua error validasi dikembalikan
+                'error' => $e->errors(),
                 'statusCode' => Response::HTTP_UNPROCESSABLE_ENTITY,
                 'status' => 'error'
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
@@ -70,6 +77,7 @@ class ApiAuthController extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
 
     public function login(Request $request)
     {
@@ -121,6 +129,7 @@ class ApiAuthController extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
 
     public function logout(Request $request)
     {

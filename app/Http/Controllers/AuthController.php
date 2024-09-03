@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class AuthController extends Controller
 {
@@ -14,5 +15,24 @@ class AuthController extends Controller
     public function RegisterPage()
     {
         return view('auth/Register');
+    }
+
+    public function saveSession(Request $request)
+    {
+        $user = $request->input('user');
+
+        if ($user) {
+            Session::put('user', $user);
+            return response()->json(['message' => 'Session saved successfully!'], 200);
+        }
+
+        return response()->json(['message' => 'Failed to save session!'], 400);
+    }
+
+    public function logout()
+    {
+        Session::flush();
+        
+        return redirect()->route('login.page')->with('success', 'Logged out successfully!');
     }
 }
