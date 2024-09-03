@@ -4,6 +4,25 @@
 Arutala | Detail Data Mentor
 @endsection
 
+@section('style')
+<style>
+  .default {
+        padding: 6px 12px;
+        background-color: #e9ecef;
+        border: 1px solid #ced4da;
+        border-radius: 4px 0 0 4px;
+        color: #495057;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .form-control {
+        border-radius: 0 4px 4px 0;
+    }
+</style>
+@endsection
+
 @section('content')
 
   <div class="pagetitle">
@@ -30,7 +49,11 @@ Arutala | Detail Data Mentor
               </div>
               <div class="row mb-4">
                 <label for="inputKontak" class="col-sm-3 col-form-label">Kontak</label>
-                <div class="col-sm-6">
+                
+                <div class="col-sm-6 d-flex">
+                  <div class="default">
+                      +62
+                  </div>
                   <input type="text" class="form-control" id="inputKontak" disabled>
                 </div>
               </div>

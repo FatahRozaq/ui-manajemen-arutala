@@ -60,7 +60,7 @@ Route::prefix('admin')->group(function () {
 });
 
 // Peserta Routes Group
-Route::prefix('peserta')->group(function () {
+Route::middleware('auth.check')->prefix('peserta')->group(function () {
 
     // Profile
     Route::prefix('profile')->group(function () {
@@ -82,6 +82,8 @@ Route::prefix('peserta')->group(function () {
 // Authentication
 Route::get('/login-page', [AuthController::class, 'LoginPage'])->name('login.page');
 Route::get('/register-page', [AuthController::class, 'RegisterPage'])->name('register.page');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
 Route::get('/detailpelatihan', [MasterPelatihanController::class, 'show'])->name('pelatihan.show');
 Route::get('/form-agenda', [AgendaPelatihanController::class, 'formAgenda'])->name('agenda.form');
 Route::get('agenda/update-agenda', [AgendaPelatihanController::class, 'updateAgenda'])->name('agenda.update');
@@ -91,6 +93,11 @@ Route::get('/pesertapelatihan', [PesertaPelatihanController::class, 'index'])->n
 Route::get('/updatestatus', [PesertaPelatihanController::class, 'show'])->name('peserta.show');
 
 //Daftar Event
+Route::middleware('auth.check')->get('/daftar-event', [EventController::class, 'index'])->name('event.index');
+Route::middleware('auth.check')->get('/event/{id}',  [EventController::class, 'showEvent'])->name('event.detail');
+Route::middleware('auth.check')->get('/my-event',  [EventController::class, 'myEvent'])->name('event.history');
+
+Route::post('/save-session', [AuthController::class, 'saveSession'])->name('save-session');
 Route::get('/daftar-event', [EventController::class, 'index'])->name('event.index');
 Route::get('/detail-event/{id}', [EventController::class, 'showEvent'])->name('detail.event');
 Route::get('/my-event',  [EventController::class, 'myEvent'])->name('event.history');

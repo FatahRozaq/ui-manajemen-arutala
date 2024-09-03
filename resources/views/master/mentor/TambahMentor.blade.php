@@ -4,6 +4,27 @@
 Arutala | Tambah Mentor
 @endsection
 
+@section('style')
+<style>
+  .default {
+        padding: 6px 12px;
+        background-color: #e9ecef;
+        border: 1px solid #ced4da;
+        border-radius: 4px 0 0 4px;
+        color: #495057;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height:39px
+    }
+
+    .form-control {
+        border-radius: 0 4px 4px 0;
+    }
+</style>
+@endsection
+
+
 @section('content')
 
 <div class="pagetitle">
@@ -36,12 +57,21 @@ Arutala | Tambah Mentor
                             </div>
                         </div>
 
+                        
+
                         <div class="row mb-4">
-                            <label for="no_kontak" class="col-sm-3 col-form-label">Kontak</label>
-                            <div class="col-sm-6">
-                                <input type="text" name="no_kontak" id="no_kontak" class="form-control">
-                                <span class="text-danger" id="error-no_kontak"></span>
+                            <label for="inputKontak" class="col-sm-3 col-form-label">Kontak</label>
+                            
+                            <div class="col-sm-6 d-flex">
+                                <div class="default">
+                                    +62
+                                </div>
+                                <div class="">
+                                    <input type="text" name="no_kontak" id="no_kontak" class="form-control">
+                                    <span class="text-danger" id="error-no_kontak"></span>
+                                </div>
                             </div>
+                            
                         </div>
 
                         <div class="row mb-4">
