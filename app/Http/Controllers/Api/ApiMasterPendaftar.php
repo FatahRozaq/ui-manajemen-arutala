@@ -195,8 +195,15 @@ class ApiMasterPendaftar extends Controller
             );
 
             $columns = [
-                'id_pendaftar', 'nama', 'email', 'no_kontak', 'nama_instansi',
-                'provinsi', 'kab_kota', 'linkedin', 'created_time'
+                'id_pendaftar',
+                'nama',
+                'email',
+                'no_kontak',
+                'nama_instansi',
+                'provinsi',
+                'kab_kota',
+                'linkedin',
+                'created_time'
             ];
 
             $callback = function () use ($pendaftar, $columns) {
@@ -205,9 +212,15 @@ class ApiMasterPendaftar extends Controller
 
                 foreach ($pendaftar as $row) {
                     fputcsv($file, [
-                        $row->id_pendaftar, $row->nama, $row->email, $row->no_kontak,
-                        $row->nama_instansi, $row->provinsi, $row->kab_kota, 
-                        $row->linkedin, $row->created_time
+                        $row->id_pendaftar,
+                        $row->nama,
+                        $row->email,
+                        $row->no_kontak,
+                        $row->nama_instansi,
+                        $row->provinsi,
+                        $row->kab_kota,
+                        $row->linkedin,
+                        $row->created_time
                     ]);
                 }
 
@@ -318,5 +331,5 @@ class ApiMasterPendaftar extends Controller
     //     }
     // }
 
-    
+
 }

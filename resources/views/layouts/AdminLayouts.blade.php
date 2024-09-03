@@ -290,9 +290,16 @@
     </li>
 
     <li class="nav-item">
-        <a class="nav-link {{ request()->is('agenda-pelatihan*') ? '' : 'collapsed' }}" href="{{ route('pelatihan.index') }}">
+        <a class="nav-link {{ request()->is('agendapelatihan*') ? '' : 'collapsed' }}" href="{{ route('agenda.index') }}">
             <i class="fa-solid fa-calendar-days"></i>
             <span>Agenda Pelatihan</span>
+        </a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link {{ request()->is('pesertapelatihan*') ? '' : 'collapsed' }}" href="{{ route('peserta.index') }}">
+            <i class="fa-solid fa-calendar-days"></i>
+            <span>Peserta Pelatihan</span>
         </a>
     </li>
 

@@ -1,12 +1,14 @@
 <?php
 
-use App\Http\Controllers\Api\ApiAuthController;
 use Spatie\FlareClient\Api;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\ApiMentorController;
+use App\Http\Controllers\Api\ApiAuthController;
 use App\Http\Controllers\Api\ApiProfilePeserta;
 use App\Http\Controllers\Api\ApiAgendaController;
+use App\Http\Controllers\Api\ApiMentorController;
+use App\Http\Controllers\Api\ApiMyEventController;
+use App\Http\Controllers\Api\ApiDashboardController;
 use App\Http\Controllers\Api\ApiLamanPesertaController;
 use App\Http\Controllers\Api\ApiMasterPelatihanController;
 use App\Http\Controllers\Api\ApiMasterPendaftar;
@@ -53,8 +55,8 @@ Route::prefix('pendaftar')->group(function () {
 });
 
 Route::middleware('auth:sanctum')->prefix('profile')->group(function () {
-    Route::put('update', [ApiProfilePeserta::class, 'update']); 
-    Route::get('/', [ApiProfilePeserta::class, 'show']); 
+    Route::put('update', [ApiProfilePeserta::class, 'update']);
+    Route::get('/', [ApiProfilePeserta::class, 'show']);
 });
 
 Route::middleware('auth:sanctum')->prefix('pendaftaran-event')->group(function () {
@@ -63,21 +65,48 @@ Route::middleware('auth:sanctum')->prefix('pendaftaran-event')->group(function (
 });
 
 
-Route::get('/pelatihan/daftar-pelatihan', [ApiMasterPelatihanController::class, 'index']);
-Route::post('/pelatihan/tambah-pelatihan', [ApiMasterPelatihanController::class, 'store']);
-Route::put('/pelatihan/update-pelatihan/{id}', [ApiMasterPelatihanController::class, 'update']);
-Route::get('/pelatihan/detail-pelatihan/{id}', [ApiMasterPelatihanController::class, 'show']);
-Route::delete('/pelatihan/delete-pelatihan/{id}', [ApiMasterPelatihanController::class, 'destroy']);
+Route::prefix('pelatihan')->group(function () {
+    Route::get('/daftar-pelatihan', [ApiMasterPelatihanController::class, 'index']);
+    Route::post('/tambah-pelatihan', [ApiMasterPelatihanController::class, 'store']);
+    Route::put('/update-pelatihan/{id}', [ApiMasterPelatihanController::class, 'update']);
+    Route::get('/detail-pelatihan/{id}', [ApiMasterPelatihanController::class, 'show'])->name('pelatihan.showPelatihan');
+    Route::delete('/delete-pelatihan/{id}', [ApiMasterPelatihanController::class, 'destroy']);
+});
 
 
-Route::post('/agenda/tambah-agenda', [ApiAgendaController::class, 'storeAgenda']);
-Route::put('/agenda/update-agenda/{id}', [ApiAgendaController::class, 'updateAgenda']);
-Route::get('/agenda/detail-agenda/{id}', [ApiAgendaController::class, 'detailAgenda']);
-Route::delete('/agenda/delete-agenda/{id}', [ApiAgendaController::class, 'deleteAgenda']);
+Route::prefix('agenda')->group(function () {
+    Route::get('/index', [ApiAgendaController::class, 'index']);
+    Route::post('/tambah-agenda', [ApiAgendaController::class, 'storeAgenda']);
+    Route::put('/update-agenda/{id}', [ApiAgendaController::class, 'updateAgenda']);
+    Route::get('/detail-agenda/{id}', [ApiAgendaController::class, 'detailAgenda']);
+    Route::delete('/delete-agenda/{id}', [ApiAgendaController::class, 'deleteAgenda']);
+});
+
+Route::prefix('peserta-pelatihan')->group(function () {
+    Route::get('/agenda/{id_agenda}/peserta', [ApiPesertaPelatihanController::class, 'getPesertaByAgenda']);
+    Route::put('/update-status-pembayaran/{id_pendaftaran}', [ApiPesertaPelatihanController::class, 'updateStatusPembayaran']);
+});
+
+Route::get('/peserta-pelatihan/pelatihan-batch', [ApiPesertaPelatihanController::class, 'getPelatihanDanBatch']);
+Route::get('/peserta-pelatihan/get-agenda-id', [ApiPesertaPelatihanController::class, 'getAgendaId']);
+Route::get('/peserta-pelatihan/export', [ApiPesertaPelatihanController::class, 'exportExcel']);
 
 
-Route::get('/peserta-pelatihan/agenda/{id_agenda}', [ApiPesertaPelatihanController::class, 'getPesertaByAgenda']);
 
+Route::prefix('laman-peserta')->group(function () {
+    Route::get('/daftar-event', [ApiLamanPesertaController::class, 'getPelatihanDetails']);
+    Route::get('/event-detail/{id}', [ApiLamanPesertaController::class, 'getEventDetail'])->name('laman-peserta.event-detail');
+});
 
-Route::get('/laman-peserta/daftar-event', [ApiLamanPesertaController::class, 'getPelatihanDetails']);
-Route::put('/peserta-pelatihan/update-status-pembayaran/{id_pendaftaran}', [ApiPesertaPelatihanController::class, 'updateStatusPembayaran']);
+Route::prefix('my-events')->group(function () {
+    Route::get('/{id_peserta}', [ApiMyEventController::class, 'getMyEvents']);
+});
+
+Route::prefix('dashboard')->group(function () {
+    Route::get('/pendaftar', [ApiDashboardController::class, 'getPendaftar']);
+    Route::get('/tren-pelatihan', [ApiDashboardController::class, 'trenPelatihan']);
+    Route::get('/top-provinces', [ApiDashboardController::class, 'getTopProvinces']);
+    Route::get('/universities-participants', [ApiDashboardController::class, 'getUniversitiesParticipants']);
+    Route::get('/companies-participants', [ApiDashboardController::class, 'getCompaniesParticipants']);
+    Route::get('/participants-by-activity', [ApiDashboardController::class, 'getParticipantsByActivity']);
+});

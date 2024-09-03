@@ -1,17 +1,20 @@
 <?php
 
-use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TestController;
 use Illuminate\Console\Scheduling\Event;
 use App\Http\Controllers\EventController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\MasterMentorController;
-use App\Http\Controllers\PendaftaranController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\SertifkatController;
+use App\Http\Controllers\PendaftaranController;
+use App\Http\Controllers\MasterMentorController;
 use App\Http\Controllers\MasterPesertaController;
+use App\Http\Controllers\AgendaPelatihanController;
 use App\Http\Controllers\MasterPelatihanController;
+use App\Http\Controllers\PesertaPelatihanController;
+use App\Http\Controllers\Api\ApiPesertaPelatihanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,6 +35,11 @@ use App\Http\Controllers\MasterPelatihanController;
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
 Route::get('/master-pelatihan', [MasterPelatihanController::class, 'index'])->name('pelatihan.index');
 Route::get('/form-pelatihan', [MasterPelatihanController::class, 'form'])->name('pelatihan.form');
+Route::get('/pelatihan/detail-pelatihan/{id}', [MasterPelatihanController::class, 'showPelatihan'])->name('pelatihan.showPelatihan');
+Route::get('/pelatihan/update-pelatihan', [MasterPelatihanController::class, 'updatePelatihan'])->name('pelatihan.updatePelatihan');
+
+Route::get('/agenda/detail', [AgendaPelatihanController::class, 'show'])->name('agenda.show');
+
 
 // Admin Routes Group
 Route::prefix('admin')->group(function () {
@@ -49,7 +57,6 @@ Route::prefix('admin')->group(function () {
         Route::get('/tambah', [MasterMentorController::class, 'add'])->name('mentor.add');
         Route::get('/update', [MasterMentorController::class, 'update'])->name('mentor.update');
     });
-    
 });
 
 // Peserta Routes Group
@@ -70,7 +77,6 @@ Route::middleware('auth.check')->prefix('peserta')->group(function () {
     Route::prefix('sertifikat')->group(function () {
         Route::get('/', [SertifkatController::class, 'index'])->name('peserta.sertifikat');
     });
-
 });
 
 // Authentication
@@ -79,8 +85,11 @@ Route::get('/register-page', [AuthController::class, 'RegisterPage'])->name('reg
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::get('/detailpelatihan', [MasterPelatihanController::class, 'show'])->name('pelatihan.show');
-Route::get('/form-agenda', [MasterPelatihanController::class, 'agendaPelatihan'])->name('pelatihan.agenda');
+Route::get('/form-agenda', [AgendaPelatihanController::class, 'formAgenda'])->name('agenda.form');
+Route::get('/agendapelatihan', [AgendaPelatihanController::class, 'index'])->name('agenda.index');
 
+Route::get('/pesertapelatihan', [PesertaPelatihanController::class, 'index'])->name('peserta.index');
+Route::get('/updatestatus', [PesertaPelatihanController::class, 'show'])->name('peserta.show');
 
 //Daftar Event
 Route::middleware('auth.check')->get('/daftar-event', [EventController::class, 'index'])->name('event.index');
@@ -88,3 +97,8 @@ Route::middleware('auth.check')->get('/event/{id}',  [EventController::class, 's
 Route::middleware('auth.check')->get('/my-event',  [EventController::class, 'myEvent'])->name('event.history');
 
 Route::post('/save-session', [AuthController::class, 'saveSession'])->name('save-session');
+Route::get('/daftar-event', [EventController::class, 'index'])->name('event.index');
+Route::get('/detail-event/{id}', [EventController::class, 'showEvent'])->name('detail.event');
+Route::get('/my-event',  [EventController::class, 'myEvent'])->name('event.history');
+
+Route::get('/export-peserta-pelatihan', [ApiPesertaPelatihanController::class, 'exportExcel']);

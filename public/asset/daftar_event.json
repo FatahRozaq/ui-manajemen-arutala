@@ -7,6 +7,8 @@
             "discount": 10,
             "status": "selesai",
             "startDate": "24 September 2024",
+            "endDate": "25 September 2024",
+            "statusPembayaran": "Proses",
             "image": "manual-testing.png",
             "deskripsi": "Optimalkan karirmu di dunia teknologi dengan mengikuti pelatihan Software Quality Assurance. Pada Bootcamp ini, akan dipelajari hal hal penting yang perlu dikuasai untuk menjamin software yang dikembangkan agar memenuhi kualitas tertentu.",
             "benefit": [
@@ -39,6 +41,8 @@
             "discount": 10,
             "status": "Selesai",
             "startDate": "23 September 2024",
+            "endDate": "25 September 2024",
+            "statusPembayaran": "Proses",
             "image": "image.png"
         },
 
@@ -49,6 +53,8 @@
             "discount": 10,
             "status": "Masa Pendaftaran",
             "startDate": "20 September 2024",
+            "endDate": "25 September 2024",
+            "statusPembayaran": "Proses",
             "image": "ReactJS.png"
         },
 
@@ -59,6 +65,8 @@
             "discount": 20,
             "status": "Sedang Berlangsung",
             "startDate": "26 Agustus 2024",
+            "endDate": "25 September 2024",
+            "statusPembayaran": "Proses",
             "image": "automation-testing.png"
         },
 
@@ -69,6 +77,8 @@
             "discount": 10,
             "status": "selesai",
             "startDate": "22 Agustus 2024",
+            "endDate": "25 September 2024",
+            "statusPembayaran": "Proses",
             "image": "automation-testing.png"
         },
 
@@ -79,6 +89,8 @@
             "discount": 10,
             "status": "Masa Pendaftaran",
             "startDate": "20 Agustus 2024",
+            "endDate": "25 September 2024",
+            "statusPembayaran": "Proses",
             "image": "manual-testing.png"
         }
        
