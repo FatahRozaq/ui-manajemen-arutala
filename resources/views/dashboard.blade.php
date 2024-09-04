@@ -10,77 +10,122 @@
 
   <section class="section dashboard">
     <div class="row">
-    <div class="col-xxl-3 col-xl-3">
-      <div class="card info-card sales-card">
+      <div class="col-xxl-3 col-xl-3">
+        <div class="card info-card sales-card">
 
-        <div class="filter">
-          <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-            <li class="dropdown-header text-start">
-              <h6>Filter</h6>
-            </li>
-
-            <li><a class="dropdown-item" href="#">Today</a></li>
-            <li><a class="dropdown-item" href="#">This Month</a></li>
-            <li><a class="dropdown-item" href="#">This Year</a></li>
-          </ul>
-        </div>
-
-        <div class="card-body">
-          <h5 class="card-title">Sales <span>| Today</span></h5>
-
-          <div class="d-flex align-items-center">
-            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-              <i class="bi bi-cart"></i>
-            </div>
-            <div class="ps-3">
-              <h6>145</h6>
-              <span class="text-success small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">increase</span>
-
-            </div>
+          <div class="filter">
+            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow wide-dropdown">
+              <li class="dropdown-header text-start">
+                <h6>Filter</h6>
+              </li>
+              <li class="dropdown-item">
+                <label for="year">Tahun:</label>
+                <select id="year" class="form-select">
+                  <option value="2021">2021</option>
+                  <option value="2022">2022</option>
+                  <option value="2023">2023</option>
+                  <option value="2024">2024</option>
+                </select>
+              </li>
+              <li class="dropdown-item d-flex justify-content-between align-items-center">
+                <div>
+                  <label for="start-month">Bulan Awal:</label>
+                  <select id="start-month" class="form-select">
+                    <option value="1">Januari</option>
+                    <option value="2">Februari</option>
+                    <option value="3">Maret</option>
+                    <option value="4">April</option>
+                    <option value="5">Mei</option>
+                    <option value="6">Juni</option>
+                    <option value="7">Juli</option>
+                    <option value="8">Agustus</option>
+                    <option value="9">September</option>
+                    <option value="10">Oktober</option>
+                    <option value="11">November</option>
+                    <option value="12">Desember</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="end-month">Bulan Akhir:</label>
+                  <select id="end-month" class="form-select">
+                    <option value="1">Januari</option>
+                    <option value="2">Februari</option>
+                    <option value="3">Maret</option>
+                    <option value="4">April</option>
+                    <option value="5">Mei</option>
+                    <option value="6">Juni</option>
+                    <option value="7">Juli</option>
+                    <option value="8">Agustus</option>
+                    <option value="9">September</option>
+                    <option value="10">Oktober</option>
+                    <option value="11">November</option>
+                    <option value="12">Desember</option>
+                  </select>
+                </div>
+              </li>
+              <li class="dropdown-footer text-end">
+                <button class="btn btn-primary apply-btn">Apply</button>
+              </li>
+            </ul>
           </div>
-        </div>
-        
 
-      </div>
+            <div class="card-body">
+                <h5 class="card-title">Pendaftar <span>| Month</span></h5>
 
-
-    </div><!-- End Sales Card -->
-
-    <!-- Revenue Card -->
-    <div class="col-xxl-2 col-xl-3">
-      <div class="card info-card revenue-card">
-
-        <div class="filter">
-          <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-            <li class="dropdown-header text-start">
-              <h6>Filter</h6>
-            </li>
-
-            <li><a class="dropdown-item" href="#">Today</a></li>
-            <li><a class="dropdown-item" href="#">This Month</a></li>
-            <li><a class="dropdown-item" href="#">This Year</a></li>
-          </ul>
-        </div>
-
-        <div class="card-body">
-          <h5 class="card-title">Revenue <span>| This Month</span></h5>
-
-          <div class="d-flex align-items-center">
-            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-              <i class="bi bi-currency-dollar"></i>
+                <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                        <i class="bi bi-people"></i>
+                    </div>
+                    <div class="ps-3">
+                        <h6 id="total-pendaftar">Loading...</h6> <!-- Tempat untuk total pendaftar -->
+                        {{-- <span class="text-success small pt-1 fw-bold">12%</span> 
+                        <span class="text-muted small pt-2 ps-1">increase</span> --}}
+                    </div>
+                </div>
             </div>
-            <div class="ps-3">
-              <h6>$3,264</h6>
-              <span class="text-success small pt-1 fw-bold">8%</span> <span class="text-muted small pt-2 ps-1">increase</span>
 
-            </div>
-          </div>
         </div>
+    </div>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+          // Fungsi untuk mengambil data dengan filter
+          function fetchPendaftarData(year, startMonth, endMonth) {
+              const url = new URL('/api/dashboard/pendaftar', window.location.origin);
+              url.searchParams.append('year', year);
+              url.searchParams.append('startMonth', startMonth);
+              url.searchParams.append('endMonth', endMonth);
+      
+              fetch(url)
+                  .then(response => response.json())
+                  .then(data => {
+                      if (data.status === 'success') {
+                          // Update jumlah pendaftar
+                          document.getElementById('total-pendaftar').textContent = data.jumlah_pendaftar;
+                      } else {
+                          console.error(data.message);
+                      }
+                  })
+                  .catch(error => {
+                      console.error('Error fetching data:', error);
+                  });
+          }
+      
+          // Event listener untuk tombol Apply
+          document.querySelector('.apply-btn').addEventListener('click', function() {
+              const year = document.getElementById('year').value;
+              const startMonth = document.getElementById('start-month').value;
+              const endMonth = document.getElementById('end-month').value;
+      
+              fetchPendaftarData(year, startMonth, endMonth);
+          });
+      
+          // Memuat data awal saat halaman dimuat
+          fetchPendaftarData(new Date().getFullYear(), 1, 12); // Default: tahun ini, dari Januari hingga Desember
+      });
+      </script>
+      
 
-      </div>
-    </div><!-- End Revenue Card -->
 
     <!-- Customers Card -->
     <div class="col-xxl-3 col-xl-3">
@@ -89,34 +134,151 @@
 
         <div class="filter">
           <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow wide-dropdown">
             <li class="dropdown-header text-start">
               <h6>Filter</h6>
             </li>
-
-            <li><a class="dropdown-item" href="#">Today</a></li>
-            <li><a class="dropdown-item" href="#">This Month</a></li>
-            <li><a class="dropdown-item" href="#">This Year</a></li>
+            <li class="dropdown-item">
+              <label for="pelatihan">Pelatihan:</label>
+              <select id="pelatihan" class="form-select">
+                  <option value="">Semua Pelatihan</option>
+              </select>
+          </li>
+          <li class="dropdown-item">
+              <label for="batch">Batch:</label>
+              <select id="batch" class="form-select">
+                  <option value="">Semua Batch</option>
+              </select>
+          </li>
+          
+            <li class="dropdown-footer text-end">
+              <button class="btn btn-primary apply-btn">Apply</button>
+            </li>
           </ul>
         </div>
 
         <div class="card-body">
-          <h5 class="card-title">Customers <span>| This Year</span></h5>
+          <h5 class="card-title">Peserta <span></span></h5>
 
           <div class="d-flex align-items-center">
             <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
               <i class="bi bi-people"></i>
             </div>
             <div class="ps-3">
-              <h6>1244</h6>
-              <span class="text-danger small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">decrease</span>
+              <h6 id="total-peserta">0</h6> <!-- Pastikan elemen ini memiliki ID yang benar -->
+              
             </div>
+            
+            
           </div>
 
         </div>
       </div>
 
     </div><!-- End Customers Card -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+          // Mengambil daftar pelatihan dari API dan mengisi dropdown
+          function fetchPelatihanList() {
+              fetch('/api/dashboard/pelatihan-list')
+                  .then(response => response.json())
+                  .then(data => {
+                      if (data.status === 'success') {
+                          const pelatihanSelect = document.getElementById('pelatihan');
+                          pelatihanSelect.innerHTML = '<option value="">Semua Pelatihan</option>'; // Reset dropdown
+      
+                          data.data.forEach(pelatihan => {
+                              const option = document.createElement('option');
+                              option.value = pelatihan.id_pelatihan;
+                              option.textContent = pelatihan.nama_pelatihan;
+                              pelatihanSelect.appendChild(option);
+                          });
+                      } else {
+                          console.error(data.message);
+                      }
+                  })
+                  .catch(error => console.error('Error fetching pelatihan list:', error));
+          }
+      
+          // Mengambil daftar batch berdasarkan pelatihan yang dipilih
+          function fetchBatchList(idPelatihan) {
+              const url = new URL('/api/dashboard/batch-list', window.location.origin);
+              url.searchParams.append('id_pelatihan', idPelatihan);
+      
+              fetch(url)
+                  .then(response => response.json())
+                  .then(data => {
+                      if (data.status === 'success') {
+                          const batchSelect = document.getElementById('batch');
+                          batchSelect.innerHTML = '<option value="">Semua Batch</option>'; // Reset dropdown
+      
+                          data.data.forEach(batch => {
+                              const option = document.createElement('option');
+                              option.value = batch.batch;
+                              option.textContent = 'Batch ' + batch.batch;
+                              batchSelect.appendChild(option);
+                          });
+                      } else {
+                          console.error(data.message);
+                      }
+                  })
+                  .catch(error => console.error('Error fetching batch list:', error));
+          }
+      
+          // Fungsi untuk mengambil total peserta dengan filter
+          // Fungsi untuk mengambil total peserta dengan filter
+          function fetchTotalPeserta(idPelatihan = '', batch = '') {
+        const url = new URL('/api/dashboard/total-peserta', window.location.origin);
+        
+        if (idPelatihan) {
+            url.searchParams.append('id_pelatihan', idPelatihan);
+        }
+        
+        if (batch) {
+            url.searchParams.append('batch', batch);
+        }
+
+        console.log('Fetching total peserta with URL:', url.toString());
+
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                console.log('API Response:', data);
+                if (data.status === 'success') {
+                    // Mengambil jumlah total peserta berdasarkan agenda
+                    let totalPeserta = 0;
+                    if (data.total_peserta.length > 0) {
+                        totalPeserta = data.total_peserta.reduce((acc, curr) => acc + curr.total_peserta, 0);
+                    }
+                    
+                    document.getElementById('total-peserta').textContent = totalPeserta; // Update tampilan total peserta
+                } else {
+                    console.error('API Error:', data.message);
+                }
+            })
+            .catch(error => console.error('Error fetching total peserta:', error));
+    }
+
+    document.querySelector('.apply-btn').addEventListener('click', function() {
+        const idPelatihan = document.getElementById('pelatihan').value;
+        const batch = document.getElementById('batch').value;
+        
+        console.log(`Applying filter with Pelatihan ID: ${idPelatihan} and Batch: ${batch}`);
+
+        fetchTotalPeserta(idPelatihan, batch);
+    });
+
+    document.getElementById('pelatihan').addEventListener('change', function() {
+        const idPelatihan = this.value;
+        console.log(`Pelatihan changed: ${idPelatihan}`);
+        fetchBatchList(idPelatihan);
+    });
+
+    fetchPelatihanList(); // Ambil daftar pelatihan saat halaman dimuat
+    fetchTotalPeserta();  // Default tanpa filter
+});
+      </script>
+      
 
     <div class="col-xxl-3 col-xl-3">
 
@@ -182,18 +344,45 @@
         
 
         <div class="card-body">
-          <h5 class="card-title">Customers <span>| This Year</span></h5>
-
+          <h5 class="card-title">Pelatihan <span></span></h5>
+        
           <div class="d-flex align-items-center">
             <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-              <i class="bi bi-people"></i>
+              <i class="bi bi-book"></i>
             </div>
             <div class="ps-3">
-              <h6>1244</h6>
-              <span class="text-danger small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">decrease</span>
-
+              <h6 id="total-pelatihan">0</h6> <!-- Tambahkan ID untuk menampilkan total pelatihan -->
+              {{-- <span class="text-danger small pt-1 fw-bold">12%</span> 
+              <span class="text-muted small pt-2 ps-1">decrease</span> --}}
             </div>
           </div>
+        </div>
+        
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Fungsi untuk mengambil total pelatihan
+            function fetchTotalPelatihan() {
+                const url = '/api/dashboard/total-pelatihan';
+        
+                fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('API Response for Total Pelatihan:', data); // Log untuk memverifikasi respons API
+                        if (data.status === 'success') {
+                            // Update tampilan total pelatihan
+                            document.getElementById('total-pelatihan').textContent = data.jumlah_pelatihan;
+                        } else {
+                            console.error('Error:', data.message);
+                        }
+                    })
+                    .catch(error => console.error('Error fetching total pelatihan:', error));
+            }
+        
+            // Panggil fungsi untuk mengambil total pelatihan saat halaman dimuat
+            fetchTotalPelatihan();
+        });
+        </script>
+        
 
         </div>
       </div>
@@ -262,18 +451,11 @@
           
                 <script>
                   document.addEventListener("DOMContentLoaded", () => {
-                    const allSeries = {
-                      'Pelatihan Reguler': [100, 120, 300, 50, 90, 400],
-                      'Pelatihan Corporate': [80, 100, 130, 240, 80, 30],
-                      'Pelatihan Kampus': [60, 120, 100, 60, 20, 120],
-                      'Webinar': [50, 100, 50, 80, 160, 250],
-                      'Sertifikasi Kampus': [40, 80, 120, 60, 20, 240],
-                    };
-          
-                    let selectedFilters = new Set(Object.keys(allSeries));
-          
+                    const allSeries = {}; // Ini akan menampung data dari API
+                    let selectedFilters = new Set();
+                  
                     const chart = new ApexCharts(document.querySelector("#reportsChart"), {
-                      series: Object.entries(allSeries).map(([name, data]) => ({ name, data })),
+                      series: [],
                       chart: {
                         height: 350,
                         type: 'area',
@@ -303,25 +485,65 @@
                       },
                       xaxis: {
                         type: 'category',
-                        categories: ["2021", "2022", "2023", "2024", "2025", "2026"]
+                        categories: [] // Bulan akan diisi berdasarkan data API
                       },
                       tooltip: {
                         x: {
-                          format: 'yyyy'
+                          format: 'MM/yyyy'
                         },
                       }
                     });
-          
+                  
                     chart.render();
-          
+                  
                     const updateChart = () => {
                       const series = [];
                       selectedFilters.forEach(filter => {
-                        series.push({ name: filter, data: allSeries[filter] });
+                        if (allSeries[filter]) {
+                          series.push({ name: filter, data: allSeries[filter] });
+                        }
                       });
                       chart.updateSeries(series);
                     };
-          
+                  
+                    const fetchTrenPelatihan = () => {
+                      fetch('/api/dashboard/tren-pelatihan')
+                        .then(response => response.json())
+                        .then(data => {
+                          if (data.status === 'success') {
+                            const trenData = data.tren_pelatihan;
+                            const months = new Set(); // Untuk mengumpulkan bulan
+                  
+                            trenData.forEach(pelatihan => {
+                              pelatihan.agenda.forEach(agenda => {
+                                agenda.jumlah_peserta_per_bulan.forEach(bulanData => {
+                                  const monthName = new Date(bulanData.bulan).toLocaleString('default', { month: 'short', year: 'numeric' });
+                                  months.add(monthName);
+                  
+                                  const filterName = `${pelatihan.nama_pelatihan} Batch ${agenda.batch}`;
+                                  if (!allSeries[filterName]) {
+                                    allSeries[filterName] = [];
+                                  }
+                                  allSeries[filterName].push(bulanData.jumlah_peserta);
+                                });
+                              });
+                            });
+                  
+                            chart.updateOptions({
+                              xaxis: {
+                                categories: Array.from(months).sort((a, b) => new Date(a) - new Date(b))
+                              }
+                            });
+                  
+                            selectedFilters = new Set(Object.keys(allSeries));
+                            updateChart();
+                          } else {
+                            console.error('Error fetching tren pelatihan:', data.message);
+                          }
+                        })
+                        .catch(error => console.error('Error fetching tren pelatihan:', error));
+                    };
+                  
                     document.querySelectorAll('.filter-checkbox').forEach(item => {
                       item.addEventListener('change', event => {
                         const filter = event.target.getAttribute('data-filter');
@@ -333,14 +555,18 @@
                         updateChart();
                       });
                     });
-          
+                  
                     document.querySelectorAll('.pelatihan').forEach(item => {
                       item.addEventListener('click', event => {
                         event.stopPropagation();
                       });
                     });
+                  
+                    fetchTrenPelatihan();
                   });
-                </script>
+                  </script>
+                  
+                  
                 <!-- End Line Chart -->
               </div>
             </div>
@@ -351,6 +577,88 @@
               margin-right: 8px;
             }
           </style>
+
+            <div class="pieChart5Teratas d-flex justify-content-between" style="gap: 20px;">
+
+              <!-- Card untuk Provinsi -->
+              <div class="card d-flex flex-grow-1" style="flex-basis: 48%;">
+                <div class="filter">
+                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                </div>
+                <div class="card-body">
+                  <h5 class="card-title">5 Provinsi Teratas</h5>
+
+                  <!-- Pie Chart -->
+                  <div id="pieChartProvinsi"></div>
+                </div>
+              </div>
+
+              <!-- Card untuk Kota -->
+              <div class="card d-flex flex-grow-1" style="flex-basis: 48%;">
+                <div class="filter">
+                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                </div>
+                <div class="card-body">
+                  <h5 class="card-title">5 Kota Teratas</h5>
+
+                  <!-- Pie Chart -->
+                  <div id="pieChartKota"></div>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Script untuk Mengambil Data dari API dan Membuat Pie Chart -->
+            <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+            <script>
+              document.addEventListener("DOMContentLoaded", () => {
+                // Fetch data untuk 5 provinsi teratas
+                axios.get('/api/dashboard/top-provinces')
+                  .then(response => {
+                    const data = response.data.top_provinces;
+                    const series = data.map(item => item.jumlah); // Ambil jumlah peserta
+                    const labels = data.map(item => item.provinsi); // Ambil nama provinsi
+
+                    new ApexCharts(document.querySelector("#pieChartProvinsi"), {
+                      series: series,
+                      chart: {
+                        height: 350,
+                        type: 'pie',
+                        toolbar: {
+                          show: true
+                        }
+                      },
+                      labels: labels
+                    }).render();
+                  })
+                  .catch(error => {
+                    console.error('Error fetching provinces data:', error);
+                  });
+
+                // Fetch data untuk 5 kota teratas
+                axios.get('/api/dashboard/top-city')
+                  .then(response => {
+                    const data = response.data.top_cities;
+                    const series = data.map(item => item.jumlah); // Ambil jumlah peserta
+                    const labels = data.map(item => item.kab_kota); // Ambil nama kota
+
+                    new ApexCharts(document.querySelector("#pieChartKota"), {
+                      series: series,
+                      chart: {
+                        height: 350,
+                        type: 'pie',
+                        toolbar: {
+                          show: true
+                        }
+                      },
+                      labels: labels
+                    }).render();
+                  })
+                  .catch(error => {
+                    console.error('Error fetching cities data:', error);
+                  });
+              });
+            </script>
           
 
           <!-- Recent Sales
@@ -401,68 +709,20 @@
               {{-- <p></p> --}}
 
               <!-- Table with stripped rows -->
-              <table class="table datatable">
+              <table id="dataUniversitiesParticipantsTable" class="table table-striped">
                 <thead>
-                  <tr>
-                    <th>
-                      Perguruan Tinggi
-                    </th>
-                    <th>Total Peserta</th>
-                    
-          
-                  </tr>
+                    <tr>
+                        <th>Perguruan Tinggi</th>
+                        <th>Total Peserta</th>
+                    </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>Politeknik Negeri Bandung</td>
-                    <td>9958</td>
-                  </tr>
-                  <tr>
-                    <td>Institut Negeri Bandung</td>
-                    <td>8971</td>
-                  </tr>
-                  <tr>
-                    <td>Universitas Gadjah Mada</td>
-                    <td>3147</td>
-                  </tr>
-                  <tr>
-                    <td>Universitas Indonesia</td>
-                    <td>3497</td>
-                  </tr>
-                  <tr>
-                    <td>Blossom Dickerson</td>
-                    <td>5018</td>
-                  </tr>
-                  <tr>
-                    <td>Elliott Snyder</td>
-                    <td>3925</td>
-                  </tr>
-                  <tr>
-                    <td>Castor Pugh</td>
-                    <td>9488</td>
-                  </tr>
-                  <tr>
-                    <td>Pearl Carlson</td>
-                    <td>6231</td>
-                  </tr>
-                  <tr>
-                    <td>Deirdre Bridges</td>
-                    <td>1579</td>
-                  </tr>
-                  <tr>
-                    <td>Daniel Baldwin</td>
-                    <td>6095</td>
-                  </tr>
-                  <tr>
-                    <td>Phelan Kane</td>
-                    <td>9519</td>
-                  </tr>
-                  <tr>
-                    <td>Quentin Salas</td>
-                    <td>1339</td>
-                  </tr>
+                    <tr>
+                        <td>Politeknik Negeri Bandung</td>
+                        <td>9958</td>
+                    </tr>
                 </tbody>
-              </table>
+            </table>
               <!-- End Table with stripped rows -->
 
             </div>
@@ -476,68 +736,20 @@
               {{-- <p></p> --}}
 
               <!-- Table with stripped rows -->
-              <table class="table datatable">
+              <table id="dataActivityTable" class="table table-striped">
                 <thead>
-                  <tr>
-                    <th>
-                      Aktivitas
-                    </th>
-                    <th>Total Peserta</th>
-                   
-          
-                  </tr>
+                    <tr>
+                        <th>Aktivitas</th>
+                        <th>Total Peserta</th>
+                    </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>Freelance</td>
-                    <td>9958</td>
-                  </tr>
-                  <tr>
-                    <td>Karyawan</td>
-                    <td>8971</td>
-                  </tr>
-                  <tr>
-                    <td>Fresh Graduate</td>
-                    <td>3147</td>
-                  </tr>
-                  <tr>
-                    <td>Mahasiswa</td>
-                    <td>3497</td>
-                  </tr>
-                  <tr>
-                    <td>Administrasi</td>
-                    <td>5018</td>
-                  </tr>
-                  <tr>
-                    <td>Elliott Snyder</td>
-                    <td>3925</td>
-                  </tr>
-                  <tr>
-                    <td>Castor Pugh</td>
-                    <td>9488</td>
-                  </tr>
-                  <tr>
-                    <td>Pearl Carlson</td>
-                    <td>6231</td>
-                  </tr>
-                  <tr>
-                    <td>Deirdre Bridges</td>
-                    <td>1579</td>
-                  </tr>
-                  <tr>
-                    <td>Daniel Baldwin</td>
-                    <td>6095</td>
-                  </tr>
-                  <tr>
-                    <td>Phelan Kane</td>
-                    <td>9519</td>
-                  </tr>
-                  <tr>
-                    <td>Quentin Salas</td>
-                    <td>1339</td>
-                  </tr>
+                    <tr>
+                        <td>Politeknik Negeri Bandung</td>
+                        <td>9958</td>
+                    </tr>
                 </tbody>
-              </table>
+            </table>
               <!-- End Table with stripped rows -->
 
             </div>
@@ -545,89 +757,28 @@
 
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title">Daftar Perusahaan yang ikut</h5>
-              <p></p>
+              <h5 class="card-title">Jumlah Peserta Berdasarkan Perusahaan</h5>
+              {{-- <p></p> --}}
 
               <!-- Table with stripped rows -->
-              <table class="table datatable">
+              <table id="dataCompanyTable" class="table table-striped">
                 <thead>
-                  <tr>
-                    <th>
-                      Perusahaan
-                    </th>
-                    <th>Total Peserta</th>
-                    
-          
-                  </tr>
+                    <tr>
+                        <th>Perusahaan</th>
+                        <th>Total Peserta</th>
+                    </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>Telkom Indonesia</td>
-                    <td>9958</td>
-                    
-                  </tr>
-                  <tr>
-                    <td>PT Padepokan Tujuh Sembilan</td>
-                    <td>8971</td>
-                    
-                  </tr>
-                  <tr>
-                    <td>Yukuensi</td>
-                    <td>3147</td>
-                    
-                  </tr>
-                  <tr>
-                    <td>Mitra Inegrasi Informatika</td>
-                    <td>3497</td>
-                    
-                  </tr>
-                  <tr>
-                    <td>PT Mitra Seribu Saudara</td>
-                    <td>5018</td>
-                    
-                  </tr>
-                  <tr>
-                    <td>Elliott Snyder</td>
-                    <td>3925</td>
-                    
-                  </tr>
-                  <tr>
-                    <td>Castor Pugh</td>
-                    <td>9488</td>
-                    
-                  </tr>
-                  <tr>
-                    <td>Pearl Carlson</td>
-                    <td>6231</td>
-                    
-                  </tr>
-                  <tr>
-                    <td>Deirdre Bridges</td>
-                    <td>1579</td>
-                    
-                  </tr>
-                  <tr>
-                    <td>Daniel Baldwin</td>
-                    <td>6095</td>
-                    
-                  </tr>
-                  <tr>
-                    <td>Phelan Kane</td>
-                    <td>9519</td>
-                    
-                  </tr>
-                  <tr>
-                    <td>Quentin Salas</td>
-                    <td>1339</td>
-                    
-                  </tr>
+                    <tr>
+                        <td>Politeknik Negeri Bandung</td>
+                        <td>9958</td>
+                    </tr>
                 </tbody>
-              </table>
+            </table>
               <!-- End Table with stripped rows -->
 
             </div>
           </div>
-      
       
 
           <!-- Top Selling -->
@@ -724,78 +875,9 @@
       {{-- <div class="col-lg-"> --}}
 
         <!-- Recent Acti6vity -->
-
-        <div class="card col-lg-6">
-          <div class="filter">
-            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-            <!-- <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-              <li class="dropdown-header text-start">
-                <h6>Filter</h6>
-              </li>
-              <li><a class="dropdown-item" href="#">Provinsi</a></li>
-              <li><a class="dropdown-item" href="#">Kota</a></li>
-            </ul> -->
-          </div>
-          <div class="card-body">
-            <h5 class="card-title">5 Provinsi Teratas</h5>
-
-            <!-- Pie Chart -->
-            <div id="pieChartProvinsi"></div>
-
-            <script>
-              document.addEventListener("DOMContentLoaded", () => {
-                new ApexCharts(document.querySelector("#pieChartProvinsi"), {
-                  series: [44, 55, 13, 43, 22],
-                  chart: {
-                    height: 350,
-                    type: 'pie',
-                    toolbar: {
-                      show: true
-                    }
-                  },
-                  labels: ['Jawa Barat', 'JawFa Tengah', 'Jawa Timur', 'Bali', 'Banten']
-                }).render();
-              });
-            </script>
-
-        </div>
-        </div>
-
-        <div class="card col-lg-6">
-          <div class="filter">
-            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-            <!-- <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-              <li class="dropdown-header text-start">
-                <h6>Filter</h6>
-              </li>
-              <li><a class="dropdown-item" href="#">Provinsi</a></li>
-              <li><a class="dropdown-item" href="#">Kota</a></li>
-            </ul> -->
-          </div>
-          <div class="card-body">
-            <h5 class="card-title">5 Kota Teratas</h5>
-
-            <!-- Pie Chart -->
-            <div id="pieChartKota"></div>
-
-            <script>
-              document.addEventListener("DOMContentLoaded", () => {
-                new ApexCharts(document.querySelector("#pieChartKota"), {
-                  series: [44, 55, 13, 43, 22],
-                  chart: {
-                    height: 350,
-                    type: 'pie',
-                    toolbar: {
-                      show: true
-                    }
-                  },
-                  labels: ['Bandung', 'Jakarta', 'Surabaya', 'Denpasar', 'Jogja']
-                }).render();
-              });
-            </script>
-
-        </div>
-        </div>
+        
+        
+        
         
 
         <!-- Budget Report -->
@@ -1011,4 +1093,52 @@
   </section>
 
 
+@endsection
+@section('scripts')
+
+<!-- jQuery, DataTables, and Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css"/>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+
+<script>
+$(document).ready(function() {
+    // DataTable for Jumlah Peserta Berdasarkan Perguruan Tinggi
+    $('#dataUniversitiesParticipantsTable').DataTable({
+        "ajax": {
+            "url": "/api/dashboard/universities-participants",
+            "dataSrc": "data"
+        },
+        "columns": [
+            { "data": "nama_instansi" },
+            { "data": "total_peserta" }
+        ]
+    });
+
+    $('#dataActivityTable').DataTable({
+        "ajax": {
+            "url": "/api/dashboard/participants-by-activity",
+            "dataSrc": "data"
+        },
+        "columns": [
+            { "data": "aktivitas" },
+            { "data": "total_peserta" }
+        ]
+    });
+
+    $('#dataCompanyTable').DataTable({
+        "ajax": {
+            "url": "/api/dashboard/companies-participants",
+            "dataSrc": "data"
+        },
+        "columns": [
+            { "data": "nama_instansi" },
+            { "data": "total_peserta" }
+        ]
+    });
+});
+
+
+</script>
 @endsection

@@ -105,7 +105,7 @@
                 confirmButtonText: 'Ya, hapus!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    axios.delete(`/api/pelatihan/delete/${id}`)
+                    axios.delete(`/api/pelatihan/delete-pelatihan/${id}`) // Sesuaikan URL endpoint delete
                         .then(response => {
                             Swal.fire(
                                 'Terhapus!',
@@ -127,4 +127,5 @@
 
     });
 </script>
+
 @endsection

@@ -80,7 +80,7 @@ $(document).ready(function() {
                         <a href="/agenda/update-agenda?id=${row.id_agenda}" title="Update">
                             <i class="fas fa-edit text-warning"></i>
                         </a>
-                        <a href="#" class="delete-icon" data-id="${row.id}" title="Delete">
+                        <a href="#" class="delete-icon" data-id="${row.id_agenda}" title="Delete">
                             <i class="fas fa-trash-alt text-danger"></i>
                         </a>
                     `;
@@ -89,16 +89,38 @@ $(document).ready(function() {
         ]
     });
 
-    // Event listeners for icons
-    $('#dataAgendaPelatihanTable').on('click', '.update-icon', function() {
-        var id = $(this).data('id');
-        alert('Update icon clicked for ID: ' + id);
-    });
-
     $('#dataAgendaPelatihanTable').on('click', '.delete-icon', function() {
         var id = $(this).data('id');
-        alert('Delete icon clicked for ID: ' + id);
+        Swal.fire({
+            title: 'Apakah Anda yakin?',
+            text: "Anda tidak akan dapat mengembalikan ini!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, hapus!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axios.delete(`/api/agenda/delete-agenda/${id}`) // Sesuaikan URL endpoint delete
+                    .then(response => {
+                        Swal.fire(
+                            'Terhapus!',
+                            response.data.message,
+                            'success'
+                        )
+                        $('#dataAgendaPelatihanTable').DataTable().ajax.reload(); // Reload table data
+                    })
+                    .catch(error => {
+                        Swal.fire(
+                            'Gagal!',
+                            'Gagal menghapus data: ' + error.response.data.message,
+                            'error'
+                        );
+                    });
+            }
+        });
     });
+
 });
 </script>
 @endsection

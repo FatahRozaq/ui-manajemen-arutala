@@ -113,4 +113,10 @@ Route::prefix('dashboard')->group(function () {
     Route::get('/universities-participants', [ApiDashboardController::class, 'getUniversitiesParticipants']);
     Route::get('/companies-participants', [ApiDashboardController::class, 'getCompaniesParticipants']);
     Route::get('/participants-by-activity', [ApiDashboardController::class, 'getParticipantsByActivity']);
+    Route::get('/total-peserta', [ApiDashboardController::class, 'getTotalPeserta']);
+    Route::get('/pelatihan-list', [ApiDashboardController::class, 'getPelatihanList']);
+    Route::get('/batch-list', [ApiDashboardController::class, 'getBatchList']);
+    Route::get('/top-city', [ApiDashboardController::class, 'getTopCities']);
+
+    Route::get('/total-pelatihan', [ApiDashboardController::class, 'getPelatihanCount']);
 });
