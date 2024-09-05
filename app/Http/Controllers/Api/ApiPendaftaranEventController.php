@@ -17,7 +17,7 @@ class ApiPendaftaranEventController extends Controller
     public function show($idAgenda)
     {
         try {
-            $pendaftar = Auth::user();
+            $pendaftar = auth('api')->user();;
             $agenda = AgendaPelatihan::with('pelatihan')->where('id_agenda', $idAgenda)->first();
 
             if (!$agenda) {
@@ -100,7 +100,7 @@ class ApiPendaftaranEventController extends Controller
                 ], Response::HTTP_UNPROCESSABLE_ENTITY);
             }
 
-            $pendaftar = Pendaftar::find(Auth::id());
+            $pendaftar = Pendaftar::find(auth('api')->id());
 
             if ($pendaftar) {
                 $pendaftar->update([

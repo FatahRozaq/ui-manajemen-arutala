@@ -54,12 +54,12 @@ Route::prefix('pendaftar')->group(function () {
     Route::put('/{idPendaftar}', [ApiMasterPendaftar::class, 'update']);
 });
 
-Route::middleware('auth:sanctum')->prefix('profile')->group(function () {
+Route::middleware('auth:api')->prefix('profile')->group(function () {
     Route::put('update', [ApiProfilePeserta::class, 'update']);
     Route::get('/', [ApiProfilePeserta::class, 'show']);
 });
 
-Route::middleware('auth:sanctum')->prefix('pendaftaran-event')->group(function () {
+Route::middleware('auth:api')->prefix('pendaftaran-event')->group(function () {
     Route::get('/{idAgenda}', [ApiPendaftaranEventController::class, 'show']);
     Route::post('/daftar', [ApiPendaftaranEventController::class, 'store']);
 });

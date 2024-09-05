@@ -12,6 +12,8 @@ class AuthCheck
     public function handle($request, Closure $next)
     {
         $user = Session::get('user');
+
+        // return response()->json($user);
         
         if (!$user) {
             return redirect('/login-page');

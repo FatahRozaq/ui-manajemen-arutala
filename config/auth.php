@@ -14,7 +14,7 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'web',
+        'guard' => 'api',
         'passwords' => 'users',
     ],
 
@@ -40,6 +40,12 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+
+        'api' => [
+            'driver' => 'jwt',
+            'provider' => 'pendaftar',
+            'hash' => false,
+        ],
     ],
 
     /*
@@ -63,6 +69,11 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
+        ],
+
+        'pendaftar' => [ // Tambahkan provider baru untuk pendaftar
+            'driver' => 'eloquent',
+            'model' => App\Models\Pendaftar::class,
         ],
 
         // 'users' => [

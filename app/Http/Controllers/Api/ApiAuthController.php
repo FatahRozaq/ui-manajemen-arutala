@@ -10,6 +10,8 @@ use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use Tymon\JWTAuth\Facades\JWTAuth;
+use Tymon\JWTAuth\Exceptions\JWTException;
 
 class ApiAuthController extends Controller
 {
@@ -51,7 +53,8 @@ class ApiAuthController extends Controller
                 'created_time' => Carbon::now(),
             ]);
 
-            $token = $pendaftar->createToken('auth_token')->plainTextToken;
+            // Buat token JWT untuk pengguna yang baru didaftarkan
+            $token = JWTAuth::fromUser($pendaftar);
 
             return response()->json([
                 'data' => $pendaftar,
@@ -78,7 +81,6 @@ class ApiAuthController extends Controller
         }
     }
 
-
     public function login(Request $request)
     {
         try {
@@ -95,15 +97,16 @@ class ApiAuthController extends Controller
                 'password' => 'required|string',
             ], $messages);
 
-            $pendaftar = Pendaftar::where('email', $request->email)->first();
+            $credentials = $request->only('email', 'password');
 
-            if (! $pendaftar || ! Hash::check($request->password, $pendaftar->password)) {
+            // Menggunakan guard 'api' untuk mencoba membuat token JWT
+            if (! $token = auth('api')->attempt($credentials)) {
                 throw ValidationException::withMessages([
                     'email' => ['Email atau password salah'],
                 ]);
             }
 
-            $token = $pendaftar->createToken('auth_token')->plainTextToken;
+            $pendaftar = auth('api')->user();
 
             return response()->json([
                 'data' => $pendaftar,
@@ -116,10 +119,17 @@ class ApiAuthController extends Controller
         } catch (ValidationException $e) {
             return response()->json([
                 'message' => 'Login gagal',
-                'error' => $e->errors(),  // Memastikan semua error validasi dikembalikan
+                'error' => $e->errors(),
                 'statusCode' => Response::HTTP_UNPROCESSABLE_ENTITY,
                 'status' => 'error'
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        } catch (JWTException $e) {
+            return response()->json([
+                'message' => 'Tidak dapat membuat token',
+                'error' => $e->getMessage(),
+                'statusCode' => Response::HTTP_INTERNAL_SERVER_ERROR,
+                'status' => 'error'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
         } catch (Exception $e) {
             return response()->json([
                 'message' => 'Terjadi kesalahan saat login',
@@ -134,7 +144,8 @@ class ApiAuthController extends Controller
     public function logout(Request $request)
     {
         try {
-            $request->user()->tokens()->delete();
+            // Hapus token pengguna yang sedang login
+            JWTAuth::invalidate(JWTAuth::getToken());
 
             return response()->json([
                 'message' => 'Logout berhasil',
@@ -142,9 +153,32 @@ class ApiAuthController extends Controller
                 'status' => 'success'
             ], Response::HTTP_OK);
 
-        } catch (Exception $e) {
+        } catch (JWTException $e) {
             return response()->json([
                 'message' => 'Logout gagal',
+                'error' => $e->getMessage(),
+                'statusCode' => Response::HTTP_INTERNAL_SERVER_ERROR,
+                'status' => 'error'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function getUserId(Request $request)
+    {
+        try {
+            // Mengambil pengguna yang sedang login
+            $user = JWTAuth::parseToken()->authenticate();
+
+            return response()->json([
+                'user_id' => $user->id,
+                'message' => 'User ditemukan',
+                'statusCode' => Response::HTTP_OK,
+                'status' => 'success'
+            ], Response::HTTP_OK);
+
+        } catch (JWTException $e) {
+            return response()->json([
+                'message' => 'Gagal mengambil data pengguna',
                 'error' => $e->getMessage(),
                 'statusCode' => Response::HTTP_INTERNAL_SERVER_ERROR,
                 'status' => 'error'

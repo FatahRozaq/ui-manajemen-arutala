@@ -2,14 +2,15 @@
 
 namespace App\Models;
 
-use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laravel\Sanctum\HasApiTokens;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class Pendaftar extends Authenticatable
+class Pendaftar extends Authenticatable implements JWTSubject
 {
-    use HasApiTokens, Notifiable, HasFactory;
+    use Notifiable, HasFactory, HasApiTokens;
 
     protected $table = 'pendaftar';
 
@@ -32,16 +33,33 @@ class Pendaftar extends Authenticatable
         'is_deleted'
     ];
 
-    // public $timestamps = false;  
-
     const CREATED_AT = 'created_time';
     const UPDATED_AT = 'modified_time';
 
-    // public $timestamps = false;
-
+    // Fungsi relasi dengan tabel PendaftaranEvent
     public function pendaftaranEvent()
     {
         return $this->hasMany(PendaftaranEvent::class, 'id_peserta', 'id_pendaftar');
     }
 
+    // Implementasi JWTSubject
+    /**
+     * Get the identifier that will be stored in the JWT subject claim.
+     *
+     * @return mixed
+     */
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    /**
+     * Return a key value array, containing any custom claims to be added to the JWT.
+     *
+     * @return array
+     */
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
 }

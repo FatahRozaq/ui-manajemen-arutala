@@ -67,5 +67,7 @@ class Kernel extends HttpKernel
         // Menambahkan middleware BearerTokenMiddleware
         'bearer.token' => \App\Http\Middleware\BearerTokenMiddleware::class,
         'auth.check' => \App\Http\Middleware\AuthCheck::class,
+        // 'jwt.auth' => \App\Http\Middleware\JwtMiddleware::class,
+        'auth.jwt' => \Tymon\JWTAuth\Http\Middleware\Authenticate::class,
     ];
 }

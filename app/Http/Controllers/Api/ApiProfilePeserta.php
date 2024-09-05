@@ -9,13 +9,19 @@ use Exception;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use Tymon\JWTAuth\Facades\JWTAuth;
+use Tymon\JWTAuth\Exceptions\JWTException;
 
 class ApiProfilePeserta extends Controller
 {
     public function show()
 {
     try {
-        $idUser = Auth::id();
+        // $idUser = Auth::id();
+        // $user = JWTAuth::parseToken()->authenticate();
+        // $idUser = $user->id;
+        $idUser = auth('api')->id();
+        // dd($idUser);
         $pendaftar = Pendaftar::where('id_pendaftar', $idUser)->first();
 
         if (!$pendaftar) {
@@ -102,7 +108,7 @@ class ApiProfilePeserta extends Controller
     }
 
     try {
-        $idUser = Auth::id();
+        $idUser = auth('api')->id();
         $pendaftar = Pendaftar::where('id_pendaftar', $idUser)->first();
 
         if (!$pendaftar) {
