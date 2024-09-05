@@ -17,6 +17,7 @@ class ApiMasterPelatihanController extends Controller
         try {
             // Ambil pelatihan beserta gambar dan agenda terkait
             $pelatihan = Pelatihan::with('agendaPelatihan')
+                ->where('is_deleted', false)
                 ->get(['id_pelatihan', 'nama_pelatihan', 'gambar_pelatihan']);
 
             // Siapkan data response
@@ -112,7 +113,6 @@ class ApiMasterPelatihanController extends Controller
         }
     }
 
-
     public function show($id)
     {
         try {
@@ -183,8 +183,6 @@ class ApiMasterPelatihanController extends Controller
             $pelatihan->save();
 
 
-
-
             // Return response dengan data yang baru diperbarui
             return response()->json([
                 'message' => 'Pelatihan berhasil diupdate',
@@ -242,73 +240,4 @@ class ApiMasterPelatihanController extends Controller
             ], 500);
         }
     }
-
-
-    // public function update(Request $request, $id)
-    // {
-    //     // dd($request->all());
-    //     try {
-    //         // Cari pelatihan berdasarkan ID
-    //         $pelatihan = Pelatihan::findOrFail($id);
-
-    //         // Update data pelatihan hanya jika field diberikan dalam request
-    //         if ($request->filled('nama_pelatihan')) {
-    //             $pelatihan->nama_pelatihan = $request->input('nama_pelatihan');
-    //         }
-
-    //         if ($request->hasFile('gambar_pelatihan')) {
-    //             // Hapus gambar lama jika ada
-    //             if ($pelatihan->gambar_pelatihan && Storage::exists('public/pelatihan/' . $pelatihan->gambar_pelatihan)) {
-    //                 Storage::delete('public/pelatihan/' . $pelatihan->gambar_pelatihan);
-    //             }
-
-    //             // Simpan gambar baru
-    //             $file = $request->file('gambar_pelatihan');
-    //             $filename = time() . '_' . $file->getClientOriginalName();
-    //             $path = $file->storeAs('public/pelatihan', $filename);
-    //             $pelatihan->gambar_pelatihan = $filename; // Simpan nama file saja
-    //         }
-
-    //         if ($request->filled('deskripsi')) {
-    //             $pelatihan->deskripsi = $request->input('deskripsi');
-    //         }
-
-    //         if ($request->filled('materi')) {
-    //             $pelatihan->materi = json_encode($request->input('materi'));
-    //         }
-
-    //         if ($request->filled('benefit')) {
-    //             $pelatihan->benefit = json_encode($request->input('benefit'));
-    //         }
-
-    //         $pelatihan->modified_by = 'Adminu'; // Atur sesuai kebutuhan Anda
-    //         $pelatihan->modified_time = now();
-
-    //         $pelatihan->save();
-
-    //         // Return response dengan data yang telah diperbarui
-    //         return response()->json([
-    //             'message' => 'Pelatihan berhasil diperbarui',
-    //             'statusCode' => 200,
-    //             'status' => 'success',
-    //             'data' => [
-    //                 'id_pelatihan' => $pelatihan->id_pelatihan,
-    //                 'nama_pelatihan' => $pelatihan->nama_pelatihan,
-    //                 'gambar_pelatihan' => $pelatihan->gambar_pelatihan,
-    //                 'deskripsi' => $pelatihan->deskripsi,
-    //                 'materi' => json_decode($pelatihan->materi),
-    //                 'benefit' => json_decode($pelatihan->benefit),
-    //                 'modified_by' => $pelatihan->modified_by,
-    //                 'modified_time' => $pelatihan->modified_time
-    //             ]
-    //         ], 200);
-    //     } catch (\Exception $e) {
-    //         return response()->json([
-    //             'message' => 'Gagal memperbarui pelatihan',
-    //             'statusCode' => 500,
-    //             'status' => 'error',
-    //             'error' => $e->getMessage()
-    //         ], 500);
-    //     }
-    // }
 }

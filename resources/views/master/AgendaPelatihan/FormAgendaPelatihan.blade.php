@@ -11,28 +11,23 @@
     .dropdown-item:hover {
         background-color: white;
     }
-  
-    .button-submit {
-      width: 100%;
-      display: flex;
-      flex: end;
-      justify-content: end;
-    }
-  
-    /* Styling for the selected item in Selectize */
-    /* Background color for selected mentor item */
 
-    .selectize-control.multi .selectize-input > .item{
+    .button-submit {
+        width: 100%;
+        display: flex;
+        flex: end;
+        justify-content: end;
+    }
+
+    .selectize-control.multi .selectize-input > .item {
         background: #e2e2e2;
-        color: #000; /* Optional: White text color for better contrast */
+        color: #000;
         border-radius: 20px;
-        padding-right: 25px; /* Space for the close icon */
+        padding-right: 25px;
         position: relative;
-        border-color: none;
         border: none;
     }
-  
-    /* Styling for the remove icon */
+
     .selectize-control .selectize-input.items.has-items .item .remove {
         position: absolute;
         top: 50%;
@@ -41,14 +36,7 @@
         cursor: pointer;
         color: #000;
     }
-  
-    .selectize-control .selectize-input.items.has-items .item .remove:hover {
-        /* color: #ff0000; Change color on hover */
-    }
-
-    
-  </style>
-  
+</style>
 
 <div class="pagetitle">
     <h1>Form Pelatihan</h1>
@@ -62,197 +50,227 @@
                     <h5 class="card-title">General Form Elements</h5>
 
                     <!-- General Form Elements -->
-                    <form>
+                    <form method="POST" action="{{ route('agenda.tambah') }}">
+                        @csrf
+                        
                         <!-- Nama Pelatihan -->
                         <div class="form-group row position-relative">
-                          <label for="trainingInput" class="col-sm-3 col-form-label">Nama Pelatihan</label>
-                          <div class="col-sm-9">
-                              <input type="text" class="form-control disable" id="trainingInput" value="Nama Pelatihan" aria-label="Disabled input example" disabled readonly>
-                              <div class="dropdown-menu" id="trainingDropdown"></div>
-                          </div>
-                      </div>
-
-                      <div class="form-group row position-relative">
-                        <label for="trainingInput" class="col-sm-3 col-form-label">Batch</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control disable" id="trainingInput" value="2" aria-label="Disabled input example" disabled readonly>
-                            <div class="dropdown-menu" id="trainingDropdown"></div>
+                            <label for="namaPelatihan" class="col-sm-3 col-form-label">Nama Pelatihan</label>
+                            <div class="col-sm-9">
+                                <select name="nama_pelatihan" id="namaPelatihan" class="form-control">
+                                    <!-- Options will be populated by JavaScript -->
+                                </select>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group row position-relative">
-                        <label for="trainingInput" class="col-sm-3 col-form-label">Start</label>
-                        <div class="col-sm-9">
-                            <input type="date" class="form-control disable" id="trainingInput">
-                            <div class="dropdown-menu" id="trainingDropdown"></div>
+                        <!-- Start Date -->
+                        <div class="form-group row position-relative">
+                            <label for="startDate" class="col-sm-3 col-form-label">Start Date</label>
+                            <div class="col-sm-9">
+                                <input type="date" name="start_date" class="form-control" id="startDate">
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group row position-relative">
-                        <label for="trainingInput" class="col-sm-3 col-form-label">End</label>
-                        <div class="col-sm-9">
-                            <input type="date" class="form-control disable" id="trainingInput">
-                            <div class="dropdown-menu" id="trainingDropdown"></div>
+                        <!-- End Date -->
+                        <div class="form-group row position-relative">
+                            <label for="endDate" class="col-sm-3 col-form-label">End Date</label>
+                            <div class="col-sm-9">
+                                <input type="date" name="end_date" class="form-control" id="endDate">
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group row position-relative">
-                        <label for="trainingInput" class="col-sm-3 col-form-label">Sesi</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control disable" id="trainingInput">
-                            <div class="dropdown-menu" id="trainingDropdown"></div>
+                        <!-- Sesi -->
+                        <div id="sesiContainer">
+                            <div class="form-group row position-relative mb-1">
+                                <label class="col-sm-3 col-form-label">Sesi</label>
+                                <div class="col-sm-9 input-group">
+                                    <input type="text" name="sesi[]" class="form-control">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-success add-sesi" type="button"><i class="bi bi-plus-circle"></i></button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
 
-                    <div id="materiContainer">
-                        <!-- Input untuk data numerik -->
+                        <!-- Investasi Numerik -->
                         <div class="form-group row position-relative mb-1">
                             <label class="col-sm-3 col-form-label">Investasi (Numerik)</label>
                             <div class="col-sm-9 input-group">
-                                <input type="number" class="form-control">
-                                <div class="input-group-append">
-                                    
-                                </div>
+                                <input type="number" name="investasi" class="form-control">
                             </div>
                         </div>
                     
-                        <!-- Input untuk data string -->
-                        <div class="form-group row position-relative mb-1">
-                            <label class="col-sm-3 col-form-label">Investasi (String)</label>
-                            <div class="col-sm-9 input-group">
-                                <input type="text" class="form-control">
-                                <div class="input-group-append">
-                                    <button class="btn btn-outline-success add-materi" type="button"><i class="bi bi-plus-circle"></i></button>
+                        <!-- Investasi String -->
+                        <div id="investasiContainer">
+                            <div class="form-group row position-relative mb-1">
+                                <label class="col-sm-3 col-form-label">Investasi (String)</label>
+                                <div class="col-sm-9 input-group">
+                                    <input type="text" name="investasi_info[]" class="form-control">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-success add-investasi" type="button"><i class="bi bi-plus-circle"></i></button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    
 
-                      <div class="form-group row position-relative mt-3">
-                        <label for="trainingInput" class="col-sm-3 col-form-label">Diskon %</label>
-                        <div class="col-sm-9">
-                            <input type="number" class="form-control disable" id="trainingInput">
-                            <div class="dropdown-menu" id="trainingDropdown"></div>
+                        <!-- Diskon -->
+                        <div class="form-group row position-relative mt-3">
+                            <label for="diskon" class="col-sm-3 col-form-label">Diskon %</label>
+                            <div class="col-sm-9">
+                                <input type="number" name="diskon" class="form-control" id="diskon">
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group row position-relative">
-                        <label for="trainingInput" class="col-sm-3 col-form-label">Status</label>
-                        <div class="col-sm-9">
-                        <select class="form-control" id="exampleFormControlSelect1">
-                            <option>Planning</option>
-                            <option>Masa Pendaftaran</option>
-                            <option>Sedang Berlangsung</option>
-                            <option>Selesai</option>
-                          </select>
+                        <!-- Status -->
+                        <div class="form-group row position-relative">
+                            <label for="status" class="col-sm-3 col-form-label">Status</label>
+                            <div class="col-sm-9">
+                                <select name="status" class="form-control" id="status">
+                                    <option value="Planning">Planning</option>
+                                    <option value="Masa Pendaftaran">Masa Pendaftaran</option>
+                                    <option value="Sedang Berlangsung">Sedang Berlangsung</option>
+                                    <option value="Selesai">Selesai</option>
+                                </select>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group row position-relative mt-3">
-                        <label for="trainingInput" class="col-sm-3 col-form-label">Link Mayar</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" id="trainingInput">
-                            <div class="dropdown-menu" id="trainingDropdown"></div>
+                        <div class="form-group row position-relative">
+                            <label for="startDate" class="col-sm-3 col-form-label">Start Pendaftaran</label>
+                            <div class="col-sm-9">
+                                <input type="date" name="start_pendaftaran" class="form-control" id="startDate">
+                            </div>
                         </div>
-                    </div>
+
+                        <div class="form-group row position-relative">
+                            <label for="startDate" class="col-sm-3 col-form-label">End Pendaftaran</label>
+                            <div class="col-sm-9">
+                                <input type="date" name="end_pendaftaran" class="form-control" id="startDate">
+                            </div>
+                        </div>
+
+                        <!-- Link Pembayaran -->
+                        <div class="form-group row position-relative mt-3">
+                            <label for="linkMayar" class="col-sm-3 col-form-label">Link Mayar</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="link_mayar" class="form-control" id="linkMayar">
+                            </div>
+                        </div>
 
                         <!-- Mentor -->
                         <div class="form-group row position-relative">
                             <label for="mentorInput" class="col-sm-3">Mentor</label>
                             <div class="col-sm-9">
-                                <select id="mentorInput" class="form" multiple></select>
+                                <select id="mentorInput" name="id_mentor[]" class="form" multiple>
+                                    <!-- Options will be populated by JavaScript -->
+                                </select>
                             </div>
                         </div>
 
-
                         <!-- Submit -->
                         <div class="button-submit mt-4">
-                          <button class="btn btn-success col-sm-3" type="button">Submit</button>
+                            <button class="btn btn-success col-sm-3" type="submit">Submit</button>
                         </div>
 
                     </form>
-                  </div>
+                </div>
+            </div>
         </div>
     </div>
 </section>
-
 @endsection
 
 @section('scripts')
-<!-- Pastikan jQuery dimuat sebelum Selectize -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/selectize@0.12.6/dist/js/standalone/selectize.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
 <script>
-    $(document).ready(function() {
-        var mentors = [
-            { id: 1, name: "John Doe" },
-            { id: 2, name: "Jane Smith" },
-            { id: 3, name: "Michael Johnson" },
-            { id: 4, name: "Emily Davis" },
-            { id: 5, name: "David Wilson" },
-            { id: 6, name: "Sarah Brown" },
-            { id: 7, name: "James Taylor" },
-            { id: 8, name: "Laura Martinez" },
-            { id: 9, name: "Robert Garcia" },
-            { id: 10, name: "Sophia Rodriguez" }
-        ];
-  
-        var selectize = $('#mentorInput').selectize({
-            options: mentors,
-            labelField: 'name',
-            valueField: 'id',
-            searchField: ['name'],
-            create: true,
-            placeholder: 'Pilih mentor...',
-            render: {
-                item: function(data, escape) {
-                    return '<div class="item">' + escape(data.name) + '<span class="remove bi bi-x" style="font-size:16px"></span></div>';
+$(document).ready(function() {
+    // Mengambil data pelatihan dan mentor menggunakan Axios
+    axios.get('/api/pelatihan-mentor-data') // Endpoint untuk mendapatkan data pelatihan dan mentor
+        .then(function (response) {
+            var pelatihans = response.data.pelatihans;
+            var mentors = response.data.mentors;
+
+            // Mengisi dropdown Nama Pelatihan
+            var pelatihanSelect = $('#namaPelatihan');
+            pelatihans.forEach(function(pelatihan) {
+                pelatihanSelect.append('<option value="' + pelatihan.nama_pelatihan + '">' + pelatihan.nama_pelatihan + '</option>');
+            });
+
+            // Mengisi dropdown Mentor dengan Selectize menggunakan data dari API
+            var mentorSelectize = $('#mentorInput').selectize({
+                options: mentors.map(function(mentor) {
+                    return { id: mentor.id_mentor, name: mentor.nama_mentor };
+                }),
+                create: false,
+                placeholder: 'Pilih mentor...',
+                labelField: 'name',
+                valueField: 'id',
+                searchField: ['name'],
+                render: {
+                    item: function(data, escape) {
+                        return '<div class="item">' + escape(data.name) + '<span class="remove bi bi-x" style="font-size:16px"></span></div>';
+                    }
+                },
+                onItemRemove: function(value) {
+                    var selectizeInstance = this;
+                    selectizeInstance.refreshOptions(false);
                 }
-            },
-            onItemRemove: function(value) {
-                // After removing an item, trigger refresh
-                var selectizeInstance = this;
-                selectizeInstance.refreshOptions(false); // Refresh without rebuilding
-            }
-        });
-  
-        // Handle click event on remove icon
-        $(document).on('click', '.remove', function() {
-            var $item = $(this).closest('.item');
-            var value = $item.attr('data-value');
-            selectize[0].selectize.removeItem(value);
-        });
-    });
+            });
 
-    document.addEventListener('click', function (e) {
-          if (!trainingInput.contains(e.target) && !trainingDropdown.contains(e.target)) {
-              trainingDropdown.classList.remove('show');
-          }
-      });
+            $(document).on('click', '.remove', function() {
+                var $item = $(this).closest('.item');
+                var value = $item.attr('data-value');
+                mentorSelectize[0].selectize.removeItem(value);
+            });
 
-      // Tambah kolom baru pada Materi
-      $('#materiContainer').on('click', '.add-materi', function () {
-        var newMateriRow = `
+        })
+        .catch(function (error) {
+            console.error('Gagal mengambil data:', error);
+        });
+
+    // Tambah kolom baru pada Sesi
+    $('#sesiContainer').on('click', '.add-sesi', function () {
+        var newSesiRow = `
             <div class="form-group row position-relative mb-1">
                 <label class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 input-group">
-                    <input type="text" class="form-control">
+                    <input type="text" name="sesi[]" class="form-control">
                     <div class="input-group-append">
-                        <button class="btn btn-outline-secondary remove-materi" type="button"><i class="bi bi-dash-circle"></i></button>
+                        <button class="btn btn-outline-secondary remove-sesi" type="button"><i class="bi bi-dash-circle"></i></button>
                     </div>
                 </div>
             </div>
         `;
-        $('#materiContainer').append(newMateriRow);
+        $('#sesiContainer').append(newSesiRow);
     });
 
-    // Hapus kolom materi
-    $('#materiContainer').on('click', '.remove-materi', function () {
+    // Hapus kolom sesi
+    $('#sesiContainer').on('click', '.remove-sesi', function () {
         $(this).closest('.form-group').remove();
     });
 
-  </script>
-    
+    // Tambah kolom baru pada Investasi
+    $('#investasiContainer').on('click', '.add-investasi', function () {
+        var newInvestasiRow = `
+            <div class="form-group row position-relative mb-1">
+                <label class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 input-group">
+                    <input type="text" name="investasi_info[]" class="form-control">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary remove-investasi" type="button"><i class="bi bi-dash-circle"></i></button>
+                    </div>
+                </div>
+            </div>
+        `;
+        $('#investasiContainer').append(newInvestasiRow);
+    });
+
+    // Hapus kolom investasi
+    $('#investasiContainer').on('click', '.remove-investasi', function () {
+        $(this).closest('.form-group').remove();
+    });
+});
+</script>
 @endsection

@@ -44,20 +44,8 @@ class AgendaPelatihan extends Model
         return $this->hasMany(PendaftaranEvent::class, 'id_agenda', 'id_agenda');
     }
 
-    // public function mentors()
-    // {
-    //     // Decode the JSON field
-    //     $mentorIds = json_decode($this->attributes['id_mentor'], true);
-
-    //     // Return related mentors
-    //     return Mentor::whereIn('id_mentor', $mentorIds)->get();
-    // }
-
     public function mentors()
     {
-        // Menggunakan custom logic untuk mengambil mentor berdasarkan id_mentor yang disimpan sebagai string
-        return $this->belongsToMany(Mentor::class, 'agenda_pelatihan', 'id_agenda', 'id_mentor')
-            ->withPivot('id_mentor')
-            ->whereNull('mentors.is_deleted'); // Mengambil mentor yang tidak dihapus
+        return $this->belongsToMany(Mentor::class, 'agenda_mentor', 'id_agenda', 'id_mentor');
     }
 }

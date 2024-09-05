@@ -46,7 +46,7 @@
                                 <div class="dropdown-menu" id="trainingDropdown"></div>
                                 <span id="error-name" class="text-danger" style="display:none;">Nama Pelatihan Sudah ada</span>
                             </div>
-                        </div>                        
+                        </div>
 
                         <!-- Image -->
                         <div class="row mb-3">
