@@ -102,8 +102,8 @@ Route::prefix('laman-peserta')->group(function () {
     Route::get('/event-detail/{id}', [ApiLamanPesertaController::class, 'getEventDetail'])->name('laman-peserta.event-detail');
 });
 
-Route::prefix('my-events')->group(function () {
-    Route::get('/{id_peserta}', [ApiMyEventController::class, 'getMyEvents']);
+Route::middleware('auth:api')->prefix('my-events')->group(function () {
+    Route::get('/', [ApiMyEventController::class, 'getMyEvents']);
 });
 
 Route::prefix('dashboard')->group(function () {
@@ -113,10 +113,16 @@ Route::prefix('dashboard')->group(function () {
     Route::get('/universities-participants', [ApiDashboardController::class, 'getUniversitiesParticipants']);
     Route::get('/companies-participants', [ApiDashboardController::class, 'getCompaniesParticipants']);
     Route::get('/participants-by-activity', [ApiDashboardController::class, 'getParticipantsByActivity']);
-    Route::get('/total-peserta', [ApiDashboardController::class, 'getTotalPeserta']);
+    // Route::get('/total-peserta', [ApiDashboardController::class, 'getTotalPeserta']);
     Route::get('/pelatihan-list', [ApiDashboardController::class, 'getPelatihanList']);
     Route::get('/batch-list', [ApiDashboardController::class, 'getBatchList']);
+
     Route::get('/top-city', [ApiDashboardController::class, 'getTopCities']);
 
     Route::get('/total-pelatihan', [ApiDashboardController::class, 'getPelatihanCount']);
+    Route::get('/total-pelatihan', [ApiDashboardController::class, 'getPelatihanCount']);
+
+    Route::get('/training-agenda', [ApiDashboardController::class, 'getTrainingAgenda']);
+
+    Route::get('/total-peserta', [ApiDashboardController::class, 'getTotalPesertaByPelatihanAndBatch']);
 });

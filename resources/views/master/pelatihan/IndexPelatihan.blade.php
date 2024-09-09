@@ -67,7 +67,8 @@
                 { 
                     "data": "gambar_pelatihan",
                     "render": function(data, type, row) {
-                        return `<img src="/uploads/${data}" alt="Gambar Pelatihan" style="width: 70px; height: auto;">`;
+            // Gunakan URL gambar yang dikembalikan dari API
+                        return `<img src="${data}" alt="Gambar Pelatihan" style="width: 70px; height: auto;">`;
                     },
                     "orderable": false
                 },

@@ -19,11 +19,14 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Gantilah '1' dengan ID peserta yang sebenarnya
-        const idPeserta = 4; // Sesuaikan dengan ID peserta yang ingin Anda gunakan
+        // const idPeserta = ; // Sesuaikan dengan ID peserta yang ingin Anda gunakan
 
         // Lakukan fetch data event menggunakan Axios
-        axios.get(`/api/my-events/${idPeserta}`)
-            .then(function(response) {
+        axios.get(`/api/my-events`, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
+            }
+        }).then(function(response) {
                 const events = response.data.data;
                 const eventList = document.getElementById('event-list');
 

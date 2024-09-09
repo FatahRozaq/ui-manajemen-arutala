@@ -8,12 +8,14 @@ use App\Models\PendaftaranEvent;
 
 class ApiMyEventController extends Controller
 {
-    public function getMyEvents($id_peserta)
+    public function getMyEvents()
     {
         try {
+
+            $idUser = auth('api')->id();
             // Ambil semua event yang diikuti oleh peserta ini
             $events = PendaftaranEvent::with(['agendaPelatihan.pelatihan'])
-                ->where('id_peserta', $id_peserta)
+                ->where('id_peserta', $idUser)
                 ->get();
 
             // Siapkan data response
