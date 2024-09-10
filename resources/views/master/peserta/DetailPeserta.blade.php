@@ -36,8 +36,12 @@ Arutala | Detail Data Peserta
 
 @section('content')
 
-<div class="pagetitle">
+<div class="pagetitle d-flex justify-content-between align-items-center">
     <h1>Detail Data Peserta</h1>
+    <button onclick="update()" class="btn" style="background-color: #344C92; color: white;">
+        <i class="fa-regular fa-regular fa-pen-to-square"></i>
+        Update Data
+    </button>
 </div>
 
 <section class="section">
@@ -49,31 +53,31 @@ Arutala | Detail Data Peserta
                     <div class="row mb-4">
                         <label for="inputText" class="col-sm-2 col-form-label">Nama Peserta</label>
                         <div class="col-sm-6">
-                            <input type="text" id="namaPeserta" class="form-control" placeholder="John Doe" disabled>
+                            <input type="text" id="namaPeserta" class="form-control"  disabled>
                         </div>
                     </div>
                     <div class="row mb-4">
                         <label for="inputText" class="col-sm-2 col-form-label">Email</label>
                         <div class="col-sm-6">
-                            <input type="email" id="emailPeserta" class="form-control" placeholder="example@gmail.com" disabled>
+                            <input type="email" id="emailPeserta" class="form-control"  disabled>
                         </div>
                     </div>
                     <div class="row mb-4">
                         <label for="inputDate" class="col-sm-2 col-form-label">Kontak</label>
                         <div class="col-sm-6">
-                            <input type="text" id="kontakPeserta" class="form-control" placeholder="+62 81213134" disabled>
+                            <input type="text" id="kontakPeserta" class="form-control"  disabled>
                         </div>
                     </div>
                     <div class="row mb-4">
                         <label for="inputText" class="col-sm-2 col-form-label">Linked In</label>
                         <div class="col-sm-6">
-                            <input type="text" id="linkedinPeserta" class="form-control" placeholder="john.doe" disabled>
+                            <input type="text" id="linkedinPeserta" class="form-control" disabled>
                         </div>
                     </div>
                     <div class="row mb-4">
                         <label for="inputText" class="col-sm-2 col-form-label">Aktivitas</label>
                         <div class="col-sm-6">
-                            <input type="text" id="aktivitasPeserta" class="form-control" placeholder="Mahasiswa" disabled>
+                            <input type="text" id="aktivitasPeserta" class="form-control" disabled>
                         </div>
                     </div>
 
@@ -82,12 +86,12 @@ Arutala | Detail Data Peserta
                     <div class="row" style="margin-left: -15px;">
                         <div class="col-12 col-md-6 mb-3">
                             <label for="provinsiPeserta" class="col-form-label">Provinsi</label>
-                            <input type="text" id="provinsiPeserta" class="form-control" placeholder="Jawa Barat" disabled>
+                            <input type="text" id="provinsiPeserta" class="form-control" disabled>
                         </div>
 
                         <div class="col-12 col-md-6 mb-3">
                             <label for="kabkotaPeserta" class="col-form-label">Kab/Kota</label>
-                            <input type="text" id="kabkotaPeserta" class="form-control" placeholder="Bandung" disabled>
+                            <input type="text" id="kabkotaPeserta" class="form-control" disabled>
                         </div>
                     </div>
 
@@ -97,7 +101,7 @@ Arutala | Detail Data Peserta
                     <div class="row mb-5 mr-3 mt-4">
                         <label for="inputText" class="col-sm-2 col-form-label">Instansi</label>
                         <div class="col-sm-6">
-                            <input type="text" id="instansiPeserta" class="form-control" placeholder="Politeknik Negeri Bandung" disabled>
+                            <input type="text" id="instansiPeserta" class="form-control" disabled>
                         </div>
                     </div>
 
@@ -163,6 +167,14 @@ Arutala | Detail Data Peserta
             })
             .catch(error => console.error('Error:', error));
     });
+
+    function update()
+    {
+        const urlParams = new URLSearchParams(window.location.search);
+        const idPendaftar = urlParams.get('idPendaftar');
+
+        window.location.href = `/admin/peserta/edit?idPendaftar=${idPendaftar}`
+    }
 </script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.6/dist/umd/popper.min.js"></script>

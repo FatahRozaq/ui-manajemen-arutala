@@ -94,10 +94,10 @@ Arutala | Data Peserta
                             <a href="{{ url('admin/peserta/detail?idPendaftar=${row.id_pendaftar}') }}" class="view-icon" title="View">
                                 <i class="fas fa-eye text-primary"></i>
                             </a>
-                            <a href="#" class="update-icon" data-id="${row.id_pendaftar}" title="Update">
+                            <a href="{{ url('admin/peserta/edit?idPendaftar=${row.id_pendaftar}') }}" class="update-icon" data-id="${row.id_pendaftar}" title="Update">
                                 <i class="fas fa-edit text-warning"></i>
                             </a>
-                            <a href="#" class="delete-icon" data-id="${row.id_pendaftar}" title="Delete">
+                            <a href="" class="delete-icon" data-id="${row.id_pendaftar}" title="Delete">
                                 <i class="fas fa-trash-alt text-danger"></i>
                             </a>
                         `;
@@ -188,10 +188,10 @@ Arutala | Data Peserta
         });
 
         // Event listener untuk ikon update
-        $('#dataPesertaTable').on('click', '.update-icon', function() {
-            var id = $(this).data('id');
-            Swal.fire('Update icon clicked for ID: ' + id);
-        });
+        // $('#dataPesertaTable').on('click', '.update-icon', function() {
+        //     var id = $(this).data('id');
+        //     Swal.fire('Update icon clicked for ID: ' + id);
+        // });
     });
 </script>
 @endsection

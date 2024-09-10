@@ -1,16 +1,16 @@
 @extends('layouts.AdminLayouts')
 
 @section('title')
-Arutala | Data Mentor
+Arutala | Data Admin
 @endsection
 
 @section('content')
 
 <div class="pagetitle d-flex justify-content-between align-items-center">
-    <h1>Data Mentor</h1>
-    <a href="{{ route('mentor.add') }}" class="btn btn-success d-flex align-items-center" style="border-radius: 10px;">
+    <h1>Data Admin</h1>
+    <a href="{{ route('admin.add') }}" class="btn btn-success d-flex align-items-center" style="border-radius: 10px;">
         <i class="fa-solid fa-circle-plus mr-2"></i>
-        Tambah Mentor
+        Tambah Admin
     </a>
 </div>
 
@@ -19,13 +19,11 @@ Arutala | Data Mentor
         <div class="col-lg-12">
             <div class="card" style="padding: 20px">
                 <div class="card-body">
-                    <table id="dataMentorTable" class="table table-striped">
+                    <table id="dataAdminTable" class="table table-striped">
                         <thead>
                             <tr>
                                 <th>Nama</th>
                                 <th>Email</th>
-                                <th>Kontak</th>
-                                <th>Aktifitas</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -56,30 +54,25 @@ Arutala | Data Mentor
 
 <script>
     $(document).ready(function() {
-        $('#dataMentorTable').DataTable({
+        $('#dataAdminTable').DataTable({
             "ajax": {
-                "url": "/api/mentor", // URL endpoint API
+                "url": "/api/kelola-admin", // URL endpoint API
                 "type": "GET",
                 "dataSrc": function (json) {
                     return json.data; // Akses data dari response API
                 }
             },
             "columns": [
-                { "data": "nama_mentor" }, // Nama column sesuai dengan nama field di database
-                { "data": "email" },       // Email column
-                { "data": "no_kontak" },   // Kontak column
-                { "data": "aktivitas" },   // Aktifitas column
+                { "data": "nama" }, // Nama column sesuai dengan nama field di database
+                { "data": "email" },  // Aktifitas column
                 {                         // Aksi column with action icons
                     "data": null,
                     "render": function(data, type, row) {
                         return `
-                            <a href="/admin/mentor/detail?id=${row.id_mentor}" class="view-icon" title="View">
+                            <a href="/admin/kelola-admin/detail?id=${row.id_admin}" class="view-icon" title="View">
                                 <i class="fas fa-eye text-primary"></i>
                             </a>
-                            <a href="/admin/mentor/update?id=${row.id_mentor}" class="update-icon" title="Update">
-                                <i class="fas fa-edit text-warning"></i>
-                            </a>
-                            <a href="#" class="delete-icon" data-id="${row.id_mentor}" title="Delete">
+                            <a href="#" class="delete-icon" data-id="${row.id_admin}" title="Delete">
                                 <i class="fas fa-trash-alt text-danger"></i>
                             </a>
                         `;
@@ -89,8 +82,9 @@ Arutala | Data Mentor
         });
 
         // Event listener for delete icon
-        $('#dataMentorTable').on('click', '.delete-icon', function() {
+        $('#dataAdminTable').on('click', '.delete-icon', function() {
             var id = $(this).data('id');
+            console.log('id')
             Swal.fire({
                 title: 'Apakah Anda yakin?',
                 text: "Anda tidak akan dapat mengembalikan ini!",
@@ -101,14 +95,14 @@ Arutala | Data Mentor
                 confirmButtonText: 'Ya, hapus!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    axios.delete(`/api/mentor/delete/${id}`)
+                    axios.delete(`/api/kelola-admin/delete/${id}`)
                         .then(response => {
                             Swal.fire(
                                 'Terhapus!',
                                 response.data.message,
                                 'success'
                             )
-                            $('#dataMentorTable').DataTable().ajax.reload(); // Reload table data
+                            $('#dataAdminTable').DataTable().ajax.reload(); // Reload table data
                         })
                         .catch(error => {
                             Swal.fire(

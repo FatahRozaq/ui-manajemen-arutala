@@ -1,11 +1,13 @@
 <?php
 
+use App\Http\Middleware\AuthCheck;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TestController;
 use Illuminate\Console\Scheduling\Event;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\SertifkatController;
 use App\Http\Controllers\PendaftaranController;
@@ -15,6 +17,7 @@ use App\Http\Controllers\AgendaPelatihanController;
 use App\Http\Controllers\MasterPelatihanController;
 use App\Http\Controllers\PesertaPelatihanController;
 use App\Http\Controllers\Api\ApiPesertaPelatihanController;
+use App\Http\Controllers\KelolaAdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,22 +35,25 @@ use App\Http\Controllers\Api\ApiPesertaPelatihanController;
 // });
 
 // Route::get('/', [TestController::class, 'index']);
-Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
-Route::get('/master-pelatihan', [MasterPelatihanController::class, 'index'])->name('pelatihan.index');
-Route::get('/form-pelatihan', [MasterPelatihanController::class, 'form'])->name('pelatihan.form');
-Route::get('/pelatihan/detail-pelatihan/{id}', [MasterPelatihanController::class, 'showPelatihan'])->name('pelatihan.showPelatihan');
-Route::get('/pelatihan/update-pelatihan', [MasterPelatihanController::class, 'updatePelatihan'])->name('pelatihan.updatePelatihan');
+Route::middleware([AuthCheck::class . ':admin'])->get('/', [DashboardController::class, 'index'])->name('dashboard.index');
+Route::middleware([AuthCheck::class . ':admin'])->get('/master-pelatihan', [MasterPelatihanController::class, 'index'])->name('pelatihan.index');
+Route::middleware([AuthCheck::class . ':admin'])->get('/form-pelatihan', [MasterPelatihanController::class, 'form'])->name('pelatihan.form');
+Route::middleware([AuthCheck::class . ':admin'])->get('/pelatihan/detail-pelatihan/{id}', [MasterPelatihanController::class, 'showPelatihan'])->name('pelatihan.showPelatihan');
+Route::middleware([AuthCheck::class . ':admin'])->get('/pelatihan/update-pelatihan', [MasterPelatihanController::class, 'updatePelatihan'])->name('pelatihan.updatePelatihan');
 
 Route::get('/agenda/detail', [AgendaPelatihanController::class, 'show'])->name('agenda.show');
 
 
 // Admin Routes Group
-Route::prefix('admin')->group(function () {
+Route::middleware([AuthCheck::class . ':admin'])->prefix('admin')->group(function () {
+    // Admin - Auth
+    Route::get('/login-admin', [AdminAuthController::class, 'login'])->name('admin.login');
 
     // Admin - Peserta
     Route::prefix('peserta')->group(function () {
-        Route::get('/', [MasterPesertaController::class, 'index'])->name('peserta.index');
+        Route::get('/', [MasterPesertaController::class, 'index'])->name('peserta.indexs');
         Route::get('/detail', [MasterPesertaController::class, 'detail'])->name('peserta.detail');
+        Route::get('/edit', [MasterPesertaController::class, 'edit'])->name('peserta.edit');
     });
 
     // Admin - Mentor
@@ -57,10 +63,17 @@ Route::prefix('admin')->group(function () {
         Route::get('/tambah', [MasterMentorController::class, 'add'])->name('mentor.add');
         Route::get('/update', [MasterMentorController::class, 'update'])->name('mentor.update');
     });
+
+    Route::prefix('kelola-admin')->group(function () {
+        Route::get('/', [KelolaAdminController::class, 'index'])->name('admin.index');
+        Route::get('/detail', [KelolaAdminController::class, 'show'])->name('admin.detail');
+        Route::get('/tambah', [KelolaAdminController::class, 'add'])->name('admin.add');
+        Route::get('/update', [KelolaAdminController::class, 'update'])->name('admin.update');
+    });
 });
 
 // Peserta Routes Group
-Route::middleware('auth.check')->prefix('peserta')->group(function () {
+Route::middleware([AuthCheck::class . ':pendaftar'])->prefix('peserta')->group(function () {
 
     // Profile
     Route::prefix('profile')->group(function () {
@@ -84,22 +97,19 @@ Route::get('/login-page', [AuthController::class, 'LoginPage'])->name('login.pag
 Route::get('/register-page', [AuthController::class, 'RegisterPage'])->name('register.page');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::get('/detailpelatihan', [MasterPelatihanController::class, 'show'])->name('pelatihan.show');
-Route::get('/form-agenda', [AgendaPelatihanController::class, 'formAgenda'])->name('agenda.form');
-Route::get('agenda/update-agenda', [AgendaPelatihanController::class, 'updateAgenda'])->name('agenda.update');
-Route::get('/agendapelatihan', [AgendaPelatihanController::class, 'index'])->name('agenda.index');
+Route::middleware([AuthCheck::class . ':admin'])->get('/detailpelatihan', [MasterPelatihanController::class, 'show'])->name('pelatihan.show');
+Route::middleware([AuthCheck::class . ':admin'])->get('/form-agenda', [AgendaPelatihanController::class, 'formAgenda'])->name('agenda.form');
+Route::middleware([AuthCheck::class . ':admin'])->get('agenda/update-agenda', [AgendaPelatihanController::class, 'updateAgenda'])->name('agenda.update');
+Route::middleware([AuthCheck::class . ':admin'])->get('/agendapelatihan', [AgendaPelatihanController::class, 'index'])->name('agenda.index');
 
-Route::get('/pesertapelatihan', [PesertaPelatihanController::class, 'index'])->name('peserta.index');
-Route::get('/updatestatus', [PesertaPelatihanController::class, 'show'])->name('peserta.show');
+Route::middleware([AuthCheck::class . ':admin'])->get('/pesertapelatihan', [PesertaPelatihanController::class, 'index'])->name('peserta.index');
+Route::middleware([AuthCheck::class . ':admin'])->get('/updatestatus', [PesertaPelatihanController::class, 'show'])->name('peserta.show');
 
 //Daftar Event
-Route::middleware('auth.check')->get('/daftar-event', [EventController::class, 'index'])->name('event.index');
-Route::middleware('auth.check')->get('/event/{id}',  [EventController::class, 'showEvent'])->name('event.detail');
-Route::middleware('auth.check')->get('/my-event',  [EventController::class, 'myEvent'])->name('event.history');
+Route::middleware([AuthCheck::class . ':pendaftar'])->get('/daftar-event', [EventController::class, 'index'])->name('event.index');
+Route::middleware([AuthCheck::class . ':pendaftar'])->get('/event/{id}',  [EventController::class, 'showEvent'])->name('event.detail');
+Route::middleware([AuthCheck::class . ':pendaftar'])->get('/my-event',  [EventController::class, 'myEvent'])->name('event.history');
 
 Route::post('/save-session', [AuthController::class, 'saveSession'])->name('save-session');
-Route::get('/daftar-event', [EventController::class, 'index'])->name('event.index');
-Route::get('/detail-event/{id}', [EventController::class, 'showEvent'])->name('detail.event');
-Route::get('/my-event',  [EventController::class, 'myEvent'])->name('event.history');
 
 Route::get('/export-peserta-pelatihan', [ApiPesertaPelatihanController::class, 'exportExcel']);

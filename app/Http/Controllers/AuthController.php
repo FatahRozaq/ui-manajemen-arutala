@@ -22,12 +22,16 @@ class AuthController extends Controller
         $user = $request->input('user');
 
         if ($user) {
+            $role = isset($user['id_admin']) ? 'admin' : 'pendaftar';
+            $user['role'] = $role; 
+
             Session::put('user', $user);
             return response()->json(['message' => 'Session saved successfully!'], 200);
         }
 
         return response()->json(['message' => 'Failed to save session!'], 400);
     }
+
 
     public function logout()
     {

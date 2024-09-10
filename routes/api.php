@@ -6,9 +6,12 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ApiAuthController;
 use App\Http\Controllers\Api\ApiProfilePeserta;
 use App\Http\Controllers\Api\ApiAgendaController;
+use App\Http\Controllers\Api\ApiAuthAdmin;
+use App\Http\Controllers\Api\ApiAuthAdminController;
 use App\Http\Controllers\Api\ApiMentorController;
 use App\Http\Controllers\Api\ApiMyEventController;
 use App\Http\Controllers\Api\ApiDashboardController;
+use App\Http\Controllers\Api\ApiKelolaAdminController;
 use App\Http\Controllers\Api\ApiLamanPesertaController;
 use App\Http\Controllers\Api\ApiMasterPelatihanController;
 use App\Http\Controllers\Api\ApiMasterPendaftar;
@@ -33,7 +36,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/register', [ApiAuthController::class, 'register']);
 Route::post('/login', [ApiAuthController::class, 'login']);
-Route::post('/logout', [ApiAuthController::class, 'logout'])->middleware('auth:sanctum');
+Route::post('/logout', [ApiAuthController::class, 'logout']);
+
+Route::post('/register-admin', [ApiAuthAdminController::class, 'register']);
+Route::post('/login-admin', [ApiAuthAdminController::class, 'login']);
+Route::post('/logout-admin', [ApiAuthAdminController::class, 'logout']);
 
 Route::prefix('mentor')->group(function () {
     Route::get('/', [ApiMentorController::class, 'index']);
@@ -119,4 +126,11 @@ Route::prefix('dashboard')->group(function () {
     Route::get('/top-city', [ApiDashboardController::class, 'getTopCities']);
 
     Route::get('/total-pelatihan', [ApiDashboardController::class, 'getPelatihanCount']);
+});
+
+Route::prefix('kelola-admin')->group(function () {
+    Route::get('/', [ApiKelolaAdminController::class, 'index']); // Mengambil daftar admin
+    Route::get('/{id}', [ApiKelolaAdminController::class, 'show']); // Mengambil detail admin berdasarkan ID
+    Route::put('update/{id}', [ApiKelolaAdminController::class, 'update']); // Memperbarui data admin berdasarkan ID
+    Route::delete('delete/{id}', [ApiKelolaAdminController::class, 'destroy']); // Menghapus admin berdasarkan ID
 });

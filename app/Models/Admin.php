@@ -2,29 +2,24 @@
 
 namespace App\Models;
 
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class Pendaftar extends Authenticatable implements JWTSubject
+class Admin extends Authenticatable implements JWTSubject
 {
-    use Notifiable, HasFactory;
+    use HasFactory, Notifiable;
 
-    protected $table = 'pendaftar';
+    protected $table = 'admin';
 
-    protected $primaryKey = 'id_pendaftar';
+    protected $primaryKey = 'id_admin';
 
     protected $fillable = [
         'nama',
         'email',
         'password',
-        'no_kontak',
-        'aktivitas',
-        'nama_instansi',
-        'provinsi',
-        'kab_kota',
-        'linkedin',
         'created_by',
         'created_time',
         'modified_by',
@@ -34,12 +29,6 @@ class Pendaftar extends Authenticatable implements JWTSubject
 
     const CREATED_AT = 'created_time';
     const UPDATED_AT = 'modified_time';
-
-    // Fungsi relasi dengan tabel PendaftaranEvent
-    public function pendaftaranEvent()
-    {
-        return $this->hasMany(PendaftaranEvent::class, 'id_peserta', 'id_pendaftar');
-    }
 
     // Implementasi JWTSubject
     /**

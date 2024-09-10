@@ -1,5 +1,9 @@
 @extends('layouts.AuthLayout')
 
+@section('title')
+Arutala | Register Peserta
+@endsection
+
 @section('form-content')
 <div class="form-title">
     Daftar Akun

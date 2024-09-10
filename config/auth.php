@@ -46,6 +46,12 @@ return [
             'provider' => 'pendaftar',
             'hash' => false,
         ],
+
+        'admin' => [ 
+            'driver' => 'jwt',
+            'provider' => 'admins',
+            'hash' => false,
+        ],
     ],
 
     /*
@@ -74,6 +80,11 @@ return [
         'pendaftar' => [ // Tambahkan provider baru untuk pendaftar
             'driver' => 'eloquent',
             'model' => App\Models\Pendaftar::class,
+        ],
+
+        'admins' => [ 
+            'driver' => 'eloquent',
+            'model' => App\Models\Admin::class,
         ],
 
         // 'users' => [

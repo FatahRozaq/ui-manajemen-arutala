@@ -15,4 +15,9 @@ class MasterPesertaController extends Controller
     {
         return view('master/peserta/DetailPeserta');
     }
+
+    public function edit()
+    {
+        return view('master/peserta/EditPeserta');
+    }
 }

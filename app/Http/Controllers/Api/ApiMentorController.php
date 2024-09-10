@@ -58,6 +58,7 @@ class ApiMentorController extends Controller
             'no_kontak.string' => 'Nomor kontak harus berupa string.',
             'no_kontak.max' => 'Nomor kontak tidak boleh lebih dari 25 karakter.',
             'no_kontak.regex' => 'Nomor kontak tidak boleh diawali dengan 0, 62, atau +62 dan hanya boleh berisi angka.',
+            'aktivitas.required' => 'Aktivitas harus diisi.',
             'aktivitas.string' => 'Aktivitas harus berupa string.',
             'aktivitas.max' => 'Aktivitas tidak boleh lebih dari 15 karakter.',
         ]);
@@ -157,6 +158,7 @@ class ApiMentorController extends Controller
             'no_kontak.string' => 'Nomor kontak harus berupa string.',
             'no_kontak.max' => 'Nomor kontak tidak boleh lebih dari 25 karakter.',
             'no_kontak.regex' => 'Nomor kontak tidak boleh diawali dengan 0, 62, atau +62 dan hanya boleh berisi angka.',
+            'aktivitas.required' => 'Aktivitas harus diisi',
             'aktivitas.string' => 'Aktivitas harus berupa string.',
             'aktivitas.max' => 'Aktivitas tidak boleh lebih dari 15 karakter.',
         ]);

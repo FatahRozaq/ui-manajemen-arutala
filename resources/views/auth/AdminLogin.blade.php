@@ -1,12 +1,12 @@
 @extends('layouts.AuthLayout')
 
 @section('title')
-Arutala | Login Peserta
+Arutala | Login Admin
 @endsection
 
 @section('form-content')
 <div class="form-title">
-    Masuk
+    Masuk Halaman Admin
 </div>
 
 <form id="loginForm" class="form-daftar">
@@ -31,16 +31,6 @@ Arutala | Login Peserta
         Login
     </button>
 </form>
-
-<div class="separator">
-    <span>Atau</span>
-</div>
-
-<a href="{{ route('register.page') }}">
-    <button class="daftar">
-        Sign Up
-    </button>
-</a>
 @endsection
 
 @section('scripts')
@@ -73,7 +63,7 @@ Arutala | Login Peserta
             const password = document.querySelector('input[name="password"]').value;
 
             axios.get('/sanctum/csrf-cookie').then(response => {
-                axios.post('/api/login', {
+                axios.post('/api/login-admin', {
                     email: email,
                     password: password
                 })
@@ -85,8 +75,8 @@ Arutala | Login Peserta
 
                     return axios.post('/save-session', {
                         user: {
-                            ...response.data.data, 
-                            role: 'pendaftar'
+                            ...response.data.data,
+                            role: 'admin'
                         }
                     });
                 })
@@ -98,7 +88,7 @@ Arutala | Login Peserta
                         confirmButtonText: 'OK'
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            window.location.href = '/daftar-event';
+                            window.location.href = '/';
                         }
                     });
                 })
