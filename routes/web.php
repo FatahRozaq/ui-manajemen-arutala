@@ -111,5 +111,8 @@ Route::middleware([AuthCheck::class . ':pendaftar'])->get('/event/{id}',  [Event
 Route::middleware([AuthCheck::class . ':pendaftar'])->get('/my-event',  [EventController::class, 'myEvent'])->name('event.history');
 
 Route::post('/save-session', [AuthController::class, 'saveSession'])->name('save-session');
+// Route::get('/daftar-event', [EventController::class, 'index'])->name('event.index');
+// Route::get('/detail-event/{id}', [EventController::class, 'showEvent'])->name('detail.event');
+// Route::get('/my-event',  [EventController::class, 'myEvent'])->name('event.history');
 
 Route::get('/export-peserta-pelatihan', [ApiPesertaPelatihanController::class, 'exportExcel']);

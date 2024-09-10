@@ -103,20 +103,14 @@ class ApiDashboardController extends Controller
     public function getPelatihanList()
     {
         try {
-            $pelatihanList = Pelatihan::where('is_deleted', false)
-                ->select('id_pelatihan', 'nama_pelatihan')
-                ->get();
-
+            $pelatihanList = Pelatihan::where('is_deleted', false)->get(['id_pelatihan', 'nama_pelatihan']);
             return response()->json([
-                'data' => $pelatihanList,
-                'message' => 'Daftar pelatihan berhasil ditemukan',
-                'statusCode' => 200,
+                'pelatihan_list' => $pelatihanList,
                 'status' => 'success'
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Gagal mendapatkan daftar pelatihan',
-                'statusCode' => 500,
                 'status' => 'error',
                 'error' => $e->getMessage()
             ], 500);
@@ -128,27 +122,24 @@ class ApiDashboardController extends Controller
         try {
             $idPelatihan = $request->input('id_pelatihan');
 
-            $batchList = AgendaPelatihan::where('is_deleted', false)
-                ->where('id_pelatihan', $idPelatihan)
-                ->select('batch')
-                ->distinct()
-                ->get();
+            $batchList = AgendaPelatihan::where('id_pelatihan', $idPelatihan)
+                ->where('is_deleted', false)
+                ->groupBy('batch')
+                ->pluck('batch');
 
             return response()->json([
-                'data' => $batchList,
-                'message' => 'Daftar batch berhasil ditemukan',
-                'statusCode' => 200,
+                'batch_list' => $batchList,
                 'status' => 'success'
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Gagal mendapatkan daftar batch',
-                'statusCode' => 500,
                 'status' => 'error',
                 'error' => $e->getMessage()
             ], 500);
         }
     }
+
 
 
 
@@ -392,40 +383,88 @@ class ApiDashboardController extends Controller
         }
     }
 
-    public function trenJumlahPeserta()
+    public function getTrainingAgenda()
     {
         try {
-            // Mengambil data jumlah peserta berdasarkan tahun dan jenis pelatihan
-            $trenPeserta = DB::table('pendaftaran_event')
-                ->join('agenda_pelatihan', 'pendaftaran_event.id_agenda', '=', 'agenda_pelatihan.id_agenda')
+            // Query to fetch the training agenda along with the counts
+            $trainingAgenda = DB::table('agenda_pelatihan')
                 ->join('pelatihan', 'agenda_pelatihan.id_pelatihan', '=', 'pelatihan.id_pelatihan')
+                ->leftJoin('pendaftaran_event', function ($join) {
+                    $join->on('agenda_pelatihan.id_agenda', '=', 'pendaftaran_event.id_agenda')
+                        ->where('pendaftaran_event.is_deleted', false);
+                })
                 ->select(
-                    DB::raw('YEAR(agenda_pelatihan.start_date) as tahun'),
                     'pelatihan.nama_pelatihan',
-                    DB::raw('COUNT(pendaftaran_event.id_pendaftaran) as jumlah_peserta')
+                    'agenda_pelatihan.batch',
+                    'agenda_pelatihan.start_date',
+                    'agenda_pelatihan.end_date',
+                    DB::raw('COUNT(pendaftaran_event.id_peserta) as total_pendaftar'),
+                    DB::raw("SUM(CASE WHEN pendaftaran_event.status_pembayaran = 'Paid' THEN 1 ELSE 0 END) as total_peserta")
                 )
-                ->where('pendaftaran_event.is_deleted', false)
-                ->groupBy('tahun', 'pelatihan.nama_pelatihan')
-                ->orderBy('tahun', 'asc')
+                ->where('agenda_pelatihan.is_deleted', false)
+                ->where('pelatihan.is_deleted', false)
+                ->groupBy(
+                    'pelatihan.nama_pelatihan',
+                    'agenda_pelatihan.batch',
+                    'agenda_pelatihan.start_date',
+                    'agenda_pelatihan.end_date'
+                )
+                ->orderBy('pelatihan.nama_pelatihan', 'asc')
                 ->get();
 
-            // Mengubah format data untuk grafik
-            $data = [];
-            foreach ($trenPeserta as $tren) {
-                $data[$tren->nama_pelatihan][$tren->tahun] = $tren->jumlah_peserta;
-            }
-
-            // Mengembalikan response JSON
             return response()->json([
-                'tren_jumlah_peserta' => $data,
-                'message' => 'Tren jumlah peserta berhasil ditemukan',
+                'data' => $trainingAgenda,
+                'message' => 'Data agenda pelatihan berhasil ditemukan',
                 'statusCode' => 200,
                 'status' => 'success'
             ], 200);
         } catch (\Exception $e) {
-            // Menangani kesalahan
             return response()->json([
-                'message' => 'Gagal mendapatkan tren jumlah peserta',
+                'message' => 'Gagal mendapatkan data agenda pelatihan',
+                'statusCode' => 500,
+                'status' => 'error',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function getTotalPesertaByPelatihanAndBatch(Request $request)
+    {
+        try {
+            // Retrieve filter parameters from the request
+            $namaPelatihan = $request->input('nama_pelatihan');
+            $batch = $request->input('batch');
+
+            // Start building the query
+            $query = DB::table('pendaftaran_event')
+                ->join('agenda_pelatihan', 'pendaftaran_event.id_agenda', '=', 'agenda_pelatihan.id_agenda')
+                ->join('pelatihan', 'agenda_pelatihan.id_pelatihan', '=', 'pelatihan.id_pelatihan')
+                ->where('pendaftaran_event.is_deleted', false)
+                ->where('agenda_pelatihan.is_deleted', false)
+                ->where('pelatihan.is_deleted', false)
+                ->where('pendaftaran_event.status_pembayaran', 'Paid'); // Filter for only 'Paid' status
+
+            // Apply filters based on input
+            if ($namaPelatihan) {
+                $query->where('pelatihan.nama_pelatihan', $namaPelatihan);
+            }
+
+            if ($batch) {
+                $query->where('agenda_pelatihan.batch', $batch);
+            }
+
+            // Count the total participants based on the filters
+            $totalPeserta = $query->count();
+
+            return response()->json([
+                'total_peserta' => $totalPeserta,
+                'message' => 'Total peserta berhasil ditemukan berdasarkan pelatihan dan batch',
+                'statusCode' => 200,
+                'status' => 'success'
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Gagal mendapatkan total peserta',
                 'statusCode' => 500,
                 'status' => 'error',
                 'error' => $e->getMessage()
