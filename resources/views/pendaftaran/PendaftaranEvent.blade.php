@@ -47,7 +47,8 @@ Arutala | Pendaftaran Event
                         </div>
                         <hr>
                         <div class="text-center mb-3">
-                            <img src="{{ asset('assets/images/manual-testing.png') }}" class="img-fluid" alt="Event Image" style="width: 500px; height: auto;">
+                            <!-- Gambar akan diperbarui dengan URL dari MinIO -->
+                            <img src="" class="img-fluid" alt="Event Image" id="eventImage" style="width: 500px; height: auto;">
                         </div>
                         <h4 class="card-subtitle mb-2" id="eventName"></h4>
                         <h5 class="font-weight-bold mb-1" style="color: #344C92;">Materi :</h5>
@@ -188,9 +189,13 @@ Arutala | Pendaftaran Event
             const pendaftar = data.pendaftar;
             const agenda = data.agenda;
             const pelatihan = data.pelatihan;
+            const imageUrl = data.image_url; // Ambil URL gambar
 
             document.getElementById('id_agenda').value = agenda.id_agenda;
             document.getElementById('eventName').textContent = pelatihan.nama_pelatihan;
+            console.log(imageUrl)
+            // Set URL gambar ke elemen <img>
+            document.getElementById('eventImage').src = imageUrl;
 
             const materi = (agenda.materi || pelatihan.materi).replace(/[\[\]]/g, '').split(',').map(item => `<li>${item.trim()}</li>`).join('');
             const benefit = (agenda.benefit || pelatihan.benefit).replace(/[\[\]]/g, '').split(',').map(item => `<li>${item.trim()}</li>`).join('');

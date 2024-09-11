@@ -148,4 +148,38 @@ class ApiAuthAdminController extends Controller
         }
     }
 
+    public function show()
+    {
+        try {
+            // $idUser = Auth::id();
+            // $user = JWTAuth::parseToken()->authenticate();
+            // $idUser = $user->id;
+            $idUser = auth('admin')->id();
+            // dd($idUser);
+            $admin = Admin::where('id_admin', $idUser)->first();
+
+            if (!$admin) {
+                return response()->json([
+                    'message' => 'Admin tidak ditemukan',
+                    'statusCode' => Response::HTTP_NOT_FOUND,
+                    'status' => 'error'
+                ], Response::HTTP_NOT_FOUND);
+            }
+
+            return response()->json([
+                'data' => $admin,
+                'message' => 'Profile pendaftar berhasil diambil',
+                'statusCode' => Response::HTTP_OK,
+                'status' => 'success'
+            ], Response::HTTP_OK);
+        } catch(Exception $e) {
+            return response()->json([
+                'message' => 'Profile pendaftar gagal diambil',
+                'statusCode' => Response::HTTP_INTERNAL_SERVER_ERROR,
+                'status' => 'error',
+                'error' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }

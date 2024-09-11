@@ -11,13 +11,15 @@ use App\Models\PendaftaranEvent;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
+
 
 class ApiPendaftaranEventController extends Controller
 {
     public function show($idAgenda)
     {
         try {
-            $pendaftar = auth('api')->user();;
+            $pendaftar = auth('api')->user();
             $agenda = AgendaPelatihan::with('pelatihan')->where('id_agenda', $idAgenda)->first();
 
             if (!$agenda) {
@@ -28,10 +30,18 @@ class ApiPendaftaranEventController extends Controller
                 ], Response::HTTP_NOT_FOUND);
             }
 
+            // $image_url = $agenda->pelatihan->gambar_pelatihan;
+            $image_url = NULL;
+            // $image_url = "https://minio.cloudias79.com/talent79-dev/uploads/1725940517.jpg";
+            if($image_url == NULL)
+            {
+                $image_url = "https://images.shiksha.com/mediadata/shikshaOnline/mailers/2021/naukri-learning/nov/30nov/What-is-Automation-Testing.jpg";
+            }
             return response()->json([
                 'pendaftar' => $pendaftar,
                 'agenda' => $agenda,
                 'pelatihan' => $agenda->pelatihan, // Mengambil data pelatihan yang terkait
+                'image_url' => $image_url, // Tambahkan URL gambar ke response
                 'message' => 'Data berhasil diambil',
                 'statusCode' => Response::HTTP_OK,
                 'status' => 'success'
@@ -45,6 +55,7 @@ class ApiPendaftaranEventController extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
 
     public function store(Request $request)
     {

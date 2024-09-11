@@ -140,3 +140,7 @@ Route::prefix('kelola-admin')->group(function () {
     Route::put('update/{id}', [ApiKelolaAdminController::class, 'update']); // Memperbarui data admin berdasarkan ID
     Route::delete('delete/{id}', [ApiKelolaAdminController::class, 'destroy']); // Menghapus admin berdasarkan ID
 });
+
+Route::middleware('auth:admin')->prefix('admin-profile')->group(function () {
+    Route::get('/', [ApiAuthAdminController::class, 'show']);
+});
