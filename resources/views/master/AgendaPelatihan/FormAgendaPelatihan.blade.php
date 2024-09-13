@@ -50,7 +50,7 @@
                     <h5 class="card-title">General Form Elements</h5>
 
                     <!-- General Form Elements -->
-                    <form method="POST" action="{{ route('agenda.tambah') }}">
+                    <form id="agendaForm" method="POST" action="{{ route('agenda.tambah') }}">
                         @csrf
                         
                         <!-- Nama Pelatihan -->
@@ -94,7 +94,7 @@
 
                         <!-- Investasi Numerik -->
                         <div class="form-group row position-relative mb-1">
-                            <label class="col-sm-3 col-form-label">Investasi (Numerik)</label>
+                            <label class="col-sm-3 col-form-label">Investasi</label>
                             <div class="col-sm-9 input-group">
                                 <input type="number" name="investasi" class="form-control">
                             </div>
@@ -103,7 +103,7 @@
                         <!-- Investasi String -->
                         <div id="investasiContainer">
                             <div class="form-group row position-relative mb-1">
-                                <label class="col-sm-3 col-form-label">Investasi (String)</label>
+                                <label class="col-sm-3 col-form-label">Investasi Info</label>
                                 <div class="col-sm-9 input-group">
                                     <input type="text" name="investasi_info[]" class="form-control">
                                     <div class="input-group-append">
@@ -168,7 +168,7 @@
 
                         <!-- Submit -->
                         <div class="button-submit mt-4">
-                            <button class="btn btn-success col-sm-3" type="submit">Submit</button>
+                            <button class="btn btn-success col-sm-3" type="button" id="submitAgenda">Submit</button>
                         </div>
 
                     </form>
@@ -270,6 +270,22 @@ $(document).ready(function() {
     // Hapus kolom investasi
     $('#investasiContainer').on('click', '.remove-investasi', function () {
         $(this).closest('.form-group').remove();
+    });
+
+    // Submit form menggunakan Axios
+    $('#submitAgenda').click(function() {
+        var formData = new FormData($('#agendaForm')[0]);
+
+        // Kirim data menggunakan Axios
+        axios.post('/api/agenda/tambah-agenda', formData)
+            .then(function(response) {
+                alert('Data berhasil ditambahkan!');
+                window.location.href = '/agendapelatihan'; // Redirect ke halaman agendapelatihan setelah berhasil
+            })
+            .catch(function(error) {
+                console.error('Gagal menambahkan data:', error);
+                alert('Gagal menambahkan data. Coba lagi.');
+            });
     });
 });
 </script>
