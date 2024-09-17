@@ -9,7 +9,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('pendaftar', function (Blueprint $table) {
-            $table->id('id_pendafar');
+            $table->id('id_pendaftar');
             $table->string('nama', 255)->nullable();
             $table->string('email', 255)->unique();
             $table->string('password', 255);
@@ -23,6 +23,7 @@ return new class extends Migration
             $table->timestamp('created_time')->nullable();
             $table->string('modified_by', 255)->nullable();
             $table->timestamp('modified_time')->nullable();
+            $table->boolean('is_deleted')->default(false);
         });
     }
 
