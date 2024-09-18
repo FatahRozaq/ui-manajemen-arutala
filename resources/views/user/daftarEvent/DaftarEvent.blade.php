@@ -44,7 +44,7 @@
 
                     card.innerHTML = `
                         <div class="image-title">
-                            <img src="/assets/images/${event.gambar_pelatihan}" alt="${event.nama_pelatihan}" class="event-image">
+                            <img src="${event.gambar_pelatihan}" alt="${event.nama_pelatihan}" class="event-image">
                             <h3 class="nama-pelatihan">${event.nama_pelatihan}</h3>
                         </div>
                         <div class="harga-date">
