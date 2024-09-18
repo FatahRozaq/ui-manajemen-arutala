@@ -155,8 +155,8 @@
                 axios.get('/api/admin-profile')
                     .then(function (response) {
                         const adminData = response.data.data;
-                        document.getElementById('navbarAdminName').textContent = adminData.nama;
-                        document.getElementById('navbarProfileName').textContent = adminData.nama;
+                        document.getElementById('navbarAdminName').textContent = adminData.nama || 'Admin';
+                        document.getElementById('navbarProfileName').textContent = adminData.nama || 'Admin';
                     })
                     .catch(function (error) {
                         console.error('Error fetching admin profile data:', error);

@@ -161,8 +161,8 @@
                 axios.get('/api/profile')
                     .then(function (response) {
                         const userData = response.data.data;
-                        document.getElementById('navbarUserName').textContent = userData.nama;
-                        document.getElementById('navbarProfileName').textContent = userData.nama;
+                        document.getElementById('navbarUserName').textContent = userData.nama || 'Peserta';
+                        document.getElementById('navbarProfileName').textContent = userData.nama || 'Peserta';
                     })
                     .catch(function (error) {
                         console.error('Error fetching profile data:', error);
