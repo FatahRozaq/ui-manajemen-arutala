@@ -35,7 +35,7 @@ use App\Http\Controllers\KelolaAdminController;
 // });
 
 // Route::get('/', [TestController::class, 'index']);
-Route::middleware([AuthCheck::class . ':admin'])->get('/', [DashboardController::class, 'index'])->name('dashboard.index');
+Route::middleware([AuthCheck::class . ':admin'])->get('/admin/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
 Route::middleware([AuthCheck::class . ':admin'])->get('/master-pelatihan', [MasterPelatihanController::class, 'index'])->name('pelatihan.index');
 Route::middleware([AuthCheck::class . ':admin'])->get('/form-pelatihan', [MasterPelatihanController::class, 'form'])->name('pelatihan.form');
 Route::middleware([AuthCheck::class . ':admin'])->get('/pelatihan/detail-pelatihan/{id}', [MasterPelatihanController::class, 'showPelatihan'])->name('pelatihan.showPelatihan');
@@ -47,7 +47,7 @@ Route::get('/agenda/detail', [AgendaPelatihanController::class, 'show'])->name('
 // Admin Routes Group
 Route::middleware([AuthCheck::class . ':admin'])->prefix('admin')->group(function () {
     // Admin - Auth
-    Route::get('/login-admin', [AdminAuthController::class, 'login'])->name('admin.login');
+    Route::get('/', [AdminAuthController::class, 'login'])->name('admin.login');
 
     // Admin - Peserta
     Route::prefix('peserta')->group(function () {

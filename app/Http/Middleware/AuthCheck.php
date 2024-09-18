@@ -14,24 +14,24 @@ class AuthCheck
         $user = Session::get('user');
 
         if (!$user) {
-            if ($role === 'admin' && $request->path() !== 'admin/login-admin') {
-                return redirect('/admin/login-admin');
+            if ($role === 'admin' && $request->path() !== 'admin') {
+                return redirect('/admin');
             } elseif ($role === 'pendaftar' && $request->path() !== 'login-page') {
                 return redirect('/login-page');
             }
         }
 
         if (isset($user['role'])) {
-            if ($role === 'admin' && $user['role'] !== 'admin' && $request->path() !== 'admin/login-admin') {
-                return redirect('/admin/login-admin')->with('error', 'Unauthorized access.');
+            if ($role === 'admin' && $user['role'] !== 'admin' && $request->path() !== 'admin') {
+                return redirect('/admin')->with('error', 'Unauthorized access.');
             }
 
             if ($role === 'pendaftar' && $user['role'] !== 'pendaftar' && $request->path() !== 'login-page') {
                 return redirect('/login-page')->with('error', 'Unauthorized access.');
             }
         } else {
-            if ($role === 'admin' && $request->path() !== 'admin/login-admin') {
-                return redirect('/admin/login-admin');
+            if ($role === 'admin' && $request->path() !== 'admin') {
+                return redirect('/admin');
             } elseif ($role === 'pendaftar' && $request->path() !== 'login-page') {
                 return redirect('/login-page');
             }

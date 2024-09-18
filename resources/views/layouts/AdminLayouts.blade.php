@@ -70,7 +70,7 @@
     <aside id="sidebar" class="sidebar">
         <ul class="sidebar-nav" id="sidebar-nav">
             <li class="nav-item">
-                <a class="nav-link {{ request()->is('/') ? '' : 'collapsed' }}" href="{{ route('dashboard.index') }}">
+                <a class="nav-link {{ request()->is('admin/dashboard*') ? '' : 'collapsed' }}" href="{{ route('dashboard.index') }}">
                     <i class="bi bi-grid"></i>
                     <span>Dashboard</span>
                 </a>
