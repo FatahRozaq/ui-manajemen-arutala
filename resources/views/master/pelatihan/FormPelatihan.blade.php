@@ -25,17 +25,16 @@
 
 <section class="section">
     <div class="row">
-        <div class="col-lg-8">
+        <div class="col-lg-12">
             <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">General Form Elements</h5>
+                <div class="card-body" style="padding-top: 50px">
 
                     <!-- General Form Elements -->
                     <form id="formPelatihan">
                         <!-- Nama Pelatihan -->
                         <div class="form-group row position-relative">
                             <label for="trainingInput" class="col-sm-3 col-form-label">Nama Pelatihan</label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-6">
                                 <input type="text" class="form-control" id="trainingInput" name="nama_pelatihan">
                                 <div class="dropdown-menu" id="trainingDropdown"></div>
                                 <small id="nameError" class="text-danger" style="display:none;">Nama Pelatihan Sudah ada</small>
@@ -45,7 +44,7 @@
                         <!-- Image -->
                         <div class="row mb-3">
                           <label for="formFile" class="col-form-label col-sm-3">Gambar</label>
-                          <div class="col-sm-9">
+                          <div class="col-sm-6">
                             <input class="form-control" type="file" id="formFile" name="gambar_pelatihan">
                           </div>
                         </div>
@@ -53,7 +52,7 @@
                         <!-- Description -->
                         <div class="row mb-3">
                           <label for="exampleFormControlTextarea1" class="col-form-label col-sm-3">Deskripsi</label>
-                          <div class="col-sm-9">
+                          <div class="col-sm-6">
                           <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="deskripsi"></textarea>
                           </div>
                         </div>
@@ -61,7 +60,7 @@
                         <div id="materiContainer">
                           <div class="form-group row position-relative mb-1">
                             <label class="col-sm-3 col-form-label">Materi</label>
-                            <div class="col-sm-9 input-group">
+                            <div class="col-sm-6 input-group">
                                 <input type="text" class="form-control materi" name="materi[]">
                                 <div class="input-group-append">
                                   <button class="btn btn-outline-success add-materi" type="button"><i class="bi bi-plus-circle"></i></button>
@@ -73,7 +72,7 @@
                         <div id="benefitContainer">
                           <div class="form-group row position-relative mb-1 mt-3">
                             <label class="col-sm-3 col-form-label">Benefit</label>
-                            <div class="col-sm-9 input-group">
+                            <div class="col-sm-6 input-group">
                                 <input type="text" class="form-control benefit" name="benefit[]">
                                 <div class="input-group-append">
                                   <button class="btn btn-outline-success add-benefit" type="button"><i class="bi bi-plus-circle"></i></button>
@@ -82,13 +81,16 @@
                           </div>
                         </div>
 
-                        <div class="button-submit mt-4">
-                          <button class="btn btn-success col-sm-3" type="button" id="submitPelatihan">Submit</button>
+                        <div class="row">
+                            <div class="col-sm-11 text-right">
+                                <button type="submit" class="btn" style="background-color: #344C92; color: white;">Submit</button>
+                            </div>
                         </div>
 
-                        </form>
-                      </div>
+                    </form>
+                </div>
             </div>
+
         </div>
     </div>
 </section>

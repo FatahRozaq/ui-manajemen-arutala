@@ -126,160 +126,151 @@
 
 <script>
     $(document).ready(function() {
-        let id_agenda = null; // Deklarasikan id_agenda sebagai variabel dinamis
+    let id_agenda = null; // Deklarasikan id_agenda sebagai variabel dinamis
 
-        // Ambil data pelatihan dan batch dari server
-        axios.get('/api/peserta-pelatihan/pelatihan-batch')
-            .then(function(response) {
-                const pelatihanBatchData = response.data.data;
-                
-                // Isi dropdown pelatihan
-                const pelatihanSelect = $('#pelatihan');
-                pelatihanBatchData.forEach(function(item) {
-                    pelatihanSelect.append(`<option value="${item.nama_pelatihan}">${item.nama_pelatihan}</option>`);
-                });
-
-                // Event listener untuk perubahan dropdown pelatihan
-                pelatihanSelect.on('change', function() {
-                    const selectedPelatihan = $(this).val();
-                    const batchSelect = $('#batch');
-                    batchSelect.empty();
-                    batchSelect.append(`<option value="">-- Pilih Batch --</option>`);
-
-                    // Isi dropdown batch berdasarkan pelatihan yang dipilih
-                    const selectedItem = pelatihanBatchData.find(item => item.nama_pelatihan === selectedPelatihan);
-                    if (selectedItem) {
-                        selectedItem.batches.forEach(function(batch) {
-                            batchSelect.append(`<option value="${batch}">${batch}</option>`);
-                        });
-                    }
-                });
-            })
-            .catch(function(error) {
-                console.error('Error fetching pelatihan and batch data:', error);
+    // Ambil data pelatihan dan batch dari server
+    axios.get('/api/peserta-pelatihan/pelatihan-batch')
+        .then(function(response) {
+            const pelatihanBatchData = response.data.data;
+            
+            // Isi dropdown pelatihan
+            const pelatihanSelect = $('#pelatihan');
+            pelatihanBatchData.forEach(function(item) {
+                pelatihanSelect.append(`<option value="${item.nama_pelatihan}">${item.nama_pelatihan}</option>`);
             });
 
-        function fetchData(pelatihan, batch) {
-            // Dapatkan id_agenda berdasarkan pelatihan dan batch
-            axios.get(`/api/peserta-pelatihan/get-agenda-id`, {
+            // Isi dropdown batch saat halaman dimuat, meskipun hanya ada satu pelatihan
+            updateBatchDropdown(pelatihanBatchData);
+
+            // Event listener untuk perubahan dropdown pelatihan
+            pelatihanSelect.on('change', function() {
+                updateBatchDropdown(pelatihanBatchData);
+            });
+        })
+        .catch(function(error) {
+            console.error('Error fetching pelatihan and batch data:', error);
+        });
+
+    function updateBatchDropdown(pelatihanBatchData) {
+        const selectedPelatihan = $('#pelatihan').val();
+        const batchSelect = $('#batch');
+        batchSelect.empty();
+        batchSelect.append(`<option value="">-- Pilih Batch --</option>`);
+
+        // Isi dropdown batch berdasarkan pelatihan yang dipilih
+        const selectedItem = pelatihanBatchData.find(item => item.nama_pelatihan === selectedPelatihan);
+        if (selectedItem) {
+            selectedItem.batches.forEach(function(batch) {
+                batchSelect.append(`<option value="${batch}">${batch}</option>`);
+            });
+        }
+    }
+
+    function fetchData(pelatihan, batch) {
+        // Dapatkan id_agenda berdasarkan pelatihan dan batch
+        axios.get(`/api/peserta-pelatihan/get-agenda-id`, {
+            params: {
+                nama_pelatihan: pelatihan,
+                batch: batch
+            }
+        })
+        .then(function(response) {
+            id_agenda = response.data.id_agenda; // Set id_agenda berdasarkan respons API
+
+            // Fetch data peserta setelah mendapatkan id_agenda
+            axios.get(`/api/peserta-pelatihan/agenda/${id_agenda}/peserta`, {
                 params: {
                     nama_pelatihan: pelatihan,
                     batch: batch
                 }
             })
             .then(function(response) {
-                id_agenda = response.data.id_agenda; // Set id_agenda berdasarkan respons API
+                const filteredData = response.data.data;
 
-                // Fetch data peserta setelah mendapatkan id_agenda
-                axios.get(`/api/peserta-pelatihan/agenda/${id_agenda}/peserta`, {
-                    params: {
-                        nama_pelatihan: pelatihan,
-                        batch: batch
-                    }
-                })
-                .then(function(response) {
-                    const filteredData = response.data.data;
+                // Pisahkan data berdasarkan status pembayaran
+                const paidData = filteredData.filter(item => item.status_pembayaran.toLowerCase() === 'paid');
+                const unpaidData = filteredData.filter(item => item.status_pembayaran.toLowerCase() === 'proses');
 
-                    // Pisahkan data berdasarkan status pembayaran
-                    const paidData = filteredData.filter(item => item.status_pembayaran.toLowerCase() === 'paid');
-                    const unpaidData = filteredData.filter(item => item.status_pembayaran.toLowerCase() === 'proses');
-
-                    // Update DataTables dengan data yang telah dipisahkan
-                    $('#dataDetailPelatihanTablePaid').DataTable().clear().rows.add(paidData).draw();
-                    $('#dataDetailPelatihanTableUnpaid').DataTable().clear().rows.add(unpaidData).draw();
-                })
-                .catch(function(error) {
-                    console.error('Error fetching filtered data:', error);
-                });
+                // Update DataTables dengan data yang telah dipisahkan
+                $('#dataDetailPelatihanTablePaid').DataTable().clear().rows.add(paidData).draw();
+                $('#dataDetailPelatihanTableUnpaid').DataTable().clear().rows.add(unpaidData).draw();
             })
             .catch(function(error) {
-                console.error('Error fetching agenda ID:', error);
+                console.error('Error fetching filtered data:', error);
             });
-        }
+        })
+        .catch(function(error) {
+            console.error('Error fetching agenda ID:', error);
+        });
+    }
 
-        // Inisialisasi DataTables
-        $('#dataDetailPelatihanTablePaid').DataTable({
-            columns: [
-                { data: 'nama_pelatihan' },
-                { data: 'batch' },
-                { data: 'nama_peserta' },
-                { data: 'no_kontak' },
-                {
-                    data: 'status_pembayaran',
-                    render: function(data, type, row) {
-                        let colorClass = data.toLowerCase() === 'paid' ? 'text-success' : 'text-warning';
-                        return `<span class="${colorClass}">${data}</span>`;
-                    }
-                },
-                {
-                    data: null,
-                    render: function(data, type, row) {
-                        const idPendaftaran = row.id_pendaftaran || 'undefined'; // Pastikan id_pendaftaran tersedia
-                        const idAgenda = row.id_agenda || 'undefined'; // Pastikan id_agenda tersedia
-                        return `
-                        <a href="pesertapelatihan/updatestatus?id_pendaftaran=${idPendaftaran}&id_agenda=${idAgenda}" class="update-icon" title="Update">
-                            <i class="fas fa-edit text-warning"></i>
-                        </a>
-                        <a href="#" class="delete-icon" data-id="${idPendaftaran}" title="Delete">
-                            <i class="fas fa-trash-alt text-danger"></i>
-                        </a>
-                        `;
-                    }
+    // Inisialisasi DataTables
+    $('#dataDetailPelatihanTablePaid').DataTable({
+        columns: [
+            { data: 'nama_pelatihan' },
+            { data: 'batch' },
+            { data: 'nama_peserta' },
+            { data: 'no_kontak' },
+            {
+                data: 'status_pembayaran',
+                render: function(data, type, row) {
+                    let colorClass = data.toLowerCase() === 'paid' ? 'text-success' : 'text-warning';
+                    return `<span class="${colorClass}">${data}</span>`;
                 }
-            ]
-        });
-
-        $('#dataDetailPelatihanTableUnpaid').DataTable({
-            columns: [
-                { data: 'nama_pelatihan' },
-                { data: 'batch' },
-                { data: 'nama_peserta' },
-                { data: 'no_kontak' },
-                {
-                    data: 'status_pembayaran',
-                    render: function(data, type, row) {
-                        let colorClass = data.toLowerCase() === 'paid' ? 'text-success' : 'text-warning';
-                        return `<span class="${colorClass}">${data}</span>`;
-                    }
-                },
-                {
-                    data: null,
-                    render: function(data, type, row) {
-                        const idPendaftaran = row.id_pendaftaran || 'undefined'; // Pastikan id_pendaftaran tersedia
-                        const idAgenda = row.id_agenda || 'undefined'; // Pastikan id_agenda tersedia
-                        return `
-                        <a href="/updatestatus?id_pendaftaran=${idPendaftaran}&id_agenda=${idAgenda}" class="update-icon" title="Update">
-                            <i class="fas fa-edit text-warning"></i>
-                        </a>
-                        <a href="#" class="delete-icon" data-id="${idPendaftaran}" title="Delete">
-                            <i class="fas fa-trash-alt text-danger"></i>
-                        </a>
-                        `;
-                    }
+            },
+            {
+                data: null,
+                render: function(data, type, row) {
+                    const idPendaftaran = row.id_pendaftaran || 'undefined'; // Pastikan id_pendaftaran tersedia
+                    const idAgenda = row.id_agenda || 'undefined'; // Pastikan id_agenda tersedia
+                    return `
+                    <a href="pesertapelatihan/updatestatus?id_pendaftaran=${idPendaftaran}&id_agenda=${idAgenda}" class="update-icon" title="Update">
+                        <i class="fas fa-edit text-warning"></i>
+                    </a>
+                    <a href="#" class="delete-icon" data-id="${idPendaftaran}" title="Delete">
+                        <i class="fas fa-trash-alt text-danger"></i>
+                    </a>
+                    `;
                 }
-            ]
-        });
-
-        // Event handler untuk tombol Terapkan
-        $('#applyFilter').on('click', function() {
-            const pelatihan = $('#pelatihan').val();
-            const batch = $('#batch').val();
-            fetchData(pelatihan, batch);
-            $('#filterModal').modal('hide');
-        });
+            }
+        ]
     });
 
-    $(document).ready(function() {
-    // Handler untuk tombol "Terapkan" (apply filter)
+    $('#dataDetailPelatihanTableUnpaid').DataTable({
+        columns: [
+            { data: 'nama_pelatihan' },
+            { data: 'batch' },
+            { data: 'nama_peserta' },
+            { data: 'no_kontak' },
+            {
+                data: 'status_pembayaran',
+                render: function(data, type, row) {
+                    let colorClass = data.toLowerCase() === 'paid' ? 'text-success' : 'text-warning';
+                    return `<span class="${colorClass}">${data}</span>`;
+                }
+            },
+            {
+                data: null,
+                render: function(data, type, row) {
+                    const idPendaftaran = row.id_pendaftaran || 'undefined'; // Pastikan id_pendaftaran tersedia
+                    const idAgenda = row.id_agenda || 'undefined'; // Pastikan id_agenda tersedia
+                    return `
+                    <a href="/updatestatus?id_pendaftaran=${idPendaftaran}&id_agenda=${idAgenda}" class="update-icon" title="Update">
+                        <i class="fas fa-edit text-warning"></i>
+                    </a>
+                    <a href="#" class="delete-icon" data-id="${idPendaftaran}" title="Delete">
+                        <i class="fas fa-trash-alt text-danger"></i>
+                    </a>
+                    `;
+                }
+            }
+        ]
+    });
+
+    // Event handler untuk tombol Terapkan
     $('#applyFilter').on('click', function() {
         const pelatihan = $('#pelatihan').val();
         const batch = $('#batch').val();
-
-        // Set nilai input hidden untuk ekspor
-        $('#exportPelatihan').val(pelatihan);
-        $('#exportBatch').val(batch);
-
-        // Panggil fungsi fetchData untuk memuat data yang difilter ke tabel
         fetchData(pelatihan, batch);
         $('#filterModal').modal('hide');
     });
@@ -297,6 +288,7 @@
         }
     });
 });
+
 
 </script>
 

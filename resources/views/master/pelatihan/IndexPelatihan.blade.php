@@ -6,13 +6,21 @@
 
 @section('content')
 
-<div class="pagetitle d-flex justify-content-between align-items-center">
+{{-- <div class="pagetitle d-flex justify-content-between align-items-center">
     <h1>Data Pelatihan</h1>
     <a href="pelatihan/tambah" class="btn btn-success d-flex align-items-center" style="border-radius: 10px;">
       <i class="bi bi-plus-circle-fill" style="font-size:18px; margin-right:3px; margin-top:10px"></i>
       Tambah Pelatihan
     </a>
-</div><!-- End Page Title -->
+</div><!-- End Page Title --> --}}
+
+<div class="pagetitle d-flex justify-content-between align-items-center">
+    <h1>Data Pelatihan</h1>
+    <a href="pelatihan/tambah" class="btn btn-success d-flex align-items-center" style="border-radius: 10px;">
+        <i class="fa-solid fa-circle-plus mr-2"></i>
+        Tambah Pelatihan
+    </a>
+</div>
 
 <section class="section">
   <div class="row">
