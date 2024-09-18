@@ -8,7 +8,7 @@
 
 <div class="pagetitle d-flex justify-content-between align-items-center">
     <h1>Data Pelatihan</h1>
-    <a href="/form-pelatihan" class="btn btn-success d-flex align-items-center" style="border-radius: 10px;">
+    <a href="pelatihan/tambah" class="btn btn-success d-flex align-items-center" style="border-radius: 10px;">
       <i class="bi bi-plus-circle-fill" style="font-size:18px; margin-right:3px; margin-top:10px"></i>
       Tambah Pelatihan
     </a>
@@ -74,14 +74,14 @@
                 },
                 { "data": "nama_pelatihan" }, // Nama pelatihan
                 { "data": "jumlah_batch" },   // Jumlah batch
-                {                         // Aksi dengan ikon
+                {                         
                     "data": null,
                     "render": function(data, type, row) {
                         return `
-                            <a href="/pelatihan/detail-pelatihan/${row.id_pelatihan}" class="view-icon" title="View">
+                            <a href="pelatihan/detail/${row.id_pelatihan}" class="view-icon" title="View">
                                 <i class="fas fa-eye text-primary"></i>
                             </a>
-                            <a href="/pelatihan/update-pelatihan?id=${row.id_pelatihan}" class="update-icon" title="Update">
+                            <a href="pelatihan/update?id=${row.id_pelatihan}" class="update-icon" title="Update">
                                 <i class="fas fa-edit text-warning"></i>
                             </a>
                             <a href="#" class="delete-icon" data-id="${row.id_pelatihan}" title="Delete">

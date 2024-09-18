@@ -226,7 +226,7 @@
                         confirmButtonText: 'OK'
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            window.location.href = '/master-pelatihan';
+                            window.location.href = '/admin/pelatihan';
                         }
                     });
                 })

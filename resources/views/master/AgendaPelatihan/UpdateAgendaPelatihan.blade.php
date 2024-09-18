@@ -363,7 +363,7 @@ $(document).ready(function() {
         axios.post(`/api/agenda/update-agenda/${agendaId}`, formData)
             .then(function(response) {
                 alert('Agenda pelatihan berhasil diperbarui!');
-                // window.location.href = '/agenda/index'; // Ganti dengan path tujuan setelah update
+                window.location.href = '/admin/agendapelatihan'; // Ganti dengan path tujuan setelah update
             })
             .catch(function(error) {
                 console.error('Error updating agenda:', error);

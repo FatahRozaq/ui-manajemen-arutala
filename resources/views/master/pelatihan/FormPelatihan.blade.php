@@ -224,7 +224,7 @@
             console.log(response.data);
 
             // Redirect ke halaman master pelatihan
-            window.location.href = '/master-pelatihan';
+            window.location.href = '/admin/pelatihan';
         })
         .catch(function(error) {
             if (error.response && error.response.data.errors && error.response.data.errors.nama_pelatihan) {

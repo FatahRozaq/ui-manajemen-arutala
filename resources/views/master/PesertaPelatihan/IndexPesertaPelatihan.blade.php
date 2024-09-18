@@ -217,7 +217,7 @@
                         const idPendaftaran = row.id_pendaftaran || 'undefined'; // Pastikan id_pendaftaran tersedia
                         const idAgenda = row.id_agenda || 'undefined'; // Pastikan id_agenda tersedia
                         return `
-                        <a href="/updatestatus?id_pendaftaran=${idPendaftaran}&id_agenda=${idAgenda}" class="update-icon" title="Update">
+                        <a href="pesertapelatihan/updatestatus?id_pendaftaran=${idPendaftaran}&id_agenda=${idAgenda}" class="update-icon" title="Update">
                             <i class="fas fa-edit text-warning"></i>
                         </a>
                         <a href="#" class="delete-icon" data-id="${idPendaftaran}" title="Delete">

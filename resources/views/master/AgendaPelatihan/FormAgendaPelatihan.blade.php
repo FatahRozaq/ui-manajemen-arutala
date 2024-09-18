@@ -280,7 +280,7 @@ $(document).ready(function() {
         axios.post('/api/agenda/tambah-agenda', formData)
             .then(function(response) {
                 alert('Data berhasil ditambahkan!');
-                window.location.href = '/agendapelatihan'; // Redirect ke halaman agendapelatihan setelah berhasil
+                window.location.href = '/admin/agendapelatihan'; // Redirect ke halaman agendapelatihan setelah berhasil
             })
             .catch(function(error) {
                 console.error('Gagal menambahkan data:', error);

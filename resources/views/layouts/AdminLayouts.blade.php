@@ -77,7 +77,7 @@
             </li>
             <!-- Additional menu items -->
             <li class="nav-item">
-                <a class="nav-link {{ request()->is('master-pelatihan*') ? '' : 'collapsed' }}" href="{{ route('pelatihan.index') }}">
+                <a class="nav-link {{ request()->is('admin/pelatihan*') ? '' : 'collapsed' }}" href="{{ route('pelatihan.index') }}">
                     <i class="fa-solid fa-table-list"></i>
                     <span>Master Pelatihan</span>
                 </a>
@@ -95,13 +95,13 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ request()->is('agendapelatihan*') ? '' : 'collapsed' }}" href="{{ route('agenda.index') }}">
+                <a class="nav-link {{ request()->is('admin/agendapelatihan*') ? '' : 'collapsed' }}" href="{{ route('agenda.index') }}">
                     <i class="fa-solid fa-calendar-days"></i>
                     <span>Agenda Pelatihan</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ request()->is('pesertapelatihan*') ? '' : 'collapsed' }}" href="{{ route('peserta.index') }}">
+                <a class="nav-link {{ request()->is('admin/pesertapelatihan*') ? '' : 'collapsed' }}" href="{{ route('peserta.index') }}">
                     <i class="fa-solid fa-calendar-days"></i>
                     <span>Peserta Pelatihan</span>
                 </a>

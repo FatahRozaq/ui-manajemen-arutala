@@ -137,6 +137,7 @@
         })
         .then(function(response) {
             alert('Status pembayaran berhasil diupdate!');
+            window.location.href = '/admin/pesertapelatihan'; 
         })
         .catch(function(error) {
             console.error('Error updating status:', error);

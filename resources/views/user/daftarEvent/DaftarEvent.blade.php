@@ -33,7 +33,7 @@
                     card.classList.add('card');
                     card.style.cursor = 'pointer'; // Tambahkan pointer untuk menandakan bisa diklik
                     card.onclick = function() {
-                        window.location.href = `/detail-event/${event.id_agenda}`;
+                        window.location.href = `/event/${event.id_agenda}`;
                     };
 
                     const investasi = Array.isArray(event.investasi) ? event.investasi[0] : event.investasi;
