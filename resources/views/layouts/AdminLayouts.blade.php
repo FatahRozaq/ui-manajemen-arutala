@@ -177,7 +177,7 @@
                         confirmButtonText: 'OK'
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            window.location.href = '/admin/login-admin';
+                            window.location.href = '/admin';
                         }
                     });
                 })
