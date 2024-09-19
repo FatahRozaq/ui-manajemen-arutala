@@ -30,18 +30,17 @@ class ApiPendaftaranEventController extends Controller
                 ], Response::HTTP_NOT_FOUND);
             }
 
-            // $image_url = $agenda->pelatihan->gambar_pelatihan;
-            $image_url = NULL;
-            // $image_url = "https://minio.cloudias79.com/talent79-dev/uploads/1725940517.jpg";
+            $image_url = $agenda->pelatihan->gambar_pelatihan;
+
             if($image_url == NULL)
             {
-                $image_url = "https://images.shiksha.com/mediadata/shikshaOnline/mailers/2021/naukri-learning/nov/30nov/What-is-Automation-Testing.jpg";
+                $image_url = asset('assets/images/default-pelatihan.jpg');
             }
             return response()->json([
                 'pendaftar' => $pendaftar,
                 'agenda' => $agenda,
-                'pelatihan' => $agenda->pelatihan, // Mengambil data pelatihan yang terkait
-                'image_url' => $image_url, // Tambahkan URL gambar ke response
+                'pelatihan' => $agenda->pelatihan, 
+                'image_url' => $image_url, 
                 'message' => 'Data berhasil diambil',
                 'statusCode' => Response::HTTP_OK,
                 'status' => 'success'
