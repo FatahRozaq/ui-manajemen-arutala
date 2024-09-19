@@ -47,80 +47,13 @@ class ApiMasterPelatihanController extends Controller
         }
     }
 
-
-    // public function store(Request $request)
-    // {
-    //     try {
-    //         // Validasi request
-    //         $request->validate([
-    //             'nama_pelatihan' => 'required|string|max:255|unique:pelatihan,nama_pelatihan',
-    //             'gambar_pelatihan' => 'required|file|mimes:jpeg,png,jpg,gif,svg|max:2048',
-    //             'deskripsi' => 'required|string|max:255',
-    //             'materi' => 'required|array',
-    //             'benefit' => 'required|array'
-    //         ], [
-    //             'nama_pelatihan.unique' => 'Nama pelatihan sudah ada, silakan gunakan nama lain.',
-    //         ]);
-
-    //         // Simpan file gambar dan ambil nama file
-    //         if ($request->hasFile('gambar_pelatihan')) {
-    //             $fileName = time() . '.' . $request->gambar_pelatihan->extension();
-    //             $request->gambar_pelatihan->move(public_path('uploads'), $fileName);
-    //         } else {
-    //             return response()->json([
-    //                 'message' => 'Gambar pelatihan wajib diunggah',
-    //                 'statusCode' => 400,
-    //                 'status' => 'error'
-    //             ], 400);
-    //         }
-
-    //         // Simpan data pelatihan
-    //         $pelatihan = new Pelatihan();
-    //         $pelatihan->nama_pelatihan = $request->input('nama_pelatihan');
-    //         $pelatihan->gambar_pelatihan = $fileName; // Simpan nama file ke database
-    //         $pelatihan->deskripsi = $request->input('deskripsi');
-    //         $pelatihan->materi = json_encode($request->input('materi')); // Simpan sebagai JSON string
-    //         $pelatihan->benefit = json_encode($request->input('benefit')); // Simpan sebagai JSON string
-    //         $pelatihan->is_deleted = false;
-    //         $pelatihan->created_by = 'Admin'; // Atur sesuai kebutuhan Anda
-    //         $pelatihan->created_time = now();
-
-    //         $pelatihan->save();
-
-    //         // Return response dengan data yang baru ditambahkan
-    //         return response()->json([
-    //             'message' => 'Pelatihan berhasil ditambahkan',
-    //             'statusCode' => 201,
-    //             'status' => 'success',
-    //             'data' => [
-    //                 'id_pelatihan' => $pelatihan->id_pelatihan,
-    //                 'nama_pelatihan' => $pelatihan->nama_pelatihan,
-    //                 'gambar_pelatihan' => $pelatihan->gambar_pelatihan,
-    //                 'deskripsi' => $pelatihan->deskripsi,
-    //                 'materi' => json_decode($pelatihan->materi),
-    //                 'benefit' => json_decode($pelatihan->benefit),
-    //                 'is_deleted' => $pelatihan->is_deleted,
-    //                 'created_by' => $pelatihan->created_by,
-    //                 'created_time' => $pelatihan->created_time
-    //             ]
-    //         ], 201);
-    //     } catch (\Exception $e) {
-    //         return response()->json([
-    //             'message' => 'Gagal menambahkan pelatihan',
-    //             'statusCode' => 500,
-    //             'status' => 'error',
-    //             'error' => $e->getMessage()
-    //         ], 500);
-    //     }
-    // }
-
     public function store(Request $request)
     {
         try {
             // Validasi request
             $request->validate([
                 'nama_pelatihan' => 'required|string|max:255|unique:pelatihan,nama_pelatihan',
-                'gambar_pelatihan' => 'required|file|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'gambar_pelatihan' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg|max:2048',
                 'deskripsi' => 'required|string|max:255',
                 'materi' => 'required|array',
                 'benefit' => 'required|array'
