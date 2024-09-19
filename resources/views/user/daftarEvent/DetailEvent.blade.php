@@ -57,9 +57,6 @@
         // Ambil id event dari URL
         const eventId = window.location.pathname.split('/').pop();
         
-        // Base URL gambar, sesuaikan dengan path gambar yang benar jika diperlukan
-        const baseURL = "{{ url('') }}";
-
         // Lakukan fetch data event menggunakan Axios
         axios.get(`/api/laman-peserta/event-detail/${eventId}`)
             .then(function(response) {
@@ -70,14 +67,7 @@
 
                 // Update konten halaman dengan data event
                 document.getElementById('event-title').textContent = event.namaPelatihan;
-
-                // Cek apakah gambar memiliki URL penuh atau hanya path relatif
-                let imageUrl = event.gambar_pelatihan;
-                if (!imageUrl.startsWith('http')) {
-                    imageUrl = `${baseURL}/${imageUrl}`;
-                }
-                
-                document.getElementById('event-image').src = imageUrl;
+                document.getElementById('event-image').src = event.gambar_pelatihan;
                 document.getElementById('event-image').alt = event.namaPelatihan;
                 document.getElementById('event-description').textContent = event.deskripsi;
 
@@ -102,6 +92,7 @@
                 }
 
                 // Update mentor list
+                // Update mentor list
                 const mentorList = document.getElementById('mentor-list');
                 if (event.mentor && event.mentor.length > 0) {
                     event.mentor.forEach(function(mentor) {
@@ -114,6 +105,7 @@
                     noMentor.textContent = 'Tidak ada mentor';
                     mentorList.appendChild(noMentor);
                 }
+
 
                 // Update investasi
                 if (event.investasi) {
