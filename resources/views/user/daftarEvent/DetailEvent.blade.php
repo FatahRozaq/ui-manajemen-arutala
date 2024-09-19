@@ -67,7 +67,7 @@
 
                 // Update konten halaman dengan data event
                 document.getElementById('event-title').textContent = event.namaPelatihan;
-                document.getElementById('event-image').src = `${event.image}`;
+                document.getElementById('event-image').src = `${event.gambar_pelatihan}`;
                 document.getElementById('event-image').alt = event.namaPelatihan;
                 document.getElementById('event-description').textContent = event.deskripsi;
 
