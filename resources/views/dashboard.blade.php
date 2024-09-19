@@ -22,10 +22,10 @@
               <li class="dropdown-item">
                 <label for="year">Tahun:</label>
                 <select id="year" class="form-select">
-                  <option value="2021">2021</option>
-                  <option value="2022">2022</option>
-                  <option value="2023">2023</option>
                   <option value="2024">2024</option>
+                  <option value="2023">2023</option>
+                  <option value="2022">2022</option>
+                  <option value="2021">2021</option>
                 </select>
               </li>
               <li class="dropdown-item d-flex justify-content-between align-items-center">
@@ -71,7 +71,7 @@
           </div>
 
             <div class="card-body">
-                <h5 class="card-title">Pendaftar <span>| Month</span></h5>
+                <h5 class="card-title">Pendaftar <span></span></h5>
 
                 <div class="d-flex align-items-center">
                     <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">

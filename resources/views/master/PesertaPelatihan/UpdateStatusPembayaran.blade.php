@@ -89,10 +89,12 @@
 @section('scripts')
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
- document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function() {
     const urlParams = new URLSearchParams(window.location.search);
     const idPendaftaran = urlParams.get('id_pendaftaran'); // Ambil ID pendaftaran dari URL
     const idAgenda = urlParams.get('id_agenda'); // Ambil ID agenda dari URL
+    let namaPelatihan = urlParams.get('nama_pelatihan'); // Ambil nama pelatihan dari URL
+    let batch = urlParams.get('batch'); // Ambil batch dari URL
 
     // Periksa apakah idAgenda telah diambil dengan benar
     if (!idAgenda) {
@@ -115,6 +117,11 @@
                 document.getElementById('batch').value = peserta.batch;
                 document.getElementById('namaPeserta').value = peserta.nama_peserta;
                 document.getElementById('statusPembayaran').value = peserta.status_pembayaran;
+
+                // Perbarui nilai variabel namaPelatihan dan batch jika belum di-set
+                if (!namaPelatihan) namaPelatihan = peserta.nama_pelatihan;
+                if (!batch) batch = peserta.batch;
+
             } else {
                 console.error('Data peserta tidak ditemukan.');
                 alert('Data peserta tidak ditemukan.');
@@ -137,7 +144,14 @@
         })
         .then(function(response) {
             alert('Status pembayaran berhasil diupdate!');
-            window.location.href = '/admin/pesertapelatihan'; 
+            
+            // Pastikan namaPelatihan dan batch tidak null atau undefined sebelum redirect
+            if (namaPelatihan && batch) {
+                window.location.href = `/admin/pesertapelatihan?nama_pelatihan=${encodeURIComponent(namaPelatihan)}&batch=${batch}`;
+            } else {
+                // Fallback ke URL default jika parameter tidak tersedia
+                window.location.href = '/admin/pesertapelatihan';
+            }
         })
         .catch(function(error) {
             console.error('Error updating status:', error);
@@ -145,7 +159,8 @@
         });
     });
 });
+</script>
 
-    </script>
+
     
 @endsection

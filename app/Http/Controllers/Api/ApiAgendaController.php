@@ -277,7 +277,7 @@ class ApiAgendaController extends Controller
     {
         try {
             // Ambil data pelatihan dan mentor dari database
-            $pelatihans = Pelatihan::all(['nama_pelatihan']);
+            $pelatihans = Pelatihan::where('is_deleted', false)->get(['nama_pelatihan']);
             $mentors = Mentor::all(['id_mentor', 'nama_mentor']);
 
             // Kirim data dalam format JSON

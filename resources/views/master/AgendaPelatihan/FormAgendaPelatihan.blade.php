@@ -44,10 +44,9 @@
 
 <section class="section">
     <div class="row">
-        <div class="col-lg-8">
+        <div class="col-lg-12">
             <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">General Form Elements</h5>
+                <div class="card-body" style="padding-top: 50px">
 
                     <!-- General Form Elements -->
                     <form id="agendaForm" method="POST" action="{{ route('agenda.tambah') }}">
@@ -56,7 +55,7 @@
                         <!-- Nama Pelatihan -->
                         <div class="form-group row position-relative">
                             <label for="namaPelatihan" class="col-sm-3 col-form-label">Nama Pelatihan</label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-6">
                                 <select name="nama_pelatihan" id="namaPelatihan" class="form-control">
                                     <!-- Options will be populated by JavaScript -->
                                 </select>
@@ -66,7 +65,7 @@
                         <!-- Start Date -->
                         <div class="form-group row position-relative">
                             <label for="startDate" class="col-sm-3 col-form-label">Start Date</label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-6">
                                 <input type="date" name="start_date" class="form-control" id="startDate">
                             </div>
                         </div>
@@ -74,7 +73,7 @@
                         <!-- End Date -->
                         <div class="form-group row position-relative">
                             <label for="endDate" class="col-sm-3 col-form-label">End Date</label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-6">
                                 <input type="date" name="end_date" class="form-control" id="endDate">
                             </div>
                         </div>
@@ -83,7 +82,7 @@
                         <div id="sesiContainer">
                             <div class="form-group row position-relative mb-1">
                                 <label class="col-sm-3 col-form-label">Sesi</label>
-                                <div class="col-sm-9 input-group">
+                                <div class="col-sm-6 input-group">
                                     <input type="text" name="sesi[]" class="form-control">
                                     <div class="input-group-append">
                                         <button class="btn btn-outline-success add-sesi" type="button"><i class="bi bi-plus-circle"></i></button>
@@ -95,7 +94,7 @@
                         <!-- Investasi Numerik -->
                         <div class="form-group row position-relative mb-1">
                             <label class="col-sm-3 col-form-label">Investasi</label>
-                            <div class="col-sm-9 input-group">
+                            <div class="col-sm-6 input-group">
                                 <input type="number" name="investasi" class="form-control">
                             </div>
                         </div>
@@ -104,7 +103,7 @@
                         <div id="investasiContainer">
                             <div class="form-group row position-relative mb-1">
                                 <label class="col-sm-3 col-form-label">Investasi Info</label>
-                                <div class="col-sm-9 input-group">
+                                <div class="col-sm-6 input-group">
                                     <input type="text" name="investasi_info[]" class="form-control">
                                     <div class="input-group-append">
                                         <button class="btn btn-outline-success add-investasi" type="button"><i class="bi bi-plus-circle"></i></button>
@@ -116,7 +115,7 @@
                         <!-- Diskon -->
                         <div class="form-group row position-relative mt-3">
                             <label for="diskon" class="col-sm-3 col-form-label">Diskon %</label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-6">
                                 <input type="number" name="diskon" class="form-control" id="diskon">
                             </div>
                         </div>
@@ -124,7 +123,7 @@
                         <!-- Status -->
                         <div class="form-group row position-relative">
                             <label for="status" class="col-sm-3 col-form-label">Status</label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-6">
                                 <select name="status" class="form-control" id="status">
                                     <option value="Planning">Planning</option>
                                     <option value="Masa Pendaftaran">Masa Pendaftaran</option>
@@ -136,14 +135,14 @@
 
                         <div class="form-group row position-relative">
                             <label for="startDate" class="col-sm-3 col-form-label">Start Pendaftaran</label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-6">
                                 <input type="date" name="start_pendaftaran" class="form-control" id="startDate">
                             </div>
                         </div>
 
                         <div class="form-group row position-relative">
                             <label for="startDate" class="col-sm-3 col-form-label">End Pendaftaran</label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-6">
                                 <input type="date" name="end_pendaftaran" class="form-control" id="startDate">
                             </div>
                         </div>
@@ -151,7 +150,7 @@
                         <!-- Link Pembayaran -->
                         <div class="form-group row position-relative mt-3">
                             <label for="linkMayar" class="col-sm-3 col-form-label">Link Mayar</label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-6">
                                 <input type="text" name="link_mayar" class="form-control" id="linkMayar">
                             </div>
                         </div>
@@ -159,7 +158,7 @@
                         <!-- Mentor -->
                         <div class="form-group row position-relative">
                             <label for="mentorInput" class="col-sm-3">Mentor</label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-6">
                                 <select id="mentorInput" name="id_mentor[]" class="form" multiple>
                                     <!-- Options will be populated by JavaScript -->
                                 </select>
@@ -167,13 +166,19 @@
                         </div>
 
                         <!-- Submit -->
-                        <div class="button-submit mt-4">
+                        {{-- <div class="button-submit mt-4">
                             <button class="btn btn-success col-sm-3" type="button" id="submitAgenda">Submit</button>
+                        </div> --}}
+                        <div class="row">
+                            <div class="col-sm-11 text-right">
+                                <button type="button" class="btn" id="submitAgenda" style="background-color: #344C92; color: white;">Submit</button>
+                            </div>
                         </div>
 
                     </form>
                 </div>
             </div>
+
         </div>
     </div>
 </section>
@@ -235,7 +240,7 @@ $(document).ready(function() {
         var newSesiRow = `
             <div class="form-group row position-relative mb-1">
                 <label class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 input-group">
+                <div class="col-sm-6 input-group">
                     <input type="text" name="sesi[]" class="form-control">
                     <div class="input-group-append">
                         <button class="btn btn-outline-secondary remove-sesi" type="button"><i class="bi bi-dash-circle"></i></button>
@@ -256,7 +261,7 @@ $(document).ready(function() {
         var newInvestasiRow = `
             <div class="form-group row position-relative mb-1">
                 <label class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 input-group">
+                <div class="col-sm-6 input-group">
                     <input type="text" name="investasi_info[]" class="form-control">
                     <div class="input-group-append">
                         <button class="btn btn-outline-secondary remove-investasi" type="button"><i class="bi bi-dash-circle"></i></button>
