@@ -113,8 +113,6 @@ Arutala | Update Data Mentor
         const urlParams = new URLSearchParams(window.location.search);
         const mentorId = urlParams.get('id');
 
-        console.log(urlParams)
-
         const form = document.getElementById('editMentorForm');
 
         axios.get(`/api/mentor/${mentorId}`)
@@ -137,67 +135,83 @@ Arutala | Update Data Mentor
         form.addEventListener('submit', function (event) {
             event.preventDefault();
 
-            document.getElementById('error-name').textContent = '';
-            document.getElementById('error-email').textContent = '';
-            document.getElementById('error-contact').textContent = '';
-            document.getElementById('error-activity').textContent = '';
+            // Tampilkan pesan konfirmasi sebelum mengupdate data
+            Swal.fire({
+                title: 'Konfirmasi',
+                text: 'Apakah Anda yakin ingin memperbarui data mentor ini?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, Update!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Clear previous errors
+                    document.getElementById('error-name').textContent = '';
+                    document.getElementById('error-email').textContent = '';
+                    document.getElementById('error-contact').textContent = '';
+                    document.getElementById('error-activity').textContent = '';
 
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const contact = document.getElementById('contact').value;
-            const activity = document.getElementById('activity').value;
+                    const name = document.getElementById('name').value;
+                    const email = document.getElementById('email').value;
+                    const contact = document.getElementById('contact').value;
+                    const activity = document.getElementById('activity').value;
 
-            axios.put(`/api/mentor/update/${mentorId}`, {
-                nama_mentor: name,
-                email: email,
-                no_kontak: contact,
-                aktivitas: activity
-            })
-            .then(function (response) {
-                Swal.fire({
-                    title: 'Sukses!',
-                    text: response.data.message,
-                    icon: 'success',
-                    confirmButtonText: 'OK'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.location.href = '/admin/mentor';
-                    }
-                });
-            })
-            .catch(function (error) {
-                console.error('Error updating mentor:', error);
-                if (error.response && error.response.data && error.response.data.errors) {
-                    const errors = error.response.data.errors;
-                    if (errors.nama_mentor) {
-                        document.getElementById('error-name').textContent = errors.nama_mentor[0];
-                    }
-                    if (errors.email) {
-                        document.getElementById('error-email').textContent = errors.email[0];
-                    }
-                    if (errors.no_kontak) {
-                        document.getElementById('error-contact').textContent = errors.no_kontak[0];
-                    }
-                    if (errors.aktivitas) {
-                        document.getElementById('error-activity').textContent = errors.aktivitas[0];
-                    }
+                    axios.put(`/api/mentor/update/${mentorId}`, {
+                        nama_mentor: name,
+                        email: email,
+                        no_kontak: contact,
+                        aktivitas: activity
+                    })
+                    .then(function (response) {
+                        Swal.fire({
+                            title: 'Sukses!',
+                            text: response.data.message,
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '/admin/mentor';
+                            }
+                        });
+                    })
+                    .catch(function (error) {
+                        console.error('Error updating mentor:', error);
+                        if (error.response && error.response.data && error.response.data.errors) {
+                            const errors = error.response.data.errors;
+                            if (errors.nama_mentor) {
+                                document.getElementById('error-name').textContent = errors.nama_mentor[0];
+                            }
+                            if (errors.email) {
+                                document.getElementById('error-email').textContent = errors.email[0];
+                            }
+                            if (errors.no_kontak) {
+                                document.getElementById('error-contact').textContent = errors.no_kontak[0];
+                            }
+                            if (errors.aktivitas) {
+                                document.getElementById('error-activity').textContent = errors.aktivitas[0];
+                            }
 
-                    Swal.fire({
-                        title: 'Error!',
-                        text: error.response.data.message,
-                        icon: 'error',
-                        confirmButtonText: 'OK'
-                    });
-                } else {
-                    Swal.fire({
-                        title: 'Error!',
-                        text: 'Terjadi kesalahan saat memperbarui mentor.',
-                        icon: 'error',
-                        confirmButtonText: 'OK'
+                            Swal.fire({
+                                title: 'Error!',
+                                text: error.response.data.message,
+                                icon: 'error',
+                                confirmButtonText: 'OK'
+                            });
+                        } else {
+                            Swal.fire({
+                                title: 'Error!',
+                                text: 'Terjadi kesalahan saat memperbarui mentor.',
+                                icon: 'error',
+                                confirmButtonText: 'OK'
+                            });
+                        }
                     });
                 }
             });
         });
     });
+
 </script>
 @endsection

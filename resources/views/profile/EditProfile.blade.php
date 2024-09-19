@@ -231,51 +231,67 @@ Arutala | Profile Peserta
     }
 
     document.getElementById('profileForm').addEventListener('submit', function (e) {
-        e.preventDefault();
-        clearErrors();
+        e.preventDefault(); // Mencegah submit otomatis
 
-        const token = localStorage.getItem('auth_token');
-        const formData = {
-            nama: document.getElementById('nama').value,
-            email: document.getElementById('email').value,
-            no_kontak: document.getElementById('no_kontak').value,
-            aktivitas: document.getElementById('aktivitas').value,
-            nama_instansi: document.getElementById('nama_instansi').value,
-            provinsi: $('#provinsi option:selected').text(),
-            kab_kota: $('#kab_kota option:selected').text(),
-            linkedin: document.getElementById('linkedin').value,
-        };
+        Swal.fire({
+            title: 'Apakah Anda yakin?',
+            text: 'Anda akan merubah data profil!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, simpan!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Jika user menekan 'Ya, simpan', lanjutkan dengan submit form
+                clearErrors();
 
-        axios.put('/api/profile/update', formData, {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        })
-        .then(function(response) {
-            Swal.fire({
-                title: 'Sukses!',
-                text: response.data.message,
-                icon: 'success',
-                confirmButtonText: 'OK'
-            }).then(function(result) {
-                if (result.isConfirmed) {
-                    window.location.href = '/peserta/profile/';
-                }
-            });
-        })
-        .catch(function(error) {
-            if (error.response && error.response.data && error.response.data.errors) {
-                displayErrors(error.response.data.errors);
-            } else {
-                Swal.fire({
-                    title: 'Error!',
-                    text: 'Terjadi kesalahan saat memperbarui profil.',
-                    icon: 'error',
-                    confirmButtonText: 'OK'
+                const token = localStorage.getItem('auth_token');
+                const formData = {
+                    nama: document.getElementById('nama').value,
+                    email: document.getElementById('email').value,
+                    no_kontak: document.getElementById('no_kontak').value,
+                    aktivitas: document.getElementById('aktivitas').value,
+                    nama_instansi: document.getElementById('nama_instansi').value,
+                    provinsi: $('#provinsi option:selected').text(),
+                    kab_kota: $('#kab_kota option:selected').text(),
+                    linkedin: document.getElementById('linkedin').value,
+                };
+
+                axios.put('/api/profile/update', formData, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+                .then(function(response) {
+                    Swal.fire({
+                        title: 'Sukses!',
+                        text: response.data.message,
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    }).then(function(result) {
+                        if (result.isConfirmed) {
+                            window.location.href = '/peserta/profile/';
+                        }
+                    });
+                })
+                .catch(function(error) {
+                    if (error.response && error.response.data && error.response.data.errors) {
+                        displayErrors(error.response.data.errors);
+                    } else {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: 'Terjadi kesalahan saat memperbarui profil.',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                    }
                 });
             }
         });
     });
+
 
     function displayErrors(errors) {
         for (let key in errors) {

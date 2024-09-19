@@ -14,14 +14,14 @@ Arutala | Data Peserta
         <form id="importForm" action="{{ url('api/pendaftar/import/excel') }}" method="POST" enctype="multipart/form-data" style="display: inline; margin-right:10px">
             @csrf
             <input type="file" name="file" style="display: none;" id="fileInput">
-            <button type="button" class="btn btn-primary d-flex align-items-center" style="border-radius: 10px;" onclick="document.getElementById('fileInput').click();">
+            <button type="button" class="btn btn-primary d-flex align-items-center" onclick="document.getElementById('fileInput').click();">
                 <i class="fa-solid fa-upload mr-2"></i>
                 Import Data
             </button>
         </form>
         
         <!-- Tautan untuk Export Excel -->
-        <a id="exportBtn" href="{{ url('api/pendaftar/export/excel') }}" class="btn btn-success d-flex align-items-center" style="border-radius: 10px;">
+        <a id="exportBtn" href="{{ url('api/pendaftar/export/excel') }}" class="btn btn-success d-flex align-items-center">
             <i class="fa-solid fa-file-export mr-2"></i>
             Export Data
         </a>

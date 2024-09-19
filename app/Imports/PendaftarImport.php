@@ -1,11 +1,11 @@
 <?php
-
 namespace App\Imports;
 
 use App\Models\Pendaftar;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class PendaftarImport implements ToModel
+class PendaftarImport implements ToModel, WithHeadingRow
 {
     /**
     * @param array $row
@@ -15,16 +15,16 @@ class PendaftarImport implements ToModel
     public function model(array $row)
     {
         return new Pendaftar([
-            'nama' => $row[0],
-            'email' => $row[1],
-            'no_kontak' => $row[2],
-            'password' => '$2a$12$pG4Itrg5QIhVx5u3JN4w5edP1xJMlIUwykkZgqNHGKmfvB1tI9P1i',
-            'aktivitas' => $row[3],
-            'nama_instansi' => $row[4],
-            'provinsi' => $row[5],
-            'kab_kota' => $row[6],
-            'linkedin' => $row[7],
-            'created_by' => 'Import Data', // misalnya
+            'nama' => $row['nama'],            // kolom B
+            'email' => $row['email'],          // kolom C
+            'no_kontak' => $row['no_kontak'],  // kolom D
+            'password' => '$2a$12$pG4Itrg5QIhVx5u3JN4w5edP1xJMlIUwykkZgqNHGKmfvB1tI9P1i', // kolom default untuk hash password
+            'aktivitas' => $row['aktivitas'],  // kolom E
+            'nama_instansi' => $row['nama_instansi'],  // kolom F
+            'provinsi' => $row['provinsi'],    // kolom G
+            'kab_kota' => $row['kab_kota'],    // kolom H
+            'linkedin' => $row['linkedin'],    // kolom I
+            'created_by' => 'Import Data',     // kolom default
             'created_time' => now(),
         ]);
     }

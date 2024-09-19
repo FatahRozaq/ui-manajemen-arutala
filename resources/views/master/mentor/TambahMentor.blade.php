@@ -111,78 +111,92 @@ Arutala | Tambah Mentor
 @section('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const form = document.getElementById('addMentorForm');
+    const form = document.getElementById('addMentorForm');
 
-        form.addEventListener('submit', function (event) {
-            event.preventDefault();
+    form.addEventListener('submit', function (event) {
+        event.preventDefault();
 
-            // Clear previous errors
-            document.getElementById('error-nama_mentor').textContent = '';
-            document.getElementById('error-email').textContent = '';
-            document.getElementById('error-no_kontak').textContent = '';
-            document.getElementById('error-aktivitas').textContent = '';
+        Swal.fire({
+            title: 'Konfirmasi',
+            text: 'Apakah Anda yakin ingin menambahkan mentor ini?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, Tambahkan!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Clear previous errors
+                document.getElementById('error-nama_mentor').textContent = '';
+                document.getElementById('error-email').textContent = '';
+                document.getElementById('error-no_kontak').textContent = '';
+                document.getElementById('error-aktivitas').textContent = '';
 
-            // Ambil nilai dari form
-            const nama_mentor = document.getElementById('nama_mentor').value;
-            const email = document.getElementById('email').value;
-            const no_kontak = document.getElementById('no_kontak').value;
-            const aktivitas = document.getElementById('aktivitas').value;
+                // Ambil nilai dari form
+                const nama_mentor = document.getElementById('nama_mentor').value;
+                const email = document.getElementById('email').value;
+                const no_kontak = document.getElementById('no_kontak').value;
+                const aktivitas = document.getElementById('aktivitas').value;
 
-            // Kirim data menggunakan Axios
-            axios.post('/api/mentor/tambah', {
-                nama_mentor: nama_mentor,
-                email: email,
-                no_kontak: no_kontak,
-                aktivitas: aktivitas
-            })
-            .then(function (response) {
-                // Tampilkan pesan sukses dari API menggunakan SweetAlert
-                Swal.fire({
-                    title: 'Sukses!',
-                    text: response.data.message,
-                    icon: 'success',
-                    confirmButtonText: 'OK'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.location.href = '/admin/mentor';
+                // Kirim data menggunakan Axios
+                axios.post('/api/mentor/tambah', {
+                    nama_mentor: nama_mentor,
+                    email: email,
+                    no_kontak: no_kontak,
+                    aktivitas: aktivitas
+                })
+                .then(function (response) {
+                    // Tampilkan pesan sukses dari API menggunakan SweetAlert
+                    Swal.fire({
+                        title: 'Sukses!',
+                        text: response.data.message,
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = '/admin/mentor';
+                        }
+                    });
+                })
+                .catch(function (error) {
+                    console.error('Error adding mentor:', error);
+                    if (error.response && error.response.data && error.response.data.errors) {
+                        // Tampilkan pesan error dari server
+                        let errors = error.response.data.errors;
+                        if (errors.nama_mentor) {
+                            document.getElementById('error-nama_mentor').textContent = errors.nama_mentor[0];
+                        }
+                        if (errors.email) {
+                            document.getElementById('error-email').textContent = errors.email[0];
+                        }
+                        if (errors.no_kontak) {
+                            document.getElementById('error-no_kontak').textContent = errors.no_kontak[0];
+                        }
+                        if (errors.aktivitas) {
+                            document.getElementById('error-aktivitas').textContent = errors.aktivitas[0];
+                        }
+
+                        // Tampilkan pesan error global dari API menggunakan SweetAlert
+                        Swal.fire({
+                            title: 'Error!',
+                            text: error.response.data.message,
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                    } else {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: 'Terjadi kesalahan saat menambahkan mentor.',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
                     }
                 });
-            })
-            .catch(function (error) {
-                console.error('Error adding mentor:', error);
-                if (error.response && error.response.data && error.response.data.errors) {
-                    // Tampilkan pesan error dari server
-                    let errors = error.response.data.errors;
-                    if (errors.nama_mentor) {
-                        document.getElementById('error-nama_mentor').textContent = errors.nama_mentor[0];
-                    }
-                    if (errors.email) {
-                        document.getElementById('error-email').textContent = errors.email[0];
-                    }
-                    if (errors.no_kontak) {
-                        document.getElementById('error-no_kontak').textContent = errors.no_kontak[0];
-                    }
-                    if (errors.aktivitas) {
-                        document.getElementById('error-aktivitas').textContent = errors.aktivitas[0];
-                    }
-
-                    // Tampilkan pesan error global dari API menggunakan SweetAlert
-                    Swal.fire({
-                        title: 'Error!',
-                        text: error.response.data.message,
-                        icon: 'error',
-                        confirmButtonText: 'OK'
-                    });
-                } else {
-                    Swal.fire({
-                        title: 'Error!',
-                        text: 'Terjadi kesalahan saat menambahkan mentor.',
-                        icon: 'error',
-                        confirmButtonText: 'OK'
-                    });
-                }
-            });
+            }
         });
     });
+});
+
 </script>
 @endsection

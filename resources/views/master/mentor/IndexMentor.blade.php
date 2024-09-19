@@ -8,7 +8,7 @@ Arutala | Data Mentor
 
 <div class="pagetitle d-flex justify-content-between align-items-center">
     <h1>Data Mentor</h1>
-    <a href="{{ route('mentor.add') }}" class="btn btn-success d-flex align-items-center" style="border-radius: 10px;">
+    <a href="{{ route('mentor.add') }}" class="btn btn-success d-flex align-items-center">
         <i class="fa-solid fa-circle-plus mr-2"></i>
         Tambah Mentor
     </a>
@@ -19,7 +19,7 @@ Arutala | Data Mentor
         <div class="col-lg-12">
             <div class="card" style="padding: 20px">
                 <div class="card-body">
-                    <table id="dataMentorTable" class="table table-striped">
+                    <table id="dataMentorTable" class="table table-striped table-bordered dt-responsive nowrap" style="width: 100%;">
                         <thead>
                             <tr>
                                 <th>Nama</th>
@@ -44,12 +44,20 @@ Arutala | Data Mentor
 @section('scripts')
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <!-- DataTables CSS and JS -->
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css"/>
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+
+<!-- DataTables Responsive CSS and JS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap4.min.css"/>
+<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.9/js/responsive.bootstrap4.min.js"></script>
+
 <!-- Font Awesome for icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+
 <!-- SweetAlert2 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -57,19 +65,20 @@ Arutala | Data Mentor
 <script>
     $(document).ready(function() {
         $('#dataMentorTable').DataTable({
+            "responsive": true,
             "ajax": {
-                "url": "/api/mentor", // URL endpoint API
+                "url": "/api/mentor",
                 "type": "GET",
                 "dataSrc": function (json) {
-                    return json.data; // Akses data dari response API
+                    return json.data;
                 }
             },
             "columns": [
-                { "data": "nama_mentor" }, // Nama column sesuai dengan nama field di database
-                { "data": "email" },       // Email column
-                { "data": "no_kontak" },   // Kontak column
-                { "data": "aktivitas" },   // Aktifitas column
-                {                         // Aksi column with action icons
+                { "data": "nama_mentor" },
+                { "data": "email" },
+                { "data": "no_kontak" },
+                { "data": "aktivitas" },
+                {
                     "data": null,
                     "render": function(data, type, row) {
                         return `
@@ -88,7 +97,6 @@ Arutala | Data Mentor
             ]
         });
 
-        // Event listener for delete icon
         $('#dataMentorTable').on('click', '.delete-icon', function() {
             var id = $(this).data('id');
             Swal.fire({
@@ -107,8 +115,8 @@ Arutala | Data Mentor
                                 'Terhapus!',
                                 response.data.message,
                                 'success'
-                            )
-                            $('#dataMentorTable').DataTable().ajax.reload(); // Reload table data
+                            );
+                            $('#dataMentorTable').DataTable().ajax.reload();
                         })
                         .catch(error => {
                             Swal.fire(
@@ -120,7 +128,6 @@ Arutala | Data Mentor
                 }
             });
         });
-
     });
 </script>
 @endsection

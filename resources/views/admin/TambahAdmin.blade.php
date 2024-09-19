@@ -74,44 +74,57 @@ Arutala | Tambah Admin
 
         form.addEventListener('submit', function (event) {
             event.preventDefault();
+            
+            Swal.fire({
+                title: 'Konfirmasi',
+                text: 'Apakah Anda yakin ingin menambahkan admin ini?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, Tambah!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Clear previous errors
+                    clearErrors();
 
-            // Clear previous errors
-            clearErrors();
+                    // Ambil nilai dari form
+                    const nama = document.getElementById('nama').value;
+                    const email = document.getElementById('email').value;
+                    const password = document.getElementById('password').value;
 
-            // Ambil nilai dari form
-            const nama = document.getElementById('nama').value;
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-
-            // Kirim data menggunakan Axios
-            axios.post('/api/register-admin', {
-                nama: nama,
-                email: email,
-                password: password,
-            })
-            .then(function (response) {
-                Swal.fire({
-                    title: 'Sukses!',
-                    text: response.data.message,
-                    icon: 'success',
-                    confirmButtonText: 'OK'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.location.href = '/admin/kelola-admin/';
-                    }
-                });
-            })
-            .catch(function (error) {
-                console.error('Error adding admin:', error);
-                if (error.response && error.response.data && error.response.data.errors) {
-                    // Tampilkan pesan error dari server
-                    displayErrors(error.response.data.errors);
-                } else {
-                    Swal.fire({
-                        title: 'Error!',
-                        text: 'Terjadi kesalahan saat menambahkan admin.',
-                        icon: 'error',
-                        confirmButtonText: 'OK'
+                    // Kirim data menggunakan Axios
+                    axios.post('/api/register-admin', {
+                        nama: nama,
+                        email: email,
+                        password: password,
+                    })
+                    .then(function (response) {
+                        Swal.fire({
+                            title: 'Sukses!',
+                            text: response.data.message,
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '/admin/kelola-admin/';
+                            }
+                        });
+                    })
+                    .catch(function (error) {
+                        console.error('Error adding admin:', error);
+                        if (error.response && error.response.data && error.response.data.errors) {
+                            // Tampilkan pesan error dari server
+                            displayErrors(error.response.data.errors);
+                        } else {
+                            Swal.fire({
+                                title: 'Error!',
+                                text: 'Terjadi kesalahan saat menambahkan admin.',
+                                icon: 'error',
+                                confirmButtonText: 'OK'
+                            });
+                        }
                     });
                 }
             });
@@ -145,5 +158,6 @@ Arutala | Tambah Admin
             document.getElementById('password').classList.remove('is-invalid');
         }
     });
+
 </script>
 @endsection

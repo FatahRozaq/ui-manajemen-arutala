@@ -203,8 +203,8 @@ Arutala | Pendaftaran Event
             document.getElementById('eventMateri').innerHTML = materi;
             document.getElementById('eventBenefit').innerHTML = benefit;
 
-            document.getElementById('eventStartDate').textContent = agenda.start_date;
-            document.getElementById('eventEndDate').textContent = agenda.end_date;
+            document.getElementById('eventStartDate').textContent = formatDate(agenda.start_date);
+            document.getElementById('eventEndDate').textContent = formatDate(agenda.end_date);
             document.getElementById('eventSession').textContent = agenda.sesi;
             document.getElementById('eventPrice').textContent = `Rp${agenda.investasi}`;
             document.getElementById('eventDiscountedPrice').textContent = `Rp${agenda.diskon}`;
@@ -281,50 +281,65 @@ Arutala | Pendaftaran Event
         }
 
         document.getElementById('registrationForm').addEventListener('submit', function (e) {
-            e.preventDefault();
+            e.preventDefault(); 
 
-            const formData = {
-                id_agenda: document.getElementById('id_agenda').value,
-                nama: document.getElementById('nama').value,
-                email: document.getElementById('email').value,
-                no_kontak: document.getElementById('no_kontak').value,
-                aktivitas: document.getElementById('aktivitas').value,
-                nama_instansi: document.getElementById('nama_instansi').value,
-                provinsi: $('#provinsi option:selected').text(),
-                kab_kota: $('#kab_kota option:selected').text(),
-                status_pembayaran: 'Belum Bayar'
-            };
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: 'Pastikan data yang diisi sudah benar.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, Daftar!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Jika pengguna menekan "Ya, Daftar!", maka form akan dikirim
+                    const formData = {
+                        id_agenda: document.getElementById('id_agenda').value,
+                        nama: document.getElementById('nama').value,
+                        email: document.getElementById('email').value,
+                        no_kontak: document.getElementById('no_kontak').value,
+                        aktivitas: document.getElementById('aktivitas').value,
+                        nama_instansi: document.getElementById('nama_instansi').value,
+                        provinsi: $('#provinsi option:selected').text(),
+                        kab_kota: $('#kab_kota option:selected').text(),
+                        status_pembayaran: 'Belum Bayar'
+                    };
 
-            axios.post('/api/pendaftaran-event/daftar', formData, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            })
-            .then(function(response) {
-                Swal.fire({
-                    title: 'Sukses!',
-                    text: 'Pendaftaran berhasil dilakukan.',
-                    icon: 'success',
-                    confirmButtonText: 'OK'
-                }).then(function(result) {
-                    if (result.isConfirmed) {
-                        window.location.href = '/daftar-event';
-                    }
-                });
-            })
-            .catch(function(error) {
-                if (error.response && error.response.data && error.response.data.errors) {
-                    displayErrors(error.response.data.errors);
-                } else {
-                    Swal.fire({
-                        title: 'Error!',
-                        text: 'Terjadi kesalahan saat pendaftaran.',
-                        icon: 'error',
-                        confirmButtonText: 'OK'
+                    axios.post('/api/pendaftaran-event/daftar', formData, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    })
+                    .then(function(response) {
+                        Swal.fire({
+                            title: 'Sukses!',
+                            text: 'Pendaftaran berhasil dilakukan.',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        }).then(function(result) {
+                            if (result.isConfirmed) {
+                                window.location.href = '/daftar-event';
+                            }
+                        });
+                    })
+                    .catch(function(error) {
+                        if (error.response && error.response.data && error.response.data.errors) {
+                            displayErrors(error.response.data.errors);
+                        } else {
+                            Swal.fire({
+                                title: 'Error!',
+                                text: 'Terjadi kesalahan saat pendaftaran.',
+                                icon: 'error',
+                                confirmButtonText: 'OK'
+                            });
+                        }
                     });
                 }
             });
         });
+
 
         function displayErrors(errors) {
             for (let key in errors) {
@@ -338,6 +353,23 @@ Arutala | Pendaftaran Event
                 }
             }
         }
+
+        function formatDate(dateString) {
+            const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+            const months = [
+                'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+                'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+            ];
+
+            const date = new Date(dateString);
+            const dayName = days[date.getDay()];
+            const day = date.getDate();
+            const month = months[date.getMonth()];
+            const year = date.getFullYear();
+
+            return `${dayName}, ${day} ${month} ${year}`;
+        }
+
     });
 </script>
 @endsection

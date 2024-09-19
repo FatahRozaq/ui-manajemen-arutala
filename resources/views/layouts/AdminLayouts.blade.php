@@ -6,7 +6,7 @@
     <title>@yield('title')</title>
 
     <!-- Favicons -->
-    <link rel="icon" type="image/x-icon" href="{{ asset('assets/img/logo/ArutalaPutih.png') }}">
+    <link rel="icon" type="image/x-icon" href="{{ asset('assets/img/logo/ArutalaHitam.png') }}">
     <link href="{{ asset('assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
 
     <!-- Vendor CSS Files -->
@@ -33,7 +33,6 @@
         <div class="d-flex align-items-center justify-content-between">
             <a href="index.html" class="logo d-flex align-items-center">
                 <img src="{{ asset('assets/img/logo/ArutalaHitam.png') }}" alt="" style="width:50px; height:50px">
-                <span class="d-none d-lg-block">Arutala</span>
             </a>
             <i class="bi bi-list toggle-sidebar-btn"></i>
         </div>
@@ -110,12 +109,6 @@
                 <a class="nav-link {{ request()->is('admin/kelola-admin*') ? '' : 'collapsed' }}" href="{{ route('admin.index') }}">
                     <i class="fa-solid fa-users"></i>
                     <span>Kelola Admin</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" onclick="event.preventDefault(); performLogout();">
-                    <i class="bi bi-box-arrow-right" style="color: red;"></i>
-                    <span>Logout</span>
                 </a>
             </li>
         </ul>

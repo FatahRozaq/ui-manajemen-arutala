@@ -268,47 +268,62 @@ Arutala | Update Data Peserta
         }
 
         document.getElementById('updatePesertaForm').addEventListener('submit', function (e) {
-            e.preventDefault();
-            clearErrors();
+            e.preventDefault(); 
 
-            const formData = {
-                nama: document.getElementById('namaPeserta').value,
-                email: document.getElementById('emailPeserta').value,
-                no_kontak: document.getElementById('kontakPeserta').value,
-                aktivitas: document.getElementById('aktivitasPeserta').value,
-                nama_instansi: document.getElementById('instansiPeserta').value,
-                provinsi: $('#provinsiPeserta option:selected').text(),
-                kab_kota: $('#kabkotaPeserta option:selected').text(),
-                linkedin: document.getElementById('linkedinPeserta').value,
-                modified_by: 'Admin'
-            };
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: 'Perubahan pada data peserta akan disimpan!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, simpan!',
+                cancelButtonText: 'Tidak, batalkan'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    clearErrors();
 
-            axios.put(`/api/pendaftar/${idPendaftar}`, formData)
-                .then(function(response) {
-                    Swal.fire({
-                        title: 'Sukses!',
-                        text: response.data.message,
-                        icon: 'success',
-                        confirmButtonText: 'OK'
-                    }).then(function(result) {
-                        if (result.isConfirmed) {
-                            window.location.href = `/admin/peserta/detail?idPendaftar=${idPendaftar}`;
-                        }
-                    });
-                })
-                .catch(function(error) {
-                    if (error.response && error.response.data && error.response.data.errors) {
-                        displayErrors(error.response.data.errors);
-                    } else {
-                        Swal.fire({
-                            title: 'Error!',
-                            text: 'Terjadi kesalahan saat memperbarui data peserta.',
-                            icon: 'error',
-                            confirmButtonText: 'OK'
+                    const formData = {
+                        nama: document.getElementById('namaPeserta').value,
+                        email: document.getElementById('emailPeserta').value,
+                        no_kontak: document.getElementById('kontakPeserta').value,
+                        aktivitas: document.getElementById('aktivitasPeserta').value,
+                        nama_instansi: document.getElementById('instansiPeserta').value,
+                        provinsi: $('#provinsiPeserta option:selected').text(),
+                        kab_kota: $('#kabkotaPeserta option:selected').text(),
+                        linkedin: document.getElementById('linkedinPeserta').value,
+                        modified_by: 'Admin'
+                    };
+
+                    axios.put(`/api/pendaftar/${idPendaftar}`, formData)
+                        .then(function(response) {
+                            Swal.fire({
+                                title: 'Sukses!',
+                                text: response.data.message,
+                                icon: 'success',
+                                confirmButtonText: 'OK'
+                            }).then(function(result) {
+                                if (result.isConfirmed) {
+                                    window.location.href = `/admin/peserta/detail?idPendaftar=${idPendaftar}`;
+                                }
+                            });
+                        })
+                        .catch(function(error) {
+                            if (error.response && error.response.data && error.response.data.errors) {
+                                displayErrors(error.response.data.errors);
+                            } else {
+                                Swal.fire({
+                                    title: 'Error!',
+                                    text: 'Terjadi kesalahan saat memperbarui data peserta.',
+                                    icon: 'error',
+                                    confirmButtonText: 'OK'
+                                });
+                            }
                         });
-                    }
-                });
+                }
+            });
         });
+
 
         function displayErrors(errors) {
             for (let key in errors) {

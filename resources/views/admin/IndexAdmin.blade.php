@@ -8,7 +8,7 @@ Arutala | Data Admin
 
 <div class="pagetitle d-flex justify-content-between align-items-center">
     <h1>Data Admin</h1>
-    <a href="{{ route('admin.add') }}" class="btn btn-success d-flex align-items-center" style="border-radius: 10px;">
+    <a href="{{ route('admin.add') }}" class="btn btn-success d-flex align-items-center">
         <i class="fa-solid fa-circle-plus mr-2"></i>
         Tambah Admin
     </a>
