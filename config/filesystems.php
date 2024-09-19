@@ -64,7 +64,7 @@ return [
             'bucket' => env('MINIO_BUCKET'),
             'url' => env('MINIO_URL'),
             'endpoint' => env('MINIO_ENDPOINT', 'http://localhost:9000'),
-            'use_path_style_endpoint' => true, // Untuk kompatibilitas dengan MinIO
+            'use_path_style_endpoint' => true,
         ],
 
     ],
