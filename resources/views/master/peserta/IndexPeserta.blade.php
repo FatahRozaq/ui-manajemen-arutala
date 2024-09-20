@@ -10,6 +10,10 @@ Arutala | Data Peserta
     <h1>Data Peserta Pelatihan</h1>
     
     <div class="button-group d-flex">
+        <a href="{{ route('peserta.download') }}" class="btn btn-info d-flex align-items-center" style="margin-right: 10px;">
+            <i class="fa-solid fa-file-export mr-2"></i>
+            Download Import Template
+        </a>
         <!-- Form untuk Import Excel -->
         <form id="importForm" action="{{ url('api/pendaftar/import/excel') }}" method="POST" enctype="multipart/form-data" style="display: inline; margin-right:10px">
             @csrf
@@ -33,7 +37,7 @@ Arutala | Data Peserta
         <div class="col-lg-12">
             <div class="card" style="padding: 20px">
                 <div class="card-body">
-                    <table id="dataPesertaTable" class="table table-striped">
+                    <table id="dataPesertaTable" class="table table-striped table-bordered dt-responsive nowrap" style="width: 100%;">
                         <thead>
                             <tr>
                                 <th>Nama</th>
@@ -63,6 +67,10 @@ Arutala | Data Peserta
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css"/>
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+<!-- DataTables Responsive CSS dan JS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap4.min.css"/>
+<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.9/js/responsive.bootstrap4.min.js"></script>
 <!-- Font Awesome untuk ikon -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
 <!-- SweetAlert2 -->
@@ -75,8 +83,9 @@ Arutala | Data Peserta
         // Set CSRF Token untuk Axios
         axios.defaults.headers.common['X-CSRF-TOKEN'] = $('meta[name="csrf-token"]').attr('content');
 
-        // Inisialisasi DataTables
+        // Inisialisasi DataTables dengan responsif
         $('#dataPesertaTable').DataTable({
+            "responsive": true,
             "ajax": {
                 "url": "{{ url('api/pendaftar') }}", // Endpoint API untuk memuat data
                 "dataSrc": "data"
@@ -186,12 +195,6 @@ Arutala | Data Peserta
                     );
                 });
         });
-
-        // Event listener untuk ikon update
-        // $('#dataPesertaTable').on('click', '.update-icon', function() {
-        //     var id = $(this).data('id');
-        //     Swal.fire('Update icon clicked for ID: ' + id);
-        // });
     });
 </script>
 @endsection

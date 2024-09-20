@@ -54,6 +54,7 @@ Route::middleware([AuthCheck::class . ':admin'])->prefix('admin')->group(functio
         Route::get('/', [MasterPesertaController::class, 'index'])->name('peserta.indexs');
         Route::get('/detail', [MasterPesertaController::class, 'detail'])->name('peserta.detail');
         Route::get('/edit', [MasterPesertaController::class, 'edit'])->name('peserta.edit');
+        Route::get('/download-template', [MasterPesertaController::class, 'download'])->name('peserta.download');
     });
 
     // Admin - Mentor
