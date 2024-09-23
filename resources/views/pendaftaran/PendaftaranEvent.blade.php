@@ -214,6 +214,8 @@ Arutala | Pendaftaran Event
             document.getElementById('no_kontak').value = pendaftar.no_kontak.replace('+62', '') || '';
             document.getElementById('aktivitas').value = pendaftar.aktivitas || '';
             document.getElementById('nama_instansi').value = pendaftar.nama_instansi || '';
+            document.getElementById('linkedin').value = pendaftar.linkedin || ''; 
+
 
             selectedProvinsi = pendaftar.provinsi;
             selectedKabupaten = pendaftar.kab_kota;
