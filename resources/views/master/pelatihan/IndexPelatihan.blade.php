@@ -74,8 +74,9 @@
                 { 
                     "data": "gambar_pelatihan",
                     "render": function(data, type, row) {
-                        return `<img src="${data}" alt="Gambar Pelatihan" style="width: 70px; height: auto;">`;
-                    },
+                    let imageUrl = data && data !== 'null' && data !== 'undefined' ? data : '/assets/images/default-pelatihan.jpg';
+                    return `<img src="${imageUrl}" alt="Gambar Pelatihan" onerror="this.onerror=null;this.src='/assets/images/default-pelatihan.jpg';" style="width: 70px; height: auto;">`;
+                },
                     "orderable": false
                 },
                 { "data": "nama_pelatihan" }, // Nama pelatihan

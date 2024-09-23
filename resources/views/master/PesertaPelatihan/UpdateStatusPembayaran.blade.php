@@ -137,27 +137,52 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Fungsi untuk mengupdate status pembayaran
     document.getElementById('submitPelatihan').addEventListener('click', function() {
-        const statusPembayaran = document.getElementById('statusPembayaran').value;
-        
-        axios.put(`/api/peserta-pelatihan/update-status-pembayaran/${idPendaftaran}`, {
-            status_pembayaran: statusPembayaran
-        })
-        .then(function(response) {
-            alert('Status pembayaran berhasil diupdate!');
-            
-            // Pastikan namaPelatihan dan batch tidak null atau undefined sebelum redirect
-            if (namaPelatihan && batch) {
-                window.location.href = `/admin/pesertapelatihan?nama_pelatihan=${encodeURIComponent(namaPelatihan)}&batch=${batch}`;
-            } else {
-                // Fallback ke URL default jika parameter tidak tersedia
-                window.location.href = '/admin/pesertapelatihan';
-            }
-        })
-        .catch(function(error) {
-            console.error('Error updating status:', error);
-            alert('Gagal mengupdate status pembayaran.');
-        });
+    const statusPembayaran = document.getElementById('statusPembayaran').value;
+
+    // Tampilkan pop-up konfirmasi sebelum melakukan update
+    Swal.fire({
+        title: 'Apakah Anda yakin?',
+        text: "Anda tidak akan dapat mengembalikan ini!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ya, update!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Jika pengguna konfirmasi, lanjutkan dengan update
+            axios.put(`/api/peserta-pelatihan/update-status-pembayaran/${idPendaftaran}`, {
+                status_pembayaran: statusPembayaran
+            })
+            .then(function(response) {
+                Swal.fire({
+                    title: 'Sukses!',
+                    text: 'Status pembayaran berhasil diupdate!',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                }).then((result) => {
+                    // Pastikan namaPelatihan dan batch tidak null atau undefined sebelum redirect
+                    if (namaPelatihan && batch) {
+                        window.location.href = `/admin/pesertapelatihan?nama_pelatihan=${encodeURIComponent(namaPelatihan)}&batch=${batch}`;
+                    } else {
+                        // Fallback ke URL default jika parameter tidak tersedia
+                        window.location.href = '/admin/pesertapelatihan';
+                    }
+                });
+            })
+            .catch(function(error) {
+                console.error('Error updating status:', error);
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Gagal mengupdate status pembayaran.',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            });
+        }
     });
+});
+
 });
 </script>
 

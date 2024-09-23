@@ -286,9 +286,6 @@
                         <a href="pesertapelatihan/updatestatus?id_pendaftaran=${idPendaftaran}&id_agenda=${idAgenda}" class="update-icon" title="Update">
                             <i class="fas fa-edit text-warning"></i>
                         </a>
-                        <a href="#" class="delete-icon" data-id="${idPendaftaran}" title="Delete">
-                            <i class="fas fa-trash-alt text-danger"></i>
-                        </a>
                         `;
                     }
                 }
@@ -317,9 +314,7 @@
                         <a href="pesertapelatihan/updatestatus?id_pendaftaran=${idPendaftaran}&id_agenda=${idAgenda}" class="update-icon" title="Update">
                             <i class="fas fa-edit text-warning"></i>
                         </a>
-                        <a href="#" class="delete-icon" data-id="${idPendaftaran}" title="Delete">
-                            <i class="fas fa-trash-alt text-danger"></i>
-                        </a>
+                        
                         `;
                     }
                 }
@@ -348,9 +343,5 @@
         });
     });
 </script>
-
-
-    
-
 @endsection
 
