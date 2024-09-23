@@ -24,7 +24,7 @@
 
     @yield('style')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/selectize@0.12.6/dist/css/selectize.default.css">
-
+    <link href="{{ asset('assets/css/custom.css') }}" rel="stylesheet">
 </head>
 <body>
     <!-- ======= Header ======= -->
@@ -70,7 +70,7 @@
         <ul class="sidebar-nav" id="sidebar-nav">
             <li class="nav-item">
                 <a class="nav-link {{ request()->is('admin/dashboard*') ? '' : 'collapsed' }}" href="{{ route('dashboard.index') }}">
-                    <i class="bi bi-grid"></i>
+                    <i class="bi bi-grid" style="font-size: 20px;"></i>
                     <span>Dashboard</span>
                 </a>
             </li>

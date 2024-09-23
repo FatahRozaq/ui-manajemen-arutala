@@ -21,3 +21,19 @@ hr {
 sub-title {
     color: #344C92;
 }
+
+.sidebar span {
+    font-weight: 400px;
+    font-size: 15px;
+}
+
+aside i {
+    font-size: 15px;
+}
+
+@media (min-width: 1200px)
+{
+    #main {
+        margin-left: 250px;
+    }
+}
