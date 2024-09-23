@@ -53,7 +53,12 @@
 
                 card.innerHTML = `
                     <div class="image-title">
-                        <img src="${event.gambar_pelatihan}" alt="${event.nama_pelatihan}" class="event-image">
+                        <img 
+                            src="${event.gambar_pelatihan ? event.gambar_pelatihan : '/assets/images/default-pelatihan.jpg'}"
+                            alt="${event.nama_pelatihan}" 
+                            class="event-image"
+                            onerror="this.onerror=null; this.src='/assets/images/default-pelatihan.jpg';"
+                        >
                         <h3 class="nama-pelatihan">${event.nama_pelatihan}</h3>
                     </div>
                     <div class="harga-date">
@@ -71,6 +76,7 @@
             console.error('Error fetching event data:', error);
         });
 });
+
 
 </script>
 @endsection
