@@ -6,16 +6,16 @@ Arutala | Data Peserta
 
 @section('content')
 
-<div class="pagetitle d-flex justify-content-between align-items-center">
-    <h1>Data Peserta Pelatihan</h1>
+<div class="pagetitle d-flex justify-content-between align-items-center flex-wrap">
+    <h1>Data Pendaftar</h1>
     
-    <div class="button-group d-flex">
-        <a href="{{ route('peserta.download') }}" class="btn btn-info d-flex align-items-center" style="margin-right: 10px;">
+    <div class="button-group d-flex flex-wrap">
+        <a href="{{ route('peserta.download') }}" class="btn btn-info d-flex align-items-center mr-2 mb-2">
             <i class="fa-solid fa-file-export mr-2"></i>
             Download Import Template
         </a>
         <!-- Form untuk Import Excel -->
-        <form id="importForm" action="{{ url('api/pendaftar/import/excel') }}" method="POST" enctype="multipart/form-data" style="display: inline; margin-right:10px">
+        <form id="importForm" action="{{ url('api/pendaftar/import/excel') }}" method="POST" enctype="multipart/form-data" class="mr-2 mb-2">
             @csrf
             <input type="file" name="file" style="display: none;" id="fileInput">
             <button type="button" class="btn btn-primary d-flex align-items-center" onclick="document.getElementById('fileInput').click();">
@@ -25,7 +25,7 @@ Arutala | Data Peserta
         </form>
         
         <!-- Tautan untuk Export Excel -->
-        <a id="exportBtn" href="{{ url('api/pendaftar/export/excel') }}" class="btn btn-success d-flex align-items-center">
+        <a id="exportBtn" href="{{ url('api/pendaftar/export/excel') }}" class="btn btn-success d-flex align-items-center mb-2">
             <i class="fa-solid fa-file-export mr-2"></i>
             Export Data
         </a>
@@ -100,10 +100,10 @@ Arutala | Data Peserta
                     "data": null,
                     "render": function(data, type, row) {
                         return `
-                            <a href="{{ url('admin/peserta/detail?idPendaftar=${row.id_pendaftar}') }}" class="view-icon" title="View">
+                            <a href="{{ url('admin/pendaftar/detail?idPendaftar=${row.id_pendaftar}') }}" class="view-icon" title="View">
                                 <i class="fas fa-eye text-primary"></i>
                             </a>
-                            <a href="{{ url('admin/peserta/edit?idPendaftar=${row.id_pendaftar}') }}" class="update-icon" data-id="${row.id_pendaftar}" title="Update">
+                            <a href="{{ url('admin/pendaftar/edit?idPendaftar=${row.id_pendaftar}') }}" class="update-icon" data-id="${row.id_pendaftar}" title="Update">
                                 <i class="fas fa-edit text-warning"></i>
                             </a>
                             <a href="" class="delete-icon" data-id="${row.id_pendaftar}" title="Delete">

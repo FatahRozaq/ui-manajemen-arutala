@@ -93,7 +93,7 @@ Arutala | Update Data Mentor
 
                         <div class="row">
                             <div class="col-sm-11 text-right">
-                                <button type="submit" class="btn" style="background-color: #344C92; color: white;">Update</button>
+                                <button type="submit" class="btn" style="background-color: #344C92; color: white;">Save</button>
                             </div>
                         </div>
 

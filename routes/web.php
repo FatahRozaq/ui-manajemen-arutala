@@ -50,10 +50,10 @@ Route::middleware([AuthCheck::class . ':admin'])->prefix('admin')->group(functio
     Route::get('/', [AdminAuthController::class, 'login'])->name('admin.login');
 
     // Admin - Peserta
-    Route::prefix('peserta')->group(function () {
-        Route::get('/', [MasterPesertaController::class, 'index'])->name('peserta.indexs');
-        Route::get('/detail', [MasterPesertaController::class, 'detail'])->name('peserta.detail');
-        Route::get('/edit', [MasterPesertaController::class, 'edit'])->name('peserta.edit');
+    Route::prefix('pendaftar')->group(function () {
+        Route::get('/', [MasterPesertaController::class, 'index'])->name('pendaftar.index');
+        Route::get('/detail', [MasterPesertaController::class, 'detail'])->name('pendaftar.detail');
+        Route::get('/edit', [MasterPesertaController::class, 'edit'])->name('pendaftar.edit');
         Route::get('/download-template', [MasterPesertaController::class, 'download'])->name('peserta.download');
     });
 

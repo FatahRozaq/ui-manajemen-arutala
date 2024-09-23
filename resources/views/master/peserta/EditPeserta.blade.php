@@ -5,9 +5,7 @@ Arutala | Update Data Peserta
 @endsection
 
 @section('style')
-<link href="{{ asset('assets/css/custom.css') }}" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 <style>
     .training-card {
         margin-bottom: 20px;
@@ -304,7 +302,7 @@ Arutala | Update Data Peserta
                                 confirmButtonText: 'OK'
                             }).then(function(result) {
                                 if (result.isConfirmed) {
-                                    window.location.href = `/admin/peserta/detail?idPendaftar=${idPendaftar}`;
+                                    window.location.href = `/admin/pendaftar/detail?idPendaftar=${idPendaftar}`;
                                 }
                             });
                         })

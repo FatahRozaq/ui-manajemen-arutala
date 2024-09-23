@@ -82,9 +82,9 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ request()->is('admin/peserta*') ? '' : 'collapsed' }}" href="{{ route('peserta.indexs') }}">
+                <a class="nav-link {{ request()->is('admin/pendaftar*') ? '' : 'collapsed' }}" href="{{ route('pendaftar.index') }}">
                     <i class="fa-solid fa-users"></i>
-                    <span>Master Peserta</span>
+                    <span>Master Pendaftar</span>
                 </a>
             </li>
             <li class="nav-item">
