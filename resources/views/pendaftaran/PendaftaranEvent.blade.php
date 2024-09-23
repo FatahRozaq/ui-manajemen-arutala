@@ -202,11 +202,10 @@ Arutala | Pendaftaran Event
             const pendaftar = data.pendaftar;
             const agenda = data.agenda;
             const pelatihan = data.pelatihan;
-            const imageUrl = data.image_url; // Ambil URL gambar
+            const imageUrl = data.image_url && data.image_url !== 'null' && data !== 'undefined' ? data.image_url :  '/assets/images/default-pelatihan.jpg'; // Ambil URL gambar
 
             document.getElementById('id_agenda').value = agenda.id_agenda;
             document.getElementById('eventName').textContent = pelatihan.nama_pelatihan;
-            console.log(imageUrl)
             // Set URL gambar ke elemen <img>
             document.getElementById('eventImage').src = imageUrl;
 
