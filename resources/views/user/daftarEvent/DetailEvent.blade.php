@@ -54,100 +54,105 @@
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Ambil id event dari URL
-        const eventId = window.location.pathname.split('/').pop();
-        
-        // Lakukan fetch data event menggunakan Axios
-        axios.get(`/api/laman-peserta/event-detail/${eventId}`)
-            .then(function(response) {
-                const event = response.data.data;
+    // Ambil id event dari URL
+    const eventId = window.location.pathname.split('/').pop();
+    
+    // Lakukan fetch data event menggunakan Axios
+    axios.get(`/api/laman-peserta/event-detail/${eventId}`)
+        .then(function(response) {
+            const event = response.data.data;
 
-                // Log data untuk debugging
-                console.log('Event data:', event);
+            // Log data untuk debugging
+            console.log('Event data:', event);
 
-                // Update konten halaman dengan data event
-                document.getElementById('event-title').textContent = event.namaPelatihan;
-                document.getElementById('event-image').src = event.image;
-                document.getElementById('event-image').alt = event.namaPelatihan;
-                document.getElementById('event-description').textContent = event.deskripsi;
+            // Update konten halaman dengan data event
+            document.getElementById('event-title').textContent = event.namaPelatihan;
+            
+            // Update gambar event dengan gambar default jika gagal dimuat
+            const eventImage = document.getElementById('event-image');
+            eventImage.src = event.image ? event.image : '/assets/images/default-pelatihan.jpg';
+            eventImage.alt = event.namaPelatihan;
+            eventImage.onerror = function() {
+                this.onerror = null;
+                this.src = '/assets/images/default-pelatihan.jpg';
+            };
 
-                // Update benefit list
-                const benefitList = document.getElementById('benefit-list');
-                if (event.benefit) {
-                    event.benefit.forEach(function(benefit) {
-                        const li = document.createElement('li');
-                        li.textContent = benefit;
-                        benefitList.appendChild(li);
-                    });
+            document.getElementById('event-description').textContent = event.deskripsi;
+
+            // Update benefit list
+            const benefitList = document.getElementById('benefit-list');
+            if (event.benefit) {
+                event.benefit.forEach(function(benefit) {
+                    const li = document.createElement('li');
+                    li.textContent = benefit;
+                    benefitList.appendChild(li);
+                });
+            }
+
+            // Update materi list
+            const materiList = document.getElementById('materi-list');
+            if (event.materi) {
+                event.materi.forEach(function(materi) {
+                    const li = document.createElement('li');
+                    li.textContent = materi;
+                    materiList.appendChild(li);
+                });
+            }
+
+            // Update mentor list
+            const mentorList = document.getElementById('mentor-list');
+            if (event.mentor && event.mentor.length > 0) {
+                event.mentor.forEach(function(mentor) {
+                    const li = document.createElement('li');
+                    li.textContent = `${mentor.nama_mentor} - ${mentor.aktivitas}`;
+                    mentorList.appendChild(li);
+                });
+            } else {
+                const noMentor = document.createElement('li');
+                noMentor.textContent = 'Tidak ada mentor';
+                mentorList.appendChild(noMentor);
+            }
+
+            // Update investasi
+            if (event.investasi) {
+                let priceHtml = `Rp${Number(event.investasi).toLocaleString('id-ID')}`; // Harga asli
+
+                // Jika ada diskon, hitung harga setelah diskon dan tampilkan diskon
+                if (event.discount) {
+                    const discountedInvestasi = event.investasi * (1 - event.discount / 100);
+                    const formattedDiscountedInvestasi = `Rp${Number(discountedInvestasi).toLocaleString('id-ID')}`;
+                    const formattedOriginalPrice = `Rp${Number(event.investasi).toLocaleString('id-ID')}`;
+                    
+                    priceHtml = `
+                        ${formattedDiscountedInvestasi}
+                        <span class="original-price">${formattedOriginalPrice}</span>
+                        <span class="discount">${event.discount}% off</span>
+                    `;
                 }
 
-                // Update materi list
-                const materiList = document.getElementById('materi-list');
-                if (event.materi) {
-                    event.materi.forEach(function(materi) {
-                        const li = document.createElement('li');
-                        li.textContent = materi;
-                        materiList.appendChild(li);
-                    });
-                }
+                document.getElementById('price').innerHTML = priceHtml;
+            }
 
-                // Update mentor list
-                // Update mentor list
-                const mentorList = document.getElementById('mentor-list');
-                if (event.mentor && event.mentor.length > 0) {
-                    event.mentor.forEach(function(mentor) {
-                        const li = document.createElement('li');
-                        li.textContent = `${mentor.nama_mentor} - ${mentor.aktivitas}`;
-                        mentorList.appendChild(li);
-                    });
-                } else {
-                    const noMentor = document.createElement('li');
-                    noMentor.textContent = 'Tidak ada mentor';
-                    mentorList.appendChild(noMentor);
-                }
+            // Update additional investasi info
+            if (event.investasi_info) {
+                const additionalInfo = event.investasi_info.map(info => `<p>${info}</p>`).join('');
+                document.getElementById('additional-info').innerHTML = additionalInfo;
+            }
 
+        })
+        .catch(function(error) {
+            console.error('Error fetching event detail:', error);
+        });
+});
 
-                // Update investasi
-                // Update investasi
-                if (event.investasi) {
-                    let priceHtml = `Rp${Number(event.investasi).toLocaleString('id-ID')}`; // Harga asli
-
-                    // Jika ada diskon, hitung harga setelah diskon dan tampilkan diskon
-                    if (event.discount) {
-                        const discountedInvestasi = event.investasi * (1 - event.discount / 100);
-                        const formattedDiscountedInvestasi = `Rp${Number(discountedInvestasi).toLocaleString('id-ID')}`;
-                        const formattedOriginalPrice = `Rp${Number(event.investasi).toLocaleString('id-ID')}`;
-                        
-                        priceHtml = `
-                            ${formattedDiscountedInvestasi}
-                            <span class="original-price">${formattedOriginalPrice}</span>
-                            <span class="discount">${event.discount}% off</span>
-                        `;
-                    }
-
-                    document.getElementById('price').innerHTML = priceHtml;
-                }
-
-
-                // Update additional investasi info
-                if (event.investasi_info) {
-                    const additionalInfo = event.investasi_info.map(info => `<p>${info}</p>`).join('');
-                    document.getElementById('additional-info').innerHTML = additionalInfo;
-                }
-
-            })
-            .catch(function(error) {
-                console.error('Error fetching event detail:', error);
-            });
-    });
-
-    function daftar() {
-        const eventId = window.location.pathname.split('/').pop();
-        if (eventId) {
-            window.location.href = `/peserta/pendaftaran?idAgenda=${eventId}`;
-        } else {
-            alert('ID Agenda tidak ditemukan. Silakan coba lagi.');
-        }
+function daftar() {
+    const eventId = window.location.pathname.split('/').pop();
+    if (eventId) {
+        window.location.href = `/peserta/pendaftaran?idAgenda=${eventId}`;
+    } else {
+        alert('ID Agenda tidak ditemukan. Silakan coba lagi.');
     }
+}
+
 </script>
 @endsection
