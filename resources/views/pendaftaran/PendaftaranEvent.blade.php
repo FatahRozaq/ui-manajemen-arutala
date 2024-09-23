@@ -50,23 +50,36 @@ Arutala | Pendaftaran Event
                             <!-- Gambar akan diperbarui dengan URL dari MinIO -->
                             <img src="" class="img-fluid" alt="Event Image" id="eventImage" style="width: 500px; height: auto;">
                         </div>
-                        <h4 class="card-subtitle mb-2" id="eventName"></h4>
-                        <h5 class="font-weight-bold mb-1" style="color: #344C92;">Materi :</h5>
+                        <h4 class="card-subtitle mb-2 font-weight-bold" id="eventName"></h4>
+                        <h5 class="font-weight-bold mb-1" style="color: #000A65;">Materi :</h5>
                         <ul id="eventMateri"></ul>
-                        <h5 class="font-weight-bold mb-1" style="color: #344C92;">Benefit :</h5>
+                        <h5 class="font-weight-bold mb-1" style="color: #000A65;">Benefit :</h5>
                         <ul id="eventBenefit"></ul>
+                        
                         <div class="d-flex flex-column ml-2">
-                            <p class="mb-1">
-                                <i class="fas fa-calendar-alt"></i> Start Date: <span id="eventStartDate"></span>
-                            </p>
-                            <p class="mb-1">
-                                <i class="fas fa-calendar-alt"></i> End Date: <span id="eventEndDate"></span>
-                            </p>
-                            <p class="mb-3">
-                                <i class="fas fa-clock"></i> Sesi: <span id="eventSession"></span>
-                            </p>
+                            <div class="d-flex mb-1 font-weight-bold align-items-center">
+                                <i class="fas fa-calendar-alt" style="width:5%"></i>
+                                <span class="date-label" style="width:20%" id="startDateLabel">Start Date</span>
+                                <span style="width:2%">:</span>
+                                <span id="eventStartDate"></span>
+                            </div>
+
+                            <div class="d-flex mb-1 font-weight-bold align-items-center">
+                                <i class="fas fa-calendar-alt" style="width:5%"></i>
+                                <span class="date-label" style="width:20%" id="endDateLabel">End Date</span>
+                                <span style="width:2%">:</span>
+                                <span id="eventEndDate"></span>
+                            </div>
+
+                            <div class="d-flex mb-1 font-weight-bold align-items-center">
+                                <i class="fas fa-clock" style="width:5%"></i>
+                                <span style="width:20%">Sesi</span>
+                                <span style="width:2%">:</span>
+                                <span id="eventSession"></span>
+                            </div>
                         </div>
-                        <div class="d-flex">
+
+                        <div class="d-flex mt-4">
                             <h5 class="text-danger font-weight-bold mb-1 mr-4" id="eventPrice"></h5>
                             <p class="text-muted text-decoration-line-through" id="eventDiscountedPrice"></p>
                         </div>
@@ -296,7 +309,6 @@ Arutala | Pendaftaran Event
                 cancelButtonText: 'Batal'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Jika pengguna menekan "Ya, Daftar!", maka form akan dikirim
                     const formData = {
                         id_agenda: document.getElementById('id_agenda').value,
                         nama: document.getElementById('nama').value,
@@ -372,6 +384,24 @@ Arutala | Pendaftaran Event
             return `${dayName}, ${day} ${month} ${year}`;
         }
 
+        function updateLabels() {
+            const startDateLabel = document.getElementById('startDateLabel');
+            const endDateLabel = document.getElementById('endDateLabel');
+            
+            if (window.innerWidth < 576) {
+                startDateLabel.textContent = 'Start';
+                endDateLabel.textContent = 'End';
+            } else {
+                startDateLabel.textContent = 'Start Date';
+                endDateLabel.textContent = 'End Date';
+            }
+        }
+
+        updateLabels();
+
+        window.addEventListener('resize', updateLabels);
+
     });
 </script>
+
 @endsection
