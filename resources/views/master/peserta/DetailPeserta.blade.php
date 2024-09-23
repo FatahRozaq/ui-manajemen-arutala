@@ -5,12 +5,49 @@ Arutala | Detail Data Peserta
 @endsection
 
 @section('style')
-<link href="{{ asset('assets/css/custom.css') }}" rel="stylesheet">
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 <style>
     .training-card {
         margin-bottom: 20px;
     }
+
+    .training-card .card {
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+    }
+
+    .training-card .card:hover {
+        transform: translateY(-10px);
+    }
+
+    .card-body {
+        padding: 20px;
+        font-family: 'Arial', sans-serif;
+    }
+
+    .card-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        margin-bottom: 15px;
+        color: #344C92;
+    }
+
+    .card-text {
+        font-size: 1rem;
+        color: #555;
+    }
+
+    .card-text.font-weight-bold {
+        font-weight: 600;
+        color: #333;
+    }
+
+    .training-card img {
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        object-fit: cover;
+    }
+
     @media (min-width: 768px) {
         .training-card-container {
             display: flex;
@@ -147,18 +184,25 @@ Arutala | Detail Data Peserta
 
                     let pelatihanHTML = '';
                     data.data.pendaftaran_event.forEach(function(event, index) {
-                        pelatihanHTML += `
-                        <div class="training-card">
-                            <div class="card">
-                                <img class="card-img-top" src="{{ asset('${event.agenda_pelatihan.pelatihan.gambar_pelatihan}') }}" alt="${event.agenda_pelatihan.pelatihan.nama_pelatihan}">
-                                <div class="card-body">
-                                    <h5 class="card-title">${event.agenda_pelatihan.pelatihan.nama_pelatihan}</h5>
-                                    <p class="card-text">Status Pembayaran: ${event.status_pembayaran}</p>
-                                    <p class="card-text">Tanggal: ${event.agenda_pelatihan.start_date} - ${event.agenda_pelatihan.end_date}</p>
-                                </div>
+                    let tanggalMulai = formatTanggal(event.agenda_pelatihan.start_date);
+                    let tanggalSelesai = formatTanggal(event.agenda_pelatihan.end_date);
+                    
+                    pelatihanHTML += `
+                    <div class="training-card">
+                        <div class="card">
+                            <img class="card-img-top" src="{{ asset('${event.agenda_pelatihan.pelatihan.gambar_pelatihan}') }}" alt="${event.agenda_pelatihan.pelatihan.nama_pelatihan}">
+                            <div class="card-body">
+                                <h5 class="card-title">${event.agenda_pelatihan.pelatihan.nama_pelatihan}</h5>
+                                <p class="card-text font-weight-bold">Status Pembayaran: ${event.status_pembayaran}</p>
+                                <p class="card-text font-weight-bold">Tanggal Mulai: ${tanggalMulai}</p>
+                                <p class="card-text font-weight-bold">Tanggal Selesai: ${tanggalSelesai}</p>
                             </div>
-                        </div>`;
-                    });
+                        </div>
+                    </div>
+                    `;
+
+                });
+
 
                     document.getElementById('trainingCards').innerHTML = pelatihanHTML;
                 } else {
@@ -173,7 +217,21 @@ Arutala | Detail Data Peserta
         const urlParams = new URLSearchParams(window.location.search);
         const idPendaftar = urlParams.get('idPendaftar');
 
-        window.location.href = `/admin/peserta/edit?idPendaftar=${idPendaftar}`
+        window.location.href = `/admin/pendaftar/edit?idPendaftar=${idPendaftar}`
+    }
+
+    function formatTanggal(tanggal) {
+        const bulan = [
+            "Januari", "Februari", "Maret", "April", "Mei", "Juni", 
+            "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+        ];
+
+        const tanggalObj = new Date(tanggal);
+        const hari = tanggalObj.getDate();
+        const bulanNama = bulan[tanggalObj.getMonth()];
+        const tahun = tanggalObj.getFullYear();
+
+        return `${hari} ${bulanNama} ${tahun}`;
     }
 </script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
