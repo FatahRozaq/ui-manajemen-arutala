@@ -1,5 +1,7 @@
 @extends('layouts.AdminLayouts')
-
+@section('title')
+Arutala | Tambah Data Pelatihan
+@endsection
 @section('content')
 <style>
   .dropdown-menu {
