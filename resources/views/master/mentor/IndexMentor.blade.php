@@ -8,7 +8,7 @@ Arutala | Data Mentor
 
 <div class="pagetitle d-flex justify-content-between align-items-center">
     <h1>Data Mentor</h1>
-    <a href="{{ route('mentor.add') }}" class="btn btn-success d-flex align-items-center">
+    <a href="{{ route('mentor.add') }}" class="btn btn-success d-flex align-items-center custom-btn">
         <i class="fa-solid fa-circle-plus mr-2"></i>
         Tambah Mentor
     </a>

@@ -71,6 +71,16 @@ h6 {
   color: #012970;
 }
 
+.pagetitle .btn {
+  font-size: 15px; /* Ubah ukuran teks */
+  padding: 10px 20px; /* Ubah padding tombol */
+}
+
+.pagetitle .btn i {
+  font-size: 10px; /* Ubah ukuran ikon */
+  margin-right: 8px; /* Sesuaikan jarak antara ikon dan teks */
+}
+
 /*--------------------------------------------------------------
 # Back to top button
 --------------------------------------------------------------*/
