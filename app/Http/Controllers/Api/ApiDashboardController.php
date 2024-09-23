@@ -201,6 +201,7 @@ class ApiDashboardController extends Controller
             // Ambil 5 provinsi dengan jumlah pendaftar terbanyak
             $topProvinces = Pendaftar::select('provinsi', DB::raw('COUNT(*) as jumlah'))
                 ->where('is_deleted', false)
+                ->whereNotNull('provinsi') // Filter untuk provinsi tidak null
                 ->groupBy('provinsi')
                 ->orderBy('jumlah', 'desc')
                 ->limit(5)
@@ -288,6 +289,7 @@ class ApiDashboardController extends Controller
         try {
             // Mengelompokkan data berdasarkan aktivitas
             $activities = Pendaftar::where('is_deleted', false)
+                ->whereNotNull('aktivitas')
                 ->groupBy('aktivitas')
                 ->selectRaw('aktivitas, COUNT(*) as total_peserta')
                 ->orderBy('total_peserta', 'desc')
@@ -338,6 +340,7 @@ class ApiDashboardController extends Controller
             // Ambil 5 kota/kabupaten dengan jumlah pendaftar terbanyak
             $topCities = Pendaftar::select('kab_kota', DB::raw('COUNT(*) as jumlah'))
                 ->where('is_deleted', false)
+                ->whereNotNull('kab_kota') // Filter untuk kota/kabupaten tidak null
                 ->groupBy('kab_kota')
                 ->orderBy('jumlah', 'desc')
                 ->limit(5)

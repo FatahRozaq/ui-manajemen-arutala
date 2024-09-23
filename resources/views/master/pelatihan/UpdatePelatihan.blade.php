@@ -116,8 +116,15 @@
             .then(function(response) {
                 const data = response.data.data;
                 document.getElementById('trainingInput').value = data.nama_pelatihan;
-                document.getElementById('existingImage').src = `/uploads/${data.gambar_pelatihan}`;
                 document.getElementById('exampleFormControlTextarea1').value = data.deskripsi;
+
+                const existingImage = document.getElementById('existingImage');
+            if (data.gambar_pelatihan) {
+                existingImage.src = data.gambar_pelatihan;
+                existingImage.style.display = 'block'; // Tampilkan gambar
+            } else {
+                existingImage.style.display = 'none'; // Sembunyikan jika gambar tidak ada
+            }
 
                 // Isi materi
                 data.materi.forEach(function(materi, index) {
@@ -167,6 +174,7 @@
                 console.log('Error fetching detail pelatihan:', error);
             });
 
+
         // Tambah kolom baru pada Materi
         $('#materiContainer').on('click', '.add-materi', function () {
             var newMateriRow = `
@@ -211,11 +219,24 @@
 
         // Submit form update menggunakan Axios
         $('#formUpdatePelatihan').submit(function(event) {
-            event.preventDefault();
+    event.preventDefault();
 
-            document.getElementById('error-name').style.display = 'none';
+    document.getElementById('error-name').style.display = 'none';
 
-            var formData = new FormData(this);
+    // Tampilkan popup konfirmasi sebelum melakukan update
+    Swal.fire({
+        title: 'Apakah Anda yakin?',
+        text: "Anda tidak akan dapat mengembalikan ini!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ya, update!',
+        cancelButtonText: 'Batal'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Jika pengguna mengonfirmasi, lakukan update pelatihan
+            var formData = new FormData($('#formUpdatePelatihan')[0]);
 
             axios.post(`/api/pelatihan/update-pelatihan/${pelatihanId}`, formData)
                 .then(function(response) {
@@ -254,7 +275,10 @@
                         });
                     }
                 });
-        });
+        }
     });
+});
+});
+
 </script>
 @endsection

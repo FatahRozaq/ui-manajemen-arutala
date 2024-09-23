@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use Carbon\Carbon;
 use App\Models\Mentor;
 use Illuminate\Http\Request;
 use App\Models\AgendaPelatihan;
@@ -13,9 +14,13 @@ class ApiLamanPesertaController extends Controller
     public function getPelatihanDetails()
     {
         try {
+
+            $currentDate = Carbon::now();
             // Ambil semua agenda dengan status "Masa Pendaftaran"
             $agendas = AgendaPelatihan::with('pelatihan')
-                ->where('status', 'Masa Pendaftaran')
+                // ->where('status', 'Masa Pendaftaran')
+                ->where('start_pendaftaran', '<=', $currentDate)
+                ->where('end_pendaftaran', '>=', $currentDate)
                 ->orderBy('start_date', 'desc')
                 ->get();
 

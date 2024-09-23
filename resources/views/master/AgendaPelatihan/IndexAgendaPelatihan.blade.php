@@ -1,5 +1,11 @@
 @extends('layouts.AdminLayouts')
 
+@section('style')
+<!-- DataTables CSS and JS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap4.min.css"/> <!-- Tambahkan CSS untuk responsive DataTables -->
+@endsection
+
 @section('content')
 
 <style>
@@ -7,14 +13,6 @@
         cursor: pointer; /* Ubah cursor menjadi pointer */
     }
 </style>
-
-{{-- <div class="pagetitle">
-  <h1>Data Pelatihan</h1>
-  <a href="agendapelatihan/tambah" class="btn btn-success d-flex align-items-center" style="border-radius: 10px;">
-    <i class="bi bi-plus-circle-fill" style="font-size:18px; margin-right:3px; margin-top:10px"></i>
-    Tambah Agenda
-  </a>
-</div><!-- End Page Title --> --}}
 
 <div class="pagetitle d-flex justify-content-between align-items-center">
     <h1>Data Pelatihan</h1>
@@ -29,9 +27,8 @@
     <div class="col-lg-12">
       <div class="card" style="padding: 20px">
         <div class="card-body">
-
           <!-- Tabel Data Pelatihan -->
-          <table id="dataAgendaPelatihanTable" class="table table-striped">
+          <table id="dataAgendaPelatihanTable" class="table table-striped table-bordered dt-responsive nowrap" style="width: 100%;"> <!-- Tambahkan kelas responsive -->
               <thead>
                   <tr>
                       <th>Nama Pelatihan</th>
@@ -46,7 +43,6 @@
                   <!-- Data akan diisi oleh DataTables -->
               </tbody>
           </table>
-
         </div>
       </div>
     </div>
@@ -62,12 +58,16 @@
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css"/>
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script> <!-- Tambahkan JS untuk responsive DataTables -->
+<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.9/js/responsive.bootstrap4.min.js"></script>
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
 
 <script>
     $(document).ready(function() {
-        // Inisialisasi DataTable untuk Agenda Pelatihan
+        // Inisialisasi DataTable untuk Agenda Pelatihan dengan fitur responsif
         $('#dataAgendaPelatihanTable').DataTable({
+            "responsive": true,
             "ajax": {
                 "url": "/api/agenda/index", // Ganti dengan URL API yang sesuai
                 "dataSrc": "data"
@@ -159,9 +159,7 @@
                 }
             });
         });
-    
     });
 </script>
 
-    
 @endsection

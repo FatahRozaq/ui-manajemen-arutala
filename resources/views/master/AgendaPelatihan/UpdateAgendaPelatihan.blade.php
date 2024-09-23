@@ -357,19 +357,48 @@ $(document).ready(function() {
 
     // Handle Update Button Click
     $('#updateAgendaForm').submit(function(event) {
-        event.preventDefault();
+    event.preventDefault();
 
-        const formData = new FormData(this);
-        axios.post(`/api/agenda/update-agenda/${agendaId}`, formData)
-            .then(function(response) {
-                alert('Agenda pelatihan berhasil diperbarui!');
-                window.location.href = '/admin/agendapelatihan'; // Ganti dengan path tujuan setelah update
-            })
-            .catch(function(error) {
-                console.error('Error updating agenda:', error);
-                alert('Gagal memperbarui agenda. Silakan coba lagi.');
-            });
+    // Tampilkan pop-up konfirmasi sebelum melakukan update
+    Swal.fire({
+        title: 'Apakah Anda yakin?',
+        text: "Anda tidak akan dapat mengembalikan ini!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ya, update!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Jika pengguna konfirmasi, lanjutkan dengan update
+            const formData = new FormData($('#updateAgendaForm')[0]);
+
+            axios.post(`/api/agenda/update-agenda/${agendaId}`, formData)
+                .then(function(response) {
+                    Swal.fire({
+                        title: 'Sukses!',
+                        text: 'Agenda pelatihan berhasil diperbarui!',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = '/admin/agendapelatihan'; // Ganti dengan path tujuan setelah update
+                        }
+                    });
+                })
+                .catch(function(error) {
+                    console.error('Error updating agenda:', error);
+                    Swal.fire({
+                        title: 'Error!',
+                        text: 'Gagal memperbarui agenda. Silakan coba lagi.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                });
+        }
     });
+});
+
 
     // Handle remove mentor from selectize
     $(document).on('click', '.remove', function() {

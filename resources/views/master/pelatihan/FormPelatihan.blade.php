@@ -178,7 +178,7 @@
             var newMateriRow = `
                 <div class="form-group row position-relative mb-1">
                     <label class="col-sm-3 col-form-label"></label>
-                    <div class="col-sm-9 input-group">
+                    <div class="col-sm-6 input-group">
                         <input type="text" class="form-control materi" name="materi[]">
                         <div class="input-group-append">
                             <button class="btn btn-outline-secondary remove-materi" type="button"><i class="bi bi-dash-circle"></i></button>
@@ -198,7 +198,7 @@
             var newBenefitRow = `
                 <div class="form-group row position-relative mb-1">
                     <label class="col-sm-3 col-form-label"></label>
-                    <div class="col-sm-9 input-group">
+                    <div class="col-sm-6 input-group">
                         <input type="text" class="form-control benefit" name="benefit[]">
                         <div class="input-group-append">
                             <button class="btn btn-outline-secondary remove-benefit" type="button"><i class="bi bi-dash-circle"></i></button>
@@ -255,34 +255,86 @@
     
         // Submit form menggunakan Axios dengan validasi
         $('#submitPelatihan').click(function() {
-            // Cek validasi form sebelum submit
-            if (!validateForm()) {
-                return; // Hentikan submit jika tidak valid
-            }
-    
-            // Ambil data dari form
+    // Cek validasi form sebelum submit
+    if (!validateForm()) {
+        return; // Hentikan submit jika tidak valid
+    }
+
+    // Tampilkan pop-up konfirmasi sebelum melakukan penambahan data
+    Swal.fire({
+        title: 'Konfirmasi',
+        text: 'Apakah Anda yakin ingin menambahkan mentor ini?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ya, Tambahkan!',
+        cancelButtonText: 'Batal'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Jika pengguna konfirmasi, lanjutkan dengan pengiriman data
             var formData = new FormData($('#formPelatihan')[0]);
-    
+
+            // Filter untuk array materi[] yang kosong
+            var materiArray = $('input[name="materi[]"]').map(function() {
+                return $(this).val().trim(); // Ambil nilai dan hapus spasi di depan/belakang
+            }).get().filter(function(value) {
+                return value !== ""; // Hanya masukkan nilai yang tidak kosong
+            });
+
+            // Filter untuk array benefit[] yang kosong
+            var benefitArray = $('input[name="benefit[]"]').map(function() {
+                return $(this).val().trim();
+            }).get().filter(function(value) {
+                return value !== ""; // Hanya masukkan nilai yang tidak kosong
+            });
+
+            // Hapus field existing untuk materi dan benefit dari FormData
+            formData.delete('materi[]');
+            formData.delete('benefit[]');
+
+            // Tambahkan array materi yang difilter ke FormData
+            materiArray.forEach(function(value) {
+                formData.append('materi[]', value);
+            });
+
+            // Tambahkan array benefit yang difilter ke FormData
+            benefitArray.forEach(function(value) {
+                formData.append('benefit[]', value);
+            });
+
             // Kirim data menggunakan Axios
             axios.post('/api/pelatihan/tambah-pelatihan', formData)
                 .then(function(response) {
-                    alert('Pelatihan berhasil ditambahkan!');
-                    console.log(response.data);
-    
-                    // Redirect ke halaman master pelatihan
-                    window.location.href = '/admin/pelatihan';
+                    Swal.fire({
+                        title: 'Sukses!',
+                        text: 'Pelatihan berhasil ditambahkan!',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    }).then(() => {
+                        // Redirect ke halaman master pelatihan setelah sukses
+                        window.location.href = '/admin/pelatihan';
+                    });
                 })
                 .catch(function(error) {
                     if (error.response && error.response.data.errors && error.response.data.errors.nama_pelatihan) {
                         nameError.textContent = error.response.data.errors.nama_pelatihan[0];
                         nameError.style.display = 'block';
                     } else {
-                        alert('Gagal menambahkan pelatihan. Coba lagi.');
-                        console.log(error.response.data);
+                        Swal.fire({
+                            title: 'Error!',
+                            text: 'Gagal menambahkan pelatihan. Coba lagi.',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                        console.error(error.response.data);
                     }
                 });
-        });
-    
+        }
+    });
+});
+
+
     });
     </script>
     

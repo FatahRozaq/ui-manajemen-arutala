@@ -61,7 +61,7 @@ class ApiMasterPelatihanController extends Controller
                 'nama_pelatihan.unique' => 'Nama pelatihan sudah ada, silakan gunakan nama lain.',
             ]);
 
-            // Simpan file gambar ke MinIO dan ambil nama file
+            // Simpan file gambar ke MinIO dan ambil nama file jika ada
             if ($request->hasFile('gambar_pelatihan')) {
                 $fileName = time() . '.' . $request->gambar_pelatihan->extension();
                 $filePath = 'uploads/' . $fileName;
@@ -72,17 +72,14 @@ class ApiMasterPelatihanController extends Controller
                 // Buat URL manual untuk gambar yang diunggah
                 $gambarUrl = env('MINIO_URL') . '/' . env('MINIO_BUCKET') . '/' . $filePath;
             } else {
-                return response()->json([
-                    'message' => 'Gambar pelatihan wajib diunggah',
-                    'statusCode' => 400,
-                    'status' => 'error'
-                ], 400);
+                // Jika tidak ada gambar yang diunggah, set gambarUrl ke null
+                $gambarUrl = null;
             }
 
             // Simpan data pelatihan
             $pelatihan = new Pelatihan();
             $pelatihan->nama_pelatihan = $request->input('nama_pelatihan');
-            $pelatihan->gambar_pelatihan = $gambarUrl; // Simpan URL gambar ke database
+            $pelatihan->gambar_pelatihan = $gambarUrl; // Simpan URL gambar atau null ke database
             $pelatihan->deskripsi = $request->input('deskripsi');
             $pelatihan->materi = json_encode($request->input('materi')); // Simpan sebagai JSON string
             $pelatihan->benefit = json_encode($request->input('benefit')); // Simpan sebagai JSON string

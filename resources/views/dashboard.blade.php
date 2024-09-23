@@ -413,10 +413,10 @@ fetchTotalPeserta(); // Default fetch without any filters
                         <li class="dropdown-item">
                             <label for="year">Tahun:</label>
                             <select id="year" class="form-select">
-                                <option value="2021">2021</option>
-                                <option value="2022">2022</option>
-                                <option value="2023">2023</option>
                                 <option value="2024">2024</option>
+                                <option value="2023">2023</option>
+                                <option value="2022">2022</option>
+                                <option value="2021">2021</option> 
                             </select>
                         </li>
                         <li class="dropdown-item d-flex justify-content-between align-items-center">
@@ -688,53 +688,54 @@ fetchTotalPeserta(); // Default fetch without any filters
             <!-- Script untuk Mengambil Data dari API dan Membuat Pie Chart -->
             <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
             <script>
-              document.addEventListener("DOMContentLoaded", () => {
-                // Fetch data untuk 5 provinsi teratas
-                axios.get('/api/dashboard/top-provinces')
-                  .then(response => {
-                    const data = response.data.top_provinces;
-                    const series = data.map(item => item.jumlah); // Ambil jumlah peserta
-                    const labels = data.map(item => item.provinsi); // Ambil nama provinsi
+             // Fetch data untuk 5 provinsi teratas
+            axios.get('/api/dashboard/top-provinces')
+              .then(response => {
+                const data = response.data.top_provinces;
+                const filteredData = data.filter(item => item.provinsi !== null); // Hilangkan provinsi null
+                const series = filteredData.map(item => item.jumlah); // Ambil jumlah peserta
+                const labels = filteredData.map(item => item.provinsi); // Ambil nama provinsi
 
-                    new ApexCharts(document.querySelector("#pieChartProvinsi"), {
-                      series: series,
-                      chart: {
-                        height: 350,
-                        type: 'pie',
-                        toolbar: {
-                          show: true
-                        }
-                      },
-                      labels: labels
-                    }).render();
-                  })
-                  .catch(error => {
-                    console.error('Error fetching provinces data:', error);
-                  });
-
-                // Fetch data untuk 5 kota teratas
-                axios.get('/api/dashboard/top-city')
-                  .then(response => {
-                    const data = response.data.top_cities;
-                    const series = data.map(item => item.jumlah); // Ambil jumlah peserta
-                    const labels = data.map(item => item.kab_kota); // Ambil nama kota
-
-                    new ApexCharts(document.querySelector("#pieChartKota"), {
-                      series: series,
-                      chart: {
-                        height: 350,
-                        type: 'pie',
-                        toolbar: {
-                          show: true
-                        }
-                      },
-                      labels: labels
-                    }).render();
-                  })
-                  .catch(error => {
-                    console.error('Error fetching cities data:', error);
-                  });
+                new ApexCharts(document.querySelector("#pieChartProvinsi"), {
+                  series: series,
+                  chart: {
+                    height: 350,
+                    type: 'pie',
+                    toolbar: {
+                      show: true
+                    }
+                  },
+                  labels: labels
+                }).render();
+              })
+              .catch(error => {
+                console.error('Error fetching provinces data:', error);
               });
+
+            // Fetch data untuk 5 kota teratas
+            axios.get('/api/dashboard/top-city')
+              .then(response => {
+                const data = response.data.top_cities;
+                const filteredData = data.filter(item => item.kab_kota !== null); // Hilangkan kota null
+                const series = filteredData.map(item => item.jumlah); // Ambil jumlah peserta
+                const labels = filteredData.map(item => item.kab_kota); // Ambil nama kota
+
+                new ApexCharts(document.querySelector("#pieChartKota"), {
+                  series: series,
+                  chart: {
+                    height: 350,
+                    type: 'pie',
+                    toolbar: {
+                      show: true
+                    }
+                  },
+                  labels: labels
+                }).render();
+              })
+              .catch(error => {
+                console.error('Error fetching cities data:', error);
+              });
+
             </script>
           
 
