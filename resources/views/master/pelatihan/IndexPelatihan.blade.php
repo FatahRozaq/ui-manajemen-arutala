@@ -1,5 +1,7 @@
 @extends('layouts.AdminLayouts')
-
+@section('title')
+Arutala | Data Pelatihan
+@endsection
 @section('style')
 <link href="{{ asset('assets/css/masterPelatihan.css') }}" rel="stylesheet">
 <!-- DataTables CSS and JS -->

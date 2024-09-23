@@ -1,5 +1,9 @@
 @extends('layouts.AdminLayouts')
 
+@section('title')
+Arutala | Data Peserta Pelatihan
+@endsection
+
 @section('content')
 
 <style>

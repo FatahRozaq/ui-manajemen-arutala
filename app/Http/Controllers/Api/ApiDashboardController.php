@@ -386,10 +386,93 @@ class ApiDashboardController extends Controller
         }
     }
 
+    // public function getTrainingAgenda()
+    // {
+    //     try {
+    //         // Query to fetch the training agenda along with the counts
+    //         $trainingAgenda = DB::table('agenda_pelatihan')
+    //             ->join('pelatihan', 'agenda_pelatihan.id_pelatihan', '=', 'pelatihan.id_pelatihan')
+    //             ->leftJoin('pendaftaran_event', function ($join) {
+    //                 $join->on('agenda_pelatihan.id_agenda', '=', 'pendaftaran_event.id_agenda')
+    //                     ->where('pendaftaran_event.is_deleted', false);
+    //             })
+    //             ->select(
+    //                 'pelatihan.nama_pelatihan',
+    //                 'agenda_pelatihan.batch',
+    //                 'agenda_pelatihan.start_date',
+    //                 'agenda_pelatihan.end_date',
+    //                 DB::raw('COUNT(pendaftaran_event.id_peserta) as total_pendaftar'),
+    //                 DB::raw("SUM(CASE WHEN pendaftaran_event.status_pembayaran = 'Paid' THEN 1 ELSE 0 END) as total_peserta")
+    //             )
+    //             ->where('agenda_pelatihan.is_deleted', false)
+    //             ->where('pelatihan.is_deleted', false)
+    //             ->groupBy(
+    //                 'pelatihan.nama_pelatihan',
+    //                 'agenda_pelatihan.batch',
+    //                 'agenda_pelatihan.start_date',
+    //                 'agenda_pelatihan.end_date'
+    //             )
+    //             ->orderBy('pelatihan.nama_pelatihan', 'asc')
+    //             ->get();
+
+    //         return response()->json([
+    //             'data' => $trainingAgenda,
+    //             'message' => 'Data agenda pelatihan berhasil ditemukan',
+    //             'statusCode' => 200,
+    //             'status' => 'success'
+    //         ], 200);
+    //     } catch (\Exception $e) {
+    //         return response()->json([
+    //             'message' => 'Gagal mendapatkan data agenda pelatihan',
+    //             'statusCode' => 500,
+    //             'status' => 'error',
+    //             'error' => $e->getMessage()
+    //         ], 500);
+    //     }
+    // }
+
+
     public function getTrainingAgenda()
     {
         try {
-            // Query to fetch the training agenda along with the counts
+            // Mendapatkan waktu sekarang
+            $now = now();
+
+            // Update status secara otomatis berdasarkan waktu
+            DB::table('agenda_pelatihan')
+                ->where('is_deleted', false)
+                // ->where('status', '!=', 'Selesai') // Hanya memperbarui yang belum selesai
+                ->get()
+                ->each(function ($agenda) use ($now) {
+                    if ($now->lessThan($agenda->start_pendaftaran)) {
+                        // Sebelum start_pendaftaran -> Planning
+                        DB::table('agenda_pelatihan')
+                            ->where('id_agenda', $agenda->id_agenda)
+                            ->update(['status' => 'Planning']);
+                    } elseif ($now->between($agenda->start_pendaftaran, $agenda->end_pendaftaran)) {
+                        // Setelah start_pendaftaran dan sebelum end_pendaftaran -> Masa Pendaftaran
+                        DB::table('agenda_pelatihan')
+                            ->where('id_agenda', $agenda->id_agenda)
+                            ->update(['status' => 'Masa Pendaftaran']);
+                    } elseif ($now->greaterThan($agenda->end_pendaftaran) && $now->lessThan($agenda->start_date)) {
+                        // Setelah end_pendaftaran dan sebelum start_date -> Pendaftaran Berakhir
+                        DB::table('agenda_pelatihan')
+                            ->where('id_agenda', $agenda->id_agenda)
+                            ->update(['status' => 'Pendaftaran Berakhir']);
+                    } elseif ($now->between($agenda->start_date, $agenda->end_date)) {
+                        // Setelah start_date dan sebelum end_date -> Sedang Berlangsung
+                        DB::table('agenda_pelatihan')
+                            ->where('id_agenda', $agenda->id_agenda)
+                            ->update(['status' => 'Sedang Berlangsung']);
+                    } elseif ($now->greaterThan($agenda->end_date)) {
+                        // Setelah end_date -> Selesai
+                        DB::table('agenda_pelatihan')
+                            ->where('id_agenda', $agenda->id_agenda)
+                            ->update(['status' => 'Selesai']);
+                    }
+                });
+
+            // Query untuk mendapatkan agenda pelatihan dengan hitungan jumlah peserta
             $trainingAgenda = DB::table('agenda_pelatihan')
                 ->join('pelatihan', 'agenda_pelatihan.id_pelatihan', '=', 'pelatihan.id_pelatihan')
                 ->leftJoin('pendaftaran_event', function ($join) {
@@ -430,6 +513,8 @@ class ApiDashboardController extends Controller
             ], 500);
         }
     }
+
+
 
     public function getTotalPesertaByPelatihanAndBatch(Request $request)
     {
