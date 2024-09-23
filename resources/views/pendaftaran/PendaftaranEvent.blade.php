@@ -206,9 +206,15 @@ Arutala | Pendaftaran Event
 
             document.getElementById('id_agenda').value = agenda.id_agenda;
             document.getElementById('eventName').textContent = pelatihan.nama_pelatihan;
-            console.log(imageUrl)
-            // Set URL gambar ke elemen <img>
-            document.getElementById('eventImage').src = imageUrl;
+            console.log(imageUrl);
+            
+            const eventImage = document.getElementById('eventImage');
+            
+            // Set URL gambar ke elemen <img> dan gunakan gambar default jika gagal memuat
+            eventImage.src = imageUrl;
+            eventImage.onerror = function() {
+                this.src = '/assets/images/default-pelatihan.jpg'; // Ganti dengan path gambar default di asset
+            };
 
             const materi = (agenda.materi || pelatihan.materi).replace(/[\[\]]/g, '').split(',').map(item => `<li>${item.trim()}</li>`).join('');
             const benefit = (agenda.benefit || pelatihan.benefit).replace(/[\[\]]/g, '').split(',').map(item => `<li>${item.trim()}</li>`).join('');
@@ -229,7 +235,6 @@ Arutala | Pendaftaran Event
             document.getElementById('nama_instansi').value = pendaftar.nama_instansi || '';
             document.getElementById('linkedin').value = pendaftar.linkedin || ''; 
 
-
             selectedProvinsi = pendaftar.provinsi;
             selectedKabupaten = pendaftar.kab_kota;
 
@@ -245,6 +250,7 @@ Arutala | Pendaftaran Event
                 confirmButtonText: 'OK'
             });
         });
+
 
         function loadProvinsi(selectedProvinsi, selectedKabupaten) {
             fetch('https://ibnux.github.io/data-indonesia/provinsi.json')

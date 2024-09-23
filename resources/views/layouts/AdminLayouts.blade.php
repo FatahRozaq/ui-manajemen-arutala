@@ -24,7 +24,7 @@
 
     @yield('style')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/selectize@0.12.6/dist/css/selectize.default.css">
-
+    <link href="{{ asset('assets/css/custom.css') }}" rel="stylesheet">
 </head>
 <body>
     <!-- ======= Header ======= -->
