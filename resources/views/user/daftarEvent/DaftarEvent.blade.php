@@ -23,45 +23,54 @@
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        axios.get('api/laman-peserta/daftar-event')
-            .then(function(response) {
-                const events = response.data.data;
-                const eventCards = document.getElementById('event-cards');
+    axios.get('api/laman-peserta/daftar-event')
+        .then(function(response) {
+            const events = response.data.data;
+            const eventCards = document.getElementById('event-cards');
 
-                events.forEach(event => {
-                    const card = document.createElement('div');
-                    card.classList.add('card');
-                    card.style.cursor = 'pointer'; // Tambahkan pointer untuk menandakan bisa diklik
-                    card.onclick = function() {
-                        window.location.href = `/event/${event.id_agenda}`;
-                    };
+            events.forEach(event => {
+                const card = document.createElement('div');
+                card.classList.add('card');
+                card.style.cursor = 'pointer'; // Tambahkan pointer untuk menandakan bisa diklik
+                card.onclick = function() {
+                    window.location.href = `/event/${event.id_agenda}`;
+                };
 
-                    const investasi = Array.isArray(event.investasi) ? event.investasi[0] : event.investasi;
+                const investasi = Array.isArray(event.investasi) ? event.investasi[0] : event.investasi;
+                let priceHtml = investasi.toLocaleString('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).replace(/\s+/g, '');
+
+                // Cek apakah ada diskon
+                if (event.diskon && event.diskon > 0) {
                     const priceAfterDiscount = investasi - (investasi * event.diskon / 100);
-
-                    const eventDate = new Date(event.start_date);
-                    const formattedDate = eventDate.toLocaleDateString('id-ID', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' });
-
-                    card.innerHTML = `
-                        <div class="image-title">
-                            <img src="${event.gambar_pelatihan}" alt="${event.nama_pelatihan}" class="event-image">
-                            <h3 class="nama-pelatihan">${event.nama_pelatihan}</h3>
-                        </div>
-                        <div class="harga-date">
-                            <p class="price">
-                                ${priceAfterDiscount.toLocaleString('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).replace(/\s+/g, '')}
-                                <span class="original-price">${investasi.toLocaleString('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).replace(/\s+/g, '')}</span>
-                            </p>
-                            <p class="date"><i class="bi bi-clock" style="margin-right: 5px"></i>${formattedDate}</p>
-                        </div>
+                    priceHtml = `
+                        ${priceAfterDiscount.toLocaleString('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).replace(/\s+/g, '')}
+                        <span class="original-price">${investasi.toLocaleString('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).replace(/\s+/g, '')}</span>
                     `;
+                }
 
-                    eventCards.appendChild(card);
-                });
-            })
-            .catch(function(error) {
-                console.error('Error fetching event data:', error);
+                const eventDate = new Date(event.start_date);
+                const formattedDate = eventDate.toLocaleDateString('id-ID', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' });
+
+                card.innerHTML = `
+                    <div class="image-title">
+                        <img src="${event.gambar_pelatihan}" alt="${event.nama_pelatihan}" class="event-image">
+                        <h3 class="nama-pelatihan">${event.nama_pelatihan}</h3>
+                    </div>
+                    <div class="harga-date">
+                        <p class="price">
+                            ${priceHtml}
+                        </p>
+                        <p class="date"><i class="bi bi-clock" style="margin-right: 5px"></i>${formattedDate}</p>
+                    </div>
+                `;
+
+                eventCards.appendChild(card);
             });
-    });
+        })
+        .catch(function(error) {
+            console.error('Error fetching event data:', error);
+        });
+});
+
 </script>
 @endsection

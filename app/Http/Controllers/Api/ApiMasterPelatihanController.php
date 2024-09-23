@@ -156,9 +156,9 @@ class ApiMasterPelatihanController extends Controller
             $request->validate([
                 'nama_pelatihan' => 'nullable|string|max:255|unique:pelatihan,nama_pelatihan,' . $id . ',id_pelatihan',
                 'gambar_pelatihan' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg|max:2048',
-                'deskripsi' => 'nullable|string|max:255',
-                'materi' => 'nullable|array',
-                'benefit' => 'nullable|array'
+                'deskripsi' => 'nullable|string|max:2048',
+                'materi' => 'nullable|array|max:2048',
+                'benefit' => 'nullable|array|max:2048'
             ], [
                 'nama_pelatihan.unique' => 'Nama pelatihan sudah ada, silakan gunakan nama lain.',
             ]);

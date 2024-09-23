@@ -108,16 +108,26 @@
 
 
                 // Update investasi
+                // Update investasi
                 if (event.investasi) {
-                    const formattedInvestasi = `Rp${Number(event.investasi).toLocaleString('id-ID')}`;
-                    const formattedOriginalPrice = `Rp${Number(event.investasi * (1 + event.discount / 100)).toLocaleString('id-ID')}`;
-                    
-                    document.getElementById('price').innerHTML = `
-                        ${formattedInvestasi}
-                        <span class="original-price">${formattedOriginalPrice}</span>
-                        <span class="discount">${event.discount}% off</span>
-                    `;
+                    let priceHtml = `Rp${Number(event.investasi).toLocaleString('id-ID')}`; // Harga asli
+
+                    // Jika ada diskon, hitung harga setelah diskon dan tampilkan diskon
+                    if (event.discount) {
+                        const discountedInvestasi = event.investasi * (1 - event.discount / 100);
+                        const formattedDiscountedInvestasi = `Rp${Number(discountedInvestasi).toLocaleString('id-ID')}`;
+                        const formattedOriginalPrice = `Rp${Number(event.investasi).toLocaleString('id-ID')}`;
+                        
+                        priceHtml = `
+                            ${formattedDiscountedInvestasi}
+                            <span class="original-price">${formattedOriginalPrice}</span>
+                            <span class="discount">${event.discount}% off</span>
+                        `;
+                    }
+
+                    document.getElementById('price').innerHTML = priceHtml;
                 }
+
 
                 // Update additional investasi info
                 if (event.investasi_info) {

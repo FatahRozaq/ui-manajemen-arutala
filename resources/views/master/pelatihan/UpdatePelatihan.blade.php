@@ -218,7 +218,8 @@
         });
 
         // Submit form update menggunakan Axios
-        $('#formUpdatePelatihan').submit(function(event) {
+        // Submit form update menggunakan Axios
+$('#formUpdatePelatihan').submit(function(event) {
     event.preventDefault();
 
     document.getElementById('error-name').style.display = 'none';
@@ -237,6 +238,31 @@
         if (result.isConfirmed) {
             // Jika pengguna mengonfirmasi, lakukan update pelatihan
             var formData = new FormData($('#formUpdatePelatihan')[0]);
+
+            // Ambil dan filter materi
+            var materiArray = $('input[name="materi[]"]').map(function() {
+                return $(this).val().trim();
+            }).get().filter(function(materi) {
+                return materi !== ''; // Hanya ambil materi yang tidak kosong
+            });
+
+            // Ambil dan filter benefit
+            var benefitArray = $('input[name="benefit[]"]').map(function() {
+                return $(this).val().trim();
+            }).get().filter(function(benefit) {
+                return benefit !== ''; // Hanya ambil benefit yang tidak kosong
+            });
+
+            // Hapus elemen yang ada di formData yang kosong
+            formData.delete('materi[]');
+            materiArray.forEach(function(materi) {
+                formData.append('materi[]', materi);
+            });
+
+            formData.delete('benefit[]');
+            benefitArray.forEach(function(benefit) {
+                formData.append('benefit[]', benefit);
+            });
 
             axios.post(`/api/pelatihan/update-pelatihan/${pelatihanId}`, formData)
                 .then(function(response) {
