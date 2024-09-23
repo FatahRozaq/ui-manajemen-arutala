@@ -2,17 +2,12 @@
 
 @section('style')
 <link href="{{ asset('assets/css/masterPelatihan.css') }}" rel="stylesheet">
+<!-- DataTables CSS and JS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap4.min.css"/> <!-- Tambahkan CSS untuk responsive DataTables -->
 @endsection
 
 @section('content')
-
-{{-- <div class="pagetitle d-flex justify-content-between align-items-center">
-    <h1>Data Pelatihan</h1>
-    <a href="pelatihan/tambah" class="btn btn-success d-flex align-items-center" style="border-radius: 10px;">
-      <i class="bi bi-plus-circle-fill" style="font-size:18px; margin-right:3px; margin-top:10px"></i>
-      Tambah Pelatihan
-    </a>
-</div><!-- End Page Title --> --}}
 
 <div class="pagetitle d-flex justify-content-between align-items-center">
     <h1>Data Pelatihan</h1>
@@ -27,7 +22,7 @@
       <div class="col-lg-12">
           <div class="card" style="padding: 20px">
               <div class="card-body">
-                  <table id="dataPelatihanTable" class="table table-striped">
+                  <table id="dataPelatihanTable" class="table table-striped table-bordered dt-responsive nowrap" style="width: 100%;"> <!-- Tambahkan kelas responsive -->
                       <thead>
                           <tr>
                               <th>Gambar</th>
@@ -51,10 +46,13 @@
 @section('scripts')
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <!-- DataTables CSS and JS -->
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css"/>
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script> <!-- Tambahkan JS untuk responsive DataTables -->
+<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.9/js/responsive.bootstrap4.min.js"></script>
+
 <!-- Font Awesome for icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
 <!-- SweetAlert2 -->
@@ -64,6 +62,7 @@
 <script>
     $(document).ready(function() {
         $('#dataPelatihanTable').DataTable({
+            "responsive": true, <!-- Aktifkan responsive DataTables -->
             "ajax": {
                 "url": "/api/pelatihan/daftar-pelatihan", // URL endpoint API
                 "type": "GET",
@@ -75,7 +74,6 @@
                 { 
                     "data": "gambar_pelatihan",
                     "render": function(data, type, row) {
-            // Gunakan URL gambar yang dikembalikan dari API
                         return `<img src="${data}" alt="Gambar Pelatihan" style="width: 70px; height: auto;">`;
                     },
                     "orderable": false

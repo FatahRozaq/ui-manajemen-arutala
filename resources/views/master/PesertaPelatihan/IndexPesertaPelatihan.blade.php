@@ -121,6 +121,12 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css" />
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script> <!-- Tambahkan JS untuk responsive DataTables -->
+<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.9/js/responsive.bootstrap4.min.js"></script>
+
+
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 
@@ -237,8 +243,12 @@
                     const filteredData = response.data.data;
     
                     // Pisahkan data berdasarkan status pembayaran
-                    const paidData = filteredData.filter(item => item.status_pembayaran.toLowerCase() === 'paid');
-                    const unpaidData = filteredData.filter(item => item.status_pembayaran.toLowerCase() === 'proses');
+                    const paidData = filteredData.filter(item => item.status_pembayaran.toLowerCase() === 'paid' || 
+                    item.status_pembayaran.toLowerCase() === 'sudah'
+                    );
+                    const unpaidData = filteredData.filter(item => item.status_pembayaran.toLowerCase() === 'proses' || 
+                    item.status_pembayaran.toLowerCase() === 'belum bayar'
+                    );
     
                     // Update DataTables dengan data yang telah dipisahkan
                     $('#dataDetailPelatihanTablePaid').DataTable().clear().rows.add(paidData).draw();
