@@ -70,7 +70,7 @@
         <ul class="sidebar-nav" id="sidebar-nav">
             <li class="nav-item">
                 <a class="nav-link {{ request()->is('admin/dashboard*') ? '' : 'collapsed' }}" href="{{ route('dashboard.index') }}">
-                    <i class="bi bi-grid" style="font-size: 20px;"></i>
+                    <i class="bi bi-grid"></i>
                     <span>Dashboard</span>
                 </a>
             </li>
