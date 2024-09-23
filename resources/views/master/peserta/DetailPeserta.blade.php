@@ -1,7 +1,7 @@
 @extends('layouts.AdminLayouts')
 
 @section('title')
-Arutala | Detail Data Peserta
+Arutala | Detail Data Pendaftar
 @endsection
 
 @section('style')
