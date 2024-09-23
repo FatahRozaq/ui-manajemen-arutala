@@ -55,10 +55,20 @@ class ApiMasterPelatihanController extends Controller
                 'nama_pelatihan' => 'required|string|max:255|unique:pelatihan,nama_pelatihan',
                 'gambar_pelatihan' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg|max:2048',
                 'deskripsi' => 'required|string|max:255',
-                'materi' => 'required|array',
-                'benefit' => 'required|array'
+                'materi' => 'required|array|min:1', // Pastikan array tidak kosong
+                'materi.*' => 'string|max:255', // Validasi setiap elemen materi adalah string dengan max 255 karakter
+                'benefit' => 'required|array|min:1', // Pastikan array tidak kosong
+                'benefit.*' => 'string|max:255', // Validasi setiap elemen benefit adalah string dengan max 255 karakter
             ], [
+                'nama_pelatihan.required' => 'Nama pelatihan wajib diisi.',
                 'nama_pelatihan.unique' => 'Nama pelatihan sudah ada, silakan gunakan nama lain.',
+                'gambar_pelatihan.mimes' => 'Gambar pelatihan harus berupa file dengan format jpeg, png, jpg, gif, atau svg.',
+                'gambar_pelatihan.max' => 'Ukuran gambar pelatihan tidak boleh lebih dari 2MB.',
+                'deskripsi.required' => 'Deskripsi wajib diisi.',
+                'materi.required' => 'Materi wajib diisi dan tidak boleh kosong.',
+                'materi.*.string' => 'Setiap materi harus berupa string.',
+                'benefit.required' => 'Benefit wajib diisi dan tidak boleh kosong.',
+                'benefit.*.string' => 'Setiap benefit harus berupa string.',
             ]);
 
             // Simpan file gambar ke MinIO dan ambil nama file jika ada
@@ -115,6 +125,7 @@ class ApiMasterPelatihanController extends Controller
             ], 500);
         }
     }
+
 
     public function show($id)
     {
