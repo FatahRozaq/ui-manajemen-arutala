@@ -234,10 +234,22 @@ class ApiMasterPendaftar extends Controller
     //     }
     // }
 
-    public function exportExcel()
+    public function exportExcel(Request $request)
     {
         try {
-            return Excel::download(new PendaftarExport, 'pendaftar.xlsx');
+            // Get the search parameter
+            $search = $request->query('search');
+
+            // Fetch filtered data where is_deleted is false
+            $data = Pendaftar::where('is_deleted', false) // Only get records that are not deleted
+                ->when($search, function ($query, $search) {
+                    return $query->where('nama', 'like', "%{$search}%")
+                                ->orWhere('email', 'like', "%{$search}%")
+                                ->orWhere('no_kontak', 'like', "%{$search}%")
+                                ->orWhere('aktivitas', 'like', "%{$search}%");
+                })->get();
+
+            return Excel::download(new PendaftarExport($data), 'Data Pendaftar.xlsx');
         } catch (Exception $e) {
             return response()->json([
                 'message' => 'Gagal mengekspor data pendaftar ke Excel',
@@ -247,6 +259,8 @@ class ApiMasterPendaftar extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+
 
     public function importExcel(Request $request)
     {

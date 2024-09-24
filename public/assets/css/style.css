@@ -17,6 +17,7 @@ body {
   font-family: "Open Sans", sans-serif;
   background: #f6f9ff;
   color: #444444;
+  font-size: 12px;
 }
 
 a {
@@ -37,6 +38,25 @@ h5,
 h6 {
   font-family: "Nunito", sans-serif;
 }
+
+.btn {
+  height: 40px;
+  width: fit-content;
+  font-size: 12px;
+}
+
+.card h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 18px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
 
 /*--------------------------------------------------------------
 # Main
@@ -72,7 +92,6 @@ h6 {
 }
 
 .pagetitle .btn {
-  font-size: 15px; /* Ubah ukuran teks */
   padding: 10px 20px; /* Ubah padding tombol */
 }
 
