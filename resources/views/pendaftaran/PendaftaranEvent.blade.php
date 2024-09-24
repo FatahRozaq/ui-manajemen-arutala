@@ -9,13 +9,14 @@ Arutala | Pendaftaran Event
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
 <style>
     .default {
-        width: 60px;
         padding: 6px 12px;
         background-color: #e9ecef;
         border: 1px solid #ced4da;
-        border-right: none;
         border-radius: 4px 0 0 4px;
         color: #495057;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
     .form-control.is-invalid {
         border-color: red;
@@ -50,7 +51,7 @@ Arutala | Pendaftaran Event
                             <!-- Gambar akan diperbarui dengan URL dari MinIO -->
                             <img src="" class="img-fluid" alt="Event Image" id="eventImage" style="width: 500px; height: auto;">
                         </div>
-                        <h4 class="card-subtitle mb-2 font-weight-bold" id="eventName"></h4>
+                        <h4 class="mb-2 font-weight-bold" id="eventName"></h4>
                         <h5 class="font-weight-bold mb-1" style="color: #000A65;">Materi :</h5>
                         <ul id="eventMateri"></ul>
                         <h5 class="font-weight-bold mb-1" style="color: #000A65;">Benefit :</h5>
@@ -202,29 +203,46 @@ Arutala | Pendaftaran Event
             const pendaftar = data.pendaftar;
             const agenda = data.agenda;
             const pelatihan = data.pelatihan;
-            const imageUrl = data.image_url; // Ambil URL gambar
+            const imageUrl = data.image_url;
 
             document.getElementById('id_agenda').value = agenda.id_agenda;
             document.getElementById('eventName').textContent = pelatihan.nama_pelatihan;
-            console.log(imageUrl);
             
             const eventImage = document.getElementById('eventImage');
-            
-            // Set URL gambar ke elemen <img> dan gunakan gambar default jika gagal memuat
             eventImage.src = imageUrl;
             eventImage.onerror = function() {
-                this.src = '/assets/images/default-pelatihan.jpg'; // Ganti dengan path gambar default di asset
+                this.src = '/assets/images/default-pelatihan.jpg'; 
             };
 
-            const materi = (agenda.materi || pelatihan.materi).replace(/[\[\]]/g, '').split(',').map(item => `<li>${item.trim()}</li>`).join('');
-            const benefit = (agenda.benefit || pelatihan.benefit).replace(/[\[\]]/g, '').split(',').map(item => `<li>${item.trim()}</li>`).join('');
+            const materiArray = JSON.parse(agenda.materi || pelatihan.materi);
+const benefitArray = JSON.parse(agenda.benefit || pelatihan.benefit);
 
-            document.getElementById('eventMateri').innerHTML = materi;
-            document.getElementById('eventBenefit').innerHTML = benefit;
+const materi = materiArray.map(item => `<li>${item.trim()}</li>`).join('');
+const benefit = benefitArray.map(item => `<li>${item.trim()}</li>`).join('');
+
+document.getElementById('eventMateri').innerHTML = materi;
+document.getElementById('eventBenefit').innerHTML = benefit;
 
             document.getElementById('eventStartDate').textContent = formatDate(agenda.start_date);
             document.getElementById('eventEndDate').textContent = formatDate(agenda.end_date);
-            document.getElementById('eventSession').textContent = agenda.sesi;
+            
+            // Mengonversi string JSON ke array
+            let sessions;
+            try {
+                sessions = JSON.parse(agenda.sesi); // Mengonversi string ke array
+            } catch (e) {
+                console.error('Error parsing sessions:', e);
+                sessions = []; // Atur ke array kosong jika parsing gagal
+            }
+
+            const eventSession = document.getElementById('eventSession');
+            if (sessions.length > 0) {
+                // Gabungkan sesi menjadi string dengan pemisah koma
+                eventSession.textContent = sessions.join(', ');
+            } else {
+                eventSession.textContent = "No sessions available";
+            }
+
             document.getElementById('eventPrice').textContent = `Rp${agenda.investasi}`;
             document.getElementById('eventDiscountedPrice').textContent = `Rp${agenda.diskon}`;
 
@@ -250,6 +268,7 @@ Arutala | Pendaftaran Event
                 confirmButtonText: 'OK'
             });
         });
+
 
 
         function loadProvinsi(selectedProvinsi, selectedKabupaten) {

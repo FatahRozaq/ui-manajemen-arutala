@@ -44,7 +44,7 @@ Arutala | Data Pendaftar
                                 <th>Jumlah Pelatihan</th>
                                 <th>Email</th>
                                 <th>Kontak</th>
-                                <th>Aktifitas</th>
+                                <th>Aktivitas</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -171,30 +171,42 @@ Arutala | Data Pendaftar
         });
 
         // Menangani proses ekspor
-        $('#exportBtn').click(function(event) {
-            event.preventDefault();
-            axios.get("{{ url('api/pendaftar/export/excel') }}", { responseType: 'blob' })
-                .then(response => {
-                    const url = window.URL.createObjectURL(new Blob([response.data]));
-                    const link = document.createElement('a');
-                    link.href = url;
-                    link.setAttribute('download', 'Pendaftar.xlsx');
-                    document.body.appendChild(link);
-                    link.click();
-                    Swal.fire(
-                        'Berhasil!',
-                        'Data berhasil diekspor.',
-                        'success'
-                    );
-                })
-                .catch(error => {
-                    Swal.fire(
-                        'Gagal!',
-                        'Gagal mengekspor data: ' + (error.response.data.message || 'Terjadi kesalahan.'),
-                        'error'
-                    );
-                });
+        // Menangani proses ekspor
+$('#exportBtn').click(function(event) {
+    event.preventDefault();
+    
+    // Get the current search value
+    var searchValue = $('#dataPesertaTable').DataTable().search();
+    
+    // Build the export URL with query parameters
+    var exportUrl = "{{ url('api/pendaftar/export/excel') }}";
+    if (searchValue) {
+        exportUrl += '?search=' + encodeURIComponent(searchValue);
+    }
+
+    axios.get(exportUrl, { responseType: 'blob' })
+        .then(response => {
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'Pendaftar.xlsx');
+            document.body.appendChild(link);
+            link.click();
+            Swal.fire(
+                'Berhasil!',
+                'Data berhasil diekspor.',
+                'success'
+            );
+        })
+        .catch(error => {
+            Swal.fire(
+                'Gagal!',
+                'Gagal mengekspor data: ' + (error.response.data.message || 'Terjadi kesalahan.'),
+                'error'
+            );
         });
+});
+
     });
 </script>
 @endsection
