@@ -294,7 +294,7 @@ Arutala | Tambah Data Pelatihan
     // Tampilkan pop-up konfirmasi sebelum melakukan penambahan data
     Swal.fire({
         title: 'Konfirmasi',
-        text: 'Apakah Anda yakin ingin menambahkan mentor ini?',
+        text: 'Apakah Anda yakin ingin menambahkan pelatihan ini?',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',

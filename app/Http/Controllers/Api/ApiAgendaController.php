@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\AgendaPelatihan;
 use App\Models\Pelatihan;
+use Illuminate\Support\Facades\Validator;
 use App\Models\Mentor;
 use Illuminate\Support\Facades\DB;
 
@@ -159,21 +160,48 @@ class ApiAgendaController extends Controller
     {
         DB::beginTransaction();
         try {
-            // Validasi request (hanya validasi field yang ada di request)
-            $request->validate([
-                'nama_pelatihan' => 'string|max:255',
-                'start_date' => 'date',
-                'end_date' => 'date',
-                'sesi' => 'array',
-                'investasi' => 'integer',
-                'investasi_info' => 'array',
-                'diskon' => 'nullable|integer',
-                'status' => 'string|max:255',
-                'start_pendaftaran' => 'date',
-                'end_pendaftaran' => 'date',
-                'link_mayar' => 'string|max:255',
-                'id_mentor' => 'array'
+            // Validasi input menggunakan Validator
+            $validator = Validator::make($request->all(), [
+                'nama_pelatihan' => 'required|string|max:255', // Pastikan nama pelatihan ada
+                'start_date' => 'required|date|after_or_equal:today', // Harus ada dan merupakan tanggal, tidak boleh sebelum hari ini
+                'end_date' => 'required|date|after_or_equal:start_date', // Harus lebih besar dari atau sama dengan start_date
+                'sesi' => 'required|array|min:1', // Minimal harus ada 1 sesi
+                'sesi.*' => 'required|string|max:255', // Setiap sesi harus berupa string
+                'investasi' => 'required|integer|min:0', // Investasi harus angka positif
+                'investasi_info' => 'nullable|array|min:1', // Investasi info harus array dengan minimal 1 item
+                'investasi_info.*' => 'nullable|string|max:255', // Setiap investasi info harus berupa string
+                'diskon' => 'nullable|integer|min:0|max:100', // Diskon harus angka antara 0 dan 100, nullable berarti bisa kosong
+                'status' => 'required|string|in:Planning,Masa Pendaftaran,Sedang Berlangsung,Selesai', // Status harus sesuai dengan pilihan yang valid
+                'start_pendaftaran' => 'required|date|before_or_equal:start_date', // Start pendaftaran harus sebelum atau sama dengan start_date
+                'end_pendaftaran' => 'required|date|after_or_equal:start_pendaftaran', // End pendaftaran harus setelah start_pendaftaran
+                'link_mayar' => 'required|string|url|max:255', // Link pembayaran harus URL yang valid
+                'id_mentor' => 'required|array|min:1', // Mentor harus minimal 1
+
+            ], [
+                // Custom error messages
+                'nama_pelatihan.required' => 'Nama pelatihan wajib diisi.',
+                'start_date.required' => 'Tanggal mulai wajib diisi.',
+                'start_date.after_or_equal' => 'Tanggal mulai tidak boleh sebelum hari ini.',
+                'end_date.required' => 'Tanggal selesai wajib diisi.',
+                'end_date.after_or_equal' => 'Tanggal selesai harus sama atau setelah tanggal mulai.',
+                'sesi.required' => 'Sesi pelatihan wajib diisi.',
+                'investasi.required' => 'Investasi wajib diisi.',
+                'investasi_info.required' => 'Informasi investasi wajib diisi.',
+                'diskon.integer' => 'Diskon harus berupa angka antara 0 dan 100.',
+                'status.in' => 'Status pelatihan tidak valid.',
+                'link_mayar.url' => 'Link pembayaran harus berupa URL yang valid.',
+
             ]);
+
+            // Jika validasi gagal, kembalikan response error
+            if ($validator->fails()) {
+                return response()->json([
+                    'message' => 'Validasi gagal',
+                    'errors' => $validator->errors(),
+                    'statusCode' => 422,
+                    'status' => 'error'
+                ], 422);
+            }
 
             // Cari agenda berdasarkan ID
             $agenda = AgendaPelatihan::findOrFail($id);
@@ -271,6 +299,7 @@ class ApiAgendaController extends Controller
             ], 500);
         }
     }
+
 
 
     public function getPelatihanMentorData()
