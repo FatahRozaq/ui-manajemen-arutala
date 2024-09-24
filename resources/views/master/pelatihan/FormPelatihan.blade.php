@@ -40,48 +40,58 @@ Arutala | Tambah Data Pelatihan
                                 <input type="text" class="form-control" id="trainingInput" name="nama_pelatihan">
                                 <div class="dropdown-menu" id="trainingDropdown"></div>
                                 <small id="nameError" class="text-danger" style="display:none;">Nama Pelatihan Sudah ada</small>
+                                <small id="namaErrorWajib" class="text-danger" style="display:none;"></small>
                             </div>
                         </div>                        
 
                         <!-- Image -->
                         <div class="row mb-3">
-                          <label for="formFile" class="col-form-label col-sm-3">Gambar</label>
-                          <div class="col-sm-6">
-                            <input class="form-control" type="file" id="formFile" name="gambar_pelatihan">
-                          </div>
+                            <label for="formFile" class="col-form-label col-sm-3">Gambar</label>
+                            <div class="col-sm-6">
+                                <input class="form-control" type="file" id="formFile" name="gambar_pelatihan">
+                                <small id="gambarError" class="text-danger" style="display:none;"></small>
+                            </div>
                         </div>
 
                         <!-- Description -->
                         <div class="row mb-3">
-                          <label for="exampleFormControlTextarea1" class="col-form-label col-sm-3">Deskripsi</label>
-                          <div class="col-sm-6">
-                          <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="deskripsi"></textarea>
-                          </div>
+                            <label for="exampleFormControlTextarea1" class="col-form-label col-sm-3">Deskripsi</label>
+                            <div class="col-sm-6">
+                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="deskripsi"></textarea>
+                                <small id="deskripsiError" class="text-danger" style="display:none;"></small>
+                            </div>
                         </div>
 
                         <div id="materiContainer">
-                          <div class="form-group row position-relative mb-1">
-                            <label class="col-sm-3 col-form-label">Materi</label>
-                            <div class="col-sm-6 input-group">
-                                <input type="text" class="form-control materi" name="materi[]">
-                                <div class="input-group-append">
-                                  <button class="btn btn-outline-success add-materi" type="button"><i class="bi bi-plus-circle"></i></button>
+                            <div class="form-group row position-relative mb-1">
+                                <label class="col-sm-3 col-form-label">Materi</label>
+                                <div class="col-sm-6 input-group">
+                                    <input type="text" class="form-control materi" name="materi[]">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-success add-materi" type="button"><i class="bi bi-plus-circle"></i></button>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 offset-sm-3">
+                                    <small id="materiError" class="text-danger" style="display:none;"></small>
                                 </div>
                             </div>
-                          </div>
                         </div>
-
+                        
                         <div id="benefitContainer">
-                          <div class="form-group row position-relative mb-1 mt-3">
-                            <label class="col-sm-3 col-form-label">Benefit</label>
-                            <div class="col-sm-6 input-group">
-                                <input type="text" class="form-control benefit" name="benefit[]">
-                                <div class="input-group-append">
-                                  <button class="btn btn-outline-success add-benefit" type="button"><i class="bi bi-plus-circle"></i></button>
+                            <div class="form-group row position-relative mb-1 mt-3">
+                                <label class="col-sm-3 col-form-label">Benefit</label>
+                                <div class="col-sm-6 input-group">
+                                    <input type="text" class="form-control benefit" name="benefit[]">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-success add-benefit" type="button"><i class="bi bi-plus-circle"></i></button>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 offset-sm-3">
+                                    <small id="benefitError" class="text-danger" style="display:none;"></small>
                                 </div>
                             </div>
-                          </div>
                         </div>
+                        
 
                         <div class="row">
                             <div class="col-sm-11 text-right">
@@ -218,42 +228,61 @@ Arutala | Tambah Data Pelatihan
     
         // Fungsi Validasi
         function validateForm() {
-            var isValid = true;
-            var errorMessages = [];
-    
-            // Validasi Nama Pelatihan
-            if ($('#trainingInput').val().trim() === '') {
-                isValid = false;
-                errorMessages.push('Nama Pelatihan wajib diisi.');
-            }
-    
-            // Validasi Materi
-            var materiValues = $('.materi').map(function() {
-                return $(this).val().trim();
-            }).get();
-    
-            if (materiValues.length === 0 || materiValues.every(function(value) { return value === ''; })) {
-                isValid = false;
-                errorMessages.push('Setidaknya satu materi wajib diisi.');
-            }
-    
-            // Validasi Benefit
-            var benefitValues = $('.benefit').map(function() {
-                return $(this).val().trim();
-            }).get();
-    
-            if (benefitValues.length === 0 || benefitValues.every(function(value) { return value === ''; })) {
-                isValid = false;
-                errorMessages.push('Setidaknya satu benefit wajib diisi.');
-            }
-    
-            // Tampilkan pesan kesalahan jika ada
-            if (!isValid) {
-                alert(errorMessages.join('\n'));
-            }
-    
-            return isValid;
+    var isValid = true;
+
+    // Clear existing error messages
+    $('#namaErrorWajib').hide().text('');
+    $('#gambarError').hide().text('');
+    $('#deskripsiError').hide().text('');
+    $('#materiError').hide().text('');
+    $('#benefitError').hide().text('');
+
+    // Validate Nama Pelatihan
+    if ($('#trainingInput').val().trim() === '') {
+        $('#namaErrorWajib').show().text('Nama pelatihan wajib diisi.');
+        isValid = false;
+    }
+
+    // Validate Gambar Pelatihan (jika diunggah)
+    var gambarInput = $('#formFile').val(); // Menggunakan id yang benar
+    if (gambarInput) {
+        var allowedExtensions = /(\.jpeg|\.png|\.jpg|\.gif|\.svg)$/i;
+        if (!allowedExtensions.exec(gambarInput)) {
+            $('#gambarError').show().text('Gambar pelatihan harus berupa file dengan format jpeg, png, jpg, gif, atau svg.');
+            isValid = false;
         }
+    }
+
+    // Validate Deskripsi
+    if ($('#exampleFormControlTextarea1').val().trim() === '') {
+        $('#deskripsiError').show().text('Deskripsi wajib diisi.');
+        isValid = false;
+    }
+
+    // Validate Materi
+    var materiValues = $('.materi').map(function() {
+        return $(this).val().trim();
+    }).get();
+
+    if (materiValues.length === 0 || materiValues.every(function(value) { return value === ''; })) {
+        $('#materiError').show().text('Setidaknya satu materi wajib diisi.');
+        isValid = false;
+    }
+
+    // Validate Benefit
+    var benefitValues = $('.benefit').map(function() {
+        return $(this).val().trim();
+    }).get();
+
+    if (benefitValues.length === 0 || benefitValues.every(function(value) { return value === ''; })) {
+        $('#benefitError').show().text('Setidaknya satu benefit wajib diisi.');
+        isValid = false;
+    }
+
+    return isValid;
+}
+
+
     
         // Submit form menggunakan Axios dengan validasi
         $('#submitPelatihan').click(function() {

@@ -269,6 +269,7 @@ Arutala | Data Peserta Pelatihan
     
         // Inisialisasi DataTables
         $('#dataDetailPelatihanTablePaid').DataTable({
+            responsive: true,
             columns: [
                 { data: 'nama_pelatihan' },
                 { data: 'batch' },
