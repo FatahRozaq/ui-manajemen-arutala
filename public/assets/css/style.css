@@ -40,13 +40,13 @@ h6 {
 }
 
 .btn {
-  height: 40px;
+  height: 30px;
   width: fit-content;
   font-size: 12px;
 }
 
 .card h3 {
-  font-size: 18px;
+  font-size: 14px;
 }
 
 h4 {
@@ -85,7 +85,7 @@ h5 {
 }
 
 .pagetitle h1 {
-  font-size: 18px;
+  font-size: 16px;
   margin-bottom: 0;
   font-weight: 600;
   color: #012970;
@@ -412,7 +412,7 @@ h5 {
 .header {
   transition: all 0.5s;
   z-index: 997;
-  height: 60px;
+  height: 40px;
   box-shadow: 0px 2px 20px rgba(1, 41, 112, 0.1);
   background-color: #fff;
   padding-left: 20px;
