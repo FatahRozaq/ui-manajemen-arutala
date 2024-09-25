@@ -78,9 +78,9 @@ Arutala | Data Peserta Pelatihan
                             <table id="dataDetailPelatihanTablePaid" class="table table-striped">
                                 <thead>
                                     <tr>
+                                        <th>Nama Peserta</th>
                                         <th>Pelatihan</th>
                                         <th>Batch</th>
-                                        <th>Nama Peserta</th>
                                         <th>No Kontak</th>
                                         <th>Status Pembayaran</th>
                                         <th>Aksi</th>
@@ -97,9 +97,9 @@ Arutala | Data Peserta Pelatihan
                             <table id="dataDetailPelatihanTableUnpaid" class="table table-striped">
                                 <thead>
                                     <tr>
+                                        <th>Nama Peserta</th>
                                         <th>Pelatihan</th>
                                         <th>Batch</th>
-                                        <th>Nama Peserta</th>
                                         <th>No Kontak</th>
                                         <th>Status Pembayaran</th>
                                         <th>Aksi</th>
@@ -136,13 +136,18 @@ Arutala | Data Peserta Pelatihan
 
 <script>
     $(document).ready(function() {
+
+        const originalConsoleError = console.error;
+
+        // Override console.error untuk menonaktifkan log kesalahan
+        console.error = function() {};
         let id_agenda = null; // Deklarasikan id_agenda sebagai variabel dinamis
-    
+
         // Ambil parameter dari URL
         const urlParams = new URLSearchParams(window.location.search);
         const namaPelatihan = urlParams.get('nama_pelatihan');
         const batch = urlParams.get('batch');
-    
+
         // Jika ada parameter nama_pelatihan dan batch, lakukan fetch data
         if (namaPelatihan && batch) {
             fetchPelatihanBatchData(() => {
@@ -156,23 +161,22 @@ Arutala | Data Peserta Pelatihan
             // Ambil data pelatihan dan batch dari server jika tidak ada parameter
             fetchPelatihanBatchData();
         }
-    
+
         function fetchPelatihanBatchData(callback = null) {
             axios.get('/api/peserta-pelatihan/pelatihan-batch')
                 .then(function(response) {
                     const pelatihanBatchData = response.data.data;
-                    
+
                     // Isi dropdown pelatihan
                     const pelatihanSelect = $('#pelatihan');
                     pelatihanSelect.empty();
-                    // pelatihanSelect.append(`<option value="">-- Pilih Pelatihan --</option>`); // Tambahkan opsi default
                     pelatihanBatchData.forEach(function(item) {
                         pelatihanSelect.append(`<option value="${item.nama_pelatihan}">${item.nama_pelatihan}</option>`);
                     });
-    
-                    // Isi dropdown batch saat halaman dimuat, meskipun hanya ada satu pelatihan
+
+                    // Isi dropdown batch saat halaman dimuat
                     updateBatchDropdown(pelatihanBatchData);
-    
+
                     // Event listener untuk perubahan dropdown pelatihan
                     pelatihanSelect.on('change', function() {
                         updateBatchDropdown(pelatihanBatchData);
@@ -187,12 +191,12 @@ Arutala | Data Peserta Pelatihan
                     console.error('Error fetching pelatihan and batch data:', error);
                 });
         }
-    
+
         function updateBatchDropdown(pelatihanBatchData) {
             const selectedPelatihan = $('#pelatihan').val();
             const batchSelect = $('#batch');
             batchSelect.empty();
-    
+
             // Isi dropdown batch berdasarkan pelatihan yang dipilih
             const selectedItem = pelatihanBatchData.find(item => item.nama_pelatihan === selectedPelatihan);
             if (selectedItem) {
@@ -201,21 +205,21 @@ Arutala | Data Peserta Pelatihan
                 });
             }
         }
-    
+
         function updateBatchDropdownFromName(namaPelatihan, callback) {
             axios.get('/api/peserta-pelatihan/pelatihan-batch')
                 .then(function(response) {
                     const pelatihanBatchData = response.data.data;
                     const batchSelect = $('#batch');
                     batchSelect.empty();
-                    
+
                     const selectedItem = pelatihanBatchData.find(item => item.nama_pelatihan === namaPelatihan);
                     if (selectedItem) {
                         selectedItem.batches.forEach(function(batch) {
                             batchSelect.append(`<option value="${batch}">${batch}</option>`);
                         });
                     }
-                    
+
                     if (callback) {
                         callback();
                     }
@@ -224,7 +228,7 @@ Arutala | Data Peserta Pelatihan
                     console.error('Error fetching pelatihan and batch data:', error);
                 });
         }
-    
+
         function fetchData(pelatihan, batch) {
             // Dapatkan id_agenda berdasarkan pelatihan dan batch
             axios.get(`/api/peserta-pelatihan/get-agenda-id`, {
@@ -235,7 +239,7 @@ Arutala | Data Peserta Pelatihan
             })
             .then(function(response) {
                 id_agenda = response.data.id_agenda; // Set id_agenda berdasarkan respons API
-    
+
                 // Fetch data peserta setelah mendapatkan id_agenda
                 axios.get(`/api/peserta-pelatihan/agenda/${id_agenda}/peserta`, {
                     params: {
@@ -245,18 +249,14 @@ Arutala | Data Peserta Pelatihan
                 })
                 .then(function(response) {
                     const filteredData = response.data.data;
-    
+
                     // Pisahkan data berdasarkan status pembayaran
-                    const paidData = filteredData.filter(item => item.status_pembayaran.toLowerCase() === 'paid' || 
-                    item.status_pembayaran.toLowerCase() === 'sudah'
-                    );
-                    const unpaidData = filteredData.filter(item => item.status_pembayaran.toLowerCase() === 'proses' || 
-                    item.status_pembayaran.toLowerCase() === 'belum bayar'
-                    );
-    
+                    const paidData = filteredData.filter(item => item.status_pembayaran.toLowerCase() === 'paid' || item.status_pembayaran.toLowerCase() === 'sudah');
+                    const unpaidData = filteredData.filter(item => item.status_pembayaran.toLowerCase() === 'proses' || item.status_pembayaran.toLowerCase() === 'belum bayar');
+
                     // Update DataTables dengan data yang telah dipisahkan
-                    $('#dataDetailPelatihanTablePaid').DataTable().clear().rows.add(paidData).draw();
-                    $('#dataDetailPelatihanTableUnpaid').DataTable().clear().rows.add(unpaidData).draw();
+                    tablePaid.clear().rows.add(paidData).draw();
+                    tableUnpaid.clear().rows.add(unpaidData).draw();
                 })
                 .catch(function(error) {
                     console.error('Error fetching filtered data:', error);
@@ -266,18 +266,28 @@ Arutala | Data Peserta Pelatihan
                 console.error('Error fetching agenda ID:', error);
             });
         }
-    
+
         // Inisialisasi DataTables
-        $('#dataDetailPelatihanTablePaid').DataTable({
+        let tablePaid = $('#dataDetailPelatihanTablePaid').DataTable({
             responsive: true,
+            ajax: {
+                // url: '/api/peserta-pelatihan/daftar-peserta?status=paid', // URL endpoint API untuk data sudah bayar
+                type: 'GET',
+                dataSrc: function (json) {
+                    return json.data; // Mengakses data dari response API
+                }, error: function (jqXHR, textStatus, errorThrown) {
+            // Kosongkan fungsi untuk tidak menampilkan kesalahan di konsol
+        }
+        
+            },
             columns: [
+                { data: 'nama_peserta' },
                 { data: 'nama_pelatihan' },
                 { data: 'batch' },
-                { data: 'nama_peserta' },
                 { data: 'no_kontak' },
                 {
                     data: 'status_pembayaran',
-                    render: function(data, type, row) {
+                    render: function(data) {
                         let colorClass = data.toLowerCase() === 'paid' ? 'text-success' : 'text-warning';
                         return `<span class="${colorClass}">${data}</span>`;
                     }
@@ -296,16 +306,28 @@ Arutala | Data Peserta Pelatihan
                 }
             ]
         });
-    
-        $('#dataDetailPelatihanTableUnpaid').DataTable({
+
+        let tableUnpaid = $('#dataDetailPelatihanTableUnpaid').DataTable({
+            responsive: true,
+            ajax: {
+                // url: '/api/peserta-pelatihan/agenda/${id_agenda}/peserta', // URL endpoint API untuk data belum bayar
+                type: 'GET',
+                dataSrc: function (json) {
+                    return json.data; // Mengakses data dari response API
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+            // Kosongkan fungsi untuk tidak menampilkan kesalahan di konsol
+        }
+        
+            },
             columns: [
+                { data: 'nama_peserta' },
                 { data: 'nama_pelatihan' },
                 { data: 'batch' },
-                { data: 'nama_peserta' },
                 { data: 'no_kontak' },
                 {
                     data: 'status_pembayaran',
-                    render: function(data, type, row) {
+                    render: function(data) {
                         let colorClass = data.toLowerCase() === 'paid' ? 'text-success' : 'text-warning';
                         return `<span class="${colorClass}">${data}</span>`;
                     }
@@ -319,13 +341,18 @@ Arutala | Data Peserta Pelatihan
                         <a href="pesertapelatihan/updatestatus?id_pendaftaran=${idPendaftaran}&id_agenda=${idAgenda}" class="update-icon" title="Update">
                             <i class="fas fa-edit text-warning"></i>
                         </a>
-                        
                         `;
                     }
                 }
             ]
         });
-    
+
+        // Tambahkan event listener untuk mendeteksi perubahan ukuran layar (resize event)
+        $(window).on('resize', function() {
+            tablePaid.responsive.recalc();  // Panggil responsive.recalc() untuk menghitung ulang ukuran tabel
+            tableUnpaid.responsive.recalc();  // Lakukan hal yang sama untuk tabel unpaid
+        });
+
         // Event handler untuk tombol Terapkan
         $('#applyFilter').on('click', function() {
             const pelatihan = $('#pelatihan').val();
@@ -333,20 +360,22 @@ Arutala | Data Peserta Pelatihan
             fetchData(pelatihan, batch);
             $('#filterModal').modal('hide');
         });
-    
-        // Handler untuk tombol "Export" (export data)
+
+        // Handler untuk tombol "Export"
         $('#exportButton').on('click', function() {
             const pelatihan = $('#pelatihan').val();
             const batch = $('#batch').val();
-    
+
             if (pelatihan && batch) {
-                // Redirect untuk ekspor data sesuai filter
                 window.location.href = `/api/peserta-pelatihan/export?nama_pelatihan=${pelatihan}&batch=${batch}`;
             } else {
                 alert('Harap pilih filter pelatihan dan batch sebelum mengimpor data.');
             }
         });
+
+        console.error = originalConsoleError;
     });
 </script>
+
 @endsection
 

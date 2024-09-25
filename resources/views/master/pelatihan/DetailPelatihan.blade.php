@@ -38,7 +38,7 @@ Arutala | Detail Data Pelatihan
                         <div class="form-group row position-relative">
                             <label for="trainingInput" class="col-sm-3 col-form-label">Nama Pelatihan</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="trainingInput" name="nama_pelatihan">
+                                <input type="text" class="form-control" id="trainingInput" name="nama_pelatihan" disabled readonly>
                                 <div class="dropdown-menu" id="trainingDropdown"></div>
                                 <small id="nameError" class="text-danger" style="display:none;">Nama Pelatihan Sudah ada</small>
                             </div>
@@ -56,7 +56,7 @@ Arutala | Detail Data Pelatihan
                         <div class="row mb-3">
                           <label for="exampleFormControlTextarea1" class="col-form-label col-sm-3">Deskripsi</label>
                           <div class="col-sm-9">
-                          <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="deskripsi"></textarea>
+                          <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="deskripsi" disabled readonly></textarea>
                           </div>
                         </div>
 
@@ -130,7 +130,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     <div class="form-group row position-relative mb-1">
                         ${index === 0 ? '<label class="col-sm-3 col-form-label">Materi</label>' : '<label class="col-sm-3 col-form-label"></label>'}
                         <div class="col-sm-9 input-group" readonly>
-                            <input type="text" class="form-control materi" name="materi[]" value="${materi}">
+                            <input type="text" class="form-control materi" name="materi[]" value="${materi}" disabled readonly>
                         
                         </div>
                     </div>
@@ -145,7 +145,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     <div class="form-group row position-relative mb-1">
                         ${index === 0 ? '<label class="col-sm-3 col-form-label">Benefit</label>' : '<label class="col-sm-3 col-form-label"></label>'}
                         <div class="col-sm-9 input-group">
-                            <input type="text" class="form-control benefit" name="benefit[]" value="${benefit}">
+                            <input type="text" class="form-control benefit" name="benefit[]" value="${benefit}" disabled readonly>
                             
                         </div>
                     </div>

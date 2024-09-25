@@ -159,20 +159,30 @@ class ApiMasterPelatihanController extends Controller
 
     public function update(Request $request, $id)
     {
+        // Validasi request
+        $request->validate([
+            'nama_pelatihan' => 'required|string|max:255|unique:pelatihan,nama_pelatihan,' . $id . ',id_pelatihan',
+            'gambar_pelatihan' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'deskripsi' => 'required|string|max:2048',
+            'materi' => 'required|array|min:1',
+            'materi.*' => 'required|string|max:255',
+            'benefit' => 'required|array|min:1',
+            'benefit.*' => 'required|string|max:255'
+        ], [
+            'nama_pelatihan.required' => 'Nama pelatihan wajib diisi.',
+            'nama_pelatihan.unique' => 'Nama pelatihan sudah ada, silakan gunakan nama lain.',
+            'gambar_pelatihan.mimes' => 'Gambar pelatihan harus berupa file dengan format jpeg, png, jpg, gif, atau svg.',
+            'gambar_pelatihan.max' => 'Ukuran gambar pelatihan tidak boleh lebih dari 2MB.',
+            'deskripsi.required' => 'Deskripsi wajib diisi.',
+            'materi.required' => 'Materi wajib diisi dan tidak boleh kosong.',
+            'materi.*.string' => 'Setiap materi harus berupa string.',
+            'benefit.required' => 'Benefit wajib diisi dan tidak boleh kosong.',
+            'benefit.*.string' => 'Setiap benefit harus berupa string.',
+        ]);
+
         try {
             // Temukan pelatihan berdasarkan ID
             $pelatihan = Pelatihan::findOrFail($id);
-
-            // Validasi request
-            $request->validate([
-                'nama_pelatihan' => 'nullable|string|max:255|unique:pelatihan,nama_pelatihan,' . $id . ',id_pelatihan',
-                'gambar_pelatihan' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg|max:2048',
-                'deskripsi' => 'nullable|string|max:2048',
-                'materi' => 'nullable|array|max:2048',
-                'benefit' => 'nullable|array|max:2048'
-            ], [
-                'nama_pelatihan.unique' => 'Nama pelatihan sudah ada, silakan gunakan nama lain.',
-            ]);
 
             // Handle file upload jika ada file baru yang diunggah
             if ($request->hasFile('gambar_pelatihan')) {
@@ -226,6 +236,7 @@ class ApiMasterPelatihanController extends Controller
             ], 500);
         }
     }
+
 
 
 

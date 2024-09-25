@@ -68,10 +68,9 @@ Arutala | Update Data Agenda
 
 <section class="section">
     <div class="row">
-        <div class="col-lg-8">
+        <div class="col-lg-12">
             <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Edit Informasi Agenda Pelatihan</h5>
+                <div class="card-body" style="padding-top: 50px">
 
                     <!-- Update Form -->
                     <form id="updateAgendaForm">
@@ -81,7 +80,7 @@ Arutala | Update Data Agenda
                         <!-- Nama Pelatihan -->
                         <div class="form-group row position-relative">
                             <label for="namaPelatihanInput" class="col-sm-3 col-form-label">Nama Pelatihan</label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-6">
                                 <input type="text" class="form-control" id="namaPelatihanInput" name="nama_pelatihan" readonly>
                             </div>
                         </div>
@@ -89,7 +88,7 @@ Arutala | Update Data Agenda
                         <!-- Batch -->
                         <div class="form-group row position-relative">
                             <label for="batchInput" class="col-sm-3 col-form-label">Batch</label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-6">
                                 <input type="text" class="form-control" id="batchInput" name="batch" readonly>
                             </div>
                         </div>
@@ -97,16 +96,18 @@ Arutala | Update Data Agenda
                         <!-- Start Date -->
                         <div class="form-group row position-relative">
                             <label for="startDateInput" class="col-sm-3 col-form-label">Start</label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-6">
                                 <input type="date" class="form-control" id="startDateInput" name="start_date">
+                                <small id="error-startDate" class="text-danger" style="display: none;"></small>
                             </div>
                         </div>
 
                         <!-- End Date -->
                         <div class="form-group row position-relative">
                             <label for="endDateInput" class="col-sm-3 col-form-label">End</label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-6">
                                 <input type="date" class="form-control" id="endDateInput" name="end_date">
+                                <small id="error-endDate" class="text-danger" style="display: none;"></small>
                             </div>
                         </div>
 
@@ -114,8 +115,9 @@ Arutala | Update Data Agenda
                         <div id="sesiContainer">
                             <div class="form-group row position-relative mb-1">
                                 <label class="col-sm-3 col-form-label">Sesi</label>
-                                <div class="col-sm-9 input-group">
+                                <div class="col-sm-6 input-group">
                                     <input type="text" class="form-control" name="sesi[]">
+                                    <small id="error-sesi" class="text-danger" style="display: none;"></small>
                                     <div class="input-group-append">
                                         <button class="btn btn-outline-success add-sesi" type="button"><i class="bi bi-plus-circle"></i></button>
                                     </div>
@@ -127,7 +129,7 @@ Arutala | Update Data Agenda
                         <div id="investasiInfoContainer">
                             <div class="form-group row position-relative mb-1">
                                 <label class="col-sm-3 col-form-label">Investasi Info</label>
-                                <div class="col-sm-9 input-group">
+                                <div class="col-sm-6 input-group">
                                     <input type="text" class="form-control" name="investasi_info[]">
                                     <div class="input-group-append">
                                         <button class="btn btn-outline-success add-investasi-info" type="button"><i class="bi bi-plus-circle"></i></button>
@@ -139,15 +141,16 @@ Arutala | Update Data Agenda
                         <!-- Investasi Numerik -->
                         <div class="form-group row position-relative mb-1">
                             <label for="investasiInput" class="col-sm-3 col-form-label">Investasi</label>
-                            <div class="col-sm-9 input-group">
+                            <div class="col-sm-6 input-group">
                                 <input type="number" class="form-control" id="investasiInput" name="investasi">
+                                <small id="error-investasi" class="text-danger" style="display: none;"></small>
                             </div>
                         </div>
 
                         <!-- Diskon -->
                         <div class="form-group row position-relative mt-3">
                             <label for="diskonInput" class="col-sm-3 col-form-label">Diskon %</label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-6">
                                 <input type="number" class="form-control" id="diskonInput" name="diskon">
                             </div>
                         </div>
@@ -155,12 +158,13 @@ Arutala | Update Data Agenda
                         <!-- Status -->
                         <div class="form-group row position-relative">
                             <label for="statusInput" class="col-sm-3 col-form-label">Status</label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-6">
                                 <select class="form-control" id="statusInput" name="status">
                                     <option value="Planning">Planning</option>
                                     <option value="Masa Pendaftaran">Masa Pendaftaran</option>
                                     <option value="Sedang Berlangsung">Sedang Berlangsung</option>
                                     <option value="Selesai">Selesai</option>
+                                    <option value="Pendaftaran Berakhir">Pendaftaran Berakhir</option>
                                 </select>
                             </div>
                         </div>
@@ -168,45 +172,56 @@ Arutala | Update Data Agenda
                         <!-- Start Pendaftaran -->
                         <div class="form-group row position-relative">
                             <label for="startPendaftaranInput" class="col-sm-3 col-form-label">Start Pendaftaran</label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-6">
                                 <input type="date" class="form-control" id="startPendaftaranInput" name="start_pendaftaran">
+                                <small id="error-startPendaftaran" class="text-danger" style="display: none;"></small>
                             </div>
                         </div>
 
                         <!-- End Pendaftaran -->
                         <div class="form-group row position-relative">
                             <label for="endPendaftaranInput" class="col-sm-3 col-form-label">End Pendaftaran</label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-6">
                                 <input type="date" class="form-control" id="endPendaftaranInput" name="end_pendaftaran">
+                                <small id="error-endPendaftaran" class="text-danger" style="display: none;"></small>
                             </div>
                         </div>
 
                         <!-- Link Pembayaran -->
                         <div class="form-group row position-relative mt-3">
                             <label for="linkMayarInput" class="col-sm-3 col-form-label">Link Pembayaran</label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-6">
                                 <input type="text" class="form-control" id="linkMayarInput" name="link_mayar">
+                                <small id="error-linkMayar" class="text-danger" style="display: none;"></small>
                             </div>
                         </div>
 
                         <!-- Mentor -->
                         <div class="form-group row position-relative">
                             <label for="mentorInput" class="col-sm-3 col-form-label">Mentor</label>
-                            <div class="col-sm-9 form-mentor">
+                            <div class="col-sm-6 form-mentor">
                                 <select id="mentorInput" name="id_mentor[]" class="form" multiple></select>
                             </div>
                         </div>
 
-                        <!-- Update Button -->
+                        {{-- <!-- Update Button -->
                         <div class="button-submit mt-4">
                             <button class="btn btn-success col-sm-3" type="submit" id="updateButton">Update</button>
+                        </div> --}}
+                        <div class="row">
+                            <div class="col-sm-11 text-right">
+                                <button type="submit" class="btn" id="updateButton" style="background-color: #344C92; color: white;">Submit</button>
+                            </div>
                         </div>
+
                     </form>
                 </div>
             </div>
+
         </div>
     </div>
 </section>
+
 
 @endsection
 
@@ -265,7 +280,7 @@ $(document).ready(function() {
                         $('#sesiContainer').append(`
                             <div class="form-group row position-relative mb-1">
                                 <label class="col-sm-3 col-form-label"></label>
-                                <div class="col-sm-9 input-group">
+                                <div class="col-sm-6 input-group">
                                     <input type="text" class="form-control" name="sesi[]" value="${sesi}">
                                     <div class="input-group-append">
                                         <button class="btn btn-outline-secondary remove-sesi" type="button"><i class="bi bi-dash-circle"></i></button>
@@ -284,7 +299,7 @@ $(document).ready(function() {
                         $('#investasiInfoContainer').append(`
                             <div class="form-group row position-relative mb-1">
                                 <label class="col-sm-3 col-form-label"></label>
-                                <div class="col-sm-9 input-group">
+                                <div class="col-sm-6 input-group">
                                     <input type="text" class="form-control" name="investasi_info[]" value="${info}">
                                     <div class="input-group-append">
                                         <button class="btn btn-outline-secondary remove-investasi-info" type="button"><i class="bi bi-dash-circle"></i></button>
@@ -322,7 +337,7 @@ $(document).ready(function() {
         var newSesiRow = `
             <div class="form-group row position-relative mb-1">
                 <label class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 input-group">
+                <div class="col-sm-6 input-group">
                     <input type="text" name="sesi[]" class="form-control">
                     <div class="input-group-append">
                         <button class="btn btn-outline-secondary remove-sesi" type="button"><i class="bi bi-dash-circle"></i></button>
@@ -342,7 +357,7 @@ $(document).ready(function() {
         var newInvestasiRow = `
             <div class="form-group row position-relative mb-1">
                 <label class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 input-group">
+                <div class="col-sm-6 input-group">
                     <input type="text" name="investasi_info[]" class="form-control">
                     <div class="input-group-append">
                         <button class="btn btn-outline-secondary remove-investasi-info" type="button"><i class="bi bi-dash-circle"></i></button>
@@ -361,46 +376,97 @@ $(document).ready(function() {
     $('#updateAgendaForm').submit(function(event) {
     event.preventDefault();
 
-    // Tampilkan pop-up konfirmasi sebelum melakukan update
-    Swal.fire({
-        title: 'Apakah Anda yakin?',
-        text: "Anda tidak akan dapat mengembalikan ini!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Ya, update!'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            // Jika pengguna konfirmasi, lanjutkan dengan update
-            const formData = new FormData($('#updateAgendaForm')[0]);
+    // Hapus pesan error lama dan class is-invalid sebelum validasi baru
+    $('.is-invalid').removeClass('is-invalid'); // Menghapus class is-invalid
+    $('small.text-danger').remove(); // Menghapus elemen <small> dengan pesan error
 
-            axios.post(`/api/agenda/update-agenda/${agendaId}`, formData)
-                .then(function(response) {
-                    Swal.fire({
-                        title: 'Sukses!',
-                        text: 'Agenda pelatihan berhasil diperbarui!',
-                        icon: 'success',
-                        confirmButtonText: 'OK'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            window.location.href = '/admin/agendapelatihan'; // Ganti dengan path tujuan setelah update
+        // Tampilkan pop-up konfirmasi sebelum melakukan update
+        Swal.fire({
+            title: 'Apakah Anda yakin?',
+            text: "Anda tidak akan dapat mengembalikan ini!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, update!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Jika pengguna konfirmasi, lanjutkan dengan update
+                const formData = new FormData($('#updateAgendaForm')[0]);
+
+                axios.post(`/api/agenda/update-agenda/${agendaId}`, formData)
+                    .then(function(response) {
+                        Swal.fire({
+                            title: 'Sukses!',
+                            text: 'Agenda pelatihan berhasil diperbarui!',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '/admin/agendapelatihan'; // Ganti dengan path tujuan setelah update
+                            }
+                        });
+                    })
+                    .catch(function(error) {
+                        if (error.response && error.response.status === 422) {
+                            const errors = error.response.data.errors;
+
+                            // Tampilkan error untuk start_date
+                            if (errors.start_date) {
+                                $('#startDateInput').addClass('is-invalid');
+                                $('<small class="text-danger">' + errors.start_date[0] + '</small>').insertAfter('#startDateInput');
+                            }
+
+                            if (errors.start_pendaftaran) {
+                                $('#startPendaftaranInput').addClass('is-invalid');
+                                $('<small class="text-danger">' + errors.start_pendaftaran[0] + '</small>').insertAfter('#startPendaftaranInput');
+                            }
+
+                            // Tampilkan error untuk end_date
+                            if (errors.end_date) {
+                                $('#endDateInput').addClass('is-invalid');
+                                $('<small class="text-danger">' + errors.end_date[0] + '</small>').insertAfter('#endDateInput');
+                            }
+
+                            if (errors.end_pendaftaran) {
+                                $('#endPendaftaranInput').addClass('is-invalid');
+                                $('<small class="text-danger">' + errors.end_pendaftaran[0] + '</small>').insertAfter('#endPendaftaranInput');
+                            }
+
+                            if (errors.link_mayar) {
+                                $('#linkMayarInput').addClass('is-invalid');
+                                $('<small class="text-danger">' + errors.link_mayar[0] + '</small>').insertAfter('#linkMayarInput');
+                            }
+
+                            // Tampilkan error untuk sesi
+                            if (errors.sesi) {
+                                $('input[name="sesi[]"]').each(function(index) {
+                                    $(this).addClass('is-invalid');
+                                    if (index === 0) {
+                                        $('<small class="text-danger">' + errors.sesi[0] + '</small>').insertAfter(this);
+                                    }
+                                });
+                            }
+
+                            // Tampilkan error untuk investasi
+                            if (errors.investasi) {
+                                $('#investasiInput').addClass('is-invalid');
+                                $('<small class="text-danger">' + errors.investasi[0] + '</small>').insertAfter('#investasiInput');
+                            }
+
+                            // Tambahkan validasi untuk field lainnya jika diperlukan
+                        } else {
+                            Swal.fire({
+                                title: 'Error!',
+                                text: 'Gagal memperbarui agenda. Silakan coba lagi.',
+                                icon: 'error',
+                                confirmButtonText: 'OK'
+                            });
                         }
                     });
-                })
-                .catch(function(error) {
-                    console.error('Error updating agenda:', error);
-                    Swal.fire({
-                        title: 'Error!',
-                        text: 'Gagal memperbarui agenda. Silakan coba lagi.',
-                        icon: 'error',
-                        confirmButtonText: 'OK'
-                    });
-                });
-        }
+            }
+        });
     });
-});
-
 
     // Handle remove mentor from selectize
     $(document).on('click', '.remove', function() {
@@ -410,5 +476,6 @@ $(document).ready(function() {
     });
 
 });
+
 </script>
 @endsection

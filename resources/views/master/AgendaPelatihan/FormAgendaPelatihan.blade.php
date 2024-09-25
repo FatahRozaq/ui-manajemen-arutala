@@ -69,6 +69,7 @@ Arutala | Tambah Data Agenda
                             <label for="startDate" class="col-sm-3 col-form-label">Start Date</label>
                             <div class="col-sm-6">
                                 <input type="date" name="start_date" class="form-control" id="startDate">
+                                <small id="startDateError" class="text-danger" style="display:none;"></small>
                             </div>
                         </div>
 
@@ -77,6 +78,7 @@ Arutala | Tambah Data Agenda
                             <label for="endDate" class="col-sm-3 col-form-label">End Date</label>
                             <div class="col-sm-6">
                                 <input type="date" name="end_date" class="form-control" id="endDate">
+                                <small id="endDateError" class="text-danger" style="display:none;"></small>
                             </div>
                         </div>
 
@@ -86,9 +88,13 @@ Arutala | Tambah Data Agenda
                                 <label class="col-sm-3 col-form-label">Sesi</label>
                                 <div class="col-sm-6 input-group">
                                     <input type="text" name="sesi[]" class="form-control">
+                                    
                                     <div class="input-group-append">
                                         <button class="btn btn-outline-success add-sesi" type="button"><i class="bi bi-plus-circle"></i></button>
                                     </div>
+                                </div>
+                                <div class="col-sm-6 offset-sm-3">
+                                <small id="sesiError" class="text-danger" style="display:none;"></small>
                                 </div>
                             </div>
                         </div>
@@ -98,7 +104,12 @@ Arutala | Tambah Data Agenda
                             <label class="col-sm-3 col-form-label">Investasi</label>
                             <div class="col-sm-6 input-group">
                                 <input type="number" name="investasi" class="form-control">
+                                
                             </div>
+                            <div class="col-sm-6 offset-sm-3">
+                            <small id="investasiError" class="text-danger" style="display:none;"></small>
+                            </div>
+
                         </div>
                     
                         <!-- Investasi String -->
@@ -131,21 +142,24 @@ Arutala | Tambah Data Agenda
                                     <option value="Masa Pendaftaran">Masa Pendaftaran</option>
                                     <option value="Sedang Berlangsung">Sedang Berlangsung</option>
                                     <option value="Selesai">Selesai</option>
+                                    
                                 </select>
                             </div>
                         </div>
 
                         <div class="form-group row position-relative">
-                            <label for="startDate" class="col-sm-3 col-form-label">Start Pendaftaran</label>
+                            <label for="startPendaftaran" class="col-sm-3 col-form-label">Start Pendaftaran</label>
                             <div class="col-sm-6">
-                                <input type="date" name="start_pendaftaran" class="form-control" id="startDate">
+                                <input type="date" name="start_pendaftaran" class="form-control" id="startPendaftaran">
+                                <small id="startPendaftaranError" class="text-danger" style="display:none;"></small>
                             </div>
                         </div>
 
                         <div class="form-group row position-relative">
-                            <label for="startDate" class="col-sm-3 col-form-label">End Pendaftaran</label>
+                            <label for="endPendaftaran" class="col-sm-3 col-form-label">End Pendaftaran</label>
                             <div class="col-sm-6">
-                                <input type="date" name="end_pendaftaran" class="form-control" id="startDate">
+                                <input type="date" name="end_pendaftaran" class="form-control" id="endPendaftaran">
+                                <small id="endPendaftaranError" class="text-danger" style="display:none;"></small>
                             </div>
                         </div>
 
@@ -154,6 +168,7 @@ Arutala | Tambah Data Agenda
                             <label for="linkMayar" class="col-sm-3 col-form-label">Link Mayar</label>
                             <div class="col-sm-6">
                                 <input type="text" name="link_mayar" class="form-control" id="linkMayar">
+                                <small id="linkMayarError" class="text-danger" style="display:none;"></small>
                             </div>
                         </div>
 
@@ -164,6 +179,7 @@ Arutala | Tambah Data Agenda
                                 <select id="mentorInput" name="id_mentor[]" class="form" multiple>
                                     <!-- Options will be populated by JavaScript -->
                                 </select>
+                                <small id="mentorError" class="text-danger" style="display:none;"></small>
                             </div>
                         </div>
 
@@ -279,21 +295,121 @@ $(document).ready(function() {
         $(this).closest('.form-group').remove();
     });
 
-    // Submit form menggunakan Axios
+    // Submit form menggunakan Axios dengan konfirmasi
     $('#submitAgenda').click(function() {
-        var formData = new FormData($('#agendaForm')[0]);
+        // Validasi form sebelum menampilkan konfirmasi
+        var isValid = true;
 
-        // Kirim data menggunakan Axios
-        axios.post('/api/agenda/tambah-agenda', formData)
-            .then(function(response) {
-                alert('Data berhasil ditambahkan!');
-                window.location.href = '/admin/agendapelatihan'; // Redirect ke halaman agendapelatihan setelah berhasil
-            })
-            .catch(function(error) {
-                console.error('Gagal menambahkan data:', error);
-                alert('Gagal menambahkan data. Coba lagi.');
-            });
+        // Sembunyikan semua pesan error
+        $('small.text-danger').hide().text('');
+
+        // Validasi Nama Pelatihan
+        var namaPelatihan = $('#namaPelatihan').val();
+        if (!namaPelatihan) {
+            $('#namaPelatihanError').show().text('Nama pelatihan wajib diisi.');
+            isValid = false;
+        }
+
+        // Validasi Start Date
+        var startDate = $('#startDate').val();
+        if (!startDate) {
+            $('#startDateError').show().text('Start date wajib diisi.');
+            isValid = false;
+        }
+
+        // Validasi End Date
+        var endDate = $('#endDate').val();
+        if (!endDate) {
+            $('#endDateError').show().text('End date wajib diisi.');
+            isValid = false;
+        } else if (endDate < startDate) {
+            $('#endDateError').show().text('End date tidak boleh lebih awal dari start date.');
+            isValid = false;
+        }
+
+        var startPendaftaran = $('#startPendaftaran').val();
+        if (!startPendaftaran) {
+            $('#startPendaftaranError').show().text('Start Pendaftaran wajib diisi.');
+            isValid = false;
+        }
+
+        // Validasi End Date Pendaftaran
+        var endPendaftaran = $('#endPendaftaran').val();
+        if (!endPendaftaran) {
+            $('#endPendaftaranError').show().text('End Pendaftaran wajib diisi.');
+            isValid = false;
+        } else if (endPendaftaran < startPendaftaran) {
+            $('#endPendaftaranError').show().text('End Pendaftaran tidak boleh lebih awal dari start pendaftaran.');
+            isValid = false;
+        }
+
+        // Validasi Investasi
+        var investasi = $('input[name="investasi"]').val();
+        if (!investasi || parseInt(investasi) < 0) {
+            $('#investasiError').show().text('Investasi wajib diisi dan harus berupa angka positif.');
+            isValid = false;
+        }
+
+        // Validasi Sesi
+        var sesiValues = $('input[name="sesi[]"]').map(function() {
+            return $(this).val().trim();
+        }).get();
+        if (sesiValues.every(function(sesi) { return sesi === ''; })) {
+            $('#sesiError').show().text('Setidaknya satu sesi harus diisi.');
+            isValid = false;
+        }
+
+        // Validasi Link Pembayaran
+        var linkMayar = $('#linkMayar').val();
+        if (!linkMayar) {
+            $('#linkMayarError').show().text('Link pembayaran wajib diisi.');
+            isValid = false;
+        }
+
+        // Jika validasi gagal, jangan kirim form
+        if (!isValid) {
+            return;
+        }
+
+        // Tampilkan popup konfirmasi
+        Swal.fire({
+            title: 'Konfirmasi',
+            text: 'Apakah Anda yakin ingin menambahkan pelatihan ini?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, Tambahkan!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Jika pengguna mengonfirmasi, kirim form menggunakan Axios
+                var formData = new FormData($('#agendaForm')[0]);
+
+                axios.post('/api/agenda/tambah-agenda', formData)
+                    .then(function(response) {
+                        Swal.fire({
+                            title: 'Sukses!',
+                            text: 'Data berhasil ditambahkan!',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        }).then(() => {
+                            window.location.href = '/admin/agendapelatihan'; // Redirect ke halaman agenda pelatihan setelah berhasil
+                        });
+                    })
+                    .catch(function(error) {
+                        console.error('Gagal menambahkan data:', error);
+                        Swal.fire({
+                            title: 'Gagal!',
+                            text: 'Gagal menambahkan data. Coba lagi.',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                    });
+            }
+        });
     });
 });
+
 </script>
 @endsection

@@ -11,12 +11,38 @@ class ApiMyEventController extends Controller
     public function getMyEvents()
     {
         try {
+            // Mendapatkan waktu sekarang
+            $now = now();
 
+            // Ambil ID user yang sedang login
             $idUser = auth('api')->id();
+
             // Ambil semua event yang diikuti oleh peserta ini
             $events = PendaftaranEvent::with(['agendaPelatihan.pelatihan'])
                 ->where('id_peserta', $idUser)
                 ->get();
+
+            // Update status agenda pelatihan berdasarkan waktu sekarang
+            $events->each(function ($event) use ($now) {
+                $agenda = $event->agendaPelatihan;
+
+                if ($now->lessThan($agenda->start_pendaftaran)) {
+                    // Sebelum start_pendaftaran -> Planning
+                    $agenda->update(['status' => 'Planning']);
+                } elseif ($now->between($agenda->start_pendaftaran, $agenda->end_pendaftaran)) {
+                    // Setelah start_pendaftaran dan sebelum end_pendaftaran -> Masa Pendaftaran
+                    $agenda->update(['status' => 'Masa Pendaftaran']);
+                } elseif ($now->greaterThan($agenda->end_pendaftaran) && $now->lessThan($agenda->start_date)) {
+                    // Setelah end_pendaftaran dan sebelum start_date -> Pendaftaran Berakhir
+                    $agenda->update(['status' => 'Pendaftaran Berakhir']);
+                } elseif ($now->between($agenda->start_date, $agenda->end_date)) {
+                    // Setelah start_date dan sebelum end_date -> Sedang Berlangsung
+                    $agenda->update(['status' => 'Sedang Berlangsung']);
+                } elseif ($now->greaterThan($agenda->end_date)) {
+                    // Setelah end_date -> Selesai
+                    $agenda->update(['status' => 'Selesai']);
+                }
+            });
 
             // Siapkan data response
             $data = $events->map(function ($event) {
