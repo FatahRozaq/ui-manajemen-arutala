@@ -405,7 +405,7 @@ fetchTotalPeserta(); // Default fetch without any filters
             <div class="card">
                 <!-- Filter for Months and Years -->
                 <div class="filter">
-                    <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                    
                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow wide-dropdown" id="month-year-filter-list">
                         <li class="dropdown-header text-start">
                             <h6>Filter</h6>
@@ -476,174 +476,169 @@ fetchTotalPeserta(); // Default fetch without any filters
                     <!-- Line Chart -->
                     <div id="reportsChart"></div>
                     <script>
-                        document.addEventListener("DOMContentLoaded", () => {
-                            const allSeries = {}; // Ini akan menampung data dari API
-                            let selectedFilters = new Set();
-                            let selectedYear = new Date().getFullYear(); // Tahun default saat ini
-                            let selectedStartMonth = 1; // Bulan awal default (Januari)
-                            let selectedEndMonth = 12; // Bulan akhir default (Desember)
-        
-                            const chart = new ApexCharts(document.querySelector("#reportsChart"), {
-                                series: [],
-                                chart: {
-                                    height: 350,
-                                    type: 'area',
-                                    toolbar: {
-                                        show: false
-                                    },
-                                },
-                                markers: {
-                                    size: 4
-                                },
-                                colors: ['#4154f1', '#2eca6a', '#ff771d', '#f54291', '#42f5e6'],
-                                fill: {
-                                    type: "gradient",
-                                    gradient: {
-                                        shadeIntensity: 1,
-                                        opacityFrom: 0.3,
-                                        opacityTo: 0.4,
-                                        stops: [0, 90, 100]
-                                    }
-                                },
-                                dataLabels: {
-                                    enabled: false
-                                },
-                                stroke: {
-                                    curve: 'smooth',
-                                    width: 2
-                                },
-                                xaxis: {
-                                    type: 'category',
-                                    categories: [] // Bulan akan diisi berdasarkan data API
-                                },
-                                tooltip: {
-                                    x: {
-                                        format: 'MM/yyyy'
-                                    },
-                                }
-                            });
-        
-                            chart.render();
-        
-                            const updateChart = () => {
-                                const series = [];
-                                const filteredCategories = [];
-        
-                                selectedFilters.forEach(filter => {
-                                    Object.keys(allSeries).forEach(key => {
-                                        if (key.includes(filter) && allSeries[key]) {
-                                            const filteredData = allSeries[key].filter(dataPoint => {
-                                                const date = new Date(dataPoint.date); // Asumsikan dataPoint memiliki properti 'date'
-                                                const year = date.getFullYear();
-                                                const month = date.getMonth() + 1;
-                                                return (
-                                                    year === selectedYear &&
-                                                    month >= selectedStartMonth &&
-                                                    month <= selectedEndMonth
-                                                );
-                                            });
-        
-                                            if (filteredData.length > 0) {
-                                                series.push({ name: key, data: filteredData.map(data => data.jumlah_peserta) });
-                                                filteredCategories.push(...filteredData.map(data => new Date(data.date).toLocaleString('default', { month: 'short', year: 'numeric' })));
-                                            }
-                                        }
-                                    });
-                                });
-        
-                                chart.updateOptions({
-                                    xaxis: {
-                                        categories: [...new Set(filteredCategories)].sort((a, b) => new Date(a) - new Date(b))
-                                    }
-                                });
-        
-                                chart.updateSeries(series);
-                            };
-        
-                            const fetchTrenPelatihan = () => {
-                                fetch('/api/dashboard/tren-pelatihan')
-                                    .then(response => response.json())
-                                    .then(data => {
-                                        if (data.status === 'success') {
-                                            const trenData = data.tren_pelatihan;
-                                            const months = new Set();
-        
-                                            trenData.forEach(pelatihan => {
-                                                pelatihan.agenda.forEach(agenda => {
-                                                    agenda.jumlah_peserta_per_bulan.forEach(bulanData => {
-                                                        const monthName = new Date(bulanData.bulan).toLocaleString('default', { month: 'short', year: 'numeric' });
-                                                        months.add(monthName);
-        
-                                                        const filterName = `${pelatihan.nama_pelatihan} Batch ${agenda.batch}`;
-                                                        if (!allSeries[filterName]) {
-                                                            allSeries[filterName] = [];
-                                                        }
-                                                        allSeries[filterName].push({ date: bulanData.bulan, jumlah_peserta: bulanData.jumlah_peserta });
-                                                    });
-                                                });
-                                            });
-        
-                                            chart.updateOptions({
-                                                xaxis: {
-                                                    categories: Array.from(months).sort((a, b) => new Date(a) - new Date(b))
-                                                }
-                                            });
-        
-                                            updateCheckboxFilters(Object.keys(allSeries));
-                                            selectedFilters = new Set(Object.keys(allSeries));
-                                            updateChart();
-                                        } else {
-                                            console.error('Error fetching tren pelatihan:', data.message);
-                                        }
-                                    })
-                                    .catch(error => console.error('Error fetching tren pelatihan:', error));
-                            };
-        
-                            const updateCheckboxFilters = (filters) => {
-                                const filterList = document.getElementById('filter-list');
-                                filterList.innerHTML = '<li class="dropdown-header text-start"><h6>Filter</h6></li>';
-                                filters.forEach(filter => {
-                                    const listItem = document.createElement('li');
-                                    listItem.innerHTML = `
-                                        <label class="pelatihan dropdown-item">
-                                            <input type="checkbox" class="filter-checkbox" data-filter="${filter}" checked>
-                                            ${filter}
-                                        </label>
-                                    `;
-                                    filterList.appendChild(listItem);
-                                });
-        
-                                document.querySelectorAll('.filter-checkbox').forEach(item => {
-                                    item.addEventListener('change', event => {
-                                        const filter = event.target.getAttribute('data-filter');
-                                        if (event.target.checked) {
-                                            selectedFilters.add(filter);
-                                        } else {
-                                            selectedFilters.delete(filter);
-                                        }
-                                        updateChart();
-                                    });
-                                });
-                            };
-        
-                            document.getElementById('year').addEventListener('change', (event) => {
-                                selectedYear = parseInt(event.target.value);
-                            });
-        
-                            document.getElementById('start-month').addEventListener('change', (event) => {
-                                selectedStartMonth = parseInt(event.target.value);
-                            });
-        
-                            document.getElementById('end-month').addEventListener('change', (event) => {
-                                selectedEndMonth = parseInt(event.target.value);
-                            });
-        
-                            document.querySelector('.apply-btn-bulan').addEventListener('click', () => {
-                                updateChart();
-                            });
-        
-                            fetchTrenPelatihan();
+ document.addEventListener("DOMContentLoaded", () => {
+    const allSeries = {}; // Ini akan menampung data dari API
+    let selectedFilters = new Set();
+    let selectedYear = new Date().getFullYear(); // Tahun default saat ini
+    let selectedStartMonth = 1; // Bulan awal default (Januari)
+    let selectedEndMonth = 12; // Bulan akhir default (Desember)
+
+    const chart = new ApexCharts(document.querySelector("#reportsChart"), {
+        series: [],
+        chart: {
+            height: 350,
+            type: 'area',
+            toolbar: {
+                show: false
+            },
+        },
+        markers: {
+            size: 4
+        },
+        colors: ['#4154f1', '#2eca6a', '#ff771d', '#f54291', '#42f5e6'],
+        fill: {
+            type: "gradient",
+            gradient: {
+                shadeIntensity: 1,
+                opacityFrom: 0.3,
+                opacityTo: 0.4,
+                stops: [0, 90, 100]
+            }
+        },
+        dataLabels: {
+            enabled: false
+        },
+        stroke: {
+            curve: 'smooth',
+            width: 1
+        },
+        xaxis: {
+            type: 'datetime', // Ensure that xaxis is treated as datetime
+            categories: [] // Bulan akan diisi berdasarkan data API
+        },
+        tooltip: {
+            x: {
+                format: 'MM/yyyy' // Format bulan dan tahun
+            },
+        }
+    });
+
+    chart.render();
+
+    const updateChart = () => {
+        const series = [];
+        const filteredCategories = new Set(); // Use Set to store unique months
+
+        selectedFilters.forEach(filter => {
+            Object.keys(allSeries).forEach(key => {
+                if (key.includes(filter) && allSeries[key]) {
+                    const filteredData = allSeries[key].filter(dataPoint => {
+                        const date = new Date(dataPoint.date); // Asumsikan dataPoint memiliki properti 'date'
+                        const year = date.getFullYear();
+                        const month = date.getMonth() + 1; // Months are 0-indexed in JavaScript
+                        return (
+                            year === selectedYear &&
+                            month >= selectedStartMonth &&
+                            month <= selectedEndMonth
+                        );
+                    });
+
+                    if (filteredData.length > 0) {
+                        series.push({ name: key, data: filteredData.map(data => [new Date(data.date).getTime(), data.jumlah_peserta]) });
+                        filteredData.forEach(data => {
+                            const date = new Date(data.date);
+                            filteredCategories.add(date.getTime()); // Store timestamps to ensure uniqueness
                         });
+                    }
+                }
+            });
+        });
+
+        chart.updateOptions({
+            xaxis: {
+                categories: Array.from(filteredCategories).sort((a, b) => a - b).map(timestamp => new Date(timestamp).toLocaleString('default', { month: 'short', year: 'numeric' }))
+            }
+        });
+
+        chart.updateSeries(series);
+    };
+
+    const fetchTrenPelatihan = () => {
+        fetch('/api/dashboard/tren-pelatihan')
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    const trenData = data.tren_pelatihan;
+                    const months = new Set();
+
+                    trenData.forEach(pelatihan => {
+                        pelatihan.agenda.forEach(agenda => {
+                            agenda.jumlah_peserta_per_bulan.forEach(bulanData => {
+                                const filterName = `${pelatihan.nama_pelatihan} Batch ${agenda.batch}`;
+                                if (!allSeries[filterName]) {
+                                    allSeries[filterName] = [];
+                                }
+                                allSeries[filterName].push({ date: bulanData.bulan, jumlah_peserta: bulanData.jumlah_peserta });
+                            });
+                        });
+                    });
+
+                    updateCheckboxFilters(Object.keys(allSeries));
+                    selectedFilters = new Set(Object.keys(allSeries));
+                    updateChart();
+                } else {
+                    console.error('Error fetching tren pelatihan:', data.message);
+                }
+            })
+            .catch(error => console.error('Error fetching tren pelatihan:', error));
+    };
+
+    const updateCheckboxFilters = (filters) => {
+        const filterList = document.getElementById('filter-list');
+        filterList.innerHTML = '<li class="dropdown-header text-start"><h6>Filter</h6></li>';
+        filters.forEach(filter => {
+            const listItem = document.createElement('li');
+            listItem.innerHTML = `
+                <label class="pelatihan dropdown-item">
+                    <input type="checkbox" class="filter-checkbox" data-filter="${filter}" checked>
+                    ${filter}
+                </label>
+            `;
+            filterList.appendChild(listItem);
+        });
+
+        document.querySelectorAll('.filter-checkbox').forEach(item => {
+            item.addEventListener('change', event => {
+                const filter = event.target.getAttribute('data-filter');
+                if (event.target.checked) {
+                    selectedFilters.add(filter);
+                } else {
+                    selectedFilters.delete(filter);
+                }
+                updateChart();
+            });
+        });
+    };
+
+    document.getElementById('year').addEventListener('change', (event) => {
+        selectedYear = parseInt(event.target.value);
+    });
+
+    document.getElementById('start-month').addEventListener('change', (event) => {
+        selectedStartMonth = parseInt(event.target.value);
+    });
+
+    document.getElementById('end-month').addEventListener('change', (event) => {
+        selectedEndMonth = parseInt(event.target.value);
+    });
+
+    document.querySelector('.apply-btn-bulan').addEventListener('click', () => {
+        updateChart();
+    });
+
+    fetchTrenPelatihan();
+});
+
                     </script>
                 </div>
             </div>
@@ -741,7 +736,7 @@ fetchTotalPeserta(); // Default fetch without any filters
 
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title">Jumlah Peserta Berdasarkan Perguruan Tinggi</h5>
+              <h5 class="card-title">Jumlah Pendaftar Berdasarkan Perguruan Tinggi</h5>
               {{-- <p></p> --}}
 
               <!-- Table with stripped rows -->
@@ -768,7 +763,7 @@ fetchTotalPeserta(); // Default fetch without any filters
 
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title">Jumlah Peserta Berdasarkan Aktivitas</h5>
+              <h5 class="card-title">Jumlah Pendaftar Berdasarkan Aktivitas</h5>
               {{-- <p></p> --}}
 
               <!-- Table with stripped rows -->
@@ -793,7 +788,7 @@ fetchTotalPeserta(); // Default fetch without any filters
 
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title">Jumlah Peserta Berdasarkan Perusahaan</h5>
+              <h5 class="card-title">Jumlah Pendaftar Berdasarkan Perusahaan</h5>
               {{-- <p></p> --}}
 
               <!-- Table with stripped rows -->

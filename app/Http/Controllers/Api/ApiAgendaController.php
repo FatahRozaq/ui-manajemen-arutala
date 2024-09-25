@@ -163,7 +163,7 @@ class ApiAgendaController extends Controller
             // Validasi input menggunakan Validator
             $validator = Validator::make($request->all(), [
                 'nama_pelatihan' => 'required|string|max:255', // Pastikan nama pelatihan ada
-                'start_date' => 'required|date|after_or_equal:today', // Harus ada dan merupakan tanggal, tidak boleh sebelum hari ini
+                'start_date' => 'required|date', // Harus ada dan merupakan tanggal, tidak boleh sebelum hari ini
                 'end_date' => 'required|date|after_or_equal:start_date', // Harus lebih besar dari atau sama dengan start_date
                 'sesi' => 'required|array|min:1', // Minimal harus ada 1 sesi
                 'sesi.*' => 'required|string|max:255', // Setiap sesi harus berupa string
@@ -181,7 +181,6 @@ class ApiAgendaController extends Controller
                 // Custom error messages
                 'nama_pelatihan.required' => 'Nama pelatihan wajib diisi.',
                 'start_date.required' => 'Tanggal mulai wajib diisi.',
-                'start_date.after_or_equal' => 'Tanggal mulai tidak boleh sebelum hari ini.',
                 'end_date.required' => 'Tanggal selesai wajib diisi.',
                 'end_date.after_or_equal' => 'Tanggal selesai harus sama atau setelah tanggal mulai.',
                 'sesi.required' => 'Sesi pelatihan wajib diisi.',

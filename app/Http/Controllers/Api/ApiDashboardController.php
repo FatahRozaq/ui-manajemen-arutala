@@ -139,22 +139,18 @@ class ApiDashboardController extends Controller
             ], 500);
         }
     }
-
-
-
-
-    // Function untuk mendapatkan tren pelatihan
     public function trenPelatihan()
     {
         try {
-            // Ambil data pelatihan dan jumlah peserta per agenda per bulan
+            // Ambil data pelatihan dan jumlah peserta per agenda per bulan berdasarkan start_pendaftaran dari agenda_pelatihan
             $pelatihanTren = Pelatihan::where('is_deleted', false)
                 ->with(['agendaPelatihan' => function ($query) {
                     $query->where('is_deleted', false)
                         ->with(['pendaftaranEvent' => function ($q) {
-                            $q->select('id_agenda', DB::raw('DATE_TRUNC(\'month\', created_time) as bulan'), DB::raw('COUNT(id_peserta) as jumlah_peserta'))
+                            $q->join('agenda_pelatihan', 'pendaftaran_event.id_agenda', '=', 'agenda_pelatihan.id_agenda')
+                                ->select('pendaftaran_event.id_agenda', DB::raw('DATE_TRUNC(\'month\', agenda_pelatihan.start_date) as bulan'), DB::raw('COUNT(pendaftaran_event.id_peserta) as jumlah_peserta'))
                                 ->where('pendaftaran_event.is_deleted', false)
-                                ->groupBy('id_agenda', 'bulan');
+                                ->groupBy('pendaftaran_event.id_agenda', 'bulan');
                         }]);
                 }])
                 ->get()
@@ -166,6 +162,7 @@ class ApiDashboardController extends Controller
                             return [
                                 'id_agenda' => $agenda->id_agenda,
                                 'batch' => $agenda->batch,
+                                'start_date' => $agenda->start_date,
                                 'jumlah_peserta_per_bulan' => $agenda->pendaftaranEvent->map(function ($event) {
                                     return [
                                         'bulan' => $event->bulan,
@@ -192,7 +189,6 @@ class ApiDashboardController extends Controller
             ], 500);
         }
     }
-
 
 
     public function getTopProvinces()
@@ -366,8 +362,9 @@ class ApiDashboardController extends Controller
     public function getPelatihanCount()
     {
         try {
-            // Menghitung jumlah pelatihan yang belum dihapus
-            $jumlahPelatihan = AgendaPelatihan::where('is_deleted', false)->count();
+            $jumlahPelatihan = AgendaPelatihan::where('is_deleted', false)
+                ->whereIn('status', ['Masa Pendaftaran', 'Sedang Berlangsung'])
+                ->count();
 
             // Return response
             return response()->json([
