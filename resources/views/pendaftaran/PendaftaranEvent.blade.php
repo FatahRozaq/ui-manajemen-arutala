@@ -7,26 +7,6 @@ Arutala | Pendaftaran Event
 @section('style')
 <link href="{{ asset('assets/css/custom.css') }}" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
-<style>
-    .default {
-        padding: 6px 12px;
-        background-color: #e9ecef;
-        border: 1px solid #ced4da;
-        border-radius: 4px 0 0 4px;
-        color: #495057;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    .form-control.is-invalid {
-        border-color: red;
-    }
-    .text-error {
-        color: red;
-        font-size: 0.875rem;
-        margin-top: 0.25rem;
-    }
-</style>
 @endsection
 
 @section('content')
@@ -110,7 +90,7 @@ Arutala | Pendaftaran Event
                         <div class="column mb-4">
                             <label for="no_kontak" class="col-sm-4 col-form-label font-weight-bold">No Kontak</label>
                             <div class="col-sm-12 d-flex">
-                                <div class="default">+62</div>
+                                <div class="default-internal">+62</div>
                                 <input type="number" name="no_kontak" id="no_kontak" class="form-control col-sm-8" value="">
                             </div>
                             <span class="text-error" id="error-no_kontak"></span>

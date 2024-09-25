@@ -30,10 +30,7 @@
     <!-- ======= Header ======= -->
     <header id="header" class="header fixed-top d-flex align-items-center">
 
-        <div class="d-flex align-items-center" style="width:230px">
-            <a href="index.html" class="logo d-flex align-items-center">
-                <img src="{{ asset('assets/img/logo/ArutalaHitam.png') }}" alt="" style="width:50px; height:50px">
-            </a>
+        <div class="d-flex align-items-center">
             <i class="bi bi-list toggle-sidebar-btn"></i>
         </div>
     
@@ -42,7 +39,7 @@
                 <li class="nav-item dropdown pe-3">
                     <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
                         <span id="navbarAdminName" class="d-none d-md-block dropdown-toggle ps-2" style="font-size: 14px;">Admin</span>
-                        <i class="fa-solid fa-circle-user" style="font-size: 30px; margin-left:20px; margin-right:10px;"></i>
+                        <i class="fa-solid fa-circle-user" style="font-size: 25px; margin-left:20px; margin-right:10px;"></i>
                     </a>
 
                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
@@ -67,6 +64,11 @@
 
     <!-- ======= Sidebar ======= -->
     <aside id="sidebar" class="sidebar">
+
+        <div class="logo">
+            <img src="{{ asset('assets/img/logo/ArutalaHitam.png') }}" alt="">
+        </div>
+
         <ul class="sidebar-nav" id="sidebar-nav">
             <li class="nav-item">
                 <a class="nav-link {{ request()->is('admin/dashboard*') ? '' : 'collapsed' }}" href="{{ route('dashboard.index') }}">

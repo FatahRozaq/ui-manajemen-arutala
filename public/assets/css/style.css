@@ -57,12 +57,44 @@ h5 {
   font-size: 14px;
 }
 
+/* .custom-input {
+  height: 30px;
+  font-size: 12px;
+} */
+
+.form-control {
+  height: 30px;
+  border-radius: 0 4px 4px 0;
+  font-size: 12px;
+}
+
+.form-control.is-invalid {
+  border-color: red;
+}
+.text-error {
+  color: red;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+.default-internal {
+  padding: 6px 12px;
+  background-color: #e9ecef;
+  border: 1px solid #ced4da;
+  height: 30px;
+  border-radius: 4px 0 0 4px;
+  color: #495057;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 
 /*--------------------------------------------------------------
 # Main
 --------------------------------------------------------------*/
 #main {
-  margin-top: 60px;
+  margin-top: 30px;
   padding: 20px 30px;
   transition: all 0.3s;
   left: 100px;
@@ -397,11 +429,6 @@ h5 {
   }
 }
 
-.logo img {
-  max-height: 26px;
-  margin-right: 6px;
-}
-
 .logo span {
   font-size: 26px;
   font-weight: 700;
@@ -415,7 +442,7 @@ h5 {
   height: 40px;
   box-shadow: 0px 2px 20px rgba(1, 41, 112, 0.1);
   background-color: #fff;
-  padding-left: 20px;
+  padding-left: 200px;
   /* Toggle Sidebar Button */
   /* Search Bar */
 }
@@ -433,6 +460,10 @@ h5 {
 }
 
 @media (max-width: 1199px) {
+  .header {
+    padding-left: 10px;
+  }
+
   .header .search-bar {
     position: fixed;
     top: 50px;
@@ -633,10 +664,11 @@ h5 {
 .sidebar {
   position: fixed;
   top: 60px;
+  margin-top: -60px;
   left: 0;
   bottom: 0;
   width: 200px;
-  z-index: 996;
+  z-index: 998;
   transition: all 0.3s;
   padding: 20px;
   overflow-y: auto;
@@ -644,6 +676,18 @@ h5 {
   scrollbar-color: #aab7cf transparent;
   box-shadow: 0px 0px 20px rgba(1, 41, 112, 0.1);
   background-color: #fff;
+}
+
+.sidebar .logo {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.logo img {
+  width: 100px;
+  height: auto;
 }
 
 @media (max-width: 1199px) {
