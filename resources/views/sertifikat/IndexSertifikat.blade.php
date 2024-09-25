@@ -20,12 +20,12 @@ Arutala | Sertifikat Peserta
                         <h5 class="card-title mb-0">Bootcamp Software Quality Assurance</h5>
                         <small class="text-muted">Batch</small>
                     </div>
-                    <div class="d-flex flex-column flex-sm-row mt-3 mt-sm-0">
-                        <a href="#" class="btn btn-success mb-2 mb-sm-0 mr-sm-2">
-                            <i class="fas fa-download"></i> Download
+                    <div class="d-flex flex-column flex-sm-row mt-3 mt-sm-0 gap-2">
+                        <a href="#" class="btn btn-success mb-2 mb-sm-0 d-flex align-items-center">
+                            <i class="fas fa-download"></i> <span class="ms-2">Download</span>
                         </a>
-                        <a href="#" class="btn btn-primary mt-2 mt-sm-0">
-                            <i class="fas fa-eye"></i> Lihat
+                        <a href="#" class="btn btn-primary mt-2 mt-sm-0 d-flex align-items-center">
+                            <i class="fas fa-eye"></i> <span class="ms-2">Lihat</span>
                         </a>
                     </div>
                 </div>
@@ -38,12 +38,12 @@ Arutala | Sertifikat Peserta
                         <h5 class="card-title mb-0">Bootcamp Software Quality Assurance Asurance Asurance</h5>
                         <small class="text-muted">Batch</small>
                     </div>
-                    <div class="d-flex flex-column flex-sm-row mt-3 mt-sm-0">
-                        <a href="#" class="btn btn-success mb-2 mb-sm-0 mr-sm-2">
-                            <i class="fas fa-download"></i> Download
+                    <div class="d-flex flex-column flex-sm-row mt-3 mt-sm-0 gap-2">
+                        <a href="#" class="btn btn-success mb-2 mb-sm-0 d-flex align-items-center">
+                            <i class="fas fa-download"></i> <span class="ms-2">Download</span>
                         </a>
-                        <a href="#" class="btn btn-primary mt-2 mt-sm-0">
-                            <i class="fas fa-eye"></i> Lihat
+                        <a href="#" class="btn btn-primary mt-2 mt-sm-0 d-flex align-items-center">
+                            <i class="fas fa-eye"></i> <span class="ms-2">Lihat</span>
                         </a>
                     </div>
                 </div>
@@ -56,12 +56,12 @@ Arutala | Sertifikat Peserta
                         <h5 class="card-title mb-0">Coding Express</h5>
                         <small class="text-muted">Batch</small>
                     </div>
-                    <div class="d-flex flex-column flex-sm-row mt-3 mt-sm-0">
-                        <a href="#" class="btn btn-success mb-2 mb-sm-0 mr-sm-2">
-                            <i class="fas fa-download"></i> Download
+                    <div class="d-flex flex-column flex-sm-row mt-3 mt-sm-0 gap-2">
+                        <a href="#" class="btn btn-success mb-2 mb-sm-0 d-flex align-items-center">
+                            <i class="fas fa-download"></i> <span class="ms-2">Download</span>
                         </a>
-                        <a href="#" class="btn btn-primary mt-2 mt-sm-0">
-                            <i class="fas fa-eye"></i> Lihat
+                        <a href="#" class="btn btn-primary mt-2 mt-sm-0 d-flex align-items-center">
+                            <i class="fas fa-eye"></i> <span class="ms-2">Lihat</span>
                         </a>
                     </div>
                 </div>
