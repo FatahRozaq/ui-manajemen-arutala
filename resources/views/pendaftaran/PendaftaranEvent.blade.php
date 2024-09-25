@@ -81,7 +81,7 @@ Arutala | Pendaftaran Event
                         </div>
 
                         <div class="d-flex mt-4">
-                            <h5 class="text-danger font-weight-bold mb-1 mr-4" id="eventPrice"></h5>
+                            <h5 class="text-danger font-weight-bold mb-1 mr-4" style="font-size: 18px;" id="eventPrice"></h5>
                             <p class="text-muted text-decoration-line-through" id="eventDiscountedPrice"></p>
                         </div>
                     </div>
@@ -215,13 +215,13 @@ Arutala | Pendaftaran Event
             };
 
             const materiArray = JSON.parse(agenda.materi || pelatihan.materi);
-const benefitArray = JSON.parse(agenda.benefit || pelatihan.benefit);
+            const benefitArray = JSON.parse(agenda.benefit || pelatihan.benefit);
 
-const materi = materiArray.map(item => `<li>${item.trim()}</li>`).join('');
-const benefit = benefitArray.map(item => `<li>${item.trim()}</li>`).join('');
+            const materi = materiArray.map(item => `<li>${item.trim()}</li>`).join('');
+            const benefit = benefitArray.map(item => `<li>${item.trim()}</li>`).join('');
 
-document.getElementById('eventMateri').innerHTML = materi;
-document.getElementById('eventBenefit').innerHTML = benefit;
+            document.getElementById('eventMateri').innerHTML = materi;
+            document.getElementById('eventBenefit').innerHTML = benefit;
 
             document.getElementById('eventStartDate').textContent = formatDate(agenda.start_date);
             document.getElementById('eventEndDate').textContent = formatDate(agenda.end_date);
@@ -244,7 +244,7 @@ document.getElementById('eventBenefit').innerHTML = benefit;
             }
 
             document.getElementById('eventPrice').textContent = `Rp${agenda.investasi}`;
-            document.getElementById('eventDiscountedPrice').textContent = `Rp${agenda.diskon}`;
+            document.getElementById('eventDiscountedPrice').textContent = agenda.diskon ? `Rp${agenda.diskon}` : ' ';
 
             document.getElementById('nama').value = pendaftar.nama || '';
             document.getElementById('email').value = pendaftar.email || '';
