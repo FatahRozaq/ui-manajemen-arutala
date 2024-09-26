@@ -6,11 +6,6 @@ Arutala | Profile Peserta
 
 @section('style')
 <style>
-    h3 {
-        font-size: 22px;
-        font-weight: 600;
-    }
-
     hr {
         border-top: 3px solid #000000;
     }
@@ -18,21 +13,6 @@ Arutala | Profile Peserta
     .form-control[disabled], .form-control[readonly] {
         background-color: #f5f5f5;
         opacity: 1;
-    }
-
-    .default {
-        padding: 6px 12px;
-        background-color: #e9ecef;
-        border: 1px solid #ced4da;
-        border-radius: 4px 0 0 4px;
-        color: #495057;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .form-control {
-        border-radius: 0 4px 4px 0;
     }
 </style>
 @endsection
@@ -71,7 +51,7 @@ Arutala | Profile Peserta
                     <div class="column mb-4">
                         <label for="kontakPeserta" class="col-sm-4 col-form-label font-weight-bold">No Kontak</label>
                         <div class="col-sm-12 d-flex">
-                            <div class="default">
+                            <div class="default-internal">
                                 +62
                             </div>
                             <input type="text" id="kontakPeserta" class="form-control" disabled>

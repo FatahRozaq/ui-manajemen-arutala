@@ -44,9 +44,20 @@
    */
   if (select('.toggle-sidebar-btn')) {
     on('click', '.toggle-sidebar-btn', function(e) {
-      select('body').classList.toggle('toggle-sidebar')
-    })
+      select('body').classList.toggle('toggle-sidebar');
+    });
   }
+  
+  // Menambahkan event listener untuk klik di seluruh dokumen
+  document.addEventListener('click', function(event) {
+    const sidebar = select('.sidebar'); // Pastikan elemen sidebar dipilih dengan benar
+    const sidebarBtn = select('.toggle-sidebar-btn');
+    
+    // Jika klik terjadi di luar sidebar dan juga bukan di tombol sidebar, tutup sidebar
+    if (!sidebar.contains(event.target) && !sidebarBtn.contains(event.target)) {
+      select('body').classList.remove('toggle-sidebar');
+    }
+  });
 
   /**
    * Search bar toggle

@@ -55,7 +55,7 @@ Arutala | Profile Peserta
                         <div class="column mb-4">
                             <label for="no_kontak" class="col-sm-4 col-form-label font-weight-bold">No Kontak</label>
                             <div class="col-sm-12 d-flex">
-                                <div class="default">
+                                <div class="default-internal" style="padding-top: 15px;">
                                     <label>+62</label>
                                 </div>
                                 <input type="number" name="no_kontak" id="no_kontak" class="form-control col-sm-8" value="">
