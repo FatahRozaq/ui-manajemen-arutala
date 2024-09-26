@@ -21,26 +21,26 @@ Arutala | Detail Data Mentor
         <div class="card">
           <div class="card-body" style="padding-top: 50px">
               <div class="row mb-4">
-                <label for="inputNamaMentor" class="col-sm-3 col-form-label">Nama Mentor</label>
+                <label for="inputNamaMentor" class="col-sm-2 col-form-label">Nama Mentor</label>
                 <div class="col-sm-6">
                   <input type="text" class="form-control" id="inputNamaMentor" style="height: 30px; font-size: 12px" disabled>
                 </div>
               </div>
               <div class="row mb-4">
-                <label for="inputEmail" class="col-sm-3 col-form-label">Email</label>
+                <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
                 <div class="col-sm-6">
                   <input type="text" class="form-control" id="inputEmail" disabled>
                 </div>
               </div>
               <div class="row mb-4">
-                <label for="inputKontak" class="col-sm-3 col-form-label">Kontak</label>
+                <label for="inputKontak" class="col-sm-2 col-form-label">Kontak</label>
                 <div class="col-sm-6 d-flex">
                   <div class="default-internal">+62</div>
                   <input type="text" class="form-control" id="inputKontak" disabled>
                 </div>
               </div>
               <div class="row mb-4">
-                <label for="inputAktivitas" class="col-sm-3 col-form-label">Aktivitas</label>
+                <label for="inputAktivitas" class="col-sm-2 col-form-label">Aktivitas</label>
                 <div class="col-sm-6">
                   <input type="text" class="form-control" id="inputAktivitas" disabled>
                 </div>
