@@ -67,6 +67,10 @@
                         </p>
                         <p class="date"><i class="bi bi-clock" style="margin-right: 5px"></i>${formattedDate}</p>
                     </div>
+                    <div class="tombol-detail-daftar">
+                        <button class="tombol-detail">Detail</button>
+                        <button class="tombol-daftar">Daftar</button>
+                    </div>
                 `;
 
                 eventCards.appendChild(card);
