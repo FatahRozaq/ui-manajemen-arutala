@@ -4,14 +4,15 @@ namespace App\Http\Controllers\Api;
 
 use Exception;
 use Carbon\Carbon;
+use App\Models\User;
 use App\Models\Pendaftar;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException;
-use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
+use Illuminate\Validation\ValidationException;
 
 class ApiAuthController extends Controller
 {
@@ -99,17 +100,24 @@ class ApiAuthController extends Controller
 
             $credentials = $request->only('email', 'password');
 
-            // Menggunakan guard 'api' untuk mencoba membuat token JWT
-            if (! $token = auth('api')->attempt($credentials)) {
+            $user = Pendaftar::where('email', $credentials['email'])
+                ->where('is_deleted', false)
+                ->first();
+
+            if (! $user || ! Hash::check($credentials['password'], $user->password)) {
+                throw ValidationException::withMessages([
+                    'email' => ['Email atau password salah, atau akun telah dihapus'],
+                ]);
+            }
+
+            if (! $token = auth('api')->login($user)) {
                 throw ValidationException::withMessages([
                     'email' => ['Email atau password salah'],
                 ]);
             }
 
-            $pendaftar = auth('api')->user();
-
             return response()->json([
-                'data' => $pendaftar,
+                'data' => $user,
                 'token' => $token,
                 'message' => 'Login berhasil',
                 'statusCode' => Response::HTTP_OK,
@@ -139,6 +147,7 @@ class ApiAuthController extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
 
 
     public function logout(Request $request)

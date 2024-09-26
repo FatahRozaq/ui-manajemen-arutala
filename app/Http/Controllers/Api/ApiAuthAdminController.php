@@ -87,13 +87,22 @@ class ApiAuthAdminController extends Controller
 
             $credentials = $request->only('email', 'password');
 
-            if (! $token = auth('admin')->attempt($credentials)) {
+            $admin = Admin::where('email', $credentials['email'])
+                ->where('is_deleted', false)
+                ->first();
+
+            if (! $admin || ! Hash::check($credentials['password'], $admin->password)) {
+                throw ValidationException::withMessages([
+                    'email' => ['Email atau password salah, atau akun telah dihapus'],
+                ]);
+            }
+
+            // Generate token setelah validasi
+            if (! $token = auth('admin')->login($admin)) {
                 throw ValidationException::withMessages([
                     'email' => ['Email atau password salah'],
                 ]);
             }
-
-            $admin = auth('admin')->user();
 
             return response()->json([
                 'data' => $admin,
@@ -126,6 +135,7 @@ class ApiAuthAdminController extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
 
     public function logout(Request $request)
     {
