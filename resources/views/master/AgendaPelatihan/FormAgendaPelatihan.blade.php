@@ -53,6 +53,12 @@ Arutala | Tambah Data Agenda
                     <!-- General Form Elements -->
                     <form id="agendaForm" method="POST" action="{{ route('agenda.tambah') }}">
                         @csrf
+
+                        <div class="row">
+                            <div class="col-sm-11 text-right">
+                                <button type="button" class="btn" id="submitAgenda" style="background-color: #344C92; color: white;">Submit</button>
+                            </div>
+                        </div>
                         
                         <!-- Nama Pelatihan -->
                         <div class="form-group row position-relative">
@@ -187,11 +193,7 @@ Arutala | Tambah Data Agenda
                         {{-- <div class="button-submit mt-4">
                             <button class="btn btn-success col-sm-3" type="button" id="submitAgenda">Submit</button>
                         </div> --}}
-                        <div class="row">
-                            <div class="col-sm-11 text-right">
-                                <button type="button" class="btn" id="submitAgenda" style="background-color: #344C92; color: white;">Submit</button>
-                            </div>
-                        </div>
+                        
 
                     </form>
                 </div>

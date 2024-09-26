@@ -41,6 +41,7 @@
                     eventCard.innerHTML = `
                         <div class="event-info">
                             <h4>${event.nama_pelatihan}</h4>
+                            <h5>  Batch ${event.batch} </h5>
                             <p><i class="fas fa-calendar-alt"></i> ${new Date(event.start_date).toLocaleDateString('id-ID', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' })} - ${new Date(event.end_date).toLocaleDateString('id-ID', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' })}</p>
                         </div>
                         <div class="event-status-payment">

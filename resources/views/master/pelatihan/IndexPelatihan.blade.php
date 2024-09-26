@@ -13,7 +13,7 @@ Arutala | Data Pelatihan
 
 <div class="pagetitle d-flex justify-content-between align-items-center">
     <h1>Data Pelatihan</h1>
-    <a href="pelatihan/tambah" class="btn btn-success d-flex align-items-center" style="border-radius: 10px;">
+    <a href="pelatihan/tambah" class="btn btn-success d-flex align-items-center" style="border-radius: 5px;">
         <i class="fa-solid fa-circle-plus mr-2"></i>
         Tambah Pelatihan
     </a>
@@ -27,7 +27,7 @@ Arutala | Data Pelatihan
                   <table id="dataPelatihanTable" class="table table-striped table-bordered dt-responsive nowrap" style="width: 100%;"> <!-- Tambahkan kelas responsive -->
                       <thead>
                           <tr>
-                              <th>Gambar</th>
+                              
                               <th>Pelatihan</th>
                               <th>Jumlah Batch</th>
                               <th>Aksi</th>
@@ -74,14 +74,24 @@ Arutala | Data Pelatihan
             },
             "columns": [
                 { 
-                    "data": "gambar_pelatihan",
-                    "render": function(data, type, row) {
-                    let imageUrl = data && data !== 'null' && data !== 'undefined' ? data : '/assets/images/default-pelatihan.jpg';
-                    return `<img src="${imageUrl}" alt="Gambar Pelatihan" onerror="this.onerror=null;this.src='/assets/images/default-pelatihan.jpg';" style="width: 70px; height: auto;">`;
-                },
-                    "orderable": false
-                },
-                { "data": "nama_pelatihan" }, // Nama pelatihan
+        "data": "nama_pelatihan", 
+        "render": function(data, type, row) {
+            let imageUrl = row.gambar_pelatihan && row.gambar_pelatihan !== 'null' && row.gambar_pelatihan !== 'undefined' ? row.gambar_pelatihan : '/assets/images/default-pelatihan.jpg';
+            
+            // Memastikan gambar muncul hanya di tampilan, tetapi sorting menggunakan nama pelatihan
+            if (type === 'display') {
+                return `
+                    <div class="d-flex align-items-center">
+                        <img src="${imageUrl}" alt="Gambar Pelatihan" onerror="this.onerror=null;this.src='/assets/images/default-pelatihan.jpg';" style="width: 40px; height: 20px; margin-right: 10px;">
+                        <span>${data}</span>
+                    </div>`;
+            }
+
+            // Saat sorting, hanya gunakan nama pelatihan
+            return data;
+        },
+        "orderable": true // Pastikan sorting tetap aktif
+    },
                 { "data": "jumlah_batch" },   // Jumlah batch
                 {                         
                     "data": null,
