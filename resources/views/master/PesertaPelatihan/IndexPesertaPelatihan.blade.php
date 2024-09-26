@@ -17,17 +17,12 @@ Arutala | Data Peserta Pelatihan
 
 <!-- Button untuk membuka modal filter -->
 <div class="filter-import">
-    <button type="button" class="btn btn-secondary mb-2" data-bs-toggle="modal" data-bs-target="#filterModal">
-        Filter
-    </button>
-    <form id="exportForm" class="d-inline">
-        @csrf
-        <input type="hidden" name="nama_pelatihan" id="exportPelatihan">
-        <input type="hidden" name="batch" id="exportBatch">
-        <button type="button" id="exportButton" class="btn btn-success mb-2">
-            Export
-        </button>
-    </form>
+    {{-- <button type="button" class="button-filter btn btn-secondary mb-2 p-2" > --}}
+        <i class="button-filter bi bi-three-dots ml-2" style="font-size:16px; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#filterModal" aria-label="Filter"></i>
+    {{-- </button> --}}
+    
+    
+    
     
 </div>
 
@@ -64,10 +59,21 @@ Arutala | Data Peserta Pelatihan
     <div class="row">
         <div class="col-lg-12">
             <nav>
-                <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                    <button class="nav-link active" id="nav-paid-tab" data-bs-toggle="tab" data-bs-target="#nav-paid" type="button" role="tab" aria-controls="nav-paid" aria-selected="true">Sudah Bayar</button>
-                    <button class="nav-link" id="nav-unpaid-tab" data-bs-toggle="tab" data-bs-target="#nav-unpaid" type="button" role="tab" aria-controls="nav-unpaid" aria-selected="false">Belum Bayar</button>
+                <div class="nav nav-tabs d-flex justify-content-between align-items-center" id="nav-tab" role="tablist">
+                    <div class="d-flex">
+                        <button class="nav-link active" id="nav-paid-tab" data-bs-toggle="tab" data-bs-target="#nav-paid" type="button" role="tab" aria-controls="nav-paid" aria-selected="true">Sudah Bayar</button>
+                        <button class="nav-link" id="nav-unpaid-tab" data-bs-toggle="tab" data-bs-target="#nav-unpaid" type="button" role="tab" aria-controls="nav-unpaid" aria-selected="false">Belum Bayar</button>
+                    </div>
+                    <form id="exportForm" class="d-inline">
+                        @csrf
+                        <input type="hidden" name="nama_pelatihan" id="exportPelatihan">
+                        <input type="hidden" name="batch" id="exportBatch">
+                        <button type="button" id="exportButton" class="btn btn-success mb-2">
+                            Export
+                        </button>
+                    </form>
                 </div>
+                
             </nav>
             <div class="card" style="padding: 20px">
                 <div class="card-body">
@@ -136,6 +142,8 @@ Arutala | Data Peserta Pelatihan
 
 <script>
     $(document).ready(function() {
+        // fetchPelatihanBatchData();
+        // fetchData();
 
         const originalConsoleError = console.error;
 
@@ -147,20 +155,29 @@ Arutala | Data Peserta Pelatihan
         const urlParams = new URLSearchParams(window.location.search);
         const namaPelatihan = urlParams.get('nama_pelatihan');
         const batch = urlParams.get('batch');
+        
+        if (namaPelatihan && batch) {
+            fetchFilteredData(namaPelatihan, batch);
+        } else {
+            // Ambil data default jika parameter tidak ada
+            fetchDefaultData();
+        }
 
         // Jika ada parameter nama_pelatihan dan batch, lakukan fetch data
+        fetchPelatihanBatchData(() => {
+        // Jika ada parameter nama_pelatihan dan batch
         if (namaPelatihan && batch) {
-            fetchPelatihanBatchData(() => {
-                $('#pelatihan').val(namaPelatihan);
-                updateBatchDropdownFromName(namaPelatihan, function() {
-                    $('#batch').val(batch);
-                    fetchData(namaPelatihan, batch); // Panggil fetchData untuk mengambil data berdasarkan filter
-                });
+            $('#pelatihan').val(namaPelatihan);
+            updateBatchDropdownFromName(namaPelatihan, function() {
+                $('#batch').val(batch);
+                // Panggil fetchData untuk mengambil data berdasarkan filter
+                fetchData(namaPelatihan, batch);
             });
         } else {
-            // Ambil data pelatihan dan batch dari server jika tidak ada parameter
-            fetchPelatihanBatchData();
+            // Jika tidak ada parameter, tampilkan data default
+            fetchDefaultData();
         }
+    });
 
         function fetchPelatihanBatchData(callback = null) {
             axios.get('/api/peserta-pelatihan/pelatihan-batch')
@@ -229,48 +246,53 @@ Arutala | Data Peserta Pelatihan
                 });
         }
 
-        function fetchData(pelatihan, batch) {
-            // Dapatkan id_agenda berdasarkan pelatihan dan batch
-            axios.get(`/api/peserta-pelatihan/get-agenda-id`, {
-                params: {
-                    nama_pelatihan: pelatihan,
-                    batch: batch
-                }
-            })
+        function fetchData(pelatihan = null, batch = null) {
+    // Jika pelatihan dan batch tidak disediakan, gunakan endpoint default
+    const url = pelatihan && batch 
+        ? `/api/peserta-pelatihan/agenda/${id_agenda}/peserta?nama_pelatihan=${pelatihan}&batch=${batch}`
+        : `/api/peserta-pembayaran`;
+
+    axios.get(url)
+        .then(function(response) {
+            const filteredData = response.data.data;
+
+            // Pisahkan data berdasarkan status pembayaran
+            const paidData = filteredData.filter(item => item.status_pembayaran.toLowerCase() === 'paid' || item.status_pembayaran.toLowerCase() === 'sudah');
+            const unpaidData = filteredData.filter(item => item.status_pembayaran.toLowerCase() === 'proses' || item.status_pembayaran.toLowerCase() === 'belum bayar');
+
+            // Update DataTables dengan data yang telah dipisahkan
+            tablePaid.clear().rows.add(paidData).draw();
+            tableUnpaid.clear().rows.add(unpaidData).draw();
+        })
+        .catch(function(error) {
+            console.error('Error fetching data:', error);
+        });
+}
+
+function fetchDefaultData() {
+        axios.get('/api/peserta-pembayaran')
             .then(function(response) {
-                id_agenda = response.data.id_agenda; // Set id_agenda berdasarkan respons API
+                const data = response.data.data;
 
-                // Fetch data peserta setelah mendapatkan id_agenda
-                axios.get(`/api/peserta-pelatihan/agenda/${id_agenda}/peserta`, {
-                    params: {
-                        nama_pelatihan: pelatihan,
-                        batch: batch
-                    }
-                })
-                .then(function(response) {
-                    const filteredData = response.data.data;
+                // Pisahkan data berdasarkan status pembayaran
+                const paidData = data.filter(item => item.status_pembayaran.toLowerCase() === 'paid' || item.status_pembayaran.toLowerCase() === 'sudah');
+                const unpaidData = data.filter(item => item.status_pembayaran.toLowerCase() === 'proses' || item.status_pembayaran.toLowerCase() === 'belum bayar');
 
-                    // Pisahkan data berdasarkan status pembayaran
-                    const paidData = filteredData.filter(item => item.status_pembayaran.toLowerCase() === 'paid' || item.status_pembayaran.toLowerCase() === 'sudah');
-                    const unpaidData = filteredData.filter(item => item.status_pembayaran.toLowerCase() === 'proses' || item.status_pembayaran.toLowerCase() === 'belum bayar');
-
-                    // Update DataTables dengan data yang telah dipisahkan
-                    tablePaid.clear().rows.add(paidData).draw();
-                    tableUnpaid.clear().rows.add(unpaidData).draw();
-                })
-                .catch(function(error) {
-                    console.error('Error fetching filtered data:', error);
-                });
+                // Update DataTables dengan data yang telah dipisahkan
+                tablePaid.clear().rows.add(paidData).draw();
+                tableUnpaid.clear().rows.add(unpaidData).draw();
             })
             .catch(function(error) {
-                console.error('Error fetching agenda ID:', error);
+                console.error('Error fetching default data:', error);
             });
-        }
+    }
+
 
         // Inisialisasi DataTables
         let tablePaid = $('#dataDetailPelatihanTablePaid').DataTable({
-            responsive: true,
-            ajax: {
+        dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6 d-flex justify-content-end"f<"filter-import">>>rtip',
+        responsive: true,
+        ajax: {
                 // url: '/api/peserta-pelatihan/daftar-peserta?status=paid', // URL endpoint API untuk data sudah bayar
                 type: 'GET',
                 dataSrc: function (json) {
@@ -280,36 +302,37 @@ Arutala | Data Peserta Pelatihan
         }
         
             },
-            columns: [
-                { data: 'nama_peserta' },
-                { data: 'nama_pelatihan' },
-                { data: 'batch' },
-                { data: 'no_kontak' },
-                {
-                    data: 'status_pembayaran',
-                    render: function(data) {
-                        let colorClass = data.toLowerCase() === 'paid' ? 'text-success' : 'text-warning';
-                        return `<span class="${colorClass}">${data}</span>`;
-                    }
-                },
-                {
-                    data: null,
-                    render: function(data, type, row) {
-                        const idPendaftaran = row.id_pendaftaran || 'undefined'; // Pastikan id_pendaftaran tersedia
-                        const idAgenda = row.id_agenda || 'undefined'; // Pastikan id_agenda tersedia
-                        return `
-                        <a href="pesertapelatihan/updatestatus?id_pendaftaran=${idPendaftaran}&id_agenda=${idAgenda}" class="update-icon" title="Update">
-                            <i class="fas fa-edit text-warning"></i>
-                        </a>
-                        `;
-                    }
+        columns: [
+            { data: 'nama_peserta' },
+            { data: 'nama_pelatihan' },
+            { data: 'batch' },
+            { data: 'no_kontak' },
+            {
+                data: 'status_pembayaran',
+                render: function(data) {
+                    let colorClass = data.toLowerCase() === 'paid' ? 'text-success' : 'text-warning';
+                    return `<span class="${colorClass}">${data}</span>`;
                 }
-            ]
-        });
+            },
+            {
+                data: null,
+                render: function(data, type, row) {
+                    const idPendaftaran = row.id_pendaftaran || 'undefined';
+                    const idAgenda = row.id_agenda || 'undefined';
+                    return `
+                    <a href="pesertapelatihan/updatestatus?id_pendaftaran=${idPendaftaran}&id_agenda=${idAgenda}" class="update-icon" title="Update">
+                        <i class="fas fa-edit text-warning"></i>
+                    </a>
+                    `;
+                }
+            }
+        ]
+    });
 
-        let tableUnpaid = $('#dataDetailPelatihanTableUnpaid').DataTable({
-            responsive: true,
-            ajax: {
+    let tableUnpaid = $('#dataDetailPelatihanTableUnpaid').DataTable({
+        dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6 d-flex justify-content-end"f<"filter-import">>>rtip',
+        responsive: true,
+        ajax: {
                 // url: '/api/peserta-pelatihan/agenda/${id_agenda}/peserta', // URL endpoint API untuk data belum bayar
                 type: 'GET',
                 dataSrc: function (json) {
@@ -320,32 +343,76 @@ Arutala | Data Peserta Pelatihan
         }
         
             },
-            columns: [
-                { data: 'nama_peserta' },
-                { data: 'nama_pelatihan' },
-                { data: 'batch' },
-                { data: 'no_kontak' },
-                {
-                    data: 'status_pembayaran',
-                    render: function(data) {
-                        let colorClass = data.toLowerCase() === 'paid' ? 'text-success' : 'text-warning';
-                        return `<span class="${colorClass}">${data}</span>`;
-                    }
-                },
-                {
-                    data: null,
-                    render: function(data, type, row) {
-                        const idPendaftaran = row.id_pendaftaran || 'undefined'; // Pastikan id_pendaftaran tersedia
-                        const idAgenda = row.id_agenda || 'undefined'; // Pastikan id_agenda tersedia
-                        return `
-                        <a href="pesertapelatihan/updatestatus?id_pendaftaran=${idPendaftaran}&id_agenda=${idAgenda}" class="update-icon" title="Update">
-                            <i class="fas fa-edit text-warning"></i>
-                        </a>
-                        `;
-                    }
+        columns: [
+            { data: 'nama_peserta' },
+            { data: 'nama_pelatihan' },
+            { data: 'batch' },
+            { data: 'no_kontak' },
+            {
+                data: 'status_pembayaran',
+                render: function(data) {
+                    let colorClass = data.toLowerCase() === 'paid' ? 'text-success' : 'text-warning';
+                    return `<span class="${colorClass}">${data}</span>`;
                 }
-            ]
+            },
+            {
+                data: null,
+                render: function(data, type, row) {
+                    const idPendaftaran = row.id_pendaftaran || 'undefined';
+                    const idAgenda = row.id_agenda || 'undefined';
+                    return `
+                    <a href="pesertapelatihan/updatestatus?id_pendaftaran=${idPendaftaran}&id_agenda=${idAgenda}" class="update-icon" title="Update">
+                        <i class="fas fa-edit text-warning"></i>
+                    </a>
+                    `;
+                }
+            }
+        ]
+    });
+
+    function fetchFilteredData(pelatihan, batch) {
+    // Dapatkan id_agenda berdasarkan pelatihan dan batch
+    axios.get(`/api/peserta-pelatihan/get-agenda-id`, {
+        params: {
+            nama_pelatihan: pelatihan,
+            batch: batch
+        }
+    })
+    .then(function(response) {
+        id_agenda = response.data.id_agenda;
+
+        // Fetch data peserta setelah mendapatkan id_agenda
+        axios.get(`/api/peserta-pelatihan/agenda/${id_agenda}/peserta`, {
+            params: {
+                nama_pelatihan: pelatihan,
+                batch: batch
+            }
+        })
+        .then(function(response) {
+            const filteredData = response.data.data;
+
+            // Pisahkan data berdasarkan status pembayaran
+            const paidData = filteredData.filter(item => item.status_pembayaran.toLowerCase() === 'paid' || item.status_pembayaran.toLowerCase() === 'sudah');
+            const unpaidData = filteredData.filter(item => item.status_pembayaran.toLowerCase() === 'proses' || item.status_pembayaran.toLowerCase() === 'belum bayar');
+
+            // Update DataTables dengan data yang telah dipisahkan
+            tablePaid.clear().rows.add(paidData).draw();
+            tableUnpaid.clear().rows.add(unpaidData).draw();
+        })
+        .catch(function(error) {
+            console.error('Error fetching filtered data:', error);
         });
+    })
+    .catch(function(error) {
+        console.error('Error fetching agenda ID:', error);
+    });
+}
+
+
+    // Panggil fetch default data saat halaman dimuat
+    fetchDefaultData();
+
+        $('.button-filter').appendTo('.dataTables_filter');
 
         // Tambahkan event listener untuk mendeteksi perubahan ukuran layar (resize event)
         $(window).on('resize', function() {
@@ -355,11 +422,16 @@ Arutala | Data Peserta Pelatihan
 
         // Event handler untuk tombol Terapkan
         $('#applyFilter').on('click', function() {
-            const pelatihan = $('#pelatihan').val();
-            const batch = $('#batch').val();
-            fetchData(pelatihan, batch);
+        const pelatihan = $('#pelatihan').val();
+        const batch = $('#batch').val();
+
+        if (pelatihan && batch) {
+            fetchFilteredData(pelatihan, batch);
             $('#filterModal').modal('hide');
-        });
+        } else {
+            alert('Pilih pelatihan dan batch sebelum melakukan filter.');
+        }
+    });
 
         // Handler untuk tombol "Export"
         $('#exportButton').on('click', function() {

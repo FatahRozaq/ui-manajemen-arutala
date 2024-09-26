@@ -40,9 +40,15 @@ Arutala | Tambah Data Agenda
     }
 </style>
 
-<div class="pagetitle">
-    <h1>Form Pelatihan</h1>
-</div><!-- End Page Title -->
+<form id="agendaForm" method="POST" action="{{ route('agenda.tambah') }}">
+    @csrf
+
+    <div class="pagetitle d-flex justify-content-between align-items-center">
+        <h1>Tambah Agenda Pelatihan</h1>
+    
+          <button type="button" id="submitAgenda" class="btn d-flex align-items-center custom-btn" style="background-color: #344C92; color: white;">Submit</button>
+        </a>
+      </div>
 
 <section class="section">
     <div class="row">
@@ -50,15 +56,11 @@ Arutala | Tambah Data Agenda
             <div class="card">
                 <div class="card-body" style="padding-top: 50px">
 
-                    <!-- General Form Elements -->
-                    <form id="agendaForm" method="POST" action="{{ route('agenda.tambah') }}">
-                        @csrf
-
-                        <div class="row">
+                        {{-- <div class="row">
                             <div class="col-sm-11 text-right">
                                 <button type="button" class="btn" id="submitAgenda" style="background-color: #344C92; color: white;">Submit</button>
                             </div>
-                        </div>
+                        </div> --}}
                         
                         <!-- Nama Pelatihan -->
                         <div class="form-group row position-relative">

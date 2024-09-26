@@ -191,4 +191,40 @@ class ApiPesertaPelatihanController extends Controller
         // Ekspor data peserta yang sudah bayar dan belum bayar
         return Excel::download(new PesertaPelatihanExport($pendaftaranEvents), 'DataPesertaPelatihan.xlsx');
     }
+
+    public function getAllPesertaPembayaran()
+    {
+        try {
+            // Ambil semua data pendaftaran event beserta relasi yang diperlukan
+            $pendaftaranEvents = PendaftaranEvent::with(['agendaPelatihan.pelatihan', 'pendaftar'])
+                ->get();
+
+            // Siapkan data response
+            $data = $pendaftaranEvents->map(function ($event) {
+                return [
+                    'nama_pelatihan' => $event->agendaPelatihan->pelatihan->nama_pelatihan,
+                    'batch' => $event->agendaPelatihan->batch,
+                    'nama_peserta' => $event->pendaftar->nama,
+                    'no_kontak' => $event->pendaftar->no_kontak,
+                    'status_pembayaran' => $event->status_pembayaran,
+                ];
+            });
+
+            // Return response
+            return response()->json([
+                'data' => $data,
+                'message' => 'Data pembayaran peserta berhasil ditemukan',
+                'statusCode' => 200,
+                'status' => 'success'
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'data' => null,
+                'message' => 'Gagal menemukan data pembayaran peserta',
+                'statusCode' => 500,
+                'status' => 'error',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
 }

@@ -22,71 +22,76 @@ Arutala | Update Data Peserta Pelatihan
     justify-content: end;
   }
 
-  .row {
-    width: 100%;
-  }
 
-  .card {
-    width: 60%;
-    justify-items: center;
-    display: flex;
-    justify-content: center;
-  }
-
-  .col-lg-12 {
-    display: flex;
-    justify-content: center;
-  }
 </style>
 
-<div class="pagetitle">
+{{-- <div class="pagetitle">
     <h1>Pendaftar Pelatihan</h1>
 </div><!-- End Page Title -->
 
+<div class="button-submit mt-4">
+    <button class="btn btn-success col-sm-3" type="button" id="submitPelatihan">Update</button>
+</div> --}}
+<form id="updateStatusForm">
+<div class="pagetitle d-flex justify-content-between align-items-center">
+    <h1>Update Status Pembayaran</h1>
+
+    <button type="button" class="btn d-flex align-items-center custom-btn" id="submitPelatihan" style="background-color: #344C92; color: white;">
+        Save
+    </button>
+</div>
+
 <section class="section">
-    <div class="col-lg-12">
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Update Status Pembayaran Peserta</h5>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body" style="padding-top: 50px">
 
                 <!-- Form Update Status Pembayaran -->
-                <form id="updateStatusForm">
+                
                     <!-- Nama Pelatihan -->
-                    <div class="mb-3">
-                        <label for="namaPelatihan" class="form-label">Nama Pelatihan</label>
+                    <div class="form-group row position-relative">
+                        <label for="trainingInput" class="col-sm-2 col-form-label">Nama Pelatihan</label>
+                        <div class="col-sm-6">
                         <input type="text" id="namaPelatihan" class="form-control" readonly>
+                        </div>
                     </div>
 
                     <!-- Batch -->
-                    <div class="mb-3">
-                        <label for="batch" class="form-label">Batch</label>
+                    <div class="form-group row position-relative">
+                        <label  for="trainingInput" class="col-sm-2 col-form-label">Batch</label>
+                        <div class="col-sm-6">
                         <input type="text" id="batch" class="form-control" readonly>
+                        </div>
                     </div>
 
                     <!-- Nama Peserta -->
-                    <div class="mb-3">
-                        <label for="namaPeserta" class="form-label">Nama Peserta</label>
+                    <div class="form-group row position-relative">
+                        <label  for="trainingInput" class="col-sm-2 col-form-label">Nama Peserta</label>
+                        <div class="col-sm-6">
                         <input type="text" id="namaPeserta" class="form-control" readonly>
+                        </div>
                     </div>
 
                     <!-- Status Pembayaran -->
-                    <div class="mb-3">
-                        <label for="statusPembayaran" class="form-label">Status</label>
+                    <div class="form-group row position-relative">
+                        <label for="trainingInput" class="col-sm-2 col-form-label">Status</label>
+                        <div class="col-sm-6">
                         <select id="statusPembayaran" class="form-select">
                             <option value="Paid">Paid</option>
-                            <option value="Proses">Proses</option>
+                            <option value="Belum Bayar">Belum Bayar</option>
                         </select>
+                        </div>
                     </div>
 
                     <!-- Tombol Update -->
-                    <div class="button-submit mt-4">
-                        <button class="btn btn-success col-sm-3" type="button" id="submitPelatihan">Update</button>
-                    </div>
-                </form>
+                    
+                
             </div>
         </div>
     </div>
 </section>
+</form>
 
 @endsection
 
