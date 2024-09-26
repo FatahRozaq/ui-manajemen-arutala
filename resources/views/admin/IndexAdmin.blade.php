@@ -84,7 +84,7 @@ Arutala | Data Admin
         // Event listener for delete icon
         $('#dataAdminTable').on('click', '.delete-icon', function() {
             var id = $(this).data('id');
-            console.log('id')
+            console.log('id');
             Swal.fire({
                 title: 'Apakah Anda yakin?',
                 text: "Anda tidak akan dapat mengembalikan ini!",
@@ -101,8 +101,9 @@ Arutala | Data Admin
                                 'Terhapus!',
                                 response.data.message,
                                 'success'
-                            )
-                            $('#dataAdminTable').DataTable().ajax.reload(); // Reload table data
+                            ).then(() => {
+                                location.reload(); 
+                            });
                         })
                         .catch(error => {
                             Swal.fire(

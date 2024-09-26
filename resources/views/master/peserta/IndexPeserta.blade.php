@@ -106,7 +106,7 @@ Arutala | Data Pendaftar
                             <a href="{{ url('admin/pendaftar/edit?idPendaftar=${row.id_pendaftar}') }}" class="update-icon" data-id="${row.id_pendaftar}" title="Update">
                                 <i class="fas fa-edit text-warning"></i>
                             </a>
-                            <a href="" class="delete-icon" data-id="${row.id_pendaftar}" title="Delete">
+                            <a href="#" class="delete-icon" data-id="${row.id_pendaftar}" title="Delete">
                                 <i class="fas fa-trash-alt text-danger"></i>
                             </a>
                         `;

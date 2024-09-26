@@ -29,7 +29,7 @@ Arutala | Tambah Admin
                 <div class="card">
                     <div class="card-body" style="padding-top: 50px">
                             <div class="row mb-4">
-                                <label for="nama" class="col-sm-3 col-form-label">Nama</label>
+                                <label for="nama" class="col-sm-2 col-form-label">Nama</label>
                                 <div class="col-sm-6">
                                     <input type="text" name="nama" id="nama" class="form-control">
                                     <span class="text-danger" id="error-nama"></span>
@@ -37,7 +37,7 @@ Arutala | Tambah Admin
                             </div>
 
                             <div class="row mb-4">
-                                <label for="email" class="col-sm-3 col-form-label">Email</label>
+                                <label for="email" class="col-sm-2 col-form-label">Email</label>
                                 <div class="col-sm-6">
                                     <input type="email" name="email" id="email" class="form-control">
                                     <span class="text-danger" id="error-email"></span>
@@ -45,7 +45,7 @@ Arutala | Tambah Admin
                             </div>
 
                             <div class="row mb-4">
-                                <label for="password" class="col-sm-3 col-form-label">Password</label>
+                                <label for="password" class="col-sm-2 col-form-label">Password</label>
                                 <div class="col-sm-6">
                                     <input type="password" name="password" id="password" class="form-control">
                                     <span class="text-danger" id="error-password"></span>

@@ -27,7 +27,7 @@ Arutala | Update Data Mentor
                         
 
                             <div class="row mb-4">
-                                <label for="name" class="col-sm-3 col-form-label">Nama Mentor</label>
+                                <label for="name" class="col-sm-2 col-form-label">Nama Mentor</label>
                                 <div class="col-sm-6">
                                     <input type="text" name="name" id="name" class="form-control">
                                     <span class="text-danger" id="error-name"></span>
@@ -35,7 +35,7 @@ Arutala | Update Data Mentor
                             </div>
 
                             <div class="row mb-4">
-                                <label for="email" class="col-sm-3 col-form-label">Email</label>
+                                <label for="email" class="col-sm-2 col-form-label">Email</label>
                                 <div class="col-sm-6">
                                     <input type="email" name="email" id="email" class="form-control">
                                     <span class="text-danger" id="error-email"></span>
@@ -43,7 +43,7 @@ Arutala | Update Data Mentor
                             </div>
 
                             <div class="row mb-4">
-                                <label for="inputKontak" class="col-sm-3 col-form-label">Kontak</label>
+                                <label for="inputKontak" class="col-sm-2 col-form-label">Kontak</label>
                                 
                                 <div class="col-sm-6 d-flex">
                                     <div class="default-internal">
@@ -58,7 +58,7 @@ Arutala | Update Data Mentor
                             </div>
 
                             <div class="row mb-4">
-                                <label for="activity" class="col-sm-3 col-form-label">Aktivitas</label>
+                                <label for="activity" class="col-sm-2 col-form-label">Aktivitas</label>
                                 <div class="col-sm-6">
                                     <div class="custom-select-wrapper position-relative">
                                         <select name="activity" id="activity" class="form-control">

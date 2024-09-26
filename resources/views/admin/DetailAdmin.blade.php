@@ -17,13 +17,13 @@ Arutala | Detail Data Admin
         <div class="card">
           <div class="card-body" style="padding-top: 50px">
               <div class="row mb-4">
-                <label for="inputNamaAdmin" class="col-sm-3 col-form-label">Nama Admin</label>
+                <label for="inputNamaAdmin" class="col-sm-2 col-form-label">Nama Admin</label>
                 <div class="col-sm-6">
                   <input type="text" class="form-control" id="inputNamaAdmin" disabled>
                 </div>
               </div>
               <div class="row mb-4">
-                <label for="inputEmail" class="col-sm-3 col-form-label">Email</label>
+                <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
                 <div class="col-sm-6">
                   <input type="text" class="form-control" id="inputEmail" disabled>
                 </div>
