@@ -30,20 +30,31 @@ input.form-control, textarea.form-control {
 }
 </style>
 
-<div class="pagetitle row col-10 d-flex justify-content-between align-items-center">
-    <h1 class="col">Form Pelatihan</h1>
-    <div class="col text-right">
-        <button type="button" class="btn" id="submitPelatihan" style="background-color: #344C92; color: white;">Submit</button>
+{{-- <div class="pagetitle row col-12 justify-content-between align-items-center">
+    <h1 class="col text-start">Form Pelatihan</h1>
+    <div class="col d-flex justify-content-end">
+        <button type="button" class="btn d-flex align-items-center" id="submitPelatihan" style="background-color: #344C92; color: white;">Submit</button>
     </div>
-</div>
+</div> --}}
+
 <!-- End -->
 
+<form id="formPelatihan">
+    @csrf
+
+    <div class="pagetitle d-flex justify-content-between align-items-center">
+        <h1>Tambah Pelatihan</h1>
+
+        <button type="button" class="btn d-flex align-items-center custom-btn" id="submitPelatihan" style="background-color: #344C92; color: white;">
+            Submit
+        </button>
+    </div>
 
 
 <section class="section">
-    <form id="formPelatihan">
+    
     <div class="row">
-        <div class="col-lg-10">
+        <div class="col-lg-12">
             <div class="card">
                 
                 <div class="card-body" style="padding-top: 50px">
@@ -205,7 +216,7 @@ input.form-control, textarea.form-control {
             var newMateriRow = `
                 <div class="form-group row position-relative mb-1">
                     <label class="col-sm-3 col-form-label"></label>
-                    <div class="col-sm-6 input-group">
+                    <div class="col-sm-7 input-group">
                         <input type="text" class="form-control materi" name="materi[]">
                         <div class="input-group-append">
                             <button class="btn btn-outline-secondary remove-materi" type="button"><i class="bi bi-dash-circle"></i></button>
@@ -225,7 +236,7 @@ input.form-control, textarea.form-control {
             var newBenefitRow = `
                 <div class="form-group row position-relative mb-1">
                     <label class="col-sm-3 col-form-label"></label>
-                    <div class="col-sm-6 input-group">
+                    <div class="col-sm-7 input-group">
                         <input type="text" class="form-control benefit" name="benefit[]">
                         <div class="input-group-append">
                             <button class="btn btn-outline-secondary remove-benefit" type="button"><i class="bi bi-dash-circle"></i></button>

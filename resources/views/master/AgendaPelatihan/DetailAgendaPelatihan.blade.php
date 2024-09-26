@@ -61,47 +61,50 @@ Arutala | Detail Data Agenda
 
 </style>
 
-<div class="pagetitle">
-    <h1>Detail Agenda Pelatihan</h1>
-</div><!-- End Page Title -->
+<div class="pagetitle d-flex justify-content-between align-items-center">
+    <h1>Detail Data Agenda Pelatihan</h1>
 
-<section class="section">
+    <a href="" id="updateAgendaPelatihanLink">
+      <button type="button" class="btn d-flex align-items-center custom-btn" style="background-color: #344C92; color: white;">Update</button>
+    </a>
+  </div>
+
+  <section class="section">
     <div class="row">
-        <div class="col-lg-8">
-            <div class="card">
+        <div class="col-lg-12">
+            <div class="card" style="padding: 20px">
                 <div class="card-body">
-                    <h5 class="card-title">Informasi Detail Agenda</h5>
 
                     <!-- General Form Elements -->
                     <form>
                         <!-- Nama Pelatihan -->
                         <div class="form-group row position-relative">
-                            <label for="namaPelatihanInput" class="col-sm-3 col-form-label">Nama Pelatihan</label>
-                            <div class="col-sm-9">
+                            <label for="namaPelatihanInput" class="col-sm-2 col-form-label">Nama Pelatihan</label>
+                            <div class="col-sm-6">
                                 <input type="text" class="form-control disable" id="namaPelatihanInput" disabled readonly>
                             </div>
                         </div>
 
                         <!-- Batch -->
                         <div class="form-group row position-relative">
-                            <label for="batchInput" class="col-sm-3 col-form-label">Batch</label>
-                            <div class="col-sm-9">
+                            <label for="batchInput" class="col-sm-2 col-form-label">Batch</label>
+                            <div class="col-sm-6">
                                 <input type="text" class="form-control disable" id="batchInput" disabled readonly>
                             </div>
                         </div>
 
                         <!-- Start Date -->
                         <div class="form-group row position-relative">
-                            <label for="startDateInput" class="col-sm-3 col-form-label">Start</label>
-                            <div class="col-sm-9">
+                            <label for="startDateInput" class="col-sm-2 col-form-label">Start</label>
+                            <div class="col-sm-6">
                                 <input type="date" class="form-control disable" id="startDateInput" aria-label="readonly input example" readonly>
                             </div>
                         </div>
 
                         <!-- End Date -->
                         <div class="form-group row position-relative">
-                            <label for="endDateInput" class="col-sm-3 col-form-label">End</label>
-                            <div class="col-sm-9">
+                            <label for="endDateInput" class="col-sm-2 col-form-label">End</label>
+                            <div class="col-sm-6">
                                 <input type="date" class="form-control disable" id="endDateInput" aria-label="readonly input example" readonly>
                             </div>
                         </div>
@@ -113,8 +116,8 @@ Arutala | Detail Data Agenda
 
                         <!-- Investasi (Numerik) -->
                         <div class="form-group row position-relative mb-3 mt-3">
-                            <label for="investasiInput" class="col-sm-3 col-form-label">Investasi</label>
-                            <div class="col-sm-9 input-group">
+                            <label for="investasiInput" class="col-sm-2 col-form-label">Investasi</label>
+                            <div class="col-sm-6 input-group">
                                 <input type="number" class="form-control" id="investasiInput" aria-label="readonly input example" readonly>
                             </div>
                         </div>
@@ -126,16 +129,16 @@ Arutala | Detail Data Agenda
 
                         <!-- Diskon -->
                         <div class="form-group row position-relative mt-3">
-                            <label for="diskonInput" class="col-sm-3 col-form-label">Diskon %</label>
-                            <div class="col-sm-9">
+                            <label for="diskonInput" class="col-sm-2 col-form-label">Diskon %</label>
+                            <div class="col-sm-6">
                                 <input type="number" class="form-control disable" id="diskonInput" aria-label="readonly input example" readonly>
                             </div>
                         </div>
 
                         <!-- Status -->
                         <div class="form-group row position-relative">
-                            <label for="statusInput" class="col-sm-3 col-form-label">Status</label>
-                            <div class="col-sm-9">
+                            <label for="statusInput" class="col-sm-2 col-form-label">Status</label>
+                            <div class="col-sm-6">
                                 <select class="form-control" id="statusInput" disabled>
                                     <option value="Planning">Planning</option>
                                     <option value="Masa Pendaftaran">Masa Pendaftaran</option>
@@ -146,31 +149,31 @@ Arutala | Detail Data Agenda
                         </div>
 
                         <div class="form-group row position-relative">
-                            <label for="endDateInput" class="col-sm-3 col-form-label">Start Pendaftaran</label>
-                            <div class="col-sm-9">
+                            <label for="endDateInput" class="col-sm-2 col-form-label">Start Pendaftaran</label>
+                            <div class="col-sm-6">
                                 <input type="date" class="form-control disable" id="startPendaftaranInput" aria-label="readonly input example" readonly>
                             </div>
                         </div>
 
                         <div class="form-group row position-relative">
-                            <label for="endDateInput" class="col-sm-3 col-form-label">End Pendaftaran</label>
-                            <div class="col-sm-9">
+                            <label for="endDateInput" class="col-sm-2 col-form-label">End Pendaftaran</label>
+                            <div class="col-sm-6">
                                 <input type="date" class="form-control disable" id="endPendaftaranInput" aria-label="readonly input example" readonly>
                             </div>
                         </div>
 
                         <!-- Link Mayar -->
                         <div class="form-group row position-relative mt-3">
-                            <label for="linkMayarInput" class="col-sm-3 col-form-label">Link Mayar</label>
-                            <div class="col-sm-9">
+                            <label for="linkMayarInput" class="col-sm-2 col-form-label">Link Mayar</label>
+                            <div class="col-sm-6">
                                 <input type="text" class="form-control" id="linkMayarInput" aria-label="readonly input example" readonly>
                             </div>
                         </div>
 
                         <!-- Mentor -->
                         <div class="form-group row position-relative">
-                            <label for="mentorInput" class="col-sm-3 col-form-label">Mentor</label>
-                            <div class="col-sm-9">
+                            <label for="mentorInput" class="col-sm-2 col-form-label">Mentor</label>
+                            <div class="col-sm-6">
                                 <select id="mentorInput" class="form-mentor" multiple aria-label="readonly input example" readonly></select>
                             </div>
                         </div>
@@ -232,6 +235,10 @@ $(document).ready(function() {
                 $('#startPendaftaranInput').val(data.start_pendaftaran);
                 $('#endPendaftaranInput').val(data.end_pendaftaran);
 
+                var updateAgendaPelatihanLink = document.getElementById('updateAgendaPelatihanLink');
+                updateAgendaPelatihanLink.href = `/admin/agendapelatihan/update?id=${data.id_agenda}`;
+
+
                 // Populate sesi fields
                 const sesiContainer = $('#sesiContainer');
                 sesiContainer.empty();  // Clear existing inputs
@@ -239,8 +246,8 @@ $(document).ready(function() {
                     data.sesi.forEach((sesiItem, index) => {
                         sesiContainer.append(`
                             <div class="form-group row position-relative mb-1">
-                                <label class="col-sm-3 col-form-label">${index === 0 ? 'Sesi' : ''}</label>
-                                <div class="col-sm-9 input-group">
+                                <label class="col-sm-2 col-form-label">${index === 0 ? 'Sesi' : ''}</label>
+                                <div class="col-sm-6 input-group">
                                     <input type="text" class="form-control" value="${sesiItem}" aria-label="readonly input example" readonly>
                                 </div>
                             </div>
@@ -255,8 +262,8 @@ $(document).ready(function() {
                     data.investasi_info.forEach((investasiInfoItem, index) => {
                         investasiInfoContainer.append(`
                             <div class="form-group row position-relative mb-1 ">
-                                <label class="col-sm-3 col-form-label">${index === 0 ? 'Investasi Info' : ''}</label>
-                                <div class="col-sm-9 input-group">
+                                <label class="col-sm-2 col-form-label">${index === 0 ? 'Investasi Info' : ''}</label>
+                                <div class="col-sm-6 input-group">
                                     <input type="text" class="form-control" value="${investasiInfoItem}" aria-label="readonly input example" readonly>
                                 </div>
                             </div>

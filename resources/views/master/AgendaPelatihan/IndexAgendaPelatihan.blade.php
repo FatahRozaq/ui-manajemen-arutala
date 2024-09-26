@@ -18,7 +18,7 @@ Arutala | Data Agenda
 
 <div class="pagetitle d-flex justify-content-between align-items-center">
     <h1>Data Pelatihan</h1>
-    <a href="agendapelatihan/tambah" class="btn btn-success d-flex align-items-center" style="border-radius: 10px;">
+    <a href="agendapelatihan/tambah" class="btn btn-success d-flex align-items-center" style="border-radius: 5px;">
         <i class="fa-solid fa-circle-plus mr-2"></i>
         Tambah Agenda
     </a>

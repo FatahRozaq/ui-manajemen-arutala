@@ -191,4 +191,65 @@ class ApiPesertaPelatihanController extends Controller
         // Ekspor data peserta yang sudah bayar dan belum bayar
         return Excel::download(new PesertaPelatihanExport($pendaftaranEvents), 'DataPesertaPelatihan.xlsx');
     }
+
+    public function getAllPesertaPembayaran()
+    {
+        try {
+            // Ambil semua data pendaftaran event beserta relasi yang diperlukan
+            $pendaftaranEvents = PendaftaranEvent::with(['agendaPelatihan.pelatihan', 'pendaftar'])
+                ->get();
+
+            // Siapkan data response
+            $data = $pendaftaranEvents->map(function ($event) {
+                return [
+                    'nama_pelatihan' => $event->agendaPelatihan->pelatihan->nama_pelatihan,
+                    'batch' => $event->agendaPelatihan->batch,
+                    'nama_peserta' => $event->pendaftar->nama,
+                    'no_kontak' => $event->pendaftar->no_kontak,
+                    'status_pembayaran' => $event->status_pembayaran,
+                ];
+            });
+
+            // Return response
+            return response()->json([
+                'data' => $data,
+                'message' => 'Data pembayaran peserta berhasil ditemukan',
+                'statusCode' => 200,
+                'status' => 'success'
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'data' => null,
+                'message' => 'Gagal menemukan data pembayaran peserta',
+                'statusCode' => 500,
+                'status' => 'error',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function exportFiltered(Request $request)
+    {
+        try {
+            // Ambil data dari request
+            $data = $request->input('data');
+            $search = $request->input('search', ''); // Ambil parameter pencarian
+
+            // Buat koleksi data sesuai format yang diinginkan oleh `PesertaPelatihanExport`
+            $collection = collect($data);
+
+            // Lakukan filter pencarian jika ada parameter pencarian
+            if (!empty($search)) {
+                $collection = $collection->filter(function ($item) use ($search) {
+                    // Pastikan pencarian tidak case-sensitive
+                    return stripos($item['nama_peserta'], $search) !== false;
+                });
+            }
+
+            // Gunakan export Excel Anda
+            return Excel::download(new PesertaPelatihanExport($collection), 'filtered_data.xlsx');
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
 }
