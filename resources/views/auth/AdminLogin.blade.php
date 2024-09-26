@@ -85,11 +85,11 @@ Arutala | Login Admin
                         title: 'Sukses!',
                         text: 'Berhasil login!',
                         icon: 'success',
-                        confirmButtonText: 'OK'
+                        showConfirmButton: false, 
+                        timer: 1000, 
+                        timerProgressBar: true,
                     }).then((result) => {
-                        if (result.isConfirmed) {
-                            window.location.href = '/admin/dashboard';
-                        }
+                        window.location.href = '/admin/dashboard';
                     });
                 })
                 .catch(error => {

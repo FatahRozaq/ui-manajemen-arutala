@@ -13,58 +13,50 @@ Arutala | Tambah Admin
 @endsection
 
 @section('content')
+<form id="addAdminForm">
+    @csrf
+    <div class="pagetitle d-flex justify-content-between align-items-center">
+        <h1>Tambah Admin</h1>
 
-<div class="pagetitle">
-    <h1>Tambah Admin</h1>
-</div>
+        <button type="submit" class="btn d-flex align-items-center custom-btn" style="background-color: #344C92; color: white;">
+            Submit
+        </button>
+    </div>
 
-<section class="section">
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card">
-                <div class="card-body" style="padding-top: 50px">
-
-                    <form id="addAdminForm">
-                        @csrf
-
-                        <div class="row mb-4">
-                            <label for="nama" class="col-sm-3 col-form-label">Nama</label>
-                            <div class="col-sm-6">
-                                <input type="text" name="nama" id="nama" class="form-control">
-                                <span class="text-danger" id="error-nama"></span>
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body" style="padding-top: 50px">
+                            <div class="row mb-4">
+                                <label for="nama" class="col-sm-3 col-form-label">Nama</label>
+                                <div class="col-sm-6">
+                                    <input type="text" name="nama" id="nama" class="form-control">
+                                    <span class="text-danger" id="error-nama"></span>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="row mb-4">
-                            <label for="email" class="col-sm-3 col-form-label">Email</label>
-                            <div class="col-sm-6">
-                                <input type="email" name="email" id="email" class="form-control">
-                                <span class="text-danger" id="error-email"></span>
+                            <div class="row mb-4">
+                                <label for="email" class="col-sm-3 col-form-label">Email</label>
+                                <div class="col-sm-6">
+                                    <input type="email" name="email" id="email" class="form-control">
+                                    <span class="text-danger" id="error-email"></span>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="row mb-4">
-                            <label for="password" class="col-sm-3 col-form-label">Password</label>
-                            <div class="col-sm-6">
-                                <input type="password" name="password" id="password" class="form-control">
-                                <span class="text-danger" id="error-password"></span>
+                            <div class="row mb-4">
+                                <label for="password" class="col-sm-3 col-form-label">Password</label>
+                                <div class="col-sm-6">
+                                    <input type="password" name="password" id="password" class="form-control">
+                                    <span class="text-danger" id="error-password"></span>
+                                </div>
                             </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-sm-11 text-right">
-                                <button type="submit" class="btn" style="background-color: #344C92; color: white;">Submit</button>
-                            </div>
-                        </div>
-
-                    </form>
+                    </div>
                 </div>
             </div>
-
         </div>
-    </div>
-</section>
-
+    </section>
+</form>
 @endsection
 
 @section('scripts')

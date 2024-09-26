@@ -21,7 +21,7 @@ Arutala | Profile Peserta
 
 <div class="pagetitle d-flex justify-content-between align-items-center">
     <h1>Profile</h1>
-    <a href="{{ route('peserta.profile.update') }}" class="btn" style="background-color: #344C92; color: white;">
+    <a href="{{ route('peserta.profile.update') }}" class="btn d-flex align-items-center custom-btn" style="background-color: #344C92; color: white;">
         <i class="fa-regular fa-pen-to-square"></i>
         Update Profile
     </a>

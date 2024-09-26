@@ -13,6 +13,10 @@ Arutala | Pendaftaran Event
 <form id="registrationForm">
     <div class="pagetitle d-flex justify-content-between align-items-center">
         <h1>Pendaftaran Event</h1>
+
+        <button type="submit" class="btn d-flex align-items-center custom-btn" style="background-color: #344C92; color: white;">
+            Daftar
+        </button>
     </div>
 
     <section class="section">
@@ -22,9 +26,6 @@ Arutala | Pendaftaran Event
                     <div class="card-body" style="padding-top: 30px">
                         <div class="d-flex justify-content-between align-items-center">
                             <h3>Event</h3>
-                            <button type="submit" class="btn" style="background-color: #344C92; color: white;">
-                                Daftar
-                            </button>
                         </div>
                         <hr>
                         <div class="text-center mb-3">

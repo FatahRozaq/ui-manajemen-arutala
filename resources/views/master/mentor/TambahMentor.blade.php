@@ -5,86 +5,77 @@ Arutala | Tambah Mentor
 @endsection
 
 @section('content')
+<form id="addMentorForm">
+    @csrf
+    <div class="pagetitle d-flex justify-content-between align-items-center">
+        <h1>Tambah Mentor</h1>
 
-<div class="pagetitle">
-    <h1>Tambah Mentor</h1>
-</div>
+        <button type="submit" class="btn d-flex align-items-center custom-btn" style="background-color: #344C92; color: white;">
+            Submit
+        </button>
+    </div>
 
-<section class="section">
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card">
-                <div class="card-body" style="padding-top: 50px">
-
-                    <!-- Form for Adding Mentor -->
-                    <form id="addMentorForm">
-                        @csrf
-
-                        <div class="row mb-4">
-                            <label for="nama_mentor" class="col-sm-3 col-form-label">Nama Mentor</label>
-                            <div class="col-sm-6">
-                                <input type="text" name="nama_mentor" id="nama_mentor" class="form-control">
-                                <span class="text-danger" id="error-nama_mentor"></span>
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body" style="padding-top: 50px">
+                            <div class="row mb-4">
+                                <label for="nama_mentor" class="col-sm-3 col-form-label">Nama Mentor</label>
+                                <div class="col-sm-6">
+                                    <input type="text" name="nama_mentor" id="nama_mentor" class="form-control">
+                                    <span class="text-danger" id="error-nama_mentor"></span>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="row mb-4">
-                            <label for="email" class="col-sm-3 col-form-label">Email</label>
-                            <div class="col-sm-6">
-                                <input type="email" name="email" id="email" class="form-control">
-                                <span class="text-danger" id="error-email"></span>
+                            <div class="row mb-4">
+                                <label for="email" class="col-sm-3 col-form-label">Email</label>
+                                <div class="col-sm-6">
+                                    <input type="email" name="email" id="email" class="form-control">
+                                    <span class="text-danger" id="error-email"></span>
+                                </div>
                             </div>
-                        </div>
 
-                        
-
-                        <div class="row mb-4">
-                            <label for="inputKontak" class="col-sm-3 col-form-label">Kontak</label>
                             
-                            <div class="col-sm-6 d-flex">
-                                <div class="default-internal">
-                                    +62
+
+                            <div class="row mb-4">
+                                <label for="inputKontak" class="col-sm-3 col-form-label">Kontak</label>
+                                
+                                <div class="col-sm-6 d-flex">
+                                    <div class="default-internal">
+                                        +62
+                                    </div>
+                                    <div class="">
+                                        <input type="text" name="no_kontak" id="no_kontak" class="form-control">
+                                        <span class="text-danger" id="error-no_kontak"></span>
+                                    </div>
                                 </div>
-                                <div class="">
-                                    <input type="text" name="no_kontak" id="no_kontak" class="form-control">
-                                    <span class="text-danger" id="error-no_kontak"></span>
+                                
+                            </div>
+
+                            <div class="row mb-4">
+                                <label for="aktivitas" class="col-sm-3 col-form-label">Aktivitas</label>
+                                <div class="col-sm-6">
+                                    <div class="custom-select-wrapper position-relative">
+                                        <select name="aktivitas" id="aktivitas" class="form-control">
+                                            <option value="" disabled selected>Pilih Aktivitas</option>
+                                            <option value="Mahasiswa">Mahasiswa</option>
+                                            <option value="Dosen">Dosen</option>
+                                            <option value="Karyawan">Karyawan</option>
+                                            <option value="Freelance">Freelance</option>
+                                        </select>
+                                        <i class="fa fa-chevron-down position-absolute"
+                                            style="right: 15px; top: 50%; transform: translateY(-50%); pointer-events: none;"></i>
+                                    </div>
+                                    <span class="text-danger" id="error-aktivitas"></span>
                                 </div>
                             </div>
-                            
-                        </div>
-
-                        <div class="row mb-4">
-                            <label for="aktivitas" class="col-sm-3 col-form-label">Aktivitas</label>
-                            <div class="col-sm-6">
-                                <div class="custom-select-wrapper position-relative">
-                                    <select name="aktivitas" id="aktivitas" class="form-control">
-                                        <option value="" disabled selected>Pilih Aktivitas</option>
-                                        <option value="Mahasiswa">Mahasiswa</option>
-                                        <option value="Dosen">Dosen</option>
-                                        <option value="Karyawan">Karyawan</option>
-                                        <option value="Freelance">Freelance</option>
-                                    </select>
-                                    <i class="fa fa-chevron-down position-absolute"
-                                        style="right: 15px; top: 50%; transform: translateY(-50%); pointer-events: none;"></i>
-                                </div>
-                                <span class="text-danger" id="error-aktivitas"></span>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-sm-11 text-right">
-                                <button type="submit" class="btn" style="background-color: #344C92; color: white;">Submit</button>
-                            </div>
-                        </div>
-
-                    </form>
+                    </div>
                 </div>
             </div>
-
         </div>
-    </div>
-</section>
-
+    </section>
+</form>
 @endsection
 
 @section('scripts')

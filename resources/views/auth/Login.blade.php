@@ -95,11 +95,11 @@ Arutala | Login Peserta
                         title: 'Sukses!',
                         text: 'Berhasil login!',
                         icon: 'success',
-                        confirmButtonText: 'OK'
+                        showConfirmButton: false, 
+                        timer: 1000, 
+                        timerProgressBar: true,
                     }).then((result) => {
-                        if (result.isConfirmed) {
-                            window.location.href = '/daftar-event';
-                        }
+                        window.location.href = '/daftar-event';
                     });
                 })
                 .catch(error => {

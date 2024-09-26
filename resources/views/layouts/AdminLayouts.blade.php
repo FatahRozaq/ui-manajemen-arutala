@@ -160,31 +160,36 @@
         });
 
         function performLogout() {
-            localStorage.removeItem('auth_token');
-            localStorage.removeItem('auth_user');
+            Swal.fire({
+                title: 'Apakah Anda yakin ingin logout?',
+                text: "Anda akan keluar dari akun ini.",
+                icon: 'warning',
+                showCancelButton: true, 
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, logout',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    localStorage.removeItem('auth_token');
+                    localStorage.removeItem('auth_user');
 
-            axios.post('/logout')
-                .then(response => {
-                    Swal.fire({
-                        title: 'Logout Berhasil!',
-                        text: 'Anda telah keluar dari website Arutala',
-                        icon: 'success',
-                        confirmButtonText: 'OK'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
+                    axios.post('/logout')
+                        .then(response => {
                             window.location.href = '/admin';
-                        }
-                    });
-                })
-                .catch(error => {
-                    Swal.fire({
-                        title: 'Error!',
-                        text: 'Terjadi kesalahan saat logout.',
-                        icon: 'error',
-                        confirmButtonText: 'OK'
-                    });
-                });
+                        })
+                        .catch(error => {
+                            Swal.fire({
+                                title: 'Error!',
+                                text: 'Terjadi kesalahan saat logout.',
+                                icon: 'error',
+                                confirmButtonText: 'OK'
+                            });
+                        });
+                }
+            });
         }
+
     </script>
 </body>
 </html>

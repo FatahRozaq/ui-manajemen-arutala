@@ -4,16 +4,14 @@
 Arutala | Detail Data Mentor
 @endsection
 
-@section('style')
-<style>
-    
-</style>
-@endsection
-
 @section('content')
 
-  <div class="pagetitle">
+  <div class="pagetitle d-flex justify-content-between align-items-center">
     <h1>Detail Data Mentor</h1>
+
+    <a href="#" id="updateMentorLink">
+      <button type="button" class="btn d-flex align-items-center custom-btn" style="background-color: #344C92; color: white;">Update</button>
+    </a>
   </div>
 
   <section class="section">
@@ -45,14 +43,6 @@ Arutala | Detail Data Mentor
                 <label for="inputAktivitas" class="col-sm-3 col-form-label">Aktivitas</label>
                 <div class="col-sm-6">
                   <input type="text" class="form-control" id="inputAktivitas" disabled>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-sm-11 text-right">
-                  <a href="#" id="updateMentorLink">
-                    <button type="button" class="btn" style="background-color: #344C92; color: white;">Update</button>
-                  </a>
                 </div>
               </div>
           </div>

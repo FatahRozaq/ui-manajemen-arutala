@@ -4,25 +4,6 @@
 Arutala | Detail Data Admin
 @endsection
 
-@section('style')
-<style>
-  .default {
-        padding: 6px 12px;
-        background-color: #e9ecef;
-        border: 1px solid #ced4da;
-        border-radius: 4px 0 0 4px;
-        color: #495057;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .form-control {
-        border-radius: 0 4px 4px 0;
-    }
-</style>
-@endsection
-
 @section('content')
 
   <div class="pagetitle">
@@ -45,14 +26,6 @@ Arutala | Detail Data Admin
                 <label for="inputEmail" class="col-sm-3 col-form-label">Email</label>
                 <div class="col-sm-6">
                   <input type="text" class="form-control" id="inputEmail" disabled>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-sm-11 text-right">
-                  <a href="#" id="updateAdminLink">
-                    <button type="button" class="btn" style="background-color: #344C92; color: white;">Update</button>
-                  </a>
                 </div>
               </div>
           </div>

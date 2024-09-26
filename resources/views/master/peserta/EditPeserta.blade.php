@@ -39,18 +39,6 @@ Arutala | Update Data Pendaftar
         font-size: 0.875rem;
     }
 
-    .default {
-        padding: 6px 12px;
-        background-color: #e9ecef;
-        border: 1px solid #ced4da;
-        border-radius: 4px 0 0 4px;
-        color: #495057;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height:39px
-    }
-
     .form-control {
         border-radius: 0 4px 4px 0;
     }
@@ -62,7 +50,7 @@ Arutala | Update Data Pendaftar
 @csrf
 <div class="pagetitle d-flex justify-content-between align-items-center">
     <h1>Update Data Peserta</h1>
-    <button type="submit" class="btn" style="background-color: #344C92; color: white;">
+    <button type="submit" class="btn d-flex align-items-center custom-btn" style="background-color: #344C92; color: white;">
         <i class="fa-regular fa-floppy-disk"></i>
         Simpan Perubahan
     </button>
@@ -93,9 +81,9 @@ Arutala | Update Data Pendaftar
                         <div class="row mb-4">
                             <label for="kontakPeserta" class="col-sm-2 col-form-label">Kontak</label>
                             <div class="col-sm-6 d-flex">
-                                <div class="default">+62</div>
+                                <div class="default-internal">+62</div>
                                 <div class="">
-                                    <input type="text" id="kontakPeserta" name="no_kontak" class="form-control col-sm-8">
+                                    <input type="text" id="kontakPeserta" name="no_kontak" class="form-control col-sm-12">
                                     <span class="text-danger" id="error-no_kontak"></span>
                                 </div>
                             </div>
