@@ -90,6 +90,8 @@ Route::prefix('agenda')->group(function () {
 });
 
 Route::get('/pelatihan-mentor-data', [ApiAgendaController::class, 'getPelatihanMentorData']);
+Route::post('/peserta-pelatihan/export-filtered', [ApiPesertaPelatihanController::class, 'exportFiltered']);
+
 
 
 

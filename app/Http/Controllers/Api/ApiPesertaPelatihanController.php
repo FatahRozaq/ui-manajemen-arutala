@@ -227,4 +227,29 @@ class ApiPesertaPelatihanController extends Controller
             ], 500);
         }
     }
+
+    public function exportFiltered(Request $request)
+    {
+        try {
+            // Ambil data dari request
+            $data = $request->input('data');
+            $search = $request->input('search', ''); // Ambil parameter pencarian
+
+            // Buat koleksi data sesuai format yang diinginkan oleh `PesertaPelatihanExport`
+            $collection = collect($data);
+
+            // Lakukan filter pencarian jika ada parameter pencarian
+            if (!empty($search)) {
+                $collection = $collection->filter(function ($item) use ($search) {
+                    // Pastikan pencarian tidak case-sensitive
+                    return stripos($item['nama_peserta'], $search) !== false;
+                });
+            }
+
+            // Gunakan export Excel Anda
+            return Excel::download(new PesertaPelatihanExport($collection), 'filtered_data.xlsx');
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
 }

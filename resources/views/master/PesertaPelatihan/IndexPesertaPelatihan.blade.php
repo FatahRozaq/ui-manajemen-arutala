@@ -434,16 +434,50 @@ function fetchDefaultData() {
     });
 
         // Handler untuk tombol "Export"
+        // Handler untuk tombol "Export"
         $('#exportButton').on('click', function() {
-            const pelatihan = $('#pelatihan').val();
-            const batch = $('#batch').val();
+    // Ambil data dari DataTables saat ini
+    const paidData = tablePaid.rows({ filter: 'applied' }).data().toArray();
+    const unpaidData = tableUnpaid.rows({ filter: 'applied' }).data().toArray();
+    
+    // Gabungkan kedua data dari tabel "Sudah Bayar" dan "Belum Bayar"
+    const allData = paidData.concat(unpaidData);
 
-            if (pelatihan && batch) {
-                window.location.href = `/api/peserta-pelatihan/export?nama_pelatihan=${pelatihan}&batch=${batch}`;
-            } else {
-                alert('Harap pilih filter pelatihan dan batch sebelum mengimpor data.');
-            }
-        });
+    if (allData.length === 0) {
+        alert('Tidak ada data yang tersedia untuk diekspor.');
+        return;
+    }
+
+    // Ambil parameter pencarian
+    const searchText = $('.dataTables_filter input[type="search"]').val();
+
+    // Kirim request POST untuk mengekspor data dengan parameter pencarian
+    axios({
+        url: '/api/peserta-pelatihan/export-filtered',
+        method: 'POST',
+        data: { 
+            data: allData,
+            search: searchText // Tambahkan parameter pencarian
+        },
+        responseType: 'blob', // Pastikan untuk menggunakan 'blob' agar file diunduh dengan benar
+    })
+    .then(function(response) {
+        // Buat link download untuk Blob
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'filtered_data.xlsx'); // Nama file yang akan diunduh
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+    })
+    .catch(function(error) {
+        console.error('Error exporting filtered data:', error);
+        alert('Gagal mengekspor data.');
+    });
+});
+
+
 
         console.error = originalConsoleError;
     });
