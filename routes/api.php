@@ -17,7 +17,7 @@ use App\Http\Controllers\Api\ApiMasterPelatihanController;
 use App\Http\Controllers\Api\ApiMasterPendaftar;
 use App\Http\Controllers\Api\ApiPendaftaranEventController;
 use App\Http\Controllers\Api\ApiPesertaPelatihanController;
-
+use App\Http\Controllers\Api\ApiSertifikatController;
 
 /*
 |--------------------------------------------------------------------------
@@ -137,12 +137,20 @@ Route::prefix('dashboard')->group(function () {
 });
 
 Route::prefix('kelola-admin')->group(function () {
-    Route::get('/', [ApiKelolaAdminController::class, 'index']); // Mengambil daftar admin
-    Route::get('/{id}', [ApiKelolaAdminController::class, 'show']); // Mengambil detail admin berdasarkan ID
-    Route::put('update/{id}', [ApiKelolaAdminController::class, 'update']); // Memperbarui data admin berdasarkan ID
-    Route::delete('delete/{id}', [ApiKelolaAdminController::class, 'destroy']); // Menghapus admin berdasarkan ID
+    Route::get('/', [ApiKelolaAdminController::class, 'index']); 
+    Route::get('/{id}', [ApiKelolaAdminController::class, 'show']); 
+    Route::put('update/{id}', [ApiKelolaAdminController::class, 'update']); 
+    Route::delete('delete/{id}', [ApiKelolaAdminController::class, 'destroy']); 
 });
 
 Route::middleware('auth:admin')->prefix('admin-profile')->group(function () {
     Route::get('/', [ApiAuthAdminController::class, 'show']);
+});
+
+Route::prefix('sertifikat')->group(function () {
+    Route::post('/upload', [ApiSertifikatController::class, 'upload']);
+    Route::get('/download', [ApiSertifikatController::class, 'download']);
+    Route::get('/view/{idPendaftaran}', [ApiSertifikatController::class, 'view']);
+
+    Route::middleware('auth:api')->get('/peserta', [ApiSertifikatController::class, 'sertifikatPendaftar']);
 });
