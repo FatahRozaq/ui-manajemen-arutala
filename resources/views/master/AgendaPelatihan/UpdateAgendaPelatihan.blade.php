@@ -296,23 +296,29 @@ $(document).ready(function() {
                 });
 
                 // Populate investasi_info fields
-                data.investasi_info.forEach(function(info, index) {
-                    if (index === 0) {
-                        $('input[name="investasi_info[]"]').val(info);
-                    } else {
-                        $('#investasiInfoContainer').append(`
-                            <div class="form-group row position-relative mb-1">
-                                <label class="col-sm-2 col-form-label"></label>
-                                <div class="col-sm-6 input-group">
-                                    <input type="text" class="form-control" name="investasi_info[]" value="${info}">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-outline-secondary remove-investasi-info" type="button"><i class="bi bi-dash-circle"></i></button>
+                if (data.investasi_info && data.investasi_info.length > 0) {
+                    data.investasi_info.forEach(function(info, index) {
+                        if (index === 0) {
+                            $('input[name="investasi_info[]"]').val(info);
+                        } else {
+                            $('#investasiInfoContainer').append(`
+                                <div class="form-group row position-relative mb-1">
+                                    <label class="col-sm-2 col-form-label"></label>
+                                    <div class="col-sm-6 input-group">
+                                        <input type="text" class="form-control" name="investasi_info[]" value="${info}">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-secondary remove-investasi-info" type="button"><i class="bi bi-dash-circle"></i></button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        `);
-                    }
-                });
+                            `);
+                        }
+                    });
+                } else {
+                    // Jika investasi_info null, maka kosongkan input pertama
+                    $('input[name="investasi_info[]"]').val('');
+                }
+
 
                 $('#investasiInput').val(data.investasi);
                 $('#diskonInput').val(data.diskon);

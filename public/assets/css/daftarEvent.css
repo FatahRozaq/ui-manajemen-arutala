@@ -43,8 +43,14 @@
   width: 100%;
   height: auto;
   display: flex;
-  gap: 5px;
+  gap: 6px;
 }
+
+.tombol-daftar[disabled] {
+  background-color: rgb(186, 186, 186);
+  cursor: not-allowed;
+}
+
 
 .tombol-detail{
   width: 50%;
@@ -132,11 +138,11 @@ h3 {
   }
 
   .nama-pelatihan{
-    font-size: 15px;
+    font-size: 30px;
   }
 
   .date {
-  font-size: 12px;
+  font-size: 60px;
   }
 
   .price {
@@ -144,7 +150,7 @@ h3 {
     flex: start;
     color: #FF0000;
     font-weight: bold;
-    font-size: 14px;
+    font-size: 1px;
     margin: 10px 0;
     text-align: center;
   }
@@ -161,4 +167,33 @@ h3 {
     justify-content: center;
   }
 
+}
+
+/* Tambahkan border-radius untuk kedua tombol */
+.tombol-detail,
+.tombol-daftar {
+    /* padding: 10px 20px; */
+    border-radius: 5px; /* border-radius untuk membuat sudut membulat */
+    /* border: none; */
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease; /* Animasi untuk efek hover */
+}
+
+/* Tombol Detail */
+/* .tombol-detail {
+    background-color: #007bff;
+    color: white;
+} */
+
+/* Tombol Daftar */
+/* .tombol-daftar {
+    background-color: #28a745;
+    color: white;
+} */
+
+/* Hover effect untuk kedua tombol */
+.tombol-detail:hover,
+.tombol-daftar:hover {
+    transform: scale(1.1); /* Menambah ukuran tombol sedikit saat di-hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Memberikan bayangan saat di-hover */
 }

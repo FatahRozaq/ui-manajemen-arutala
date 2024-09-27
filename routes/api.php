@@ -106,7 +106,7 @@ Route::get('/peserta-pelatihan/get-agenda-id', [ApiPesertaPelatihanController::c
 Route::get('/peserta-pelatihan/export', [ApiPesertaPelatihanController::class, 'exportExcel']);
 
 
-Route::prefix('laman-peserta')->group(function () {
+Route::middleware('auth:api')->prefix('laman-peserta')->group(function () {
     Route::get('/daftar-event', [ApiLamanPesertaController::class, 'getPelatihanDetails']);
     Route::get('/event-detail/{id}', [ApiLamanPesertaController::class, 'getEventDetail'])->name('laman-peserta.event-detail');
 });

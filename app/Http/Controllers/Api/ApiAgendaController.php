@@ -16,10 +16,33 @@ class ApiAgendaController extends Controller
     public function index()
     {
         try {
+            // Mendapatkan waktu sekarang
+            $now = now();
+
             // Ambil semua agenda pelatihan yang tidak dihapus
             $agendas = AgendaPelatihan::with('pelatihan')
                 ->where('is_deleted', false)
                 ->get();
+
+            // Update status agenda pelatihan berdasarkan waktu sekarang
+            $agendas->each(function ($agenda) use ($now) {
+                if ($now->lessThan($agenda->start_pendaftaran)) {
+                    // Sebelum start_pendaftaran -> Planning
+                    $agenda->update(['status' => 'Planning']);
+                } elseif ($now->between($agenda->start_pendaftaran, $agenda->end_pendaftaran)) {
+                    // Setelah start_pendaftaran dan sebelum end_pendaftaran -> Masa Pendaftaran
+                    $agenda->update(['status' => 'Masa Pendaftaran']);
+                } elseif ($now->greaterThan($agenda->end_pendaftaran) && $now->lessThan($agenda->start_date)) {
+                    // Setelah end_pendaftaran dan sebelum start_date -> Pendaftaran Berakhir
+                    $agenda->update(['status' => 'Pendaftaran Berakhir']);
+                } elseif ($now->between($agenda->start_date, $agenda->end_date)) {
+                    // Setelah start_date dan sebelum end_date -> Sedang Berlangsung
+                    $agenda->update(['status' => 'Sedang Berlangsung']);
+                } elseif ($now->greaterThan($agenda->end_date)) {
+                    // Setelah end_date -> Selesai
+                    $agenda->update(['status' => 'Selesai']);
+                }
+            });
 
             // Siapkan data untuk response
             $responseData = $agendas->map(function ($agenda) {
@@ -56,6 +79,7 @@ class ApiAgendaController extends Controller
     }
 
 
+
     public function storeAgenda(Request $request)
     {
         DB::beginTransaction();
@@ -67,7 +91,7 @@ class ApiAgendaController extends Controller
                 'end_date' => 'required|date',
                 'sesi' => 'required|array',
                 'investasi' => 'required|integer',
-                'investasi_info' => 'required|array|max:255',
+                'investasi_info' => 'nullable|max:255',
                 'diskon' => 'nullable|integer',
                 'status' => 'required|string|max:255',
                 'start_pendaftaran' => 'required|date',
@@ -109,7 +133,14 @@ class ApiAgendaController extends Controller
             $agenda->end_date = $request->input('end_date');
             $agenda->sesi = json_encode($request->input('sesi')); // Simpan sebagai JSON string
             $agenda->investasi = $request->input('investasi');
-            $agenda->investasi_info = json_encode($request->input('investasi_info')); // Simpan sebagai JSON string
+
+            // Jika investasi_info kosong atau null, simpan null, jika ada, simpan sebagai JSON
+            if ($request->has('investasi_info') && !empty($request->input('investasi_info'))) {
+                $agenda->investasi_info = json_encode($request->input('investasi_info'));
+            } else {
+                $agenda->investasi_info = null; // Simpan null jika tidak ada data
+            }
+
             $agenda->diskon = $request->input('diskon');
             $agenda->status = $request->input('status');
             $agenda->start_pendaftaran = $request->input('start_pendaftaran');
@@ -156,6 +187,7 @@ class ApiAgendaController extends Controller
     }
 
 
+
     public function updateAgenda(Request $request, $id)
     {
         DB::beginTransaction();
@@ -171,7 +203,7 @@ class ApiAgendaController extends Controller
                 'investasi_info' => 'nullable|array|min:1', // Investasi info harus array dengan minimal 1 item
                 'investasi_info.*' => 'nullable|string|max:255', // Setiap investasi info harus berupa string
                 'diskon' => 'nullable|integer|min:0|max:100', // Diskon harus angka antara 0 dan 100, nullable berarti bisa kosong
-                'status' => 'required|string|in:Planning,Masa Pendaftaran,Sedang Berlangsung,Selesai', // Status harus sesuai dengan pilihan yang valid
+                'status' => 'required|string|in:Planning,Masa Pendaftaran,Sedang Berlangsung,Selesai,Pendaftaran Berakhir', // Status harus sesuai dengan pilihan yang valid
                 'start_pendaftaran' => 'required|date|before_or_equal:start_date', // Start pendaftaran harus sebelum atau sama dengan start_date
                 'end_pendaftaran' => 'required|date|after_or_equal:start_pendaftaran', // End pendaftaran harus setelah start_pendaftaran
                 'link_mayar' => 'required|string|url|max:255', // Link pembayaran harus URL yang valid

@@ -7,25 +7,40 @@ use App\Models\Mentor;
 use Illuminate\Http\Request;
 use App\Models\AgendaPelatihan;
 use Illuminate\Support\Facades\Log;
+use App\Models\PendaftaranEvent;
+use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 
 class ApiLamanPesertaController extends Controller
 {
-    public function getPelatihanDetails()
+    public function getPelatihanDetails(Request $request)
     {
         try {
+            // Ambil ID user yang sedang login
+            $userId = auth('api')->id();
 
+            // Get the current date
             $currentDate = Carbon::now();
-            // Ambil semua agenda dengan status "Masa Pendaftaran"
+
+            // Logging for debugging
+            Log::info('User ID:', ['userId' => $userId]);
+            Log::info('Current Date:', ['currentDate' => $currentDate]);
+
+            // Fetch agendas with open registration status
             $agendas = AgendaPelatihan::with('pelatihan')
-                // ->where('status', 'Masa Pendaftaran')
                 ->where('start_pendaftaran', '<=', $currentDate)
                 ->where('end_pendaftaran', '>=', $currentDate)
                 ->orderBy('start_date', 'desc')
                 ->get();
 
-            // Siapkan data response
-            $data = $agendas->map(function ($agenda) {
+            // Prepare response data
+            $data = $agendas->map(function ($agenda) use ($userId) {
+                // Check if the user is already registered for this event
+                $isRegistered = PendaftaranEvent::where('id_peserta', $userId)
+                    ->where('id_agenda', $agenda->id_agenda)
+                    ->exists();
+
                 return [
                     'id_agenda' => $agenda->id_agenda,
                     'nama_pelatihan' => $agenda->pelatihan->nama_pelatihan,
@@ -37,10 +52,10 @@ class ApiLamanPesertaController extends Controller
                     'diskon' => $agenda->diskon,
                     'start_date' => $agenda->start_date,
                     'is_deleted' => $agenda->is_deleted,
+                    'is_registered' => $isRegistered, // Add registration status
                 ];
             });
 
-            // Return response dengan data pelatihan
             return response()->json([
                 'data' => $data,
                 'message' => 'Data pelatihan berhasil ditemukan',
@@ -48,6 +63,7 @@ class ApiLamanPesertaController extends Controller
                 'status' => 'success'
             ], 200);
         } catch (\Exception $e) {
+            Log::error('Error in getPelatihanDetails:', ['error' => $e->getMessage()]);
             return response()->json([
                 'data' => null,
                 'message' => 'Gagal menemukan data pelatihan',
@@ -58,9 +74,13 @@ class ApiLamanPesertaController extends Controller
         }
     }
 
+
     public function getEventDetail($id)
     {
         try {
+            // Ambil ID user yang sedang login
+            $userId = auth('api')->id();
+
             // Ambil data agenda pelatihan berdasarkan ID
             $agenda = AgendaPelatihan::with('pelatihan')
                 ->where('id_agenda', $id)
@@ -78,6 +98,11 @@ class ApiLamanPesertaController extends Controller
             $mentors = Mentor::whereIn('id_mentor', $mentorIds)
                 ->where('is_deleted', false)
                 ->get();
+
+            // Cek apakah user sudah terdaftar di event
+            $isRegistered = PendaftaranEvent::where('id_peserta', $userId)
+                ->where('id_agenda', $agenda->id_agenda)
+                ->exists();
 
             // Siapkan data response
             $data = [
@@ -99,6 +124,7 @@ class ApiLamanPesertaController extends Controller
                 'investasi' => $agenda->investasi,
                 'investasi_info' => json_decode($agenda->investasi_info),
                 'discount' => $agenda->diskon,
+                'is_registered' => $isRegistered // Tambahkan status pendaftaran user
             ];
 
             return response()->json([
