@@ -26,14 +26,12 @@ Arutala | Detail Data Pendaftar
     }
 
     .card-title {
-        font-size: 1.25rem;
         font-weight: 700;
         margin-bottom: 15px;
         color: #344C92;
     }
 
     .card-text {
-        font-size: 1rem;
         color: #555;
     }
 
@@ -190,12 +188,15 @@ Arutala | Detail Data Pendaftar
                     pelatihanHTML += `
                     <div class="training-card">
                         <div class="card">
-                            <img class="card-img-top" src="{{ asset('${event.agenda_pelatihan.pelatihan.gambar_pelatihan}') }}" alt="${event.agenda_pelatihan.pelatihan.nama_pelatihan}">
+                            <img class="card-img-top" src="{{ asset('${event.agenda_pelatihan.pelatihan.gambar_pelatihan}') }}" 
+     alt="${event.agenda_pelatihan.pelatihan.nama_pelatihan}" 
+     onerror="this.onerror=null; this.src='{{ asset('assets/images/default-pelatihan.jpg') }}';">
+
                             <div class="card-body">
                                 <h5 class="card-title">${event.agenda_pelatihan.pelatihan.nama_pelatihan}</h5>
-                                <p class="card-text font-weight-bold">Status Pembayaran: ${event.status_pembayaran}</p>
-                                <p class="card-text font-weight-bold">Tanggal Mulai: ${tanggalMulai}</p>
-                                <p class="card-text font-weight-bold">Tanggal Selesai: ${tanggalSelesai}</p>
+                                <p class="card-text">Status Pembayaran: ${event.status_pembayaran}</p>
+                                <p class="card-text">Tanggal Mulai: ${tanggalMulai}</p>
+                                <p class="card-text">Tanggal Selesai: ${tanggalSelesai}</p>
                             </div>
                         </div>
                     </div>
