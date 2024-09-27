@@ -202,10 +202,13 @@ class ApiPesertaPelatihanController extends Controller
             // Siapkan data response
             $data = $pendaftaranEvents->map(function ($event) {
                 return [
+                    // 'id_pelatihan' => $event->agendaPelatihan->pelatihan->id_pelatihan,
                     'nama_pelatihan' => $event->agendaPelatihan->pelatihan->nama_pelatihan,
+                    'id_agenda' => $event->agendaPelatihan->id_agenda,
                     'batch' => $event->agendaPelatihan->batch,
                     'nama_peserta' => $event->pendaftar->nama,
                     'no_kontak' => $event->pendaftar->no_kontak,
+                    'id_pendaftaran' => $event->id_pendaftaran,
                     'status_pembayaran' => $event->status_pembayaran,
                 ];
             });
