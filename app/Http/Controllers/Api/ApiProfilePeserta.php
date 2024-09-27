@@ -41,7 +41,7 @@ class ApiProfilePeserta extends Controller
                 'statusCode' => Response::HTTP_OK,
                 'status' => 'success'
             ], Response::HTTP_OK);
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             return response()->json([
                 'message' => 'Profile pendaftar gagal diambil',
                 'statusCode' => Response::HTTP_INTERNAL_SERVER_ERROR,
@@ -118,10 +118,10 @@ class ApiProfilePeserta extends Controller
                     'status' => 'error'
                 ], Response::HTTP_NOT_FOUND);
             }
-            
+
             $pendaftar->nama = $request->input('nama');
             $pendaftar->email = $request->input('email');
-            $pendaftar->no_kontak = '+62' . ltrim($request->input('no_kontak'), '0'); 
+            $pendaftar->no_kontak = '+62' . ltrim($request->input('no_kontak'), '0');
             $pendaftar->aktivitas = $request->input('aktivitas');
             $pendaftar->nama_instansi = $request->input('nama_instansi');
             $pendaftar->provinsi = $request->input('provinsi');
@@ -146,5 +146,4 @@ class ApiProfilePeserta extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
-
 }

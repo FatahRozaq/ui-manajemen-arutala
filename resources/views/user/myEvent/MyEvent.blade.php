@@ -6,7 +6,7 @@
 
 @section('content')
 
-<h3 class="title">My Event</h3>
+<h4 class="title">My Event</h4>
 
 <div class="event-list" id="event-list">
     <!-- Data event akan dimuat di sini oleh JavaScript -->
