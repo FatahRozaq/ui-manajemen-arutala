@@ -115,6 +115,11 @@ Route::middleware('auth:api')->prefix('my-events')->group(function () {
     Route::get('/', [ApiMyEventController::class, 'getMyEvents']);
 });
 
+Route::middleware('auth:api')->group(function () {
+    // Route untuk API notifikasi event yang belum dibayar
+    Route::get('/my-notifications', [ApiMyEventController::class, 'getMyNotifications']);
+});
+
 Route::prefix('dashboard')->group(function () {
     Route::get('/pendaftar', [ApiDashboardController::class, 'getPendaftar']);
     Route::get('/tren-pelatihan', [ApiDashboardController::class, 'trenPelatihan']);
@@ -137,10 +142,10 @@ Route::prefix('dashboard')->group(function () {
 });
 
 Route::prefix('kelola-admin')->group(function () {
-    Route::get('/', [ApiKelolaAdminController::class, 'index']); 
-    Route::get('/{id}', [ApiKelolaAdminController::class, 'show']); 
-    Route::put('update/{id}', [ApiKelolaAdminController::class, 'update']); 
-    Route::delete('delete/{id}', [ApiKelolaAdminController::class, 'destroy']); 
+    Route::get('/', [ApiKelolaAdminController::class, 'index']);
+    Route::get('/{id}', [ApiKelolaAdminController::class, 'show']);
+    Route::put('update/{id}', [ApiKelolaAdminController::class, 'update']);
+    Route::delete('delete/{id}', [ApiKelolaAdminController::class, 'destroy']);
 });
 
 Route::middleware('auth:admin')->prefix('admin-profile')->group(function () {

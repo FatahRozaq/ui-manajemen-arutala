@@ -99,6 +99,7 @@ Arutala | Login Peserta
                         timer: 1000, 
                         timerProgressBar: true,
                     }).then((result) => {
+                        localStorage.setItem('login_success', 'true');
                         window.location.href = '/daftar-event';
                     });
                 })

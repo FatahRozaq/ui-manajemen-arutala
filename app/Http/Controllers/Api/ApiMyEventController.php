@@ -50,6 +50,7 @@ class ApiMyEventController extends Controller
                     'id_pendaftaran' => $event->id_pendaftaran,
                     'id_peserta' => $event->id_peserta,
                     'nama_pelatihan' => $event->agendaPelatihan->pelatihan->nama_pelatihan,
+                    'gambar_pelatihan' => $event->agendaPelatihan->pelatihan->gambar_pelatihan,
                     'start_date' => $event->agendaPelatihan->start_date,
                     'batch' => $event->agendaPelatihan->batch,
                     'end_date' => $event->agendaPelatihan->end_date,
@@ -70,6 +71,51 @@ class ApiMyEventController extends Controller
             return response()->json([
                 'data' => null,
                 'message' => 'Gagal menemukan data event',
+                'statusCode' => 404,
+                'status' => 'error',
+                'error' => $e->getMessage()
+            ], 404);
+        }
+    }
+
+    public function getMyNotifications()
+    {
+        try {
+            // Ambil ID user yang sedang login
+            $idUser = auth('api')->id();
+
+            // Ambil semua event yang diikuti oleh user ini, tetapi belum dibayar
+            $events = PendaftaranEvent::with(['agendaPelatihan.pelatihan'])
+                ->where('id_peserta', $idUser)
+                ->where('status_pembayaran', '!=', 'Paid') // Cek event yang belum dibayar
+                ->get();
+
+            // Siapkan data response
+            $data = $events->map(function ($event) {
+                return [
+                    'id_pendaftaran' => $event->id_pendaftaran,
+                    'id_peserta' => $event->id_peserta,
+                    'nama_pelatihan' => $event->agendaPelatihan->pelatihan->nama_pelatihan,
+                    'gambar_pelatihan' => $event->agendaPelatihan->pelatihan->gambar_pelatihan,
+                    'start_date' => $event->agendaPelatihan->start_date,
+                    'end_date' => $event->agendaPelatihan->end_date,
+                    'status_pelatihan' => $event->agendaPelatihan->status,
+                    'status_pembayaran' => $event->status_pembayaran, // Status pembayaran yang belum lunas
+                    'is_deleted' => $event->is_deleted,
+                ];
+            });
+
+            // Return response
+            return response()->json([
+                'data' => $data,
+                'message' => 'Data notifikasi berhasil ditemukan',
+                'statusCode' => 200,
+                'status' => 'success'
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'data' => null,
+                'message' => 'Gagal menemukan data notifikasi',
                 'statusCode' => 404,
                 'status' => 'error',
                 'error' => $e->getMessage()

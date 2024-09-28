@@ -36,70 +36,130 @@
             <ul class="d-flex align-items-center">
                 <li class="nav-item dropdown pe-3">
                     <li class="nav-item dropdown">
-
-                        <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
-                          <i class="bi bi-chat-left-text" style="font-size: 16px"></i>
-                          <span class="badge bg-success badge-number" style="font-size: 10px; margin-top:10px; margin-right:5px;">3</span>
+                        <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown" id="messagesDropdown">
+                            <i class="bi bi-chat-left-text" style="font-size: 16px"></i>
+                            <span class="badge bg-success badge-number" id="notification-badge" style="font-size: 10px; margin-top:10px; margin-right:5px;">0</span>
                         </a><!-- End Messages Icon -->
-              
+                    
                         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
-                          <li class="dropdown-header">
-                            You have 3 new messages
-                            <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
-                          </li>
-                          <li>
-                            <hr class="dropdown-divider">
-                          </li>
-              
-                          {{-- <li class="message-item">
+                            <li class="dropdown-header">
+                                <span id="notification-count">0</span> pelatihan yang belum dibayar
+                                {{-- <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a> --}}
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                    
+                            <div id="notification-list">
+                                <!-- Notification items will be loaded here -->
+                            </div>
+                    
+                            <li class="dropdown-footer">
+                                <a href="{{ route('event.history') }}">Lihat semua pelatihan anda</a>
+                            </li>
+                        </ul>
+                    </li>
+                    
+                    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+                    <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+    // Fungsi untuk memuat notifikasi pelatihan yang belum dibayar
+    function loadNotifications() {
+        const authToken = localStorage.getItem('auth_token'); // Ambil token dari localStorage
+
+        if (!authToken) {
+            console.error('No auth token found');
+            return;
+        }
+
+        // Lakukan request ke API menggunakan token yang tersimpan
+        axios.get('/api/my-notifications', {
+            headers: {
+                'Authorization': `Bearer ${authToken}` // Kirim token di header Authorization
+            }
+        })
+        .then(function(response) {
+            const notifications = response.data.data; // Ambil data notifikasi dari response
+            const notificationCount = notifications.length;
+
+            // Update jumlah notifikasi pada badge
+            document.getElementById('notification-badge').textContent = notificationCount;
+            document.getElementById('notification-count').textContent = notificationCount;
+
+            // Ambil elemen daftar notifikasi
+            const notificationList = document.getElementById('notification-list');
+            notificationList.innerHTML = ''; // Kosongkan daftar notifikasi sebelum diisi ulang
+
+            // Cek apakah ada notifikasi
+            if (notificationCount > 0) {
+                notifications.forEach(function(notification) {
+                    // Buat item HTML untuk setiap notifikasi
+                    const listItem = `
+                        <li class="message-item">
                             <a href="#">
-                              <img src="assets/img/messages-1.jpg" alt="" class="rounded-circle">
-                              <div>
-                                <h4>Maria Hudson</h4>
-                                <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
-                                <p>4 hrs. ago</p>
-                              </div>
+                                <img 
+                                    src="${notification.gambar_pelatihan ? notification.gambar_pelatihan : '/assets/images/default-pelatihan.jpg'}" 
+                                    alt="Pelatihan" 
+                                    width="40"
+                                    onerror="this.onerror=null;this.src='/assets/images/default-pelatihan.jpg';"
+                                >
+                                <div>
+                                    <h4>${notification.nama_pelatihan}</h4>
+                                    <p style="color: red;">Belum dibayar</p>
+                                    <p>${new Date(notification.start_date).toLocaleDateString()} - ${new Date(notification.end_date).toLocaleDateString()}</p>
+                                </div>
                             </a>
-                          </li>
-                          <li>
+                        </li>
+                        <li>
                             <hr class="dropdown-divider">
-                          </li>
-              
-                          <li class="message-item">
-                            <a href="#">
-                              <img src="assets/img/messages-2.jpg" alt="" class="rounded-circle">
-                              <div>
-                                <h4>Anna Nelson</h4>
-                                <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
-                                <p>6 hrs. ago</p>
-                              </div>
-                            </a>
-                          </li>
-                          <li>
-                            <hr class="dropdown-divider">
-                          </li>
-              
-                          <li class="message-item">
-                            <a href="#">
-                              <img src="assets/img/messages-3.jpg" alt="" class="rounded-circle">
-                              <div>
-                                <h4>David Muldon</h4>
-                                <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
-                                <p>8 hrs. ago</p>
-                              </div>
-                            </a>
-                          </li> --}}
-                          <li>
-                            <hr class="dropdown-divider">
-                          </li>
-              
-                          <li class="dropdown-footer">
-                            <a href="#">Show all messages</a>
-                          </li>
-              
-                        </ul><!-- End Messages Dropdown Items -->
-              
-                      </li><!-- End Messages Nav -->
+                        </li>
+                    `;
+                    // Tambahkan item ke dalam daftar
+                    notificationList.insertAdjacentHTML('beforeend', listItem);
+                });
+            } else {
+                // Jika tidak ada notifikasi, tampilkan pesan kosong
+                notificationList.innerHTML = `
+                    <li class="message-item">
+                        <div>
+                            <p>Tidak ada pelatihan yang belum dibayar.</p>
+                        </div>
+                    </li>
+                `;
+            }
+        })
+        .catch(function(error) {
+            console.error('Error fetching notifications:', error);
+            const notificationList = document.getElementById('notification-list');
+            notificationList.innerHTML = '<p class="error">Gagal memuat data notifikasi. Silakan coba lagi nanti.</p>';
+        });
+    }
+
+    // Fungsi untuk membuka dropdown jika login berhasil
+    function openDropdownIfLoginSuccess() {
+        const loginSuccess = localStorage.getItem('login_success');
+
+        if (loginSuccess) {
+            const dropdownElement = document.getElementById('messagesDropdown');
+            const dropdownInstance = new bootstrap.Dropdown(dropdownElement); // Bootstrap 5 dropdown instance
+            dropdownInstance.show(); // Buka dropdown
+
+            // Hapus flag setelah dropdown terbuka agar tidak terbuka terus
+            localStorage.removeItem('login_success');
+        }
+    }
+
+    // Panggil fungsi loadNotifications saat halaman dimuat
+    loadNotifications();
+
+    // Panggil fungsi openDropdownIfLoginSuccess untuk membuka dropdown jika login berhasil
+    openDropdownIfLoginSuccess();
+});
+
+                    </script>
+                    
+
+
                     <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
                         <span id="navbarUserName" class="d-none d-md-block dropdown-toggle ps-2" style="font-size: 14px;">Peserta</span>
                         <i class="fa-solid fa-circle-user" style="font-size: 25px; margin-left:20px; margin-right:10px;"></i>
