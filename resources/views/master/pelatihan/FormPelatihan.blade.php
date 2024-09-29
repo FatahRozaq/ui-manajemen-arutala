@@ -215,7 +215,7 @@ input.form-control, textarea.form-control {
         $('#materiContainer').on('click', '.add-materi', function () {
             var newMateriRow = `
                 <div class="form-group row position-relative mb-1">
-                    <label class="col-sm-3 col-form-label"></label>
+                    <label class="col-sm-2 col-form-label"></label>
                     <div class="col-sm-7 input-group">
                         <input type="text" class="form-control materi" name="materi[]">
                         <div class="input-group-append">
@@ -235,7 +235,7 @@ input.form-control, textarea.form-control {
         $('#benefitContainer').on('click', '.add-benefit', function () {
             var newBenefitRow = `
                 <div class="form-group row position-relative mb-1">
-                    <label class="col-sm-3 col-form-label"></label>
+                    <label class="col-sm-2 col-form-label"></label>
                     <div class="col-sm-7 input-group">
                         <input type="text" class="form-control benefit" name="benefit[]">
                         <div class="input-group-append">
