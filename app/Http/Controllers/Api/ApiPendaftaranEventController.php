@@ -144,8 +144,8 @@ class ApiPendaftaranEventController extends Controller
             $pendaftaranEvent = PendaftaranEvent::create([
                 'id_peserta' => $pendaftar->id_pendaftar,
                 'id_agenda' => $request->id_agenda,
-                'status_pembayaran' => $request->status_pembayaran,
-                'status_kehadiran' => 'Belum Hadir', // Default status kehadiran
+                'status_pembayaran' => 'Unpaid',
+                'status_kehadiran' => 'Belum Hadir', 
                 'created_by' => $request->email,
                 'created_time' => now(),
                 'modified_by' => $request->email,
