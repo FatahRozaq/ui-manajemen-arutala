@@ -324,7 +324,7 @@ Arutala | Pendaftaran Event
                         nama_instansi: document.getElementById('nama_instansi').value,
                         provinsi: $('#provinsi option:selected').text(),
                         kab_kota: $('#kab_kota option:selected').text(),
-                        status_pembayaran: 'Belum Bayar'
+                        status_pembayaran: 'Unpaid'
                     };
 
                     axios.post('/api/pendaftaran-event/daftar', formData, {
