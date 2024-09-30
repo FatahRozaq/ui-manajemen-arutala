@@ -61,6 +61,25 @@ Arutala | Detail Data Agenda
 
 </style>
 
+<style>
+    .breadcrumb {
+      background-color: transparent;
+      padding-left: 0;
+      padding-bottom: 0;
+    }
+
+    .breadcrumb-item {
+        font-size: 12px;
+    }
+  </style>
+  
+  <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/admin/agendapelatihan">Agenda Pelatihan</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Detail Agenda</li>
+      </ol>
+  </nav>
+
 <div class="pagetitle d-flex justify-content-between align-items-center">
     <h1>Detail Data Agenda Pelatihan</h1>
 

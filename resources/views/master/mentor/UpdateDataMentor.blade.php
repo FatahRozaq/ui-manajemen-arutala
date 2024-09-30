@@ -5,6 +5,24 @@ Arutala | Update Data Mentor
 @endsection
 
 @section('content')
+<style>
+    .breadcrumb {
+      background-color: transparent;
+      padding-left: 0;
+      padding-bottom: 0;
+    }
+
+    .breadcrumb-item {
+        font-size: 12px;
+    }
+  </style>
+  
+  <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/admin/mentor">Mentor</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Update Mentor</li>
+      </ol>
+  </nav>
 <form id="editMentorForm">
 @csrf
 @method('PUT')

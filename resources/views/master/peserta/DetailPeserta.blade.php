@@ -71,6 +71,25 @@ Arutala | Detail Data Pendaftar
 
 @section('content')
 
+<style>
+    .breadcrumb {
+      background-color: transparent;
+      padding-left: 0;
+      padding-bottom: 0;
+    }
+
+    .breadcrumb-item {
+        font-size: 12px;
+    }
+  </style>
+  
+  <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/admin/pendaftar">Pendaftar</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Detail Pendaftar</li>
+      </ol>
+  </nav>
+
 <div class="pagetitle d-flex justify-content-between align-items-center">
     <h1>Detail Data Pendaftar</h1>
     <button onclick="update()" class="btn d-flex align-items-center custom-btn" style="background-color: #344C92; color: white;">

@@ -2,6 +2,19 @@
 
 @section('content')
 
+<style>
+  .breadcrumb {
+    background-color: transparent;
+  }
+</style>
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/admin/mentor">Mentor</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Tambah Mentor</li>
+    </ol>
+</nav>
+
 <div class="pagetitle">
     <h1>Form Pelatihan</h1>
   </div><!-- End Page Title -->

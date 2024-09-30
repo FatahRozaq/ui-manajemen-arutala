@@ -4,6 +4,10 @@
 <link href="{{ asset('assets/css/myEvent.css') }}" rel="stylesheet">
 @endsection
 
+@section('title')
+Arutala | My Event
+@endsection
+
 @section('content')
 
 <h4 class="title">My Event</h4>
