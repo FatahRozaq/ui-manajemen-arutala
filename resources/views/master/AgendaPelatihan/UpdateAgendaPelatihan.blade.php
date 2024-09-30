@@ -61,6 +61,20 @@ Arutala | Update Data Agenda
 @endsection
 
 @section('content')
+
+<style>
+    .breadcrumb {
+      background-color: transparent;
+    }
+  </style>
+  
+  <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/admin/agendapelatihan">Agenda Pelatihan</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Update Agenda</li>
+      </ol>
+  </nav>
+
 <form id="updateAgendaForm">
     @csrf
     @method('PUT')

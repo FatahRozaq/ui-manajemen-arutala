@@ -21,6 +21,19 @@ Arutala | Detail Data Pelatihan
   }
 </style>
 
+<style>
+    .breadcrumb {
+      background-color: transparent;
+    }
+  </style>
+  
+  <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/admin/pelatihan">Pelatihan</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Detail Pelatihan</li>
+      </ol>
+  </nav>
+
 <div class="pagetitle d-flex justify-content-between align-items-center">
     <h1>Detail Data Pelatihan</h1>
 

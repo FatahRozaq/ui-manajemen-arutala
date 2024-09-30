@@ -5,6 +5,18 @@ Arutala | Tambah Mentor
 @endsection
 
 @section('content')
+<style>
+    .breadcrumb {
+      background-color: transparent;
+    }
+  </style>
+  
+  <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/admin/mentor">Mentor</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Tambah Mentor</li>
+      </ol>
+  </nav>
 <form id="addMentorForm">
     @csrf
     <div class="pagetitle d-flex justify-content-between align-items-center">
