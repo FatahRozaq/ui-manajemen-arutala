@@ -250,7 +250,7 @@ class ApiPesertaPelatihanController extends Controller
             }
 
             // Gunakan export Excel Anda
-            return Excel::download(new PesertaPelatihanExport($collection), 'filtered_data.xlsx');
+            return Excel::download(new PesertaPelatihanExport($collection), 'data_pembayaran.xlsx');
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }

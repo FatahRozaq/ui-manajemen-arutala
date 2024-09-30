@@ -107,6 +107,7 @@ Arutala | Data Peserta Pelatihan
                     <div class="d-flex">
                         <button class="nav-link active" id="nav-paid-tab" data-bs-toggle="tab" data-bs-target="#nav-paid" type="button" role="tab" aria-controls="nav-paid" aria-selected="true">Sudah Bayar</button>
                         <button class="nav-link" id="nav-unpaid-tab" data-bs-toggle="tab" data-bs-target="#nav-unpaid" type="button" role="tab" aria-controls="nav-unpaid" aria-selected="false">Belum Bayar</button>
+                        <button class="nav-link" id="nav-process-tab" data-bs-toggle="tab" data-bs-target="#nav-process" type="button" role="tab" aria-controls="nav-process" aria-selected="false">Process</button>
                     </div>
                     <form id="exportForm" class="d-inline">
                         @csrf
@@ -145,6 +146,24 @@ Arutala | Data Peserta Pelatihan
                         <!-- Belum Bayar Tab -->
                         <div class="tab-pane fade" id="nav-unpaid" role="tabpanel" aria-labelledby="nav-unpaid-tab">
                             <table id="dataDetailPelatihanTableUnpaid" class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Nama Peserta</th>
+                                        <th>Pelatihan</th>
+                                        <th>Batch</th>
+                                        <th>No Kontak</th>
+                                        <th>Status Pembayaran</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Data will be populated by DataTables -->
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="tab-pane fade" id="nav-process" role="tabpanel" aria-labelledby="nav-process-tab">
+                            <table id="dataDetailPelatihanTableProcess" class="table table-striped">
                                 <thead>
                                     <tr>
                                         <th>Nama Peserta</th>
@@ -302,11 +321,13 @@ Arutala | Data Peserta Pelatihan
 
             // Pisahkan data berdasarkan status pembayaran
             const paidData = filteredData.filter(item => item.status_pembayaran.toLowerCase() === 'paid' || item.status_pembayaran.toLowerCase() === 'sudah');
-            const unpaidData = filteredData.filter(item => item.status_pembayaran.toLowerCase() === 'proses' || item.status_pembayaran.toLowerCase() === 'belum bayar');
+            const unpaidData = filteredData.filter(item => item.status_pembayaran.toLowerCase() === 'unpaid' || item.status_pembayaran.toLowerCase() === 'belum bayar');
+            const processData = filteredData.filter(item => item.status_pembayaran.toLowerCase() === 'proses' || item.status_pembayaran.toLowerCase() === 'process');
 
             // Update DataTables dengan data yang telah dipisahkan
             tablePaid.clear().rows.add(paidData).draw();
             tableUnpaid.clear().rows.add(unpaidData).draw();
+            tableProcess.clear().rows.add(processData).draw();
         })
         .catch(function(error) {
             console.error('Error fetching data:', error);
@@ -320,11 +341,14 @@ function fetchDefaultData() {
 
                 // Pisahkan data berdasarkan status pembayaran
                 const paidData = data.filter(item => item.status_pembayaran.toLowerCase() === 'paid' || item.status_pembayaran.toLowerCase() === 'sudah');
-                const unpaidData = data.filter(item => item.status_pembayaran.toLowerCase() === 'proses' || item.status_pembayaran.toLowerCase() === 'belum bayar');
+                const unpaidData = data.filter(item => item.status_pembayaran.toLowerCase() === 'unpaid' || item.status_pembayaran.toLowerCase() === '');
+                const processData = data.filter(item => item.status_pembayaran.toLowerCase() === 'process' || item.status_pembayaran.toLowerCase() === 'proses');
+
 
                 // Update DataTables dengan data yang telah dipisahkan
                 tablePaid.clear().rows.add(paidData).draw();
                 tableUnpaid.clear().rows.add(unpaidData).draw();
+                tableProcess.clear().rows.add(processData).draw();
             })
             .catch(function(error) {
                 console.error('Error fetching default data:', error);
@@ -424,6 +448,45 @@ function fetchDefaultData() {
         ]
     });
 
+    let tableProcess = $('#dataDetailPelatihanTableProcess').DataTable({
+    dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6 d-flex justify-content-end"f<"filter-import">>>rtip',
+    responsive: true,
+    ajax: {
+        type: 'GET',
+        dataSrc: function (json) {
+            return json.data;
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            // Kosongkan fungsi untuk tidak menampilkan kesalahan di konsol
+        }
+    },
+    columns: [
+        { data: 'nama_peserta' },
+        { data: 'nama_pelatihan' },
+        { data: 'batch' },
+        { data: 'no_kontak' },
+        {
+            data: 'status_pembayaran',
+            render: function(data) {
+                let colorClass = data.toLowerCase() === 'paid' ? 'text-success' : 'text-warning';
+                return `<span class="${colorClass}">${data}</span>`;
+            }
+        },
+        {
+            data: null,
+            render: function(data, type, row) {
+                const idPendaftaran = row.id_pendaftaran || 'undefined';
+                const idAgenda = row.id_agenda || 'undefined';
+                return `
+                <a href="pesertapelatihan/updatestatus?id_pendaftaran=${idPendaftaran}&id_agenda=${idAgenda}" class="update-icon" title="Update">
+                    <i class="fas fa-edit text-warning"></i>
+                </a>
+                `;
+            }
+        }
+    ]
+});
+
     function fetchFilteredData(pelatihan, batch) {
     // Dapatkan id_agenda berdasarkan pelatihan dan batch
     axios.get(`/api/peserta-pelatihan/get-agenda-id`, {
@@ -447,11 +510,13 @@ function fetchDefaultData() {
 
             // Pisahkan data berdasarkan status pembayaran
             const paidData = filteredData.filter(item => item.status_pembayaran.toLowerCase() === 'paid' || item.status_pembayaran.toLowerCase() === 'sudah');
-            const unpaidData = filteredData.filter(item => item.status_pembayaran.toLowerCase() === 'proses' || item.status_pembayaran.toLowerCase() === 'belum bayar');
+            const unpaidData = filteredData.filter(item => item.status_pembayaran.toLowerCase() === 'unpaid' || item.status_pembayaran.toLowerCase() === 'belum bayar');
+            const processData = filteredData.filter(item => item.status_pembayaran.toLowerCase() === 'process' || item.status_pembayaran.toLowerCase() === 'proses');
 
             // Update DataTables dengan data yang telah dipisahkan
             tablePaid.clear().rows.add(paidData).draw();
             tableUnpaid.clear().rows.add(unpaidData).draw();
+            tableProcess.clear().rows.add(processData).draw();
         })
         .catch(function(error) {
             console.error('Error fetching filtered data:', error);
@@ -471,7 +536,8 @@ function fetchDefaultData() {
         // Tambahkan event listener untuk mendeteksi perubahan ukuran layar (resize event)
         $(window).on('resize', function() {
             tablePaid.responsive.recalc();  // Panggil responsive.recalc() untuk menghitung ulang ukuran tabel
-            tableUnpaid.responsive.recalc();  // Lakukan hal yang sama untuk tabel unpaid
+            tableUnpaid.responsive.recalc();
+            tableProcess.responsive.recalc();  
         });
 
         // Event handler untuk tombol Terapkan
@@ -493,9 +559,10 @@ function fetchDefaultData() {
     // Ambil data dari DataTables saat ini
     const paidData = tablePaid.rows({ filter: 'applied' }).data().toArray();
     const unpaidData = tableUnpaid.rows({ filter: 'applied' }).data().toArray();
+    const processData = tableProcess.rows({ filter: 'applied' }).data().toArray();
     
     // Gabungkan kedua data dari tabel "Sudah Bayar" dan "Belum Bayar"
-    const allData = paidData.concat(unpaidData);
+    const allData = paidData.concat(unpaidData, processData);
 
     if (allData.length === 0) {
         alert('Tidak ada data yang tersedia untuk diekspor.');
@@ -520,7 +587,7 @@ function fetchDefaultData() {
         const url = window.URL.createObjectURL(new Blob([response.data]));
         const link = document.createElement('a');
         link.href = url;
-        link.setAttribute('download', 'filtered_data.xlsx'); // Nama file yang akan diunduh
+        link.setAttribute('download', 'data_pembayaran.xlsx'); // Nama file yang akan diunduh
         document.body.appendChild(link);
         link.click();
         link.remove();
