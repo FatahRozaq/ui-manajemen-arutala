@@ -41,7 +41,13 @@ input.form-control, textarea.form-control {
 <style>
     .breadcrumb {
       background-color: transparent;
+      padding-left: 0;
     }
+
+    .breadcrumb-item {
+        font-size: 12px;
+    }
+
   </style>
   
   <nav aria-label="breadcrumb">

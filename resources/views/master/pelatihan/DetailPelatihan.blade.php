@@ -24,6 +24,11 @@ Arutala | Detail Data Pelatihan
 <style>
     .breadcrumb {
       background-color: transparent;
+      padding-left: 0;
+    }
+
+    .breadcrumb-item {
+        font-size: 12px;
     }
   </style>
   
