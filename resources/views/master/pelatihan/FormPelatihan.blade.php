@@ -42,6 +42,7 @@ input.form-control, textarea.form-control {
     .breadcrumb {
       background-color: transparent;
       padding-left: 0;
+      padding-bottom: 0;
     }
 
     .breadcrumb-item {

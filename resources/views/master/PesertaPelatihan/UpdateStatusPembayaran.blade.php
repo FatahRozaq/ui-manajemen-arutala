@@ -29,7 +29,7 @@ Arutala | Update Data Peserta Pelatihan
     .breadcrumb {
       background-color: transparent;
       padding-left: 0;
-      font-size: 12px
+      padding-bottom: 0;
     }
 
     .breadcrumb-item {

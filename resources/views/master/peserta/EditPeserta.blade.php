@@ -51,6 +51,7 @@ Arutala | Update Data Pendaftar
     .breadcrumb {
       background-color: transparent;
       padding-left: 0;
+      padding-bottom: 0;
       
     }
 

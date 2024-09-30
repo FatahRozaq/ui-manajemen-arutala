@@ -10,6 +10,7 @@ Arutala | Detail Data Mentor
   .breadcrumb {
     background-color: transparent;
     padding-left: 0;
+    padding-bottom: 0;
   }
 
   .breadcrumb-item {
