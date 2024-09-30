@@ -63,7 +63,7 @@ Arutala | Update Data Pendaftar
 <form id="updatePesertaForm">
 @csrf
 <div class="pagetitle d-flex justify-content-between align-items-center">
-    <h1>Update Data Peserta</h1>
+    <h1>Update Data Pendaftar</h1>
     <button type="submit" class="btn d-flex align-items-center custom-btn" style="background-color: #344C92; color: white;">
         <i class="fa-regular fa-floppy-disk"></i>
         Simpan Perubahan

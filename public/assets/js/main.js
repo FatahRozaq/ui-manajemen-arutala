@@ -42,22 +42,40 @@
   /**
    * Sidebar toggle
    */
+  function updateSidebarBtnMargin() {
+    const sidebarBtn = select('.toggle-sidebar-btn');
+    
+    if (select('body').classList.contains('toggle-sidebar')) {
+      sidebarBtn.style.marginLeft = '-180px'; // Atur margin-left jadi 0 ketika sidebar terbuka
+    } else {
+      sidebarBtn.style.marginLeft = ''; // Reset margin ke default ketika sidebar tertutup
+    }
+  }
+  
   if (select('.toggle-sidebar-btn')) {
     on('click', '.toggle-sidebar-btn', function(e) {
       select('body').classList.toggle('toggle-sidebar');
+      updateSidebarBtnMargin(); // Update margin setiap kali tombol diklik
     });
   }
   
   // Menambahkan event listener untuk klik di seluruh dokumen
   document.addEventListener('click', function(event) {
-    const sidebar = select('.sidebar'); // Pastikan elemen sidebar dipilih dengan benar
+    const sidebar = select('.sidebar');
     const sidebarBtn = select('.toggle-sidebar-btn');
     
     // Jika klik terjadi di luar sidebar dan juga bukan di tombol sidebar, tutup sidebar
     if (!sidebar.contains(event.target) && !sidebarBtn.contains(event.target)) {
       select('body').classList.remove('toggle-sidebar');
+      updateSidebarBtnMargin(); // Update margin ketika sidebar ditutup
     }
   });
+  
+  // Jalankan saat halaman dimuat untuk memastikan margin benar
+  document.addEventListener('DOMContentLoaded', function() {
+    updateSidebarBtnMargin(); // Atur margin saat halaman dimuat
+  });
+  
 
   /**
    * Search bar toggle

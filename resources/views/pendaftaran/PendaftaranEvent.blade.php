@@ -224,8 +224,8 @@ Arutala | Pendaftaran Event
                 eventSession.textContent = "No sessions available";
             }
 
-            document.getElementById('eventPrice').textContent = `Rp${agenda.investasi}`;
-            document.getElementById('eventDiscountedPrice').textContent = agenda.diskon ? `Rp${agenda.diskon}` : ' ';
+            document.getElementById('eventPrice').textContent = `Rp${agenda.investasi.toLocaleString('id-ID')}`;
+            document.getElementById('eventDiscountedPrice').textContent = agenda.diskon ? `Rp${agenda.diskon.toLocaleString('id-ID')}` : ' ';
 
             document.getElementById('nama').value = pendaftar.nama || '';
             document.getElementById('email').value = pendaftar.email || '';
