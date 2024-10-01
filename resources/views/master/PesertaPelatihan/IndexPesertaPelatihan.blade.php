@@ -725,6 +725,39 @@ $('#dataDetailPelatihanTablePaid').on('click', '.view-cert-icon', function(e) {
 });
 
 
+$(document).on('click', 'a[title="Download Sertifikat"]', function (e) {
+    e.preventDefault(); // Mencegah perilaku default dari elemen link
+    const url = $(this).attr('href');
+
+    $.ajax({
+        url: url,
+        method: 'GET',
+        xhrFields: {
+            responseType: 'blob' // Mengharapkan respon blob untuk file
+        },
+        success: function (data, status, xhr) {
+            const filename = xhr.getResponseHeader('Content-Disposition')
+                .split('filename=')[1]
+                .replace(/['"]/g, '');
+            const url = window.URL.createObjectURL(new Blob([data]));
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            a.remove();
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            // Tampilkan SweetAlert untuk pesan error
+            Swal.fire({
+                icon: 'error',
+                title: 'Download Gagal',
+                text: 'Terjadi kesalahan saat mendownload sertifikat. Silakan coba lagi.',
+            });
+        }
+    });
+});
 
 </script>
 

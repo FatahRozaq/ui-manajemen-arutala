@@ -335,12 +335,12 @@ Arutala | Pendaftaran Event
                     .then(function(response) {
                         Swal.fire({
                             title: 'Sukses!',
-                            text: 'Pendaftaran berhasil dilakukan.',
+                            text: 'Pendaftaran berhasil dilakukan.  Silakan lakukan pembayaran di menu my event (apabila terdapat pembayaran)',
                             icon: 'success',
                             confirmButtonText: 'OK'
                         }).then(function(result) {
                             if (result.isConfirmed) {
-                                window.location.href = '/daftar-event';
+                                window.location.href = '/my-event';
                             }
                         });
                     })
