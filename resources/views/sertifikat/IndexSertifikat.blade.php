@@ -4,6 +4,63 @@
 Arutala | Sertifikat Peserta
 @endsection
 
+@section('style')
+<style>
+    .card.fixed-size {
+        height: 350px; /* Fixed height to ensure uniformity */
+        max-width: 100%;
+    }
+
+    .card .card-body {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 100%;
+    }
+
+    .card-title {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        transition: all 0.3s ease;
+        margin-bottom: -10px; /* Adjusted margin to reduce space between title and batch */
+    }
+
+    /* On hover, show full name */
+    .card:hover .card-title {
+        white-space: normal;
+        height: auto;
+        overflow: visible;
+    }
+
+    /* Ensure buttons are the same size */
+    .btn-custom {
+        width: 48%;
+        display: flex;
+        justify-content: center;
+        gap: 5px;
+        align-items: center;
+    }
+
+    /* Buttons side-by-side unless on small screen */
+    .button-group {
+        display: flex;
+        gap: 4%;
+        margin-top: 10px;
+    }
+
+    @media (max-width: 576px) {
+        .button-group {
+            flex-direction: column;
+            gap: 10px;
+        }
+        .btn-custom {
+            width: 100%;
+        }
+    }
+</style>
+@endsection
+
 @section('content')
 
 <div class="pagetitle">
@@ -11,10 +68,8 @@ Arutala | Sertifikat Peserta
 </div>
 
 <section class="section">
-    <div class="row">
-        <div class="col-lg-12">
-            <div id="certificate-list"></div>
-        </div>
+    <div class="row" id="certificate-list">
+        <!-- Certificate cards will be appended here -->
     </div>
 </section>
 
@@ -26,15 +81,12 @@ Arutala | Sertifikat Peserta
                 <h5 class="modal-title" id="previewModalLabel">Preview Sertifikat</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+                <!-- Preview content will be injected here -->
             </div>
-            <!-- <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div> -->
         </div>
     </div>
 </div>
-
 @endsection
 
 @section('scripts')
@@ -57,19 +109,21 @@ Arutala | Sertifikat Peserta
                     } else {
                         certificates.forEach(certificate => {
                             const card = `
-                                <div class="card mb-3">
-                                    <div class="card-body d-flex justify-content-between align-items-center">
-                                        <div>
-                                            <h5 class="card-title mb-0">${certificate.pendaftaran.agenda_pelatihan.pelatihan.nama_pelatihan}</h5>
-                                            <small class="text-muted">Batch ${certificate.pendaftaran.agenda_pelatihan.batch}</small>
-                                        </div>
-                                        <div class="d-flex flex-column flex-sm-row mt-3 mt-sm-0 gap-2">
-                                            <a href="/api/sertifikat/download?id_pendaftaran=${certificate.id_pendaftaran}" class="btn btn-success mb-2 mb-sm-0 d-flex align-items-center">
-                                                <i class="fas fa-download"></i> <span class="ms-2">Download</span>
-                                            </a>
-                                            <a href="#" class="btn btn-primary mt-2 mt-sm-0 d-flex align-items-center view-cert-btn" data-idpendaftaran="${certificate.id_pendaftaran}">
-                                                <i class="fas fa-eye"></i> <span class="ms-2">Lihat</span>
-                                            </a>
+                                <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
+                                    <div class="card h-100 fixed-size">
+                                        <div class="card-body d-flex flex-column justify-content-between">
+                                            <div>
+                                                <h6 class="card-title">${certificate.pendaftaran.agenda_pelatihan.pelatihan.nama_pelatihan}</h6>
+                                                <small class="text-muted">Batch ${certificate.pendaftaran.agenda_pelatihan.batch}</small>
+                                            </div>
+                                            <div class="button-group">
+                                                <a href="/api/sertifikat/download?id_pendaftaran=${certificate.id_pendaftaran}" class="btn btn-success btn-sm btn-custom">
+                                                    <i class="fas fa-download"></i> Download
+                                                </a>
+                                                <a href="#" class="btn btn-primary btn-sm btn-custom view-cert-btn" data-idpendaftaran="${certificate.id_pendaftaran}">
+                                                    <i class="fas fa-eye"></i> Lihat
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>`;
@@ -111,14 +165,12 @@ Arutala | Sertifikat Peserta
 
                     let content;
                     if (fileUrl.endsWith('.pdf')) {
-                        content = `<iframe src="${fileUrl}" class="w-100" style="height: 500px;"></iframe>`;
+                        content = `<iframe src="${fileUrl}" class="preview-content w-100" style="height: 80vh;"></iframe>`;
                     } else {
-                        content = `<img src="${fileUrl}" class="img-fluid" alt="Sertifikat Peserta">`;
+                        content = `<img src="${fileUrl}" class="preview-content img-fluid" style="max-width: 100%; max-height: 80vh; object-fit: contain;" alt="Sertifikat Peserta">`;
                     }
 
-                    $('#previewModal .modal-body').html(`
-                        ${content}
-                    `);
+                    $('#previewModal .modal-body').html(content);
                     $('#previewModal').modal('show');
                 })
                 .catch(error => {

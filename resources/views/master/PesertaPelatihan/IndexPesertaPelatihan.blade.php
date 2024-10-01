@@ -99,6 +99,7 @@ Arutala | Data Peserta Pelatihan
     </div>
 </div>
 
+
 <section class="section">
     <div class="row">
         <div class="col-lg-12">
@@ -594,11 +595,31 @@ $('#dataDetailPelatihanTablePaid').on('click', '.view-cert-icon', function(e) {
         success: function(response) {
             if (response.status === 'success') {
                 const fileUrl = response.data.file_url;
+                const fileExtension = fileUrl.split('.').pop().toLowerCase(); // Get file extension
 
-                // Populate modal with file and name
-                $('#previewModal .modal-body').html(`
-                    <iframe src="${fileUrl}" class="w-100" style="height:400px;"></iframe>
-                `);
+                // Conditional rendering based on file type
+                let previewContent = '';
+
+                if (['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension)) {
+                    previewContent = `
+                        <img src="${fileUrl}" class="img-fluid" style="object-fit: contain; width: 100%; max-height: 80vh;" />
+                    `;
+                } else if (fileExtension === 'pdf') {
+                    previewContent = `
+                        <iframe src="${fileUrl}" class="w-100" style="height:80vh;" frameborder="0"></iframe>
+                    `;
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'File tidak didukung',
+                        text: 'Format file tidak dikenali.',
+                        confirmButtonText: 'Tutup'
+                    });
+                    return;
+                }
+
+                // Inject content into modal
+                $('#previewModal .modal-body').html(previewContent);
                 $('#previewModal').modal('show');
             } else {
                 Swal.fire({
@@ -619,6 +640,7 @@ $('#dataDetailPelatihanTablePaid').on('click', '.view-cert-icon', function(e) {
         }
     });
 });
+
 
 
 </script>

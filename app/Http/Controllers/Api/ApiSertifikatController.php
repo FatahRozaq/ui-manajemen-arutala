@@ -12,6 +12,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+
 
 class ApiSertifikatController extends Controller
 {
@@ -19,7 +21,7 @@ class ApiSertifikatController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'id_pendaftaran' => 'required|exists:pendaftaran_event,id_pendaftaran',
-            'file_sertifikat' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048', // Validasi file (PDF, JPG, JPEG, PNG) maksimal 2MB
+            'file_sertifikat' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048', // Validasi file maksimal 2MB
         ], [
             'id_pendaftaran.required' => 'ID Pendaftaran wajib diisi.',
             'id_pendaftaran.exists' => 'ID Pendaftaran tidak valid atau tidak ditemukan.',
@@ -54,29 +56,56 @@ class ApiSertifikatController extends Controller
         try {
             // Cek apakah sertifikat dengan id_pendaftaran sudah ada
             $sertifikat = Sertifikat::where('id_pendaftaran', $idPendaftaran)->first();
+            $numberPrefix = '001'; // Default nomor prefix jika file belum ada
 
             if ($request->hasFile('file_sertifikat')) {
+                if ($sertifikat && $sertifikat->file_sertifikat) {
+                    // Jika sertifikat sudah ada, ambil nomor dari file lama
+                    $existingFileName = basename($sertifikat->file_sertifikat); // Ambil nama file dari URL sertifikat
+                    $existingNumber = explode('_', $existingFileName)[0]; // Ambil nomor dari format 001_namafile
+                    $numberPrefix = $existingNumber;
+
+                    // Hapus file lama dari Minio
+                    $oldFilePath = str_replace(env('MINIO_URL') . '/' . env('MINIO_BUCKET') . '/', '', $sertifikat->file_sertifikat);
+                    if (Storage::disk('minio')->exists($oldFilePath)) {
+                        Storage::disk('minio')->delete($oldFilePath);
+                    }
+                } else {
+                    // Jika sertifikat belum ada, cek nomor terakhir di folder
+                    $pelatihanName = Str::slug($pendaftaranEvent->agendaPelatihan->pelatihan->nama_pelatihan);
+                    $batch = 'batch' . $pendaftaranEvent->agendaPelatihan->batch;
+                    $path = 'sertifikat/' . $pelatihanName . '/' . $batch;
+
+                    $filesInFolder = Storage::disk('minio')->files($path);
+                    if (count($filesInFolder) > 0) {
+                        // Ambil nomor tertinggi dari file yang sudah ada
+                        $lastFile = basename(end($filesInFolder));
+                        $lastNumber = explode('_', $lastFile)[0];
+                        $numberPrefix = str_pad((int)$lastNumber + 1, 3, '0', STR_PAD_LEFT);
+                    }
+                }
+
                 // Dapatkan nama file asli
                 $originalFileName = $request->file('file_sertifikat')->getClientOriginalName();
-            
-                // Tambahkan timestamp ke nama file
-                $timestamp = Carbon::now()->format('Ymd_His'); // Format: TahunBulanTanggal_JamMenitDetik
-                $fileName = $timestamp . '_' . $originalFileName;
-            
+
+                // Gabungkan nomor prefix dengan nama file
+                $fileName = $numberPrefix . '_' . $originalFileName;
+
                 // Buat file path
-                $filePath = 'uploads/sertifikat/' . $fileName;
-            
-                // Upload file ke minio
+                $pelatihanName = Str::slug($pendaftaranEvent->agendaPelatihan->pelatihan->nama_pelatihan);
+                $batch = 'Batch ' . $pendaftaranEvent->agendaPelatihan->batch;
+                $filePath = 'sertifikat/' . $pelatihanName . '/' . $batch . '/' . $fileName;
+
+                // Upload file ke Minio
                 Storage::disk('minio')->put($filePath, file_get_contents($request->file('file_sertifikat')));
-            
+
                 $gambarUrl = env('MINIO_URL') . '/' . env('MINIO_BUCKET') . '/' . $filePath;
             } else {
                 $gambarUrl = null;
             }
-            
 
             if ($sertifikat) {
-                // Jika sertifikat sudah ada, update data sertifikat
+                // Update data sertifikat
                 $sertifikat->file_sertifikat = $gambarUrl ?: $sertifikat->file_sertifikat;
                 $sertifikat->modified_by = 'Admin';
                 $sertifikat->modified_time = Carbon::now();
@@ -89,7 +118,7 @@ class ApiSertifikatController extends Controller
                     'data' => $sertifikat
                 ], Response::HTTP_OK);
             } else {
-                // Jika sertifikat belum ada, buat sertifikat baru
+                // Buat sertifikat baru
                 $sertifikat = Sertifikat::create([
                     'id_pendaftaran' => $idPendaftaran,
                     'id_pendaftar' => $pendaftaranEvent->id_peserta,
@@ -116,6 +145,8 @@ class ApiSertifikatController extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+
 
 
     public function update(Request $request, $idSertifikat)
