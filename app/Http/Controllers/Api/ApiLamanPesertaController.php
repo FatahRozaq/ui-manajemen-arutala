@@ -143,4 +143,43 @@ class ApiLamanPesertaController extends Controller
             ], 404);
         }
     }
+
+    public function getProduk(Request $request)
+    {
+        try {
+
+            // Ambil semua data agenda pelatihan
+            $agendas = AgendaPelatihan::with('pelatihan')
+                ->select('id_agenda', 'id_pelatihan', 'batch', 'is_deleted')
+                ->orderBy('start_date', 'desc')
+                ->get();
+
+            // Siapkan data response
+            $data = $agendas->map(function ($agenda) {
+                return [
+                    'id_agenda' => $agenda->id_agenda,
+                    'nama_pelatihan' => $agenda->pelatihan->nama_pelatihan,
+                    'gambar_pelatihan' => $agenda->pelatihan->gambar_pelatihan,
+                    'batch' => $agenda->batch,
+                    'is_deleted' => $agenda->is_deleted,
+                ];
+            });
+
+            return response()->json([
+                'data' => $data,
+                'message' => 'Data produk berhasil ditemukan',
+                'statusCode' => 200,
+                'status' => 'success'
+            ], 200);
+        } catch (\Exception $e) {
+            Log::error('Error in getProduk:', ['error' => $e->getMessage()]);
+            return response()->json([
+                'data' => null,
+                'message' => 'Gagal menemukan data produk',
+                'statusCode' => 404,
+                'status' => 'error',
+                'error' => $e->getMessage()
+            ], 404);
+        }
+    }
 }

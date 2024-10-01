@@ -554,20 +554,12 @@ function fetchDefaultData() {
         }
     });
 
-        // Handler untuk tombol "Export"
-        // Handler untuk tombol "Export"
-    // Handler untuk tombol "Export"
-// Handler untuk tombol "Export"
-// Handler untuk tombol "Export"
-// Handler untuk tombol "Export"
-$('#exportButton').on('click', function() {
-    // Ambil parameter pencarian
-    const searchText = $('.dataTables_filter input[type="search"]').val().trim();
-
+    $('#exportButton').on('click', function() {
+    // Ambil parameter pencarian hanya dari tabel aktif saat ini
+    let activeTable;
     let allData = [];
 
-    // Tentukan tabel aktif saat ini (paid, unpaid, atau process)
-    let activeTable;
+    // Tentukan tabel aktif berdasarkan visibilitas (paid, unpaid, atau process)
     if ($('#dataDetailPelatihanTablePaid').is(':visible')) {
         activeTable = tablePaid;
     } else if ($('#dataDetailPelatihanTableUnpaid').is(':visible')) {
@@ -576,24 +568,24 @@ $('#exportButton').on('click', function() {
         activeTable = tableProcess;
     }
 
-    // Ambil data dari tabel aktif yang sudah difilter oleh pencarian
+    // Ambil data dari tabel aktif
     const activeData = activeTable.rows({ filter: 'applied' }).data().toArray();
 
+    // Jika data pada tabel aktif sudah difilter
     if (activeData.length === 0) {
         alert('Tidak ada data yang tersedia untuk diekspor.');
         return;
     }
 
-    // Gabungkan data yang difilter berdasarkan pencarian
+    // Gabungkan data yang difilter berdasarkan pencarian pada tabel aktif
     allData = activeData;
 
-    // Kirim request POST untuk mengekspor data dengan parameter pencarian yang diterapkan
+    // Kirim request POST untuk mengekspor data yang difilter pada tabel aktif
     axios({
         url: '/api/peserta-pelatihan/export-filtered',
         method: 'POST',
         data: { 
-            data: allData, // Kirim hanya data dari tabel yang aktif dan sudah difilter
-            search: searchText // Tambahkan parameter pencarian jika ada
+            data: allData // Kirim data yang hanya dari tabel yang aktif
         },
         responseType: 'blob', // Pastikan untuk menggunakan 'blob' agar file diunduh dengan benar
     })
@@ -611,6 +603,16 @@ $('#exportButton').on('click', function() {
         console.error('Error exporting filtered data:', error);
         alert('Gagal mengekspor data.');
     });
+});
+
+// Event listener ketika berganti tabel, pastikan filter reset
+$('#dataDetailPelatihanTablePaid, #dataDetailPelatihanTableUnpaid, #dataDetailPelatihanTableProcess').on('draw', function () {
+    const activeTable = $(this).DataTable();
+
+    // Pastikan input pencarian di-reset ketika berganti tabel
+    if (activeTable.search() !== '') {
+        activeTable.search('').draw();
+    }
 });
 
 

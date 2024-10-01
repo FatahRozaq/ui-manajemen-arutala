@@ -91,4 +91,9 @@ class EventController extends Controller
         // Pass the sorted events data to the view
         return view('user/myEvent/MyEvent', compact('events'));
     }
+
+    public function showProduk()
+    {
+        return view('user/produk/DaftarProduk');
+    }
 }

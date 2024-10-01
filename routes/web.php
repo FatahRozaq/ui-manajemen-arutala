@@ -134,6 +134,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware([AuthCheck::class . ':pendaftar'])->get('/daftar-event', [EventController::class, 'index'])->name('event.index');
 Route::middleware([AuthCheck::class . ':pendaftar'])->get('/event/{id}',  [EventController::class, 'showEvent'])->name('event.detail');
 Route::middleware([AuthCheck::class . ':pendaftar'])->get('/my-event',  [EventController::class, 'myEvent'])->name('event.history');
+Route::middleware([AuthCheck::class . ':pendaftar'])->get('/daftar-produk',  [EventController::class, 'showProduk'])->name('event.produk');
 
 Route::post('/save-session', [AuthController::class, 'saveSession'])->name('save-session');
 // Route::get('/daftar-event', [EventController::class, 'index'])->name('event.index');

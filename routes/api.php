@@ -159,3 +159,5 @@ Route::prefix('sertifikat')->group(function () {
 
     Route::middleware('auth:api')->get('/peserta', [ApiSertifikatController::class, 'sertifikatPendaftar']);
 });
+
+Route::get('/produk', [ApiLamanPesertaController::class, 'getProduk']);
