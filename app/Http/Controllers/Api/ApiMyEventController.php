@@ -55,6 +55,7 @@ class ApiMyEventController extends Controller
                     'batch' => $event->agendaPelatihan->batch,
                     'end_date' => $event->agendaPelatihan->end_date,
                     'status_pelatihan' => $event->agendaPelatihan->status,
+                    'link_mayar' => $event->agendaPelatihan->link_mayar,
                     'status_pembayaran' => $event->status_pembayaran,
                     'is_deleted' => $event->is_deleted,
                 ];
