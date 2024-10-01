@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <p class="price">
                             ${priceHtml}
                         </p>
-                        <p class="date"><i class="bi bi-clock" style="margin-right: 5px"></i>${formattedDate}</p>
+                        <p class="date">Mulai<i class="bi bi-clock" style="margin-right: 5px; margin-left:5px"></i>${formattedDate}</p>
                     </div>
                     <div class="tombol-detail-daftar">
                         <button class="tombol-detail" onclick="window.location.href = '/event/${event.id_agenda}'">Detail</button>

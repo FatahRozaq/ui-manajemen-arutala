@@ -282,7 +282,7 @@ fetchTotalPeserta(); // Default fetch without any filters
 
       <div class="card info-card customers-card">
 
-        <div class="filter">
+        {{-- <div class="filter">
           <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow wide-dropdown">
             <li class="dropdown-header text-start">
@@ -338,7 +338,7 @@ fetchTotalPeserta(); // Default fetch without any filters
               <button class="btn btn-primary apply-btn">Apply</button>
             </li>
           </ul>
-        </div>
+        </div> --}}
         
         
 

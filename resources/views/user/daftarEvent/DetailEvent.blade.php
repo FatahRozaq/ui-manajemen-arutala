@@ -15,11 +15,16 @@ Arutala | Detail Event
             <h1 id="event-title" class="event-title"></h1>
         </div>
         
-        <div class="event-body">
+        <div class="event-body row">
+            <div class="col-lg-4">
             <div class="image-detail">
                 <img id="event-image" src="" alt="" class="event-image">
             </div>
+        </div>
+
+        <div class="col-lg-8">
             <p id="event-description" class="description"></p>
+            
             
             <div class="benefit-materi">
                 <div class="section section-benefit">
@@ -44,6 +49,7 @@ Arutala | Detail Event
                     <p id="price" class="price"></p>
                     <p id="additional-info" class="additional-info"></p>
                 </div>
+            </div>
             </div>
         </div>
         

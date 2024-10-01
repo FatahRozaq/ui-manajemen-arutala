@@ -98,7 +98,8 @@ Arutala | Update Data Peserta Pelatihan
                         <div class="col-sm-6">
                         <select id="statusPembayaran" class="form-select">
                             <option value="Paid">Paid</option>
-                            <option value="Belum Bayar">Belum Bayar</option>
+                            <option value="Unpaid">Unpaid</option>
+                            <option value="Process">Process</option>
                         </select>
                         </div>
                     </div>

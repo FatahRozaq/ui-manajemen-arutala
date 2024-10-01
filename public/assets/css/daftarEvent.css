@@ -23,11 +23,11 @@
   flex-direction: column;
   background-color: #fff;
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   width: 280px;
-  padding: 5px;
-  border: solid 2px black;
+  padding: 3px;
+  border: solid 1px rgb(215, 215, 215);
   cursor: pointer;
   transition: all 0.3s ease; /* Menambahkan transisi halus */
 }
@@ -35,7 +35,7 @@
 .card:hover {
   /* width: 340px; */
   background-color: #f7f7f7;
-  padding: 6px;
+  padding: 4px;
   box-shadow: 0 16px 16px rgba(0, 0, 0, 0.2); /* Membuat shadow lebih tebal */
 }
 
@@ -43,7 +43,7 @@
   width: 100%;
   height: auto;
   display: flex;
-  gap: 6px;
+  gap: 5px;
 }
 
 .tombol-daftar[disabled] {
@@ -57,6 +57,7 @@
   height: 40px;
   background-color: #f7f7f7;
   font-size: 16px;
+  border: solid 1px rgb(152, 152, 152);
 }
 
 .tombol-daftar{
@@ -69,7 +70,8 @@
 
 .event-image {
   width: 100%;
-  height: 200px;
+  /* height: 300px; */
+  height: auto;
   border-radius: 10px;
 }
 
@@ -204,6 +206,6 @@ h3 {
 /* Hover effect untuk kedua tombol */
 .tombol-detail:hover,
 .tombol-daftar:hover {
-    transform: scale(1.1); /* Menambah ukuran tombol sedikit saat di-hover */
+    transform: scale(1.03); /* Menambah ukuran tombol sedikit saat di-hover */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Memberikan bayangan saat di-hover */
 }
