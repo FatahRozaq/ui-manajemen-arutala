@@ -21,7 +21,7 @@ Arutala | My Event
 @section('scripts')
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+   document.addEventListener('DOMContentLoaded', function() {
     axios.get(`/api/my-events`, {
         headers: {
             'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
@@ -45,7 +45,7 @@ Arutala | My Event
                     paymentButton = `
                         <button 
                             class="btn btn-bayar btn-danger" 
-                            onclick="window.location.href='${event.link_mayar}'">
+                            onclick="window.open('${event.link_mayar}', '_blank')">
                             ${event.status_pembayaran === 'Unpaid' ? 'Bayar' : 'Proses'}
                         </button>`;
                 } else if (event.status_pembayaran === 'Paid') {
@@ -80,9 +80,8 @@ Arutala | My Event
                             <strong></strong> ${paymentButton}
                         </div>
                     </div>
-
                 `;
-                
+
                 eventList.appendChild(eventCard);
             });
         })

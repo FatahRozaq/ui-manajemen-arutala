@@ -89,7 +89,7 @@ class ApiAgendaController extends Controller
                 'nama_pelatihan' => 'required|string|max:255',
                 'start_date' => 'required|date',
                 'end_date' => 'required|date',
-                'sesi' => 'required|array',
+                'sesi' => 'required|string|max:255', // Ubah validasi sesi menjadi string
                 'investasi' => 'required|integer',
                 'investasi_info' => 'nullable|max:255',
                 'diskon' => 'nullable|integer',
@@ -131,7 +131,7 @@ class ApiAgendaController extends Controller
             $agenda = new AgendaPelatihan();
             $agenda->start_date = $request->input('start_date');
             $agenda->end_date = $request->input('end_date');
-            $agenda->sesi = json_encode($request->input('sesi')); // Simpan sebagai JSON string
+            $agenda->sesi = $request->input('sesi'); // Simpan sebagai string, bukan array
             $agenda->investasi = $request->input('investasi');
 
             // Jika investasi_info kosong atau null, simpan null, jika ada, simpan sebagai JSON
@@ -160,7 +160,7 @@ class ApiAgendaController extends Controller
                     'nama_pelatihan' => $pelatihan->nama_pelatihan,
                     'start_date' => $agenda->start_date,
                     'end_date' => $agenda->end_date,
-                    'sesi' => json_decode($agenda->sesi),
+                    'sesi' => $agenda->sesi, // Tidak perlu decode JSON
                     'investasi' => $agenda->investasi,
                     'investasi_info' => json_decode($agenda->investasi_info),
                     'diskon' => $agenda->diskon,
@@ -188,27 +188,26 @@ class ApiAgendaController extends Controller
 
 
 
+
     public function updateAgenda(Request $request, $id)
     {
         DB::beginTransaction();
         try {
             // Validasi input menggunakan Validator
             $validator = Validator::make($request->all(), [
-                'nama_pelatihan' => 'required|string|max:255', // Pastikan nama pelatihan ada
-                'start_date' => 'required|date', // Harus ada dan merupakan tanggal, tidak boleh sebelum hari ini
-                'end_date' => 'required|date|after_or_equal:start_date', // Harus lebih besar dari atau sama dengan start_date
-                'sesi' => 'required|array|min:1', // Minimal harus ada 1 sesi
-                'sesi.*' => 'required|string|max:255', // Setiap sesi harus berupa string
-                'investasi' => 'required|integer|min:0', // Investasi harus angka positif
-                'investasi_info' => 'nullable|array|min:1', // Investasi info harus array dengan minimal 1 item
-                'investasi_info.*' => 'nullable|string|max:255', // Setiap investasi info harus berupa string
-                'diskon' => 'nullable|integer|min:0|max:100', // Diskon harus angka antara 0 dan 100, nullable berarti bisa kosong
-                'status' => 'required|string|in:Planning,Masa Pendaftaran,Sedang Berlangsung,Selesai,Pendaftaran Berakhir', // Status harus sesuai dengan pilihan yang valid
-                'start_pendaftaran' => 'required|date|before_or_equal:start_date', // Start pendaftaran harus sebelum atau sama dengan start_date
-                'end_pendaftaran' => 'required|date|after_or_equal:start_pendaftaran', // End pendaftaran harus setelah start_pendaftaran
-                'link_mayar' => 'required|string|url|max:255', // Link pembayaran harus URL yang valid
-                'id_mentor' => 'required|array|min:1', // Mentor harus minimal 1
-
+                'nama_pelatihan' => 'required|string|max:255',
+                'start_date' => 'required|date',
+                'end_date' => 'required|date|after_or_equal:start_date',
+                'sesi' => 'required|string|max:255', // Validasi sesi menjadi string
+                'investasi' => 'required|integer|min:0',
+                'investasi_info' => 'nullable|array|min:1',
+                'investasi_info.*' => 'nullable|string|max:255',
+                'diskon' => 'nullable|integer|min:0|max:100',
+                'status' => 'required|string|in:Planning,Masa Pendaftaran,Sedang Berlangsung,Selesai,Pendaftaran Berakhir',
+                'start_pendaftaran' => 'required|date|before_or_equal:start_date',
+                'end_pendaftaran' => 'required|date|after_or_equal:start_pendaftaran',
+                'link_mayar' => 'required|string|url|max:255',
+                'id_mentor' => 'required|array|min:1',
             ], [
                 // Custom error messages
                 'nama_pelatihan.required' => 'Nama pelatihan wajib diisi.',
@@ -217,11 +216,9 @@ class ApiAgendaController extends Controller
                 'end_date.after_or_equal' => 'Tanggal selesai harus sama atau setelah tanggal mulai.',
                 'sesi.required' => 'Sesi pelatihan wajib diisi.',
                 'investasi.required' => 'Investasi wajib diisi.',
-                'investasi_info.required' => 'Informasi investasi wajib diisi.',
                 'diskon.integer' => 'Diskon harus berupa angka antara 0 dan 100.',
                 'status.in' => 'Status pelatihan tidak valid.',
                 'link_mayar.url' => 'Link pembayaran harus berupa URL yang valid.',
-
             ]);
 
             // Jika validasi gagal, kembalikan response error
@@ -247,7 +244,7 @@ class ApiAgendaController extends Controller
             }
 
             if ($request->has('sesi')) {
-                $agenda->sesi = json_encode($request->input('sesi'));
+                $agenda->sesi = $request->input('sesi'); // Update sebagai string, bukan array
             }
 
             if ($request->has('investasi')) {
@@ -306,7 +303,7 @@ class ApiAgendaController extends Controller
                     'nama_pelatihan' => $agenda->pelatihan->nama_pelatihan,
                     'start_date' => $agenda->start_date,
                     'end_date' => $agenda->end_date,
-                    'sesi' => json_decode($agenda->sesi),
+                    'sesi' => $agenda->sesi, // Tidak perlu decode JSON
                     'investasi' => $agenda->investasi,
                     'investasi_info' => json_decode($agenda->investasi_info),
                     'diskon' => $agenda->diskon,
@@ -330,6 +327,7 @@ class ApiAgendaController extends Controller
             ], 500);
         }
     }
+
 
 
 
@@ -375,9 +373,9 @@ class ApiAgendaController extends Controller
                     'end_date' => $agenda->end_date,
                     'start_pendaftaran' => $agenda->start_pendaftaran,
                     'end_pendaftaran' => $agenda->end_pendaftaran,
-                    'sesi' => json_decode($agenda->sesi),
+                    'sesi' => $agenda->sesi, // Tidak lagi decode JSON, langsung ambil sebagai string
                     'investasi' => $agenda->investasi,
-                    'investasi_info' => json_decode($agenda->investasi_info),
+                    'investasi_info' => json_decode($agenda->investasi_info), // Ini tetap decode karena investasi_info masih bisa berbentuk JSON
                     'diskon' => $agenda->diskon,
                     'status' => $agenda->status,
                     'link_mayar' => $agenda->link_mayar,

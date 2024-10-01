@@ -129,8 +129,15 @@ Arutala | Detail Data Agenda
                         </div>
 
                         <!-- Sesi -->
-                        <div id="sesiContainer">
+                        {{-- <div id="sesiContainer">
                             <!-- Sesi fields will be populated here -->
+                        </div> --}}
+
+                        <div class="form-group row position-relative">
+                            <label for="sesiInput" class="col-sm-2 col-form-label">Sesi</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control disable" id="sesiInput" disabled readonly>
+                            </div>
                         </div>
 
                         <!-- Investasi (Numerik) -->
@@ -248,6 +255,7 @@ $(document).ready(function() {
 
                 // Populate form fields with data from the response
                 $('#namaPelatihanInput').val(data.nama_pelatihan);
+                $('#sesiInput').val(data.sesi);
                 $('#batchInput').val(data.batch);
                 $('#startDateInput').val(data.start_date);
                 $('#endDateInput').val(data.end_date);
@@ -259,20 +267,20 @@ $(document).ready(function() {
 
 
                 // Populate sesi fields
-                const sesiContainer = $('#sesiContainer');
-                sesiContainer.empty();  // Clear existing inputs
-                if (data.sesi && data.sesi.length > 0) {
-                    data.sesi.forEach((sesiItem, index) => {
-                        sesiContainer.append(`
-                            <div class="form-group row position-relative mb-1">
-                                <label class="col-sm-2 col-form-label">${index === 0 ? 'Sesi' : ''}</label>
-                                <div class="col-sm-6 input-group">
-                                    <input type="text" class="form-control" value="${sesiItem}" aria-label="readonly input example" readonly>
-                                </div>
-                            </div>
-                        `);
-                    });
-                }
+                // const sesiContainer = $('#sesiContainer');
+                // sesiContainer.empty();  // Clear existing inputs
+                // if (data.sesi && data.sesi.length > 0) {
+                //     data.sesi.forEach((sesiItem, index) => {
+                //         sesiContainer.append(`
+                //             <div class="form-group row position-relative mb-1">
+                //                 <label class="col-sm-2 col-form-label">${index === 0 ? 'Sesi' : ''}</label>
+                //                 <div class="col-sm-6 input-group">
+                //                     <input type="text" class="form-control" value="${sesiItem}" aria-label="readonly input example" readonly>
+                //                 </div>
+                //             </div>
+                //         `);
+                //     });
+                // }
 
                 // Populate investasi_info fields
                 const investasiInfoContainer = $('#investasiInfoContainer');

@@ -140,11 +140,11 @@ Arutala | Update Data Agenda
                             <div class="form-group row position-relative mb-1">
                                 <label class="col-sm-2 col-form-label">Sesi</label>
                                 <div class="col-sm-6 input-group">
-                                    <input type="text" class="form-control" name="sesi[]">
+                                    <input type="text" class="form-control"  id="sesiInput" name="sesi">
                                     <small id="error-sesi" class="text-danger" style="display: none;"></small>
-                                    <div class="input-group-append">
+                                    {{-- <div class="input-group-append">
                                         <button class="btn btn-outline-success add-sesi" type="button"><i class="bi bi-plus-circle"></i></button>
-                                    </div>
+                                    </div> --}}
                                 </div>
                             </div>
                         </div>
@@ -296,24 +296,25 @@ $(document).ready(function() {
                 $('#startPendaftaranInput').val(data.start_pendaftaran);
                 $('#endPendaftaranInput').val(data.end_pendaftaran);
 
+                $('#sesiInput').val(data.sesi);
                 // Populate sesi fields
-                data.sesi.forEach(function(sesi, index) {
-                    if (index === 0) {
-                        $('input[name="sesi[]"]').val(sesi);
-                    } else {
-                        $('#sesiContainer').append(`
-                            <div class="form-group row position-relative mb-1">
-                                <label class="col-sm-2 col-form-label"></label>
-                                <div class="col-sm-6 input-group">
-                                    <input type="text" class="form-control" name="sesi[]" value="${sesi}">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-outline-secondary remove-sesi" type="button"><i class="bi bi-dash-circle"></i></button>
-                                    </div>
-                                </div>
-                            </div>
-                        `);
-                    }
-                });
+                // data.sesi.forEach(function(sesi, index) {
+                //     if (index === 0) {
+                //         $('input[name="sesi[]"]').val(sesi);
+                //     } else {
+                //         $('#sesiContainer').append(`
+                //             <div class="form-group row position-relative mb-1">
+                //                 <label class="col-sm-2 col-form-label"></label>
+                //                 <div class="col-sm-6 input-group">
+                //                     <input type="text" class="form-control" name="sesi[]" value="${sesi}">
+                //                     <div class="input-group-append">
+                //                         <button class="btn btn-outline-secondary remove-sesi" type="button"><i class="bi bi-dash-circle"></i></button>
+                //                     </div>
+                //                 </div>
+                //             </div>
+                //         `);
+                //     }
+                // });
 
                 // Populate investasi_info fields
                 if (data.investasi_info && data.investasi_info.length > 0) {

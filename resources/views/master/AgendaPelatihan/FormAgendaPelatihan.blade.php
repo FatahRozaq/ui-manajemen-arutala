@@ -110,21 +110,21 @@ Arutala | Tambah Data Agenda
                         </div>
 
                         <!-- Sesi -->
-                        <div id="sesiContainer">
+                        {{-- <div id="sesiContainer"> --}}
                             <div class="form-group row position-relative mb-1">
                                 <label class="col-sm-3 col-form-label">Sesi</label>
                                 <div class="col-sm-6 input-group">
-                                    <input type="text" name="sesi[]" class="form-control">
+                                    <input type="text" name="sesi" class="form-control">
                                     
-                                    <div class="input-group-append">
+                                    {{-- <div class="input-group-append">
                                         <button class="btn btn-outline-success add-sesi" type="button"><i class="bi bi-plus-circle"></i></button>
-                                    </div>
+                                    </div> --}}
                                 </div>
                                 <div class="col-sm-6 offset-sm-3">
                                 <small id="sesiError" class="text-danger" style="display:none;"></small>
                                 </div>
                             </div>
-                        </div>
+                        {{-- </div> --}}
 
                         <!-- Investasi Numerik -->
                         <div class="form-group row position-relative mb-1">
@@ -237,6 +237,7 @@ $(document).ready(function() {
         .then(function (response) {
             var pelatihans = response.data.pelatihans;
             var mentors = response.data.mentors;
+            
 
             // Mengisi dropdown Nama Pelatihan
             var pelatihanSelect = $('#namaPelatihan');
@@ -277,25 +278,25 @@ $(document).ready(function() {
         });
 
     // Tambah kolom baru pada Sesi
-    $('#sesiContainer').on('click', '.add-sesi', function () {
-        var newSesiRow = `
-            <div class="form-group row position-relative mb-1">
-                <label class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-6 input-group">
-                    <input type="text" name="sesi[]" class="form-control">
-                    <div class="input-group-append">
-                        <button class="btn btn-outline-secondary remove-sesi" type="button"><i class="bi bi-dash-circle"></i></button>
-                    </div>
-                </div>
-            </div>
-        `;
-        $('#sesiContainer').append(newSesiRow);
-    });
+    // $('#sesiContainer').on('click', '.add-sesi', function () {
+    //     var newSesiRow = `
+    //         <div class="form-group row position-relative mb-1">
+    //             <label class="col-sm-3 col-form-label"></label>
+    //             <div class="col-sm-6 input-group">
+    //                 <input type="text" name="sesi[]" class="form-control">
+    //                 <div class="input-group-append">
+    //                     <button class="btn btn-outline-secondary remove-sesi" type="button"><i class="bi bi-dash-circle"></i></button>
+    //                 </div>
+    //             </div>
+    //         </div>
+    //     `;
+    //     $('#sesiContainer').append(newSesiRow);
+    // });
 
     // Hapus kolom sesi
-    $('#sesiContainer').on('click', '.remove-sesi', function () {
-        $(this).closest('.form-group').remove();
-    });
+    // $('#sesiContainer').on('click', '.remove-sesi', function () {
+    //     $(this).closest('.form-group').remove();
+    // });
 
     // Tambah kolom baru pada Investasi
     $('#investasiContainer').on('click', '.add-investasi', function () {
@@ -374,7 +375,7 @@ $(document).ready(function() {
         }
 
         // Validasi Sesi
-        var sesiValues = $('input[name="sesi[]"]').map(function() {
+        var sesiValues = $('input[name="sesi"]').map(function() {
             return $(this).val().trim();
         }).get();
         if (sesiValues.every(function(sesi) { return sesi === ''; })) {
