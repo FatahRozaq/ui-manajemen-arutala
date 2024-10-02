@@ -60,10 +60,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 const eventDate = new Date(event.start_date);
                 const formattedDate = eventDate.toLocaleDateString('id-ID', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' });
+                const eventEndDate = new Date(event.end_date);
+                const formattedEndDate = eventEndDate.toLocaleDateString('id-ID', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' });
+                
 
                 const isDisabled = event.is_registered ? 'disabled' : '';
 
                 card.innerHTML = `
+                
                     <div class="image-title">
                         <img 
                             src="${event.gambar_pelatihan ? event.gambar_pelatihan : '/assets/images/default-pelatihan.jpg'}"
@@ -71,17 +75,20 @@ document.addEventListener('DOMContentLoaded', function() {
                             class="event-image"
                             onerror="this.onerror=null; this.src='/assets/images/default-pelatihan.jpg';"
                         >
-                        <h4 class="nama-pelatihan">${event.nama_pelatihan}</h4>
+                        
                     </div>
+                    <div class="card-info">
+                    <h4 class="nama-pelatihan">${event.nama_pelatihan}</h4>
                     <div class="harga-date">
                         <p class="price">
                             ${priceHtml}
                         </p>
-                        <p class="date">Mulai<i class="bi bi-clock" style="margin-right: 5px; margin-left:5px"></i>${formattedDate}</p>
+                        <p><i class="fas fa-calendar-alt"></i> ${new Date(event.start_date).toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' })} - ${new Date(event.end_date).toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' })}</p>
                     </div>
                     <div class="tombol-detail-daftar">
                         <button class="tombol-detail" onclick="window.location.href = '/event/${event.id_agenda}'">Detail</button>
                         <button class="tombol-daftar" ${isDisabled} onclick="daftar(${event.id_agenda})">Daftar</button>
+                    </div>
                     </div>
                 `;
 

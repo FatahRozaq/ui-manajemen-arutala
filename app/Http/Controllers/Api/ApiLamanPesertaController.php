@@ -48,9 +48,11 @@ class ApiLamanPesertaController extends Controller
                     'deskripsi' => $agenda->pelatihan->deskripsi,
                     'batch' => $agenda->batch,
                     'investasi' => $agenda->investasi,
+                    'sesi' => $agenda->sesi,
                     'investasi_info' => json_decode($agenda->investasi_info),
                     'diskon' => $agenda->diskon,
                     'start_date' => $agenda->start_date,
+                    'end_date' => $agenda->end_date,
                     'is_deleted' => $agenda->is_deleted,
                     'is_registered' => $isRegistered, // Add registration status
                 ];
@@ -112,6 +114,8 @@ class ApiLamanPesertaController extends Controller
                 'deskripsi' => $agenda->pelatihan->deskripsi,
                 'benefit' => json_decode($agenda->pelatihan->benefit),
                 'materi' => json_decode($agenda->pelatihan->materi),
+                'start_date' => $agenda->start_date,
+                'end_date' => $agenda->end_date,
                 'mentor' => $mentors->map(function ($mentor) {
                     return [
                         'id_mentor' => $mentor->id_mentor,

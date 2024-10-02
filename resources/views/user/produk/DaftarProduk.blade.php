@@ -34,7 +34,7 @@
 
     .card img {
         width: 100%;
-        height: auto;
+        height: 400px;
         border-radius: 10px;
         object-fit: cover;
         border-bottom: solid 1px rgb(215, 215, 215);
@@ -77,7 +77,7 @@
 
     <div id="produk-list" class="produk-list"></div> <!-- Tempat untuk menampilkan produk -->
 
-    <div id="loading" class="loading">Loading...</div> <!-- Loading indikator -->
+    <div id="loading" class="loading"></div> <!-- Loading indikator -->
 </div>
 @endsection
 

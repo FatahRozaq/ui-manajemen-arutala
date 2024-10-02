@@ -88,7 +88,23 @@ Arutala | Data Agenda
                     }
                 },
                 { "data": "jumlah_peserta" },
-                { "data": "start_date" },
+                { 
+            "data": "start_date",
+            "render": function(data, type, row) {
+                // Ubah string tanggal ke objek Date
+                let dateObj = new Date(data);
+                
+                // Ekstrak hari, bulan, dan tahun
+                let day = String(dateObj.getDate()).padStart(2, '0');
+                let month = String(dateObj.getMonth() + 1).padStart(2, '0'); // Bulan dimulai dari 0
+                let year = String(dateObj.getFullYear()).slice(-2); // Ambil 2 digit terakhir tahun
+                
+                // Gabungkan menjadi format dd mm yy
+                let formattedDate = `${day}-${month}-${year}`;
+                
+                return formattedDate; // Mengembalikan tanggal dalam format dd mm yy
+            }
+        },
                 { 
                     "data": "status",
                     "render": function(data, type, row) {

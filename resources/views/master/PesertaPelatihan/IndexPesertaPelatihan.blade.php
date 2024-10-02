@@ -7,7 +7,14 @@ Arutala | Data Peserta Pelatihan
 @section('content')
 
 <style>
+ .filter-import{
+    /* margin-top:px; */
+ }
 
+ .dataTables_filter {
+    justify-content: center;
+    display: flex;
+ }
 
 </style>
 
@@ -18,7 +25,7 @@ Arutala | Data Peserta Pelatihan
 <!-- Button untuk membuka modal filter -->
 <div class="filter-import">
     {{-- <button type="button" class="button-filter btn btn-secondary mb-2 p-2" > --}}
-        <i class="button-filter bi bi-three-dots ml-2" style="font-size:16px; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#filterModal" aria-label="Filter"></i>
+        <i class="button-filter bi bi-funnel ml-2" style="font-size:22px; cursor: pointer" data-bs-toggle="modal" data-bs-target="#filterModal" aria-label="Filter"></i>
     {{-- </button> --}}
     
     
@@ -562,10 +569,13 @@ function fetchDefaultData() {
     // Tentukan tabel aktif berdasarkan visibilitas (paid, unpaid, atau process)
     if ($('#dataDetailPelatihanTablePaid').is(':visible')) {
         activeTable = tablePaid;
+        filePrefix = 'Sudah_Bayar_';
     } else if ($('#dataDetailPelatihanTableUnpaid').is(':visible')) {
         activeTable = tableUnpaid;
+        filePrefix = 'Belum_Bayar_';
     } else if ($('#dataDetailPelatihanTableProcess').is(':visible')) {
         activeTable = tableProcess;
+        filePrefix = 'Proses';
     }
 
     // Ambil data dari tabel aktif
@@ -580,7 +590,19 @@ function fetchDefaultData() {
     // Gabungkan data yang difilter berdasarkan pencarian pada tabel aktif
     allData = activeData;
 
-    // Kirim request POST untuk mengekspor data yang difilter pada tabel aktif
+    // Dapatkan waktu saat ini untuk digunakan sebagai nama file
+    let now = new Date();
+    let day = String(now.getDate()).padStart(2, '0');
+    let month = String(now.getMonth() + 1).padStart(2, '0'); // Bulan dimulai dari 0
+    let year = String(now.getFullYear()).slice(-2); // Ambil 2 digit terakhir tahun
+    let hours = String(now.getHours()).padStart(2, '0');
+    let minutes = String(now.getMinutes()).padStart(2, '0');
+    let seconds = String(now.getSeconds()).padStart(2, '0');
+
+    let formattedDate = `${day}-${month}-${year}_${hours}-${minutes}-${seconds}`; // Format DDMMYY_HHMMSS
+    let fileName = `${filePrefix}_${formattedDate}.xlsx`;
+
+    
     axios({
         url: '/api/peserta-pelatihan/export-filtered',
         method: 'POST',
@@ -594,7 +616,7 @@ function fetchDefaultData() {
         const url = window.URL.createObjectURL(new Blob([response.data]));
         const link = document.createElement('a');
         link.href = url;
-        link.setAttribute('download', 'data_pembayaran.xlsx'); // Nama file yang akan diunduh
+        link.setAttribute('download', fileName); // Nama file dengan format Sudah_Bayar_DDMMYY_HHMMSS.xlsx
         document.body.appendChild(link);
         link.click();
         link.remove();
@@ -605,15 +627,6 @@ function fetchDefaultData() {
     });
 });
 
-// Event listener ketika berganti tabel, pastikan filter reset
-$('#dataDetailPelatihanTablePaid, #dataDetailPelatihanTableUnpaid, #dataDetailPelatihanTableProcess').on('draw', function () {
-    const activeTable = $(this).DataTable();
-
-    // Pastikan input pencarian di-reset ketika berganti tabel
-    if (activeTable.search() !== '') {
-        activeTable.search('').draw();
-    }
-});
 
 
 
