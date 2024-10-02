@@ -67,11 +67,12 @@ Arutala | My Event
                             class="event-image"
                             onerror="this.onerror=null; this.src='/assets/images/default-pelatihan.jpg';"
                         >
+                        <div class="event-more-info">
                         <h4>${event.nama_pelatihan}</h4>
                         <h5>  Batch ${event.batch} </h5>
                         <p><i class="fas fa-calendar-alt"></i> ${new Date(event.start_date).toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' })} - ${new Date(event.end_date).toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' })}</p>
 
-                    </div>
+                    
                     <div class="event-status-payment" style="display: flex; justify-content: space-between; align-items: center;">
                         <div class="event-status ${event.status_pelatihan ? event.status_pelatihan.toLowerCase().replace(/ /g, '-') : ''}">
                             ${event.status_pelatihan ? event.status_pelatihan : 'Status not available'}
@@ -79,6 +80,8 @@ Arutala | My Event
                         <div class="event-payment">
                             <strong></strong> ${paymentButton}
                         </div>
+                    </div>
+                    </div>
                     </div>
                 `;
 

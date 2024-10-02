@@ -27,20 +27,20 @@ Arutala | Detail Event
         <li class="breadcrumb-item active" aria-current="page">Detail Event</li>
       </ol>
   </nav>
-<div class="event-detail-container">
-    <div class="event-detail">
+<div class="event-detail-container row">
+    <div class="event-detail col-lg-8 row">
         <div class="event-header">
             <h1 id="event-title" class="event-title"></h1>
         </div>
         
         <div class="event-body row">
-            <div class="col-lg-4">
+            <div class="col-lg-5">
             <div class="image-detail">
                 <img id="event-image" src="" alt="" class="event-image">
             </div>
         </div>
 
-        <div class="col-lg-8">
+        <div class="col-lg-7">
             <p id="event-description" class="description"></p>
             
             
@@ -62,17 +62,46 @@ Arutala | Detail Event
                     <ul id="mentor-list"></ul>
                 </div>
                 
-                <div class="section section-investasi">
+                {{-- <div class="section section-investasi">
                     <h5 class="event-color-blue">Investasi:</h5>
                     <p id="price" class="price"></p>
                     <p id="additional-info" class="additional-info"></p>
-                </div>
+                </div> --}}
             </div>
             </div>
         </div>
         
+        {{-- <div class="event-footer">
+            <button class="register-button" onclick="daftar()">Daftar</button>
+        </div> --}}
+    </div>
+    <div class="col-lg-3 card">
+        <div class="image-title">
+            {{-- <img 
+                src="${event.gambar_pelatihan ? event.gambar_pelatihan : '/assets/images/default-pelatihan.jpg'}"
+                alt="${event.nama_pelatihan}" 
+                class="event-image"
+                onerror="this.onerror=null; this.src='/assets/images/default-pelatihan.jpg';"
+            > --}}
+            
+        </div>
+        <div class="card-info">
+        <h4 class="nama-pelatihan" id="event-title-2"></h4>
+        <div class="harga-date">
+            <p class="price">
+                {{-- Rp180.000 --}}
+                <p id="price" class="price"></p>
+                    <p id="additional-info" class="additional-info"></p>
+            </p>
+            <p><i class="fas fa-calendar-alt"></i> 29 Oktober 2024 - 30 Oktober 2024</p>
+        </div>
+        <div class="section section-benefit">
+            <h5 class="event-color-blue">Benefit :</h5>
+            <ul id="benefit-list-2"></ul>
+        </div>
         <div class="event-footer">
             <button class="register-button" onclick="daftar()">Daftar</button>
+        </div>
         </div>
     </div>
 </div>
@@ -96,6 +125,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Update konten halaman dengan data event
         document.getElementById('event-title').textContent = event.namaPelatihan;
+        document.getElementById('event-title-2').textContent = event.namaPelatihan;
 
         const eventImage = document.getElementById('event-image');
         eventImage.src = event.image ? event.image : '/assets/images/default-pelatihan.jpg';
@@ -114,6 +144,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 const li = document.createElement('li');
                 li.textContent = benefit;
                 benefitList.appendChild(li);
+            });
+        }
+
+        const benefitList2 = document.getElementById('benefit-list-2');
+        if (event.benefit) {
+            event.benefit.forEach(function(benefit) {
+                const li = document.createElement('li');
+                li.textContent = benefit;
+                benefitList2.appendChild(li);
             });
         }
 

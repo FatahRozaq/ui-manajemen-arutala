@@ -1,5 +1,10 @@
 .event-detail-container {
     width: 100%;
+    /* display: flex;
+    flex-direction: row; */
+    /* justify-content: space-between; */
+    /* gap: 2px; */
+    
 }
 
 @media (max-width: 700px) {
@@ -8,6 +13,39 @@
         background-color: #fff;
     }
 }
+
+.card {
+    display: flex;
+    flex-direction: row;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    height: fit-content;
+    width: 100%; /* Ubah width menjadi 100% atau sesuai kebutuhan */
+    padding: 10px;
+    border: solid 1px rgb(215, 215, 215);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 100;
+    position: sticky; /* Menambahkan posisi sticky */
+    top: 50px; /* Agar card tetap terlihat di jarak 10px dari atas saat discroll */
+}
+
+.card-info {
+    width: 100%;
+}
+
+.tombol-daftar{
+    width: 50%;
+    height: 40px;
+    background-color: #1e3dd4;
+    font-size: 16px;
+    border: 1px solid #d6d6d6;
+    color : #ffffff;
+  
+  }
+
 
 
 
@@ -208,23 +246,23 @@
 .event-footer {
     width: 100%;
     display: flex;
-    justify-content: center;
+    /* justify-content: center; */
 }
 
 .register-button {
     display: flex;
-    width: 15%;
+    width: 100%;
     text-align: center;
     justify-content: center;
     background-color: #002366;
     color: #fff;
-    padding: 10px 0;
+    padding: 5px 0;
     border-radius: 5px;
     font-size: 18px;
     font-weight: 400;
     /* text-transform: uppercase; */
     text-decoration: none;
-    margin-top: 20px;
+    /* margin-top: 20px; */
 }
 
 .register-button.disabled {

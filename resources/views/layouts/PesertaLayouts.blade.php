@@ -204,14 +204,14 @@
         <ul class="sidebar-nav" id="sidebar-nav">
 
             <li class="nav-item">
-                <a class="nav-link {{ request()->is('daftar-produk*', 'peserta/pendaftaran*', 'detail-event*') ? '' : 'collapsed' }}" href="{{ route('event.produk') }}">
+                <a class="nav-link {{ request()->is('daftar-produk*') ? '' : 'collapsed' }}" href="{{ route('event.produk') }}">
                     <i class="bi bi-list-check"></i>
                     <span>Daftar Produk</span>
                 </a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link {{ request()->is('daftar-event*', 'peserta/pendaftaran*', 'detail-event*') ? '' : 'collapsed' }}" href="{{ route('event.index') }}">
+                <a class="nav-link {{ request()->is('daftar-event*', 'peserta/pendaftaran*', 'event*') ? '' : 'collapsed' }}" href="{{ route('event.index') }}">
                     <i class="bi bi-card-list"></i>
                     <span>Daftar Event</span>
                 </a>
