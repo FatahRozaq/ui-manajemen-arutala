@@ -115,6 +115,7 @@ Arutala | Sertifikat Peserta
                                             <div>
                                                 <h6 class="card-title">${certificate.pendaftaran.agenda_pelatihan.pelatihan.nama_pelatihan}</h6>
                                                 <small class="text-muted">Batch ${certificate.pendaftaran.agenda_pelatihan.batch}</small>
+                                                <p class="text-muted"><i class="fas fa-calendar-alt"></i> ${new Date(certificate.pendaftaran.agenda_pelatihan.start_date).toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' })} - ${new Date(certificate.pendaftaran.agenda_pelatihan.end_date).toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' })}</p>
                                             </div>
                                             <div class="button-group">
                                                 <a href="#" class="btn btn-success btn-sm btn-custom download-cert-btn" data-idpendaftaran="${certificate.id_pendaftaran}">
