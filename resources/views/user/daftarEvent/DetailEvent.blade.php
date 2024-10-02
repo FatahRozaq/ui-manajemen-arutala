@@ -89,12 +89,12 @@ Arutala | Detail Event
         <h4 class="nama-pelatihan" id="event-title-2"></h4>
         <div class="harga-date">
             <p class="price">
-                {{-- Rp180.000 --}}
                 <p id="price" class="price"></p>
-                    <p id="additional-info" class="additional-info"></p>
+                <p id="additional-info" class="additional-info"></p>
             </p>
-            <p><i class="fas fa-calendar-alt"></i> 29 Oktober 2024 - 30 Oktober 2024</p>
+            <p id="event-date"></p> <!-- Tambahkan ini untuk menampilkan tanggal -->
         </div>
+        
         <div class="section section-benefit">
             <h5 class="event-color-blue">Benefit :</h5>
             <ul id="benefit-list-2"></ul>
@@ -126,13 +126,17 @@ document.addEventListener('DOMContentLoaded', function() {
         // Update konten halaman dengan data event
         document.getElementById('event-title').textContent = event.namaPelatihan;
         document.getElementById('event-title-2').textContent = event.namaPelatihan;
+        const eventDate = document.getElementById('event-date');
+        const startDate = new Date(event.start_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+        const endDate = new Date(event.end_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+        eventDate.textContent = `Mulai ${startDate} - ${endDate}`;
 
         const eventImage = document.getElementById('event-image');
-        eventImage.src = event.image ? event.image : '/assets/images/default-pelatihan.jpg';
+        eventImage.src = event.image ? event.image : '/assets/images/default-pelatihan-gambar.jpg';
         eventImage.alt = event.namaPelatihan;
         eventImage.onerror = function() {
             this.onerror = null;
-            this.src = '/assets/images/default-pelatihan.jpg';
+            this.src = '/assets/images/default-pelatihan-gambar.jpg';
         };
 
         document.getElementById('event-description').textContent = event.deskripsi;
@@ -199,14 +203,17 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('price').innerHTML = priceHtml;
         }
 
+        const additionalInfoList = document.getElementById('additional-info');
         if (event.investasi_info && event.investasi_info.length > 0) {
-            const additionalInfo = event.investasi_info.map(info => `<p>${info}</p>`).join('');
-            document.getElementById('additional-info').innerHTML = additionalInfo;
+            event.investasi_info.forEach(function(info) {
+                const li = document.createElement('li');
+                li.textContent = info;
+                additionalInfoList.appendChild(li);
+            });
         } else {
-            // Hapus elemen additional-info dari DOM jika tidak ada informasi
-            const additionalInfoElement = document.getElementById('additional-info');
-            if (additionalInfoElement) {
-                additionalInfoElement.remove();
+            // Jika tidak ada informasi tambahan, hapus elemen dari DOM
+            if (additionalInfoList) {
+                additionalInfoList.remove();
             }
         }
 

@@ -96,12 +96,13 @@
                     // Buat item HTML untuk setiap notifikasi
                     const listItem = `
                         <li class="message-item">
-                            <a href="#">
+                            <a href="{{ route('event.history') }}">
                                 <img 
-                                    src="${notification.gambar_pelatihan ? notification.gambar_pelatihan : '/assets/images/default-pelatihan.jpg'}" 
-                                    alt="Pelatihan" 
+                                    src="${notification.gambar_pelatihan ? notification.gambar_pelatihan : '/assets/images/dafault-pelatihan-gambar.jpg'}"
+                                    alt="Pelatihan"
                                     width="40"
-                                    onerror="this.onerror=null;this.src='/assets/images/default-pelatihan.jpg';"
+                                    height="auto"
+                                    onerror="this.onerror=null;this.src='/assets/images/dafault-pelatihan-gambar.jpg';"
                                 >
                                 <div>
                                     <h4>${notification.nama_pelatihan}</h4>

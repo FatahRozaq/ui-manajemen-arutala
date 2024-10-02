@@ -46,6 +46,16 @@
   
   }
 
+  .additional-info {
+    list-style-type: none; /* Menghilangkan gaya bullet default */
+    padding-left: 0;
+}
+
+.additional-info li::before {
+    content: "- "; /* Menggunakan strip atau ganti dengan "− " jika ingin negatif */
+    color: #000; /* Atur warna sesuai kebutuhan */
+    margin-right: 5px;
+}
 
 
 

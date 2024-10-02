@@ -68,10 +68,55 @@
         margin-top: 20px;
     }
 
+    /* Style untuk modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: auto;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.modal-content {
+    margin: auto;
+    /* padding: 1%; */
+    display: block;
+    max-width: 35%;
+    max-height: 50%;
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 25px;
+    color: white;
+    font-size: 35px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: #bbb;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+
 </style>
 @endsection
 
 @section('content')
+
+<div id="imageModal" class="modal" style="display:none;">
+    <span class="close">&times;</span>
+    <img class="modal-content" id="modalImage">
+</div>
+
 <div class="containerEvent">
     <h4 class="title">Daftar Produk</h4>
 
@@ -86,41 +131,77 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Panggil API menggunakan Axios untuk mendapatkan data produk
-        axios.get('/api/produk')
-            .then(function(response) {
-                // Hapus loading indicator
-                document.getElementById('loading').style.display = 'none';
+    // Panggil API menggunakan Axios untuk mendapatkan data produk
+    axios.get('/api/produk')
+        .then(function(response) {
+            // Hapus loading indicator
+            document.getElementById('loading').style.display = 'none';
 
-                // Ambil data dari response
-                var produkList = response.data.data;
-                var produkContainer = document.getElementById('produk-list');
+            // Ambil data dari response
+            var produkList = response.data.data;
+            var produkContainer = document.getElementById('produk-list');
 
-                // Jika tidak ada produk, tampilkan pesan
-                if (produkList.length === 0) {
-                    produkContainer.innerHTML = '<p>Tidak ada produk yang tersedia.</p>';
-                    return;
-                }
+            // Jika tidak ada produk, tampilkan pesan
+            if (produkList.length === 0) {
+                produkContainer.innerHTML = '<p>Tidak ada produk yang tersedia.</p>';
+                return;
+            }
 
-                // Loop melalui produk dan buat card untuk setiap produk
-                produkList.forEach(function(produk) {
-                    var card = `
-                        <div class="card">
-                            <img src="${produk.gambar_pelatihan}" alt="${produk.nama_pelatihan}">
-                            
-                        </div>
-                    `;
-                    produkContainer.innerHTML += card;
-                });
-            })
-            .catch(function(error) {
-                // Hapus loading indicator
-                document.getElementById('loading').style.display = 'none';
-
-                // Tampilkan error di konsol atau tampilkan pesan error ke pengguna
-                console.error('Error fetching produk:', error);
-                document.getElementById('produk-list').innerHTML = '<p>Gagal memuat produk.</p>';
+            // Loop melalui produk dan buat card untuk setiap produk
+            produkList.forEach(function(produk) {
+                var card = `
+                    <div class="card" onclick="showModal('${produk.gambar_pelatihan}')">
+                        <img
+                            src="${produk.gambar_pelatihan ? produk.gambar_pelatihan : '/assets/images/dafault-pelatihan-gambar.jpg'}"
+                            alt="${produk.nama_pelatihan}"
+                            class="event-image"
+                            onerror="this.onerror=null; this.src='/assets/images/dafault-pelatihan-gambar.jpg';"
+                        >
+                    </div>
+                `;
+                produkContainer.innerHTML += card;
             });
-    });
+        })
+        .catch(function(error) {
+            // Hapus loading indicator
+            document.getElementById('loading').style.display = 'none';
+
+            // Tampilkan error di konsol atau tampilkan pesan error ke pengguna
+            console.error('Error fetching produk:', error);
+            document.getElementById('produk-list').innerHTML = '<p>Gagal memuat produk.</p>';
+        });
+});
+
+// Fungsi untuk menampilkan modal dengan gambar yang lebih besar
+// Fungsi untuk menampilkan modal dengan gambar yang lebih besar
+function showModal(imageSrc) {
+    var modal = document.getElementById("imageModal");
+    var modalImg = document.getElementById("modalImage");
+
+    modal.style.display = "block";
+    
+    // Set gambar src
+    modalImg.src = imageSrc;
+
+    // Jika terjadi error saat memuat gambar, tampilkan gambar default
+    modalImg.onerror = function() {
+        modalImg.src = '/assets/images/dafault-pelatihan-gambar.jpg';
+    };
+
+    // Fungsi untuk menutup modal saat tombol 'x' di klik
+    var span = document.getElementsByClassName("close")[0];
+    span.onclick = function() {
+        modal.style.display = "none";
+    };
+
+    // Fungsi untuk menutup modal saat pengguna klik di luar gambar
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    };
+}
+
+
 </script>
 @endsection
