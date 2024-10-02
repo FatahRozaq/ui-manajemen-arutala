@@ -117,7 +117,7 @@ Arutala | Sertifikat Peserta
                                                 <small class="text-muted">Batch ${certificate.pendaftaran.agenda_pelatihan.batch}</small>
                                             </div>
                                             <div class="button-group">
-                                                <a href="/api/sertifikat/download?id_pendaftaran=${certificate.id_pendaftaran}" class="btn btn-success btn-sm btn-custom">
+                                                <a href="#" class="btn btn-success btn-sm btn-custom download-cert-btn" data-idpendaftaran="${certificate.id_pendaftaran}">
                                                     <i class="fas fa-download"></i> Download
                                                 </a>
                                                 <a href="#" class="btn btn-primary btn-sm btn-custom view-cert-btn" data-idpendaftaran="${certificate.id_pendaftaran}">
@@ -136,6 +136,13 @@ Arutala | Sertifikat Peserta
                             const idPendaftaran = $(this).data('idpendaftaran');
                             viewCertificate(idPendaftaran);
                         });
+
+                        // Attach event listener to "Download" buttons
+                        $('.download-cert-btn').on('click', function(e) {
+                            e.preventDefault();
+                            const idPendaftaran = $(this).data('idpendaftaran');
+                            downloadCertificate(idPendaftaran);
+                        });
                     }
                 })
                 .catch(error => {
@@ -152,7 +159,6 @@ Arutala | Sertifikat Peserta
             axios.get(`/api/sertifikat/view/${idPendaftaran}`)
                 .then(response => {
                     const fileUrl = response.data.data.file_url;
-                    const namaPeserta = response.data.nama_peserta;
 
                     if (!fileUrl) {
                         Swal.fire({
@@ -182,6 +188,43 @@ Arutala | Sertifikat Peserta
                     });
                 });
         }
+
+        function downloadCertificate(idPendaftaran) {
+            axios.get(`/api/sertifikat/download?id_pendaftaran=${idPendaftaran}`, {
+                    responseType: 'blob' // Set response type to blob to handle file download
+                })
+                .then(response => {
+                    // Ambil nama file dari header 'Content-Disposition'
+                    const contentDisposition = response.headers['content-disposition'];
+                    let fileName = 'sertifikat.pdf'; // Default jika nama file tidak ditemukan
+
+                    // Jika Content-Disposition mengandung 'filename', ambil nama file
+                    if (contentDisposition && contentDisposition.indexOf('filename=') !== -1) {
+                        const fileNameMatch = contentDisposition.match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/);
+                        if (fileNameMatch != null && fileNameMatch[1]) {
+                            fileName = fileNameMatch[1].replace(/['"]/g, ''); // Hapus tanda kutip di sekitar nama file
+                        }
+                    }
+
+                    // Buat blob URL dan unduh file
+                    const url = window.URL.createObjectURL(new Blob([response.data]));
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.setAttribute('download', fileName); // Gunakan nama file yang diambil dari header
+                    document.body.appendChild(link);
+                    link.click();
+                    link.remove();
+                })
+                .catch(error => {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Sedang terjadi keselahan. Silakan coba lagi nanti',
+                    });
+                });
+        }
+
     });
+
 </script>
 @endsection
