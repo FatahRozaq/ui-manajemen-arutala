@@ -94,6 +94,10 @@ h5 {
   margin-right: -40px;
 }
 
+.dataTables_wrapper .dataTables_paginate ul.pagination li.paginate_button a {
+    font-size: 12px; 
+    padding: 4px 8px;
+}
 
 /*--------------------------------------------------------------
 # Main
