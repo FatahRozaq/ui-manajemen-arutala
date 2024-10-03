@@ -190,14 +190,14 @@ Arutala | Detail Data Pendaftar
             .then(response => response.json())
             .then(data => {
                 if (data.status === 'success') {
-                    document.getElementById('namaPeserta').value = data.data.nama;
-                    document.getElementById('emailPeserta').value = data.data.email;
-                    document.getElementById('kontakPeserta').value = data.data.no_kontak;
-                    document.getElementById('linkedinPeserta').value = data.data.linkedin;
-                    document.getElementById('aktivitasPeserta').value = data.data.aktivitas;
-                    document.getElementById('provinsiPeserta').value = data.data.provinsi;
-                    document.getElementById('kabkotaPeserta').value = data.data.kab_kota;
-                    document.getElementById('instansiPeserta').value = data.data.nama_instansi;
+                    document.getElementById('namaPeserta').value = data.data.nama || '-';
+                    document.getElementById('emailPeserta').value = data.data.email || '-';
+                    document.getElementById('kontakPeserta').value = data.data.no_kontak || '-';
+                    document.getElementById('linkedinPeserta').value = data.data.linkedin || '-';
+                    document.getElementById('aktivitasPeserta').value = data.data.aktivitas || '-';
+                    document.getElementById('provinsiPeserta').value = data.data.provinsi || '-';
+                    document.getElementById('kabkotaPeserta').value = data.data.kab_kota || '-';
+                    document.getElementById('instansiPeserta').value = data.data.nama_instansi || '-';
 
                     let pelatihanHTML = '';
                     data.data.pendaftaran_event.forEach(function(event, index) {
@@ -224,7 +224,7 @@ Arutala | Detail Data Pendaftar
                 });
 
 
-                    document.getElementById('trainingCards').innerHTML = pelatihanHTML;
+                    document.getElementById('trainingCards').innerHTML = pelatihanHTML || '<p>Pendaftar ini belum pernah mengikuti pelatihan</p>';
                 } else {
                     console.error(data.message);
                 }

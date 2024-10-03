@@ -91,11 +91,17 @@ Arutala | Data Pendaftar
                 "dataSrc": "data"
             },
             "columns": [
-                { "data": "nama" },
+                { 
+                    "data": "nama",
+                    "defaultContent": "-" 
+                },
                 { "data": "jumlah_pelatihan" },
                 { "data": "email" },
                 { "data": "no_kontak" },
-                { "data": "aktivitas" },
+                { 
+                    "data": "aktivitas", 
+                    "defaultContent": "-"
+                },
                 {
                     "data": null,
                     "render": function(data, type, row) {
@@ -170,42 +176,40 @@ Arutala | Data Pendaftar
                 });
         });
 
-        // Menangani proses ekspor
-        // Menangani proses ekspor
-$('#exportBtn').click(function(event) {
-    event.preventDefault();
-    
-    // Get the current search value
-    var searchValue = $('#dataPesertaTable').DataTable().search();
-    
-    // Build the export URL with query parameters
-    var exportUrl = "{{ url('api/pendaftar/export/excel') }}";
-    if (searchValue) {
-        exportUrl += '?search=' + encodeURIComponent(searchValue);
-    }
+        $('#exportBtn').click(function(event) {
+            event.preventDefault();
+            
+            // Get the current search value
+            var searchValue = $('#dataPesertaTable').DataTable().search();
+            
+            // Build the export URL with query parameters
+            var exportUrl = "{{ url('api/pendaftar/export/excel') }}";
+            if (searchValue) {
+                exportUrl += '?search=' + encodeURIComponent(searchValue);
+            }
 
-    axios.get(exportUrl, { responseType: 'blob' })
-        .then(response => {
-            const url = window.URL.createObjectURL(new Blob([response.data]));
-            const link = document.createElement('a');
-            link.href = url;
-            link.setAttribute('download', 'Pendaftar.xlsx');
-            document.body.appendChild(link);
-            link.click();
-            Swal.fire(
-                'Berhasil!',
-                'Data berhasil diekspor.',
-                'success'
-            );
-        })
-        .catch(error => {
-            Swal.fire(
-                'Gagal!',
-                'Gagal mengekspor data: ' + (error.response.data.message || 'Terjadi kesalahan.'),
-                'error'
-            );
+            axios.get(exportUrl, { responseType: 'blob' })
+                .then(response => {
+                    const url = window.URL.createObjectURL(new Blob([response.data]));
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.setAttribute('download', 'Pendaftar.xlsx');
+                    document.body.appendChild(link);
+                    link.click();
+                    Swal.fire(
+                        'Berhasil!',
+                        'Data berhasil diekspor.',
+                        'success'
+                    );
+                })
+                .catch(error => {
+                    Swal.fire(
+                        'Gagal!',
+                        'Gagal mengekspor data: ' + (error.response.data.message || 'Terjadi kesalahan.'),
+                        'error'
+                    );
+                });
         });
-});
 
     });
 </script>

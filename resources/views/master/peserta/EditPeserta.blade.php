@@ -158,7 +158,7 @@ Arutala | Update Data Pendaftar
                         </div>
 
                         <!-- Instansi/Lembaga -->
-                        <h3>Instansi/Lembaga</h3>
+                        <h3 id="namaInstansiTitle" style="display: none;">Instansi/Lembaga</h3>
                         <div class="row mb-5 mr-3 mt-4" id="namaInstansiContainer" style="display: none;">
                             <label for="instansiPeserta" class="col-sm-2 col-form-label">Instansi</label>
                             <div class="col-sm-6">
@@ -170,11 +170,6 @@ Arutala | Update Data Pendaftar
                         
                     </form>
 
-                    <!-- Pelatihan -->
-                    <h3>Pelatihan</h3>
-                    <div class="training-card-container mt-4" id="trainingCards">
-                        <!-- Data dari API akan ditambahkan di sini -->
-                    </div>
                 </div>
             </div>
 
@@ -268,8 +263,10 @@ Arutala | Update Data Pendaftar
             const namaInstansiContainer = document.getElementById('namaInstansiContainer');
             if (['Pelajar', 'Mahasiswa', 'Dosen', 'Karyawan'].includes(aktivitas)) {
                 namaInstansiContainer.style.display = 'block';
+                namaInstansiTitle.style.display = 'block';
             } else {
                 namaInstansiContainer.style.display = 'none';
+                namaInstansiTitle.style.display = 'none';
                 document.getElementById('instansiPeserta').value = '';
             }
         }
