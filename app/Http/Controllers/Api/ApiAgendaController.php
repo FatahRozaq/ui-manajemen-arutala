@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\AgendaPelatihan;
 use App\Models\Pelatihan;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Mentor;
 use Illuminate\Support\Facades\DB;
 
@@ -53,6 +54,7 @@ class ApiAgendaController extends Controller
                     'id_agenda' => $agenda->id_agenda,
                     'nama_pelatihan' => $agenda->pelatihan->nama_pelatihan,
                     'batch' => $agenda->batch,
+                    'poster_agenda' => $agenda->poster_agenda,
                     'start_date' => $agenda->start_date,
                     'end_date' => $agenda->end_date,
                     'jumlah_peserta' => $jumlahPeserta,
@@ -89,7 +91,7 @@ class ApiAgendaController extends Controller
                 'nama_pelatihan' => 'required|string|max:255',
                 'start_date' => 'required|date',
                 'end_date' => 'required|date',
-                'sesi' => 'required|string|max:255', // Ubah validasi sesi menjadi string
+                'sesi' => 'required|string|max:255',
                 'investasi' => 'required|integer',
                 'investasi_info' => 'nullable|max:255',
                 'diskon' => 'nullable|integer',
@@ -97,7 +99,8 @@ class ApiAgendaController extends Controller
                 'start_pendaftaran' => 'required|date',
                 'end_pendaftaran' => 'required|date',
                 'link_mayar' => 'required|string|max:255',
-                'id_mentor' => 'required|array'
+                'id_mentor' => 'required|array',
+                'poster_agenda' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048' // Validasi untuk file gambar
             ]);
 
             // Verifikasi bahwa pelatihan ada
@@ -131,14 +134,14 @@ class ApiAgendaController extends Controller
             $agenda = new AgendaPelatihan();
             $agenda->start_date = $request->input('start_date');
             $agenda->end_date = $request->input('end_date');
-            $agenda->sesi = $request->input('sesi'); // Simpan sebagai string, bukan array
+            $agenda->sesi = $request->input('sesi');
             $agenda->investasi = $request->input('investasi');
 
             // Jika investasi_info kosong atau null, simpan null, jika ada, simpan sebagai JSON
             if ($request->has('investasi_info') && !empty($request->input('investasi_info'))) {
                 $agenda->investasi_info = json_encode($request->input('investasi_info'));
             } else {
-                $agenda->investasi_info = null; // Simpan null jika tidak ada data
+                $agenda->investasi_info = null;
             }
 
             $agenda->diskon = $request->input('diskon');
@@ -148,7 +151,37 @@ class ApiAgendaController extends Controller
             $agenda->link_mayar = $request->input('link_mayar');
             $agenda->id_pelatihan = $pelatihan->id_pelatihan;
             $agenda->batch = $batch;
-            $agenda->id_mentor = json_encode($request->input('id_mentor')); // Simpan sebagai JSON string
+            $agenda->id_mentor = json_encode($request->input('id_mentor'));
+
+            if ($request->hasFile('poster_agenda')) {
+                // Ambil nama pelatihan dan batch dari request atau variabel yang sudah ada
+                $namaPelatihan = str_replace(' ', '_', $pelatihan->nama_pelatihan); // Ganti spasi dengan underscore
+                $batch = $batch; // Batch dihitung sebelumnya
+
+                // Buat nama file dengan format yang diinginkan: NamaPelatihan_batch_TimeStamp.extension
+                $fileName = $namaPelatihan . '_batch_' . $batch . '_' . time() . '.' . $request->poster_agenda->extension();
+
+                // Buat folder path berdasarkan nama pelatihan saja
+                $folderPath = 'uploads/poster_agenda/' . $namaPelatihan;
+
+                // Gabungkan folderPath dan fileName untuk mendapatkan full path
+                $filePath = $folderPath . '/' . $fileName;
+
+                // Simpan file ke MinIO
+                Storage::disk('minio')->put($filePath, file_get_contents($request->file('poster_agenda')));
+
+                // Buat URL gambar untuk disimpan di database
+                $gambarUrl = env('MINIO_URL') . '/' . env('MINIO_BUCKET') . '/' . $filePath;
+
+                // Simpan URL gambar ke database
+                $agenda->poster_agenda = $gambarUrl;
+            } else {
+                // Jika tidak ada poster di-upload, simpan null
+                $agenda->poster_agenda = null;
+            }
+
+
+
 
             $agenda->save();
 
@@ -160,7 +193,7 @@ class ApiAgendaController extends Controller
                     'nama_pelatihan' => $pelatihan->nama_pelatihan,
                     'start_date' => $agenda->start_date,
                     'end_date' => $agenda->end_date,
-                    'sesi' => $agenda->sesi, // Tidak perlu decode JSON
+                    'sesi' => $agenda->sesi,
                     'investasi' => $agenda->investasi,
                     'investasi_info' => json_decode($agenda->investasi_info),
                     'diskon' => $agenda->diskon,
@@ -169,6 +202,7 @@ class ApiAgendaController extends Controller
                     'end_pendaftaran' => $agenda->end_pendaftaran,
                     'link_mayar' => $agenda->link_mayar,
                     'id_mentor' => json_decode($agenda->id_mentor),
+                    'poster_agenda' => $agenda->poster_agenda, // Tambahkan poster_agenda ke dalam response
                     'is_deleted' => $agenda->is_deleted,
                 ],
                 'message' => 'Agenda pelatihan berhasil ditambahkan',
@@ -208,6 +242,7 @@ class ApiAgendaController extends Controller
                 'end_pendaftaran' => 'required|date|after_or_equal:start_pendaftaran',
                 'link_mayar' => 'required|string|url|max:255',
                 'id_mentor' => 'required|array|min:1',
+                'poster_agenda' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             ], [
                 // Custom error messages
                 'nama_pelatihan.required' => 'Nama pelatihan wajib diisi.',
@@ -290,6 +325,26 @@ class ApiAgendaController extends Controller
                 $agenda->id_mentor = json_encode($request->input('id_mentor'));
             }
 
+            if ($request->hasFile('poster_agenda')) {
+                // Hapus gambar lama dari storage MinIO jika ada
+                if ($agenda->poster_agenda) {
+                    $oldFilePath = str_replace(env('MINIO_URL') . '/' . env('MINIO_BUCKET') . '/', '', $agenda->poster_agenda);
+                    Storage::disk('minio')->delete($oldFilePath);  // Hapus file lama dari MinIO
+                }
+
+                $namaPelatihan = str_replace(' ', '_', $agenda->pelatihan->nama_pelatihan); // Ganti spasi dengan underscore
+                $batch = $agenda->batch; // Batch dari agenda
+                $fileName = $namaPelatihan . '_batch_' . $batch . '_' . time() . '.' . $request->poster_agenda->extension();
+                $folderPath = 'uploads/poster_agenda/' . $namaPelatihan;
+                $filePath = $folderPath . '/' . $fileName;
+
+                Storage::disk('minio')->put($filePath, file_get_contents($request->file('poster_agenda')));
+
+                // Perbarui URL poster di database
+                $gambarUrl = env('MINIO_URL') . '/' . env('MINIO_BUCKET') . '/' . $filePath;
+                $agenda->poster_agenda = $gambarUrl;
+            }
+
             // Simpan perubahan
             $agenda->save();
 
@@ -311,6 +366,7 @@ class ApiAgendaController extends Controller
                     'start_pendaftaran' => $agenda->start_pendaftaran,
                     'end_pendaftaran' => $agenda->end_pendaftaran,
                     'link_mayar' => $agenda->link_mayar,
+                    'poster_agenda' => $agenda->poster_agenda,
                     'id_mentor' => json_decode($agenda->id_mentor),
                 ],
                 'message' => 'Agenda pelatihan berhasil diupdate',
@@ -373,12 +429,13 @@ class ApiAgendaController extends Controller
                     'end_date' => $agenda->end_date,
                     'start_pendaftaran' => $agenda->start_pendaftaran,
                     'end_pendaftaran' => $agenda->end_pendaftaran,
-                    'sesi' => $agenda->sesi, // Tidak lagi decode JSON, langsung ambil sebagai string
+                    'sesi' => $agenda->sesi,
                     'investasi' => $agenda->investasi,
-                    'investasi_info' => json_decode($agenda->investasi_info), // Ini tetap decode karena investasi_info masih bisa berbentuk JSON
+                    'investasi_info' => json_decode($agenda->investasi_info),
                     'diskon' => $agenda->diskon,
                     'status' => $agenda->status,
                     'link_mayar' => $agenda->link_mayar,
+                    'poster_agenda' => $agenda->poster_agenda,
                     'mentors' => $mentors,
                     'is_deleted' => $agenda->is_deleted
                 ],

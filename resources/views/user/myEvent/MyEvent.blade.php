@@ -63,7 +63,7 @@ Arutala | My Event
                     <div class="event-info">
                         <img 
                             src="${event.gambar_pelatihan ? event.gambar_pelatihan : '/assets/images/default-pelatihan.jpg'}"
-                            alt="${event.nama_pelatihan}" 
+                            alt="${event.nama_pelatihan}"
                             class="event-image"
                             onerror="this.onerror=null; this.src='/assets/images/default-pelatihan.jpg';"
                         >

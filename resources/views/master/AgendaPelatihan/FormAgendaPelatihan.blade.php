@@ -80,6 +80,14 @@ Arutala | Tambah Data Agenda
                                 <button type="button" class="btn" id="submitAgenda" style="background-color: #344C92; color: white;">Submit</button>
                             </div>
                         </div> --}}
+
+                        <div class="form-group row position-relative">
+                            <label for="posterAgenda" class="col-sm-3 col-form-label">Poster Agenda</label>
+                            <div class="col-sm-6">
+                                <input type="file" name="poster_agenda" class="form-control" id="posterAgenda" accept="image/*">
+                                <small id="posterAgendaError" class="text-danger" style="display:none;"></small>
+                            </div>
+                        </div>
                         
                         <!-- Nama Pelatihan -->
                         <div class="form-group row position-relative">
@@ -237,6 +245,8 @@ $(document).ready(function() {
         .then(function (response) {
             var pelatihans = response.data.pelatihans;
             var mentors = response.data.mentors;
+
+            var posterAgenda = $('#posterAgenda').val();
             
 
             // Mengisi dropdown Nama Pelatihan
@@ -277,26 +287,6 @@ $(document).ready(function() {
             console.error('Gagal mengambil data:', error);
         });
 
-    // Tambah kolom baru pada Sesi
-    // $('#sesiContainer').on('click', '.add-sesi', function () {
-    //     var newSesiRow = `
-    //         <div class="form-group row position-relative mb-1">
-    //             <label class="col-sm-3 col-form-label"></label>
-    //             <div class="col-sm-6 input-group">
-    //                 <input type="text" name="sesi[]" class="form-control">
-    //                 <div class="input-group-append">
-    //                     <button class="btn btn-outline-secondary remove-sesi" type="button"><i class="bi bi-dash-circle"></i></button>
-    //                 </div>
-    //             </div>
-    //         </div>
-    //     `;
-    //     $('#sesiContainer').append(newSesiRow);
-    // });
-
-    // Hapus kolom sesi
-    // $('#sesiContainer').on('click', '.remove-sesi', function () {
-    //     $(this).closest('.form-group').remove();
-    // });
 
     // Tambah kolom baru pada Investasi
     $('#investasiContainer').on('click', '.add-investasi', function () {

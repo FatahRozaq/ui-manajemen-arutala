@@ -168,12 +168,24 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('exampleFormControlTextarea1').value = data.deskripsi;
 
             const existingImage = document.getElementById('existingImage');
+
+            // Set gambar sesuai dengan gambar yang tersedia
             if (data.gambar_pelatihan) {
                 existingImage.src = data.gambar_pelatihan;
-                existingImage.style.display = 'block';
             } else {
-                existingImage.style.display = 'none';
+                existingImage.src = '/assets/images/default-pelatihan.jpg';
             }
+
+            // Event listener jika gambar gagal dimuat
+            existingImage.onerror = function() {
+                this.src = '/assets/images/default-pelatihan.jpg';
+                this.style.display = 'block';  // Pastikan gambar tetap ditampilkan
+            };
+
+            // Pastikan gambar ditampilkan
+            existingImage.style.display = 'block';
+
+
 
             // Isi materi
             data.materi.forEach(function(materi, index) {
