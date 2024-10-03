@@ -5,7 +5,23 @@ Arutala | Detail Data Admin
 @endsection
 
 @section('content')
+<style>
+  .breadcrumb {
+    background-color: transparent;
+    padding-left: 0;
+    padding-bottom: 0;
+  }
 
+  .breadcrumb-item {
+        font-size: 12px;
+    }
+</style>
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="/admin/kelola-admin">Admin</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Detail Admin</li>
+  </ol>
+</nav>
   <div class="pagetitle">
     <h1>Detail Data Admin</h1>
   </div>

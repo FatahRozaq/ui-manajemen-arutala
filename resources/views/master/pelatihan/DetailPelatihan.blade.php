@@ -136,9 +136,16 @@ document.addEventListener('DOMContentLoaded', function () {
             if (pelatihan.gambar_pelatihan) {
                 existingImage.src = pelatihan.gambar_pelatihan;
                 existingImage.style.display = 'block';
+
+                // Tambahkan event listener untuk error handling
+                existingImage.onerror = function() {
+                    existingImage.src = '/assets/images/default-pelatihan.jpg';
+                };
             } else {
-                existingImage.style.display = 'none';
+                existingImage.src = '/assets/images/default-pelatihan.jpg';
+                existingImage.style.display = 'block';
             }
+
 
             // Isi materi
             var materiContainer = document.getElementById('materiContainer');

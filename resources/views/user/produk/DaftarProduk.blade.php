@@ -185,7 +185,7 @@ function showModal(imageSrc) {
 
     // Jika terjadi error saat memuat gambar, tampilkan gambar default
     modalImg.onerror = function() {
-        modalImg.src = '/assets/images/dafault-pelatihan-gambar.jpg';
+        modalImg.src = '/assets/images/default-pelatihan.jpg';
     };
 
     // Fungsi untuk menutup modal saat tombol 'x' di klik
