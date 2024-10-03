@@ -62,10 +62,10 @@ Arutala | My Event
                 eventCard.innerHTML = `
                     <div class="event-info">
                         <img 
-                            src="${event.gambar_pelatihan ? event.gambar_pelatihan : '/assets/images/dafault-pelatihan-gambar.jpg'}"
+                            src="${event.gambar_pelatihan ? event.gambar_pelatihan : '/assets/images/default-pelatihan.jpg'}"
                             alt="${event.nama_pelatihan}"
                             class="event-image"
-                            onerror="this.onerror=null; this.src='/assets/images/dafault-pelatihan-gambar.jpg';"
+                            onerror="this.onerror=null; this.src='/assets/images/default-pelatihan.jpg';"
                         >
                         <div class="event-more-info">
                         <h4>${event.nama_pelatihan}</h4>

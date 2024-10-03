@@ -152,10 +152,10 @@
                 var card = `
                     <div class="card" onclick="showModal('${produk.gambar_pelatihan}')">
                         <img
-                            src="${produk.gambar_pelatihan ? produk.gambar_pelatihan : '/assets/images/dafault-pelatihan-gambar.jpg'}"
+                            src="${produk.gambar_pelatihan ? produk.gambar_pelatihan : '/assets/images/default-pelatihan.jpg'}"
                             alt="${produk.nama_pelatihan}"
                             class="event-image"
-                            onerror="this.onerror=null; this.src='/assets/images/dafault-pelatihan-gambar.jpg';"
+                            onerror="this.onerror=null; this.src='/assets/images/default-pelatihan.jpg';"
                         >
                     </div>
                 `;

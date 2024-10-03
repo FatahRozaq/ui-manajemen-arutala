@@ -132,11 +132,11 @@ document.addEventListener('DOMContentLoaded', function() {
         eventDate.textContent = `Mulai ${startDate} - ${endDate}`;
 
         const eventImage = document.getElementById('event-image');
-        eventImage.src = event.image ? event.image : '/assets/images/default-pelatihan-gambar.jpg';
+        eventImage.src = event.image ? event.image : '/assets/images/default-pelatihan.jpg';
         eventImage.alt = event.namaPelatihan;
         eventImage.onerror = function() {
             this.onerror = null;
-            this.src = '/assets/images/default-pelatihan-gambar.jpg';
+            this.src = '/assets/images/default-pelatihan.jpg';
         };
 
         document.getElementById('event-description').textContent = event.deskripsi;

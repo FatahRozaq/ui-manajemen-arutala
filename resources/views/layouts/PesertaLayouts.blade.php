@@ -98,11 +98,11 @@
                         <li class="message-item">
                             <a href="{{ route('event.history') }}">
                                 <img 
-                                    src="${notification.gambar_pelatihan ? notification.gambar_pelatihan : '/assets/images/dafault-pelatihan-gambar.jpg'}"
+                                    src="${notification.gambar_pelatihan ? notification.gambar_pelatihan : '/assets/images/default-pelatihan.jpg'}"
                                     alt="Pelatihan"
                                     width="40"
                                     height="auto"
-                                    onerror="this.onerror=null;this.src='/assets/images/dafault-pelatihan-gambar.jpg';"
+                                    onerror="this.onerror=null;this.src='/assets/images/default-pelatihan.jpg';"
                                 >
                                 <div>
                                     <h4>${notification.nama_pelatihan}</h4>
