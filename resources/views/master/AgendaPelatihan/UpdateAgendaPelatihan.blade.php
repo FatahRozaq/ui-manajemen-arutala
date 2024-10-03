@@ -100,10 +100,23 @@ Arutala | Update Data Agenda
 
                     <!-- Update Form -->
                    
+                    <div class="col-lg-12 row">
+                        <div class="col-lg-8">
+
+                    <div class="form-group row position-relative">
+                        <label for="posterAgenda" class="col-sm-3 col-form-label">Poster Agenda</label>
+                        <div class="col-sm-6">
+                            <input type="file" class="form-control" id="posterAgenda" name="poster_agenda" accept="image/*">
+                            <small id="error-posterAgenda" class="text-danger" style="display: none;"></small>
+                            {{-- <img id="currentPosterAgenda" src="" alt="Poster Agenda" style="max-width: 100%; height: auto; margin-top: 10px;"> --}}
+                        </div>
+                    </div>
+                    
 
                         <!-- Nama Pelatihan -->
-                        <div class="form-group row position-relative">
-                            <label for="namaPelatihanInput" class="col-sm-2 col-form-label">Nama Pelatihan</label>
+                        
+                        <div class="form-group row  position-relative">
+                            <label for="namaPelatihanInput" class="col-sm-3 col-form-label">Nama Pelatihan</label>
                             <div class="col-sm-6">
                                 <input type="text" class="form-control" id="namaPelatihanInput" name="nama_pelatihan" readonly>
                             </div>
@@ -111,7 +124,7 @@ Arutala | Update Data Agenda
 
                         <!-- Batch -->
                         <div class="form-group row position-relative">
-                            <label for="batchInput" class="col-sm-2 col-form-label">Batch</label>
+                            <label for="batchInput" class="col-sm-3 col-form-label">Batch</label>
                             <div class="col-sm-6">
                                 <input type="text" class="form-control" id="batchInput" name="batch" readonly>
                             </div>
@@ -119,7 +132,7 @@ Arutala | Update Data Agenda
 
                         <!-- Start Date -->
                         <div class="form-group row position-relative">
-                            <label for="startDateInput" class="col-sm-2 col-form-label">Start</label>
+                            <label for="startDateInput" class="col-sm-3 col-form-label">Start</label>
                             <div class="col-sm-6">
                                 <input type="date" class="form-control" id="startDateInput" name="start_date">
                                 <small id="error-startDate" class="text-danger" style="display: none;"></small>
@@ -128,7 +141,7 @@ Arutala | Update Data Agenda
 
                         <!-- End Date -->
                         <div class="form-group row position-relative">
-                            <label for="endDateInput" class="col-sm-2 col-form-label">End</label>
+                            <label for="endDateInput" class="col-sm-3 col-form-label">End</label>
                             <div class="col-sm-6">
                                 <input type="date" class="form-control" id="endDateInput" name="end_date">
                                 <small id="error-endDate" class="text-danger" style="display: none;"></small>
@@ -138,13 +151,11 @@ Arutala | Update Data Agenda
                         <!-- Sesi -->
                         <div id="sesiContainer">
                             <div class="form-group row position-relative mb-1">
-                                <label class="col-sm-2 col-form-label">Sesi</label>
+                                <label class="col-sm-3 col-form-label">Sesi</label>
                                 <div class="col-sm-6 input-group">
                                     <input type="text" class="form-control"  id="sesiInput" name="sesi">
                                     <small id="error-sesi" class="text-danger" style="display: none;"></small>
-                                    {{-- <div class="input-group-append">
-                                        <button class="btn btn-outline-success add-sesi" type="button"><i class="bi bi-plus-circle"></i></button>
-                                    </div> --}}
+                                    
                                 </div>
                             </div>
                         </div>
@@ -152,7 +163,7 @@ Arutala | Update Data Agenda
                         <!-- Investasi Info -->
                         <div id="investasiInfoContainer">
                             <div class="form-group row position-relative mb-1">
-                                <label class="col-sm-2 col-form-label">Investasi Info</label>
+                                <label class="col-sm-3 col-form-label">Investasi Info</label>
                                 <div class="col-sm-6 input-group">
                                     <input type="text" class="form-control" name="investasi_info[]">
                                     <div class="input-group-append">
@@ -164,7 +175,7 @@ Arutala | Update Data Agenda
 
                         <!-- Investasi Numerik -->
                         <div class="form-group row position-relative mb-1">
-                            <label for="investasiInput" class="col-sm-2 col-form-label">Investasi</label>
+                            <label for="investasiInput" class="col-sm-3 col-form-label">Investasi</label>
                             <div class="col-sm-6 input-group">
                                 <input type="number" class="form-control" id="investasiInput" name="investasi">
                                 <small id="error-investasi" class="text-danger" style="display: none;"></small>
@@ -173,7 +184,7 @@ Arutala | Update Data Agenda
 
                         <!-- Diskon -->
                         <div class="form-group row position-relative mt-3">
-                            <label for="diskonInput" class="col-sm-2 col-form-label">Diskon %</label>
+                            <label for="diskonInput" class="col-sm-3 col-form-label">Diskon %</label>
                             <div class="col-sm-6">
                                 <input type="number" class="form-control" id="diskonInput" name="diskon">
                             </div>
@@ -181,7 +192,7 @@ Arutala | Update Data Agenda
 
                         <!-- Status -->
                         <div class="form-group row position-relative">
-                            <label for="statusInput" class="col-sm-2 col-form-label">Status</label>
+                            <label for="statusInput" class="col-sm-3 col-form-label">Status</label>
                             <div class="col-sm-6">
                                 <select class="form-control" id="statusInput" name="status">
                                     <option value="Planning">Planning</option>
@@ -195,7 +206,7 @@ Arutala | Update Data Agenda
 
                         <!-- Start Pendaftaran -->
                         <div class="form-group row position-relative">
-                            <label for="startPendaftaranInput" class="col-sm-2 col-form-label">Start Pendaftaran</label>
+                            <label for="startPendaftaranInput" class="col-sm-3 col-form-label">Start Pendaftaran</label>
                             <div class="col-sm-6">
                                 <input type="date" class="form-control" id="startPendaftaranInput" name="start_pendaftaran">
                                 <small id="error-startPendaftaran" class="text-danger" style="display: none;"></small>
@@ -204,7 +215,7 @@ Arutala | Update Data Agenda
 
                         <!-- End Pendaftaran -->
                         <div class="form-group row position-relative">
-                            <label for="endPendaftaranInput" class="col-sm-2 col-form-label">End Pendaftaran</label>
+                            <label for="endPendaftaranInput" class="col-sm-3 col-form-label">End Pendaftaran</label>
                             <div class="col-sm-6">
                                 <input type="date" class="form-control" id="endPendaftaranInput" name="end_pendaftaran">
                                 <small id="error-endPendaftaran" class="text-danger" style="display: none;"></small>
@@ -213,7 +224,7 @@ Arutala | Update Data Agenda
 
                         <!-- Link Pembayaran -->
                         <div class="form-group row position-relative mt-3">
-                            <label for="linkMayarInput" class="col-sm-2 col-form-label">Link Pembayaran</label>
+                            <label for="linkMayarInput" class="col-sm-3 col-form-label">Link Pembayaran</label>
                             <div class="col-sm-6">
                                 <input type="text" class="form-control" id="linkMayarInput" name="link_mayar">
                                 <small id="error-linkMayar" class="text-danger" style="display: none;"></small>
@@ -222,23 +233,19 @@ Arutala | Update Data Agenda
 
                         <!-- Mentor -->
                         <div class="form-group row position-relative">
-                            <label for="mentorInput" class="col-sm-2 col-form-label">Mentor</label>
+                            <label for="mentorInput" class="col-sm-3 col-form-label">Mentor</label>
                             <div class="col-sm-6 form-mentor">
                                 <select id="mentorInput" name="id_mentor[]" class="form" multiple></select>
                             </div>
                         </div>
+                        </div>
 
-                        {{-- <!-- Update Button -->
-                        <div class="button-submit mt-4">
-                            <button class="btn btn-success col-sm-2" type="submit" id="updateButton">Update</button>
-                        </div> --}}
-                        {{-- <div class="row">
-                            <div class="col-sm-11 text-right">
-                                <button type="submit" class="btn" id="updateButton" style="background-color: #344C92; color: white;">Submit</button>
-                            </div>
-                        </div> --}}
+                        <div class="col-lg-3">
+                             <img id="currentPosterAgenda" src="" alt="Poster Agenda" style="max-width: 100%; height: auto; margin-top: 10px;">
+                        </div>
 
                     </form>
+                </div>
                 </div>
             </div>
 
@@ -297,24 +304,6 @@ $(document).ready(function() {
                 $('#endPendaftaranInput').val(data.end_pendaftaran);
 
                 $('#sesiInput').val(data.sesi);
-                // Populate sesi fields
-                // data.sesi.forEach(function(sesi, index) {
-                //     if (index === 0) {
-                //         $('input[name="sesi[]"]').val(sesi);
-                //     } else {
-                //         $('#sesiContainer').append(`
-                //             <div class="form-group row position-relative mb-1">
-                //                 <label class="col-sm-2 col-form-label"></label>
-                //                 <div class="col-sm-6 input-group">
-                //                     <input type="text" class="form-control" name="sesi[]" value="${sesi}">
-                //                     <div class="input-group-append">
-                //                         <button class="btn btn-outline-secondary remove-sesi" type="button"><i class="bi bi-dash-circle"></i></button>
-                //                     </div>
-                //                 </div>
-                //             </div>
-                //         `);
-                //     }
-                // });
 
                 // Populate investasi_info fields
                 if (data.investasi_info && data.investasi_info.length > 0) {
@@ -324,7 +313,7 @@ $(document).ready(function() {
                         } else {
                             $('#investasiInfoContainer').append(`
                                 <div class="form-group row position-relative mb-1">
-                                    <label class="col-sm-2 col-form-label"></label>
+                                    <label class="col-sm-3 col-form-label"></label>
                                     <div class="col-sm-6 input-group">
                                         <input type="text" class="form-control" name="investasi_info[]" value="${info}">
                                         <div class="input-group-append">
@@ -345,6 +334,12 @@ $(document).ready(function() {
                 $('#diskonInput').val(data.diskon);
                 $('#statusInput').val(data.status);
                 $('#linkMayarInput').val(data.link_mayar);
+
+                if (data.poster_agenda) {
+                $('#currentPosterAgenda').attr('src', data.poster_agenda);
+            } else {
+                $('#currentPosterAgenda').attr('src', '/path/to/default/image.jpg');  // Gambar default jika tidak ada poster
+            }
 
                 // Populate mentor selectize field with selected mentors
                 if (data.mentors && data.mentors.length > 0) {
@@ -367,7 +362,7 @@ $(document).ready(function() {
     $('#sesiContainer').on('click', '.add-sesi', function () {
         var newSesiRow = `
             <div class="form-group row position-relative mb-1">
-                <label class="col-sm-2 col-form-label"></label>
+                <label class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-6 input-group">
                     <input type="text" name="sesi[]" class="form-control">
                     <div class="input-group-append">
@@ -387,7 +382,7 @@ $(document).ready(function() {
     $('#investasiInfoContainer').on('click', '.add-investasi-info', function () {
         var newInvestasiRow = `
             <div class="form-group row position-relative mb-1">
-                <label class="col-sm-2 col-form-label"></label>
+                <label class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-6 input-group">
                     <input type="text" name="investasi_info[]" class="form-control">
                     <div class="input-group-append">
@@ -484,6 +479,11 @@ $(document).ready(function() {
                                 $('#investasiInput').addClass('is-invalid');
                                 $('<small class="text-danger">' + errors.investasi[0] + '</small>').insertAfter('#investasiInput');
                             }
+
+                            if (errors.poster_agenda) {
+                        $('#posterAgenda').addClass('is-invalid');
+                        $('<small class="text-danger">' + errors.poster_agenda[0] + '</small>').insertAfter('#posterAgenda');
+                    }
 
                             // Tambahkan validasi untuk field lainnya jika diperlukan
                         } else {

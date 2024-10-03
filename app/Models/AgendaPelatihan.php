@@ -26,6 +26,7 @@ class AgendaPelatihan extends Model
         'batch',
         'start_pendaftaran',
         'end_pendaftaran',
+        'poster_agenda',
         'created_by',
         'created_time',
         'modified_by',

@@ -84,9 +84,9 @@
 .modal-content {
     margin: auto;
     /* padding: 1%; */
-    display: block;
+    /* display: block; */
     max-width: 35%;
-    max-height: 50%;
+    max-height: 10%%;
 }
 
 .close {
@@ -106,6 +106,10 @@
     cursor: pointer;
 }
 
+.card-modal {
+    padding: 50px;
+}
+
 
 </style>
 @endsection
@@ -113,8 +117,10 @@
 @section('content')
 
 <div id="imageModal" class="modal" style="display:none;">
+    <div class="card-modal">
     <span class="close">&times;</span>
     <img class="modal-content" id="modalImage">
+    </div>
 </div>
 
 <div class="containerEvent">
