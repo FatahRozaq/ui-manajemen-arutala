@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use App\Models\PendaftaranEvent;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
@@ -34,5 +35,79 @@ class ApiTransaksiController extends Controller
         }
 
         return response()->json(['message' => 'Data tidak valid'], 400);
+    }
+
+    // Fungsi untuk register webhook
+    public function registerWebhook()
+    {
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer Paste-Your-API-Key-Here',
+        ])->post('https://api.mayar.id/hl/v1/webhook/register', [
+            'urlHook' => 'https://example.mayar.com'
+        ]);
+
+        return response()->json(json_decode($response->body()));
+    }
+
+    // Fungsi untuk test webhook
+    public function testWebhook()
+    {
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer Paste-Your-API-Key-Here',
+        ])->post('https://api.mayar.id/hl/v1/webhook/test', [
+            'urlHook' => 'https://example.mayar.com'
+        ]);
+
+        return response()->json(json_decode($response->body()));
+    }
+
+    // Fungsi untuk mendapatkan daftar transaksi
+    public function getTransactions()
+    {
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer Paste-Your-API-Key-Here',
+        ])->get('https://api.mayar.id/hl/v1/transactions', [
+            'page' => 1,
+            'pageSize' => 10
+        ]);
+
+        return response()->json(json_decode($response->body()));
+    }
+
+    // Fungsi untuk mendapatkan transaksi yang belum dibayar
+    public function getUnpaidTransactions()
+    {
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer Paste-Your-API-Key-Here',
+        ])->get('https://api.mayar.id/hl/v1/transactions/unpaid', [
+            'page' => 1,
+            'pageSize' => 10
+        ]);
+
+        return response()->json(json_decode($response->body()));
+    }
+
+    // Fungsi untuk membuat QR code baru
+    public function createQRCode()
+    {
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer Paste-Your-API-Key-Here',
+        ])->post('https://api.mayar.id/hl/v1/qrcode/create', [
+            'amount' => 10000
+        ]);
+
+        return response()->json(json_decode($response->body()));
+    }
+
+    // Fungsi untuk mendapatkan QR code statis
+    public function getStaticQRCode()
+    {
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer Paste-Your-API-Key-Here',
+        ])->get('https://api.mayar.id/hl/v1/qrcode/static', [
+            'amount' => 10000
+        ]);
+
+        return response()->json(json_decode($response->body()));
     }
 }
