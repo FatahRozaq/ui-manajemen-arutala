@@ -3,21 +3,22 @@
 use Spatie\FlareClient\Api;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\ApiAuthAdmin;
 use App\Http\Controllers\Api\ApiAuthController;
 use App\Http\Controllers\Api\ApiProfilePeserta;
+use App\Http\Controllers\Api\ApiMasterPendaftar;
 use App\Http\Controllers\Api\ApiAgendaController;
-use App\Http\Controllers\Api\ApiAuthAdmin;
-use App\Http\Controllers\Api\ApiAuthAdminController;
 use App\Http\Controllers\Api\ApiMentorController;
 use App\Http\Controllers\Api\ApiMyEventController;
+use App\Http\Controllers\Api\ApiAuthAdminController;
 use App\Http\Controllers\Api\ApiDashboardController;
+use App\Http\Controllers\Api\ApiTransaksiController;
+use App\Http\Controllers\Api\ApiSertifikatController;
 use App\Http\Controllers\Api\ApiKelolaAdminController;
 use App\Http\Controllers\Api\ApiLamanPesertaController;
 use App\Http\Controllers\Api\ApiMasterPelatihanController;
-use App\Http\Controllers\Api\ApiMasterPendaftar;
 use App\Http\Controllers\Api\ApiPendaftaranEventController;
 use App\Http\Controllers\Api\ApiPesertaPelatihanController;
-use App\Http\Controllers\Api\ApiSertifikatController;
 
 /*
 |--------------------------------------------------------------------------
@@ -161,3 +162,4 @@ Route::prefix('sertifikat')->group(function () {
 });
 
 Route::get('/produk', [ApiLamanPesertaController::class, 'getProduk']);
+Route::post('/mayar/webhook', [ApiTransaksiController::class, 'handleWebhook']);

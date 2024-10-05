@@ -105,7 +105,7 @@ Arutala | Sertifikat Peserta
                     const certificateList = $('#certificate-list');
 
                     if (certificates.length === 0) {
-                        certificateList.append('<p>No certificates available.</p>');
+                        certificateList.append('<p>Anda belum memiliki sertifikat.</p>');
                     } else {
                         certificates.forEach(certificate => {
                             const card = `

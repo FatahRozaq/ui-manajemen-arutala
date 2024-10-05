@@ -30,9 +30,9 @@ use App\Http\Controllers\KelolaAdminController;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+Route::get('/', function () {
+    return redirect('/login-page');
+});
 
 // Route::get('/', [TestController::class, 'index']);
 Route::middleware([AuthCheck::class . ':admin'])->get('/admin/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
