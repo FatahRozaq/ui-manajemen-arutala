@@ -56,9 +56,12 @@ Arutala | Data Peserta Pelatihan
                         </select>
                     </div>
                     <button type="button" id="applyFilter" class="btn btn-success">Terapkan</button>
+                    <!-- Tambahkan Tombol Clear Filter -->
+                    <button type="button" id="clearFilter" class="btn btn-secondary">Clear Filter</button>
                 </form>
             </div>
         </div>
+        
     </div>
 </div>
 
@@ -560,6 +563,24 @@ function fetchDefaultData() {
             alert('Pilih pelatihan dan batch sebelum melakukan filter.');
         }
     });
+
+    
+    // Event handler untuk tombol Clear Filter
+    $('#clearFilter').on('click', function() {
+        // Reset dropdown pelatihan dan batch ke default
+        // $('#pelatihan').val('');
+        // $('#batch').empty();
+
+        // Fetch data default
+        fetchDefaultData();
+
+        // Tutup modal filter
+        $('#filterModal').modal('hide');
+    });
+
+    // Existing code...
+
+
 
     $('#exportButton').on('click', function() {
     // Ambil parameter pencarian hanya dari tabel aktif saat ini
