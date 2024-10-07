@@ -119,7 +119,7 @@ input.form-control, textarea.form-control {
                                         <button class="btn btn-outline-success add-materi" type="button"><i class="bi bi-plus-circle"></i></button>
                                     </div>
                                 </div>
-                                <div class="col-sm-5 offset-sm-2">
+                                <div class="col-sm-7 offset-sm-2">
                                     <small id="materiError" class="text-danger" style="display:none;"></small>
                                 </div>
                             </div>
@@ -134,7 +134,7 @@ input.form-control, textarea.form-control {
                                         <button class="btn btn-outline-success add-benefit" type="button"><i class="bi bi-plus-circle"></i></button>
                                     </div>
                                 </div>
-                                <div class="col-sm-5 offset-sm-2">
+                                <div class="col-sm-6 offset-sm-2">
                                     <small id="benefitError" class="text-danger" style="display:none;"></small>
                                 </div>
                             </div>
@@ -290,18 +290,25 @@ input.form-control, textarea.form-control {
     }
 
     // Validate Gambar Pelatihan (jika diunggah)
-    var gambarInput = $('#formFile').val(); // Menggunakan id yang benar
+    var gambarInput = $('#formFile')[0].files[0]; // Menggunakan file input
     if (gambarInput) {
         var allowedExtensions = /(\.jpeg|\.png|\.jpg|\.gif|\.svg)$/i;
-        if (!allowedExtensions.exec(gambarInput)) {
+        if (!allowedExtensions.exec(gambarInput.name)) {
             $('#gambarError').show().text('Gambar pelatihan harus berupa file dengan format jpeg, png, jpg, gif, atau svg.');
+            isValid = false;
+        } else if (gambarInput.size > 1048576) { 
+            $('#gambarError').show().text('Ukuran gambar pelatihan tidak boleh lebih dari 1MB.');
             isValid = false;
         }
     }
 
     // Validate Deskripsi
-    if ($('#exampleFormControlTextarea1').val().trim() === '') {
+    var deskripsi = $('#exampleFormControlTextarea1').val().trim();
+    if (deskripsi === '') {
         $('#deskripsiError').show().text('Deskripsi wajib diisi.');
+        isValid = false;
+    } else if (deskripsi.length > 1000) {
+        $('#deskripsiError').show().text('Deskripsi tidak boleh lebih dari 1000 karakter.');
         isValid = false;
     }
 

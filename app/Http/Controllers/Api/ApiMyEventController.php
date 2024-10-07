@@ -97,7 +97,7 @@ class ApiMyEventController extends Controller
                     'id_pendaftaran' => $event->id_pendaftaran,
                     'id_peserta' => $event->id_peserta,
                     'nama_pelatihan' => $event->agendaPelatihan->pelatihan->nama_pelatihan,
-                    'gambar_pelatihan' => $event->agendaPelatihan->pelatihan->gambar_pelatihan,
+                    'gambar_pelatihan' => $event->agendaPelatihan->poster_agenda,
                     'start_date' => $event->agendaPelatihan->start_date,
                     'end_date' => $event->agendaPelatihan->end_date,
                     'status_pelatihan' => $event->agendaPelatihan->status,

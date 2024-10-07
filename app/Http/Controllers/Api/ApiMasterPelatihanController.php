@@ -53,18 +53,19 @@ class ApiMasterPelatihanController extends Controller
             // Validasi request
             $request->validate([
                 'nama_pelatihan' => 'required|string|max:255|unique:pelatihan,nama_pelatihan',
-                'gambar_pelatihan' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg|max:2048',
-                'deskripsi' => 'required|string|max:255',
+                'gambar_pelatihan' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg|max:1048',
+                'deskripsi' => 'required|string|max:1000',
                 'materi' => 'required|array|min:1', // Pastikan array tidak kosong
-                'materi.*' => 'string|max:255', // Validasi setiap elemen materi adalah string dengan max 255 karakter
-                'benefit' => 'required|array|min:1', // Pastikan array tidak kosong
-                'benefit.*' => 'string|max:255', // Validasi setiap elemen benefit adalah string dengan max 255 karakter
+                'materi.*' => 'string|max:255',
+                'benefit' => 'required|array|min:1',
+                'benefit.*' => 'string|max:255',
             ], [
                 'nama_pelatihan.required' => 'Nama pelatihan wajib diisi.',
                 'nama_pelatihan.unique' => 'Nama pelatihan sudah ada, silakan gunakan nama lain.',
                 'gambar_pelatihan.mimes' => 'Gambar pelatihan harus berupa file dengan format jpeg, png, jpg, gif, atau svg.',
-                'gambar_pelatihan.max' => 'Ukuran gambar pelatihan tidak boleh lebih dari 2MB.',
+                'gambar_pelatihan.max' => 'Ukuran gambar pelatihan tidak boleh lebih dari 1MB.',
                 'deskripsi.required' => 'Deskripsi wajib diisi.',
+                'deskripsi.max' => 'Deskripsi tidak boleh lebih dari 1000 karakter.',
                 'materi.required' => 'Materi wajib diisi dan tidak boleh kosong.',
                 'materi.*.string' => 'Setiap materi harus berupa string.',
                 'benefit.required' => 'Benefit wajib diisi dan tidak boleh kosong.',
