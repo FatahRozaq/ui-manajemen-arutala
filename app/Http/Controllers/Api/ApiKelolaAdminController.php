@@ -70,8 +70,14 @@ class ApiKelolaAdminController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'nama' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:admin,email,' . $id . ',id_admin',
-            'password' => 'nullable|string|min:8',
+            'email' => [
+                'required',
+                'string',
+                'email',
+                'regex:/^[\w\.-]+@[a-zA-Z\d\.-]+\.(com|org|net|edu|gov|mil|int|info|co|id)$/',
+                'max:255',
+                'unique:admin,email,' . $id . ',id_admin'
+            ],
         ], [
             'nama.required' => 'Nama harus diisi.',
             'nama.string' => 'Nama harus berupa string.',
@@ -80,7 +86,7 @@ class ApiKelolaAdminController extends Controller
             'email.email' => 'Email tidak valid.',
             'email.max' => 'Email tidak boleh lebih dari 255 karakter.',
             'email.unique' => 'Email sudah terdaftar.',
-            'password.min' => 'Password harus terdiri dari minimal 8 karakter.',
+            'email.regex' => 'Email harus berakhiran dengan domain valid seperti .com, .org, atau .net.',
         ]);
 
         if ($validator->fails()) {
@@ -108,7 +114,6 @@ class ApiKelolaAdminController extends Controller
             $admin->update([
                 'nama' => $request->nama,
                 'email' => $request->email,
-                'password' => $request->password ? bcrypt($request->password) : $admin->password,
                 'modified_by' => 'Admin',
                 'modified_time' => Carbon::now(),
             ]);

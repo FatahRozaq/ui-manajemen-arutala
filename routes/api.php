@@ -163,3 +163,4 @@ Route::prefix('sertifikat')->group(function () {
 
 Route::get('/produk', [ApiLamanPesertaController::class, 'getProduk']);
 Route::post('/mayar/webhook', [ApiTransaksiController::class, 'handleWebhook']);
+Route::post('/webhook-handler', [ApiTransaksiController::class, 'sendWebhookTest']);
