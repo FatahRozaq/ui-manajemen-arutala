@@ -66,7 +66,7 @@ Arutala | Data Peserta Pelatihan
 </div>
 
 <!-- Modal untuk Upload Sertifikat -->
-<div class="modal fade" id="uploadSertifikatModal" tabindex="-1" role="dialog" aria-labelledby="uploadSertifikatModalLabel" aria-hidden="true">
+<div class="modal fade sertifikat" id="uploadSertifikatModal" tabindex="-1" role="dialog" aria-labelledby="uploadSertifikatModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -86,7 +86,7 @@ Arutala | Data Peserta Pelatihan
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                 <button type="button" class="btn btn-primary" id="uploadButton">Upload</button>
             </div>
         </div>

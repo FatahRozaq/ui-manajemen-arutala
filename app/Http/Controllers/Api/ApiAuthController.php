@@ -24,22 +24,32 @@ class ApiAuthController extends Controller
                 'email.email' => 'Email harus berupa alamat email yang valid.',
                 'email.max' => 'Email tidak boleh lebih dari 255 karakter.',
                 'email.unique' => 'Email sudah terdaftar.',
+                'email.regex' => 'Email harus berakhiran dengan domain valid seperti .com, .org, atau .net.',
                 'password.required' => 'Password wajib diisi.',
                 'password.string' => 'Password harus berupa teks.',
                 'password.min' => 'Password harus terdiri dari minimal 8 karakter.',
                 'no_kontak.required' => 'Nomor kontak wajib diisi.',
                 'no_kontak.regex' => 'Nomor kontak tidak boleh diawali dengan 0, 62, atau +62 dan hanya boleh berisi angka.',
-                'no_kontak.max' => 'Nomor kontak tidak boleh lebih dari 25 karakter.',
+                'no_kontak.min' => 'Nomor kontak harus minimal 10 digit.',
+                'no_kontak.max' => 'Nomor kontak tidak boleh lebih dari 15 karakter.',
             ];
 
             $request->validate([
-                'email' => 'required|string|email|max:255|unique:pendaftar',
+                'email' => [
+                    'required',
+                    'string',
+                    'email',
+                    'regex:/^[\w\.-]+@[a-zA-Z\d\.-]+\.(com|org|net|edu|gov|mil|int|info|co|id)$/',
+                    'max:255',
+                    'unique:pendaftar'
+                ],
                 'password' => 'required|string|min:8',
                 'no_kontak' => [
                     'required',
                     'string',
                     'regex:/^(?!0|62|\+62)[0-9]+$/',
-                    'max:25'
+                    'min:10',  
+                    'max:15'
                 ],
             ], $messages);
 

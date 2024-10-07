@@ -38,30 +38,41 @@ class ApiMentorController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'nama_mentor' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:mentor',
-            'no_kontak' => [
-                    'required',
-                    'string',
-                    'regex:/^(?!0|62|\+62)[0-9]+$/',
-                    'max:25'
+            'email' => [
+                'required',
+                'string',
+                'email',
+                'regex:/^[\w\.-]+@[a-zA-Z\d\.-]+\.(com|org|net|edu|gov|mil|int|info|co|id)$/',
+                'max:255',
+                'unique:mentor'
             ],
-            'aktivitas' => 'required|string|max:15',
+            'no_kontak' => [
+                'required',
+                'string',
+                'regex:/^(?!0|62|\+62)[0-9]+$/',
+                'min:10',  
+                'max:15'
+            ],
+            'aktivitas' => 'nullable|string|max:15',
         ], [
             'nama_mentor.required' => 'Nama mentor harus diisi.',
             'nama_mentor.string' => 'Nama mentor harus berupa string.',
             'nama_mentor.max' => 'Nama mentor tidak boleh lebih dari 255 karakter.',
             'email.required' => 'Email harus diisi.',
             'email.email' => 'Email tidak valid.',
+            'email.regex' => 'Email harus berakhiran dengan domain valid seperti .com, .org, atau .net.',
             'email.max' => 'Email tidak boleh lebih dari 255 karakter.',
             'email.unique' => 'Email sudah terdaftar.',
             'no_kontak.required' => 'Nomor kontak harus diisi.',
             'no_kontak.string' => 'Nomor kontak harus berupa string.',
-            'no_kontak.max' => 'Nomor kontak tidak boleh lebih dari 25 karakter.',
+            'no_kontak.min' => 'Nomor kontak harus minimal 10 digit.',
+            'no_kontak.max' => 'Nomor kontak tidak boleh lebih dari 15 karakter.',
             'no_kontak.regex' => 'Nomor kontak tidak boleh diawali dengan 0, 62, atau +62 dan hanya boleh berisi angka.',
             'aktivitas.required' => 'Aktivitas harus diisi.',
             'aktivitas.string' => 'Aktivitas harus berupa string.',
             'aktivitas.max' => 'Aktivitas tidak boleh lebih dari 15 karakter.',
         ]);
+        
 
         if ($validator->fails()) {
             return response()->json([
@@ -138,13 +149,21 @@ class ApiMentorController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'nama_mentor' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:mentor,email,' . $id . ',id_mentor',
+            'email' => [
+                'required',
+                'string',
+                'email',
+                'regex:/^[\w\.-]+@[a-zA-Z\d\.-]+\.(com|org|net|edu|gov|mil|int|info|co|id)$/',
+                'max:255',
+                'unique:mentor,email,' . $id . ',id_mentor'
+            ],
             'no_kontak' => [
-                    'required',
-                    'string',
-                    'regex:/^(?!0|62|\+62)[0-9]+$/',
-                    'max:25'
-                ],
+                'required',
+                'string',
+                'regex:/^(?!0|62|\+62)[0-9]+$/',
+                'min:10',  
+                'max:15'
+            ],
             'aktivitas' => 'nullable|string|max:15',
         ], [
             'nama_mentor.required' => 'Nama mentor harus diisi.',
@@ -152,16 +171,19 @@ class ApiMentorController extends Controller
             'nama_mentor.max' => 'Nama mentor tidak boleh lebih dari 255 karakter.',
             'email.required' => 'Email harus diisi.',
             'email.email' => 'Email tidak valid.',
+            'email.regex' => 'Email harus berakhiran dengan domain valid seperti .com, .org, atau .net.',
             'email.max' => 'Email tidak boleh lebih dari 255 karakter.',
             'email.unique' => 'Email sudah terdaftar.',
             'no_kontak.required' => 'Nomor kontak harus diisi.',
             'no_kontak.string' => 'Nomor kontak harus berupa string.',
-            'no_kontak.max' => 'Nomor kontak tidak boleh lebih dari 25 karakter.',
+            'no_kontak.min' => 'Nomor kontak harus minimal 10 digit.',
+            'no_kontak.max' => 'Nomor kontak tidak boleh lebih dari 15 karakter.',
             'no_kontak.regex' => 'Nomor kontak tidak boleh diawali dengan 0, 62, atau +62 dan hanya boleh berisi angka.',
-            'aktivitas.required' => 'Aktivitas harus diisi',
+            'aktivitas.required' => 'Aktivitas harus diisi.',
             'aktivitas.string' => 'Aktivitas harus berupa string.',
             'aktivitas.max' => 'Aktivitas tidak boleh lebih dari 15 karakter.',
         ]);
+        
 
         if ($validator->fails()) {
             return response()->json([

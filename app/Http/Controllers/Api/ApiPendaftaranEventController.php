@@ -63,11 +63,19 @@ class ApiPendaftaranEventController extends Controller
                 'id_agenda' => 'required|exists:agenda_pelatihan,id_agenda',
                 'status_pembayaran' => 'required|string|max:255',
                 'nama' => 'required|string|max:255',
-                'email' => 'required|email|max:255',
+                'email' => [
+                    'required',
+                    'string',
+                    'email',
+                    'regex:/^[\w\.-]+@[a-zA-Z\d\.-]+\.(com|org|net|edu|gov|mil|int|info|co|id)$/',
+                    'max:255',
+                    'unique:pendaftar,email,' . Auth::id() . ',id_pendaftar'
+                ],
                 'no_kontak' => [
                     'required',
                     'string',
-                    'max:25',
+                    'min:10',
+                    'max:15',
                     function ($attribute, $value, $fail) {
                         if (preg_match('/^0/', $value) || preg_match('/^62/', $value) || preg_match('/^\+62/', $value)) {
                             $fail('Nomor kontak tidak boleh diawali dengan 0, 62, atau +62.');
@@ -76,8 +84,18 @@ class ApiPendaftaranEventController extends Controller
                 ],
                 'aktivitas' => 'required|string|max:255',
                 'nama_instansi' => 'nullable|string|max:255',
-                'provinsi' => 'required|string|max:255',
-                'kab_kota' => 'required|string|max:255',
+                'provinsi' => [
+                    'required',
+                    'string',
+                    'max:50',
+                    'not_in:Pilih Provinsi'
+                ],
+                'kab_kota' => [
+                    'required',
+                    'string',
+                    'max:50',
+                    'not_in:Pilih Kab/Kota'
+                ],
             ], [
                 'id_agenda.required' => 'Agenda wajib dipilih.',
                 'id_agenda.exists' => 'Agenda tidak valid atau tidak tersedia.',
@@ -88,17 +106,21 @@ class ApiPendaftaranEventController extends Controller
                 'email.required' => 'Email wajib diisi.',
                 'email.email' => 'Format email tidak valid.',
                 'email.max' => 'Email tidak boleh lebih dari 255 karakter.',
+                'email.regex' => 'Email harus berakhiran dengan domain valid seperti .com, .org, atau .net.',
                 'no_kontak.required' => 'Nomor kontak wajib diisi.',
                 'no_kontak.string' => 'Nomor kontak harus berupa teks.',
-                'no_kontak.max' => 'Nomor kontak tidak boleh lebih dari 25 karakter.',
+                'no_kontak.min' => 'Nomor kontak harus minimal 10 digit.',
+                'no_kontak.max' => 'Nomor kontak tidak boleh lebih dari 15 karakter.',
                 'aktivitas.required' => 'Aktivitas wajib diisi.',
                 'aktivitas.string' => 'Aktivitas harus berupa teks.',
                 'nama_instansi.string' => 'Nama Instansi harus berupa teks.',
                 'nama_instansi.max' => 'Nama Instansi tidak boleh lebih dari 255 karakter.',
                 'provinsi.required' => 'Provinsi wajib diisi.',
                 'provinsi.string' => 'Provinsi harus berupa teks.',
+                'provinsi.not_in' => 'Provinsi harus diisi terlebih dahulu',
                 'kab_kota.required' => 'Kab/Kota wajib diisi.',
                 'kab_kota.string' => 'Kab/Kota harus berupa teks.',
+                'kab_kota.not_in' => 'Kabupaten/Kota harus dipilih terlebih dahulu',
             ]);
 
             if ($validator->fails()) {
