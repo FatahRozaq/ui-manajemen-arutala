@@ -288,6 +288,41 @@ document.addEventListener('DOMContentLoaded', function () {
             element.style.display = 'none';
         });
 
+        let isValid = true;
+
+        // Validasi gambar
+        var gambarPelatihan = document.getElementById('formFile').files[0];
+        if (gambarPelatihan) {
+            // Validasi format gambar
+            var allowedExtensions = /(\.jpeg|\.png|\.jpg|\.gif|\.svg)$/i;
+            if (!allowedExtensions.exec(gambarPelatihan.name)) {
+                document.getElementById('error-image').textContent = 'Gambar harus berupa file dengan format jpeg, png, jpg, gif, atau svg.';
+                document.getElementById('error-image').style.display = 'block';
+                isValid = false;  // Set isValid ke false jika validasi gagal
+            }
+
+            // Validasi ukuran gambar tidak lebih dari 1MB
+            if (gambarPelatihan.size > 1048576) { // 1MB = 1048576 bytes
+                document.getElementById('error-image').textContent = 'Ukuran gambar tidak boleh lebih dari 1MB.';
+                document.getElementById('error-image').style.display = 'block';
+                isValid = false;  // Set isValid ke false jika validasi gagal
+            }
+        }
+
+        // Validasi deskripsi tidak boleh lebih dari 1000 karakter
+        var deskripsi = document.getElementById('exampleFormControlTextarea1').value.trim();
+        if (deskripsi.length > 1000) {
+            document.getElementById('error-deskripsi').textContent = 'Deskripsi tidak boleh lebih dari 1000 karakter.';
+            document.getElementById('error-deskripsi').style.display = 'block';
+            isValid = false;  // Set isValid ke false jika validasi gagal
+        }
+
+        // Jika ada error, jangan lanjutkan
+        if (!isValid) {
+            return;
+        }
+
+
         Swal.fire({
             title: 'Apakah Anda yakin?',
             text: "Anda tidak akan dapat mengembalikan ini!",
@@ -349,16 +384,21 @@ document.addEventListener('DOMContentLoaded', function () {
                                 document.getElementById('error-name').style.display = 'block';
                             }
 
-                            // Tampilkan error untuk gambar pelatihan
-                            if (errors.gambar_pelatihan) {
-                                document.getElementById('error-image').textContent = errors.gambar_pelatihan[0];
-                                document.getElementById('error-image').style.display = 'block';
+                            var gambarPelatihan = document.getElementById('formFile').files[0];
+                            var deskripsi = document.getElementById('exampleFormControlTextarea1').value.trim();
+
+                            // Validasi deskripsi tidak boleh lebih dari 1000 karakter
+                            if (deskripsi.length > 1000) {
+                                document.getElementById('error-deskripsi').textContent = 'Deskripsi tidak boleh lebih dari 1000 karakter.';
+                                document.getElementById('error-deskripsi').style.display = 'block';
+                                return;
                             }
 
-                            // Tampilkan error untuk deskripsi pelatihan
-                            if (errors.deskripsi) {
-                                document.getElementById('error-deskripsi').textContent = errors.deskripsi[0];
-                                document.getElementById('error-deskripsi').style.display = 'block';
+                            // Validasi ukuran gambar tidak lebih dari 1MB (1048576 bytes)
+                            if (gambarPelatihan && gambarPelatihan.size > 1048576) {
+                                document.getElementById('error-image').textContent = 'Ukuran gambar tidak boleh lebih dari 1MB.';
+                                document.getElementById('error-image').style.display = 'block';
+                                return;
                             }
 
                             // Tangani error untuk setiap elemen materi

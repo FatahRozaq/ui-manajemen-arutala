@@ -292,15 +292,21 @@ input.form-control, textarea.form-control {
     // Validate Gambar Pelatihan (jika diunggah)
     var gambarInput = $('#formFile')[0].files[0]; // Menggunakan file input
     if (gambarInput) {
-        var allowedExtensions = /(\.jpeg|\.png|\.jpg|\.gif|\.svg)$/i;
-        if (!allowedExtensions.exec(gambarInput.name)) {
-            $('#gambarError').show().text('Gambar pelatihan harus berupa file dengan format jpeg, png, jpg, gif, atau svg.');
-            isValid = false;
-        } else if (gambarInput.size > 1048576) { 
-            $('#gambarError').show().text('Ukuran gambar pelatihan tidak boleh lebih dari 1MB.');
-            isValid = false;
+            // Validasi format gambar
+            var allowedExtensions = /(\.jpeg|\.png|\.jpg|\.gif|\.svg)$/i;
+            if (!allowedExtensions.exec(gambarInput.name)) {
+                document.getElementById('error-image').textContent = 'Gambar harus berupa file dengan format jpeg, png, jpg, gif, atau svg.';
+                document.getElementById('error-image').style.display = 'block';
+                return;
+            }
+
+            // Validasi ukuran gambar
+            if (gambarInput.size > 1048576) { // 1MB = 1048576 bytes
+                document.getElementById('error-image').textContent = 'Ukuran gambar tidak boleh lebih dari 1MB.';
+                document.getElementById('error-image').style.display = 'block';
+                return;
+            }
         }
-    }
 
     // Validate Deskripsi
     var deskripsi = $('#exampleFormControlTextarea1').val().trim();
