@@ -74,6 +74,16 @@ h5 {
   font-size: 12px;
 }
 
+.nav-profile{
+  align-items: flex-start;
+
+}
+
+.notif-user{
+  display: flex;
+  width: 100%;
+  align-items: flex-start;
+}
 
 .form-control.is-invalid {
   border-color: red;
@@ -553,6 +563,9 @@ h5 {
   position: relative;
 }
 
+ul .d-flex .notif-user {
+  padding: -20px;  
+}
 .header-nav .nav-profile {
   color: #012970;
 }

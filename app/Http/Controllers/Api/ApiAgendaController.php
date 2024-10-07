@@ -100,7 +100,7 @@ class ApiAgendaController extends Controller
                 'end_pendaftaran' => 'required|date',
                 'link_mayar' => 'required|string|max:255',
                 'id_mentor' => 'required|array',
-                'poster_agenda' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048' // Validasi untuk file gambar
+                'poster_agenda' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
             ]);
 
             // Verifikasi bahwa pelatihan ada

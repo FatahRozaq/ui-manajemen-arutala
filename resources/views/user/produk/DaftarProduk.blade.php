@@ -69,46 +69,30 @@
     }
 
     /* Style untuk modal */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: auto;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.9);
+
+    .modal-backdrop {
+    background-color: rgba(0, 0, 0, 0.8) !important; /* Darker transparent background */
 }
 
-.modal-content {
-    margin: auto;
-    /* padding: 1%; */
-    /* display: block; */
-    max-width: 35%;
-    max-height: 10%%;
+/* Custom style for the Bootstrap modal close button */
+.modal .btn-close {
+    background-color: transparent; /* Remove the default background */
+    border: none; /* Remove border */
+    color: white; /* Change icon color to white */
+    font-size: 2rem; /* Increase the size of the icon */
+    font-weight: bold; /* Make the icon thicker */
+    opacity: 1; /* Ensure the icon is fully opaque */
 }
 
-.close {
-    position: absolute;
-    top: 10px;
-    right: 25px;
-    color: white;
-    font-size: 35px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.close:hover,
-.close:focus {
-    color: #bbb;
+.modal .btn-close:hover,
+.modal .btn-close:focus {
+    color: #ddd; /* Slightly lighter color on hover/focus for visual feedback */
     text-decoration: none;
-    cursor: pointer;
+    outline: none;
+    box-shadow: none;
 }
 
-.card-modal {
-    padding: 50px;
-}
+
 
 
 </style>
@@ -116,10 +100,16 @@
 
 @section('content')
 
-<div id="imageModal" class="modal" style="display:none;">
-    <div class="card-modal">
-    <span class="close">&times;</span>
-    <img class="modal-content" id="modalImage">
+<!-- Bootstrap Modal -->
+<div id="imageModal" class="modal fade" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen-sm-down">
+        <div class="modal-content" style="background-color: transparent; border: none;">
+            <div class="card-modal position-relative">
+                <button type="button" class="close btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Close"></button>
+
+                <img class="modal-img w-90" id="modalImage" alt="Modal Image" style="max-width: 90%; max-height: auto;">
+            </div>
+        </div>
     </div>
 </div>
 
@@ -134,6 +124,12 @@
 
 @section('scripts')
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<!-- Bootstrap CSS -->
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Bootstrap JavaScript Bundle with Popper -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -180,33 +176,21 @@
 
 // Fungsi untuk menampilkan modal dengan gambar yang lebih besar
 // Fungsi untuk menampilkan modal dengan gambar yang lebih besar
+// Function to show the modal with the image
 function showModal(imageSrc) {
-    var modal = document.getElementById("imageModal");
     var modalImg = document.getElementById("modalImage");
-
-    modal.style.display = "block";
-    
-    // Set gambar src
     modalImg.src = imageSrc;
 
-    // Jika terjadi error saat memuat gambar, tampilkan gambar default
-    modalImg.onerror = function() {
+    // Show the Bootstrap modal
+    var bootstrapModal = new bootstrap.Modal(document.getElementById('imageModal'));
+    bootstrapModal.show();
+
+    // Handle image error fallback
+    modalImg.onerror = function () {
         modalImg.src = '/assets/images/default-pelatihan.jpg';
     };
-
-    // Fungsi untuk menutup modal saat tombol 'x' di klik
-    var span = document.getElementsByClassName("close")[0];
-    span.onclick = function() {
-        modal.style.display = "none";
-    };
-
-    // Fungsi untuk menutup modal saat pengguna klik di luar gambar
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-    };
 }
+
 
 
 </script>

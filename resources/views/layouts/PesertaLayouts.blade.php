@@ -33,11 +33,11 @@
 
         
         <nav class="header-nav ms-auto">
-            <ul class="d-flex align-items-center">
+            <ul class="d-flex notif-user">
                 <li class="nav-item dropdown pe-3">
                     <li class="nav-item dropdown">
                         <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown" id="messagesDropdown">
-                            <i class="bi bi-chat-left-text" style="font-size: 16px"></i>
+                            <i class="bi bi-bell" style="font-size: 22px"></i>
                             <span class="badge bg-success badge-number" id="notification-badge" style="font-size: 10px; margin-top:10px; margin-right:5px;">0</span>
                         </a><!-- End Messages Icon -->
                     
@@ -99,15 +99,12 @@
                                 document.getElementById('notification-badge').textContent = unreadCount;
                                 document.getElementById('notification-count').textContent = unreadCount;
                     
-                                // Cek apakah ada notifikasi
-                                if (notifications.length > 0) {
-                                    notifications.forEach(function(notification) {
-                                        // Cek apakah notifikasi sudah dibaca
-                                        const isRead = readNotifications.includes(String(notification.id_pendaftaran));
-                    
+                                // Hanya tampilkan notifikasi yang belum dibaca
+                                if (unreadNotifications.length > 0) {
+                                    unreadNotifications.forEach(function(notification) {
                                         // Buat item HTML untuk setiap notifikasi dengan latar belakang berbeda
                                         const listItem = `
-                                            <li class="message-item ${isRead ? 'read' : 'unread'}" data-id="${notification.id_pendaftaran}">
+                                            <li class="message-item unread" data-id="${notification.id_pendaftaran}">
                                                 <a href="javascript:void(0)">
                                                     <img 
                                                         src="${notification.gambar_pelatihan ? notification.gambar_pelatihan : '/assets/images/default-pelatihan.jpg'}"
@@ -131,43 +128,31 @@
                                         notificationList.insertAdjacentHTML('beforeend', listItem);
                                     });
                                 } else {
-                                    // Jika tidak ada notifikasi, tampilkan pesan kosong
+                                    // Jika tidak ada notifikasi yang belum dibaca, tampilkan pesan kosong
                                     notificationList.innerHTML = `
                                         <li class="message-item">
                                             <div>
-                                                <p>Tidak ada pelatihan yang belum dibayar.</p>
+                                                <p></p>
                                             </div>
                                         </li>
                                     `;
                                 }
                     
                                 // Tambahkan event listener untuk mengklik notifikasi
-                                document.querySelectorAll('.message-item').forEach(function(item) {
+                                document.querySelectorAll('.message-item.unread').forEach(function(item) {
                                     item.addEventListener('click', function() {
                                         const notificationId = this.getAttribute('data-id');
                                         console.log("Clicked notification ID:", notificationId); // Debugging
                     
-                                        // Ubah class unread menjadi read
-                                        if (!this.classList.contains('read')) {
-                                            this.classList.remove('unread');
-                                            this.classList.add('read');
-                                            console.log("Notification marked as read:", this); // Debugging
-                    
-                                            // Simpan ID notifikasi yang sudah dibaca ke localStorage
-                                            if (!readNotifications.includes(notificationId)) {
-                                                readNotifications.push(String(notificationId)); // Simpan sebagai string
-                                                localStorage.setItem('read_notifications', JSON.stringify(readNotifications));
-                                                console.log("Updated read notifications in localStorage:", readNotifications); // Debugging
-                                            }
-                    
-                                            // Update badge
-                                            const unreadCount = Math.max(0, parseInt(document.getElementById('notification-badge').textContent) - 1);
-                                            document.getElementById('notification-badge').textContent = unreadCount;
-                                            document.getElementById('notification-count').textContent = unreadCount;
-
-                                            
+                                        // Simpan ID notifikasi yang sudah dibaca ke localStorage
+                                        if (!readNotifications.includes(notificationId)) {
+                                            readNotifications.push(String(notificationId)); // Simpan sebagai string
+                                            localStorage.setItem('read_notifications', JSON.stringify(readNotifications));
+                                            console.log("Updated read notifications in localStorage:", readNotifications); // Debugging
                                         }
-                                        window.location.href = "{{ route('event.history') }}";
+                    
+                                        // Redirect ke halaman event history
+                                        window.location.href = "{{ route('event.history') }}"; // Arahkan ke halaman history
                                     });
                                 });
                             })
@@ -189,19 +174,16 @@
                         .message-item.unread {
                             background-color: #f0f0f0; /* Warna abu-abu untuk yang belum dibaca */
                         }
-                    
-                        /* Warna latar belakang untuk notifikasi yang sudah dibaca */
-                        .message-item.read {
-                            background-color: white;
-                        }
                     </style>
                     
                     
                     
+                    
+                    
 
-                    <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+                    <a class="nav-link nav-profile d-flex pe-0 mr-5" href="#" data-bs-toggle="dropdown">
                         <span id="navbarUserName" class="d-none d-md-block dropdown-toggle ps-2" style="font-size: 14px;">Peserta</span>
-                        <i class="fa-solid fa-circle-user" style="font-size: 25px; margin-left:20px; margin-right:10px;"></i>
+                        <i class="fa-solid fa-circle-user" style="font-size: 25px; margin-left:20px; margin-right:20px;"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
                         
