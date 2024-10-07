@@ -113,12 +113,20 @@ class ApiMasterPendaftar extends Controller
     {
         $validator = Validator::make($request->all(), [
             'nama' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:pendaftar,email,' . $idPendaftar . ',id_pendaftar',
+            'email' => [
+                'required',
+                'string',
+                'email',
+                'regex:/^[\w\.-]+@[a-zA-Z\d\.-]+\.(com|org|net|edu|gov|mil|int|info|co|id)$/',
+                'max:255',
+                'unique:pendaftar,email,' . $idPendaftar . ',id_pendaftar'
+            ],
             'no_kontak' => [
                 'required',
                 'string',
-                'max:25',
-                'regex:/^(?!0)(?!62)(?!\+62)[0-9]+$/'
+                'regex:/^(?!0|62|\+62)[0-9]+$/',
+                'min:10',  
+                'max:15'
             ],
             'aktivitas' => 'required|string|max:15',
             'nama_instansi' => 'nullable|string|max:50',
@@ -134,9 +142,11 @@ class ApiMasterPendaftar extends Controller
             'email.email' => 'Format email tidak valid',
             'email.max' => 'Email tidak boleh lebih dari 255 karakter',
             'email.unique' => 'Email sudah digunakan. Gunakan email yang lain',
+            'email.regex' => 'Email harus berakhiran dengan domain valid seperti .com, .org, atau .net.',
             'no_kontak.required' => 'Nomor kontak harus diisi',
             'no_kontak.string' => 'Nomor kontak harus berupa teks',
-            'no_kontak.max' => 'Nomor kontak tidak boleh lebih dari 25 karakter',
+            'no_kontak.min' => 'Nomor kontak harus minimal 10 digit.',
+            'no_kontak.max' => 'Nomor kontak tidak boleh lebih dari 15 karakter.',
             'no_kontak.regex' => 'Nomor kontak tidak boleh diawali dengan 0, 62, atau +62. Gunakan nomor tanpa kode negara atau awalan 0.',
             'aktivitas.required' => 'Aktivitas harus diisi',
             'aktivitas.string' => 'Aktivitas harus berupa teks',

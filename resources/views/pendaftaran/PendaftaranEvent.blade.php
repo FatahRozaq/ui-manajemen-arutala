@@ -102,7 +102,7 @@ Arutala | Pendaftaran Event
                         <div class="column mb-4">
                             <label for="email" class="col-sm-4 col-form-label font-weight-bold">Email</label>
                             <div class="col-sm-12">
-                                <input type="email" name="email" id="email" class="form-control" placeholder="example@gmail.com">
+                                <input type="email" name="email" id="email" class="form-control" placeholder="example@gmail.com" disabled>
                                 <span class="text-error" id="error-email"></span>
                             </div>
                         </div>
