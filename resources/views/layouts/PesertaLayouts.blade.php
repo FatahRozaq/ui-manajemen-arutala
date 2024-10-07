@@ -165,8 +165,9 @@
                                             document.getElementById('notification-badge').textContent = unreadCount;
                                             document.getElementById('notification-count').textContent = unreadCount;
 
-                                            window.location.href = "{{ route('event.history') }}";
+                                            
                                         }
+                                        window.location.href = "{{ route('event.history') }}";
                                     });
                                 });
                             })
