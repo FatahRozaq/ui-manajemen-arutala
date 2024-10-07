@@ -44,7 +44,7 @@ class ApiLamanPesertaController extends Controller
                 return [
                     'id_agenda' => $agenda->id_agenda,
                     'nama_pelatihan' => $agenda->pelatihan->nama_pelatihan,
-                    'gambar_pelatihan' => $agenda->pelatihan->gambar_pelatihan,
+                    'gambar_pelatihan' => $agenda->poster_agenda,
                     'deskripsi' => $agenda->pelatihan->deskripsi,
                     'batch' => $agenda->batch,
                     'investasi' => $agenda->investasi,
@@ -110,7 +110,7 @@ class ApiLamanPesertaController extends Controller
             $data = [
                 'id_agenda' => $agenda->id_agenda,
                 'namaPelatihan' => $agenda->pelatihan->nama_pelatihan,
-                'image' => $agenda->pelatihan->gambar_pelatihan,
+                'image' => $agenda->poster_agenda,
                 'deskripsi' => $agenda->pelatihan->deskripsi,
                 'benefit' => json_decode($agenda->pelatihan->benefit),
                 'materi' => json_decode($agenda->pelatihan->materi),
@@ -154,17 +154,19 @@ class ApiLamanPesertaController extends Controller
 
             // Ambil semua data agenda pelatihan
             $agendas = AgendaPelatihan::with('pelatihan')
-                ->select('id_agenda', 'id_pelatihan', 'batch', 'is_deleted')
+                ->select('id_agenda', 'id_pelatihan', 'batch', 'poster_agenda', 'is_deleted')
                 ->orderBy('start_date', 'desc')
                 ->get();
 
-            // Siapkan data response
+
+
             $data = $agendas->map(function ($agenda) {
                 return [
                     'id_agenda' => $agenda->id_agenda,
                     'nama_pelatihan' => $agenda->pelatihan->nama_pelatihan,
-                    'gambar_pelatihan' => $agenda->pelatihan->gambar_pelatihan,
+                    // 'gambar_pelatihan' => $agenda->pelatihan->gambar_pelatihan,
                     'batch' => $agenda->batch,
+                    'poster_agenda' => $agenda->poster_agenda,
                     'is_deleted' => $agenda->is_deleted,
                 ];
             });

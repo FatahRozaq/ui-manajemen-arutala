@@ -156,9 +156,9 @@
             // Loop melalui produk dan buat card untuk setiap produk
             produkList.forEach(function(produk) {
                 var card = `
-                    <div class="card" onclick="showModal('${produk.gambar_pelatihan}')">
+                    <div class="card" onclick="showModal('${produk.poster_agenda}')">
                         <img
-                            src="${produk.gambar_pelatihan ? produk.gambar_pelatihan : '/assets/images/default-pelatihan.jpg'}"
+                            src="${produk.poster_agenda ? produk.poster_agenda : '/assets/images/default-pelatihan.jpg'}"
                             alt="${produk.nama_pelatihan}"
                             class="event-image"
                             onerror="this.onerror=null; this.src='/assets/images/default-pelatihan.jpg';"
