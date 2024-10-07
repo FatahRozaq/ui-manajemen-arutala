@@ -22,8 +22,12 @@ Arutala | Detail Data Admin
     <li class="breadcrumb-item active" aria-current="page">Detail Admin</li>
   </ol>
 </nav>
-  <div class="pagetitle">
+  <div class="pagetitle d-flex justify-content-between align-items-center">
     <h1>Detail Data Admin</h1>
+
+    <a href="#" id="updateAdminLink">
+      <button type="button" class="btn d-flex align-items-center custom-btn" style="background-color: #344C92; color: white;">Update</button>
+    </a>
   </div>
 
   <section class="section">
@@ -62,7 +66,8 @@ Arutala | Detail Data Admin
     $(document).ready(function() {
         const urlParams = new URLSearchParams(window.location.search);
         const adminId = urlParams.get('id');
-
+        const updateMentorLink = document.getElementById('updateAdminLink');
+        updateMentorLink.href = `/admin/kelola-admin/update?id=${adminId}`;
         if (adminId) {
             axios.get(`/api/kelola-admin/${adminId}`)
                 .then(function(response) {
