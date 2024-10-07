@@ -213,36 +213,6 @@ class ApiMasterPendaftar extends Controller
         }
     }
     
-    // public function update(Request $request, $idPendaftar)
-    // {
-    //     try {
-    //         $pendaftar = Pendaftar::find($idPendaftar);
-
-    //         if (!$pendaftar) {
-    //             return response()->json([
-    //                 'message' => 'Pendaftar tidak ditemukan',
-    //                 'statusCode' => Response::HTTP_NOT_FOUND,
-    //                 'status' => 'error'
-    //             ], Response::HTTP_NOT_FOUND);
-    //         }
-
-    //         $pendaftar->update($request->all());
-
-    //         return response()->json([
-    //             'data' => $pendaftar,
-    //             'message' => 'Pendaftar berhasil diperbarui',
-    //             'statusCode' => Response::HTTP_OK,
-    //             'status' => 'success'
-    //         ], Response::HTTP_OK);
-    //     } catch (Exception $e) {
-    //         return response()->json([
-    //             'message' => 'Gagal memperbarui pendaftar',
-    //             'statusCode' => Response::HTTP_INTERNAL_SERVER_ERROR,
-    //             'status' => 'error',
-    //             'error' => $e->getMessage()
-    //         ], Response::HTTP_INTERNAL_SERVER_ERROR);
-    //     }
-    // }
 
     public function exportExcel(Request $request)
     {

@@ -14,6 +14,7 @@ Arutala | Detail Data Pendaftar
         border-radius: 10px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         transition: transform 0.3s ease;
+        width: fit-content;
     }
 
     .training-card .card:hover {
@@ -45,7 +46,7 @@ Arutala | Detail Data Pendaftar
         border-top-right-radius: 10px;
         object-fit: cover;
         height: 200px; /* Tentukan tinggi maksimal gambar */
-        width: 200px; 
+        width: 225px; 
     }
 
     @media (min-width: 768px) {
@@ -163,7 +164,7 @@ Arutala | Detail Data Pendaftar
 
                     <!-- Pelatihan -->
                     <h3>Pelatihan</h3>
-                    <div class="training-card-container mt-4" id="trainingCards">
+                    <div class="row mt-4" id="trainingCards">
                         <!-- Data dari API akan ditambahkan di sini -->
                     </div>
 
@@ -203,30 +204,29 @@ Arutala | Detail Data Pendaftar
 
                     let pelatihanHTML = '';
                     data.data.pendaftaran_event.forEach(function(event, index) {
-                    let tanggalMulai = formatTanggal(event.agenda_pelatihan.start_date);
-                    let tanggalSelesai = formatTanggal(event.agenda_pelatihan.end_date);
-                    
-                    pelatihanHTML += `
-                    <div class="training-card">
-                        <div class="card">
-                            <img class="card-img-top" src="{{ asset('${event.agenda_pelatihan.pelatihan.gambar_pelatihan}') }}" 
-     alt="${event.agenda_pelatihan.pelatihan.nama_pelatihan}" 
-     onerror="this.onerror=null; this.src='{{ asset('assets/images/default-pelatihan.jpg') }}';">
+                        let tanggalMulai = formatTanggal(event.agenda_pelatihan.start_date);
+                        let tanggalSelesai = formatTanggal(event.agenda_pelatihan.end_date);
 
-                            <div class="card-body">
-                                <h5 class="card-title">${event.agenda_pelatihan.pelatihan.nama_pelatihan}</h5>
-                                <p class="card-text">Status Pembayaran: ${event.status_pembayaran}</p>
-                                <p class="card-text">Tanggal Mulai: ${tanggalMulai}</p>
-                                <p class="card-text">Tanggal Selesai: ${tanggalSelesai}</p>
+                        pelatihanHTML += `
+                        <div class="col-md-3 training-card">
+                            <div class="card">
+                                <img class="card-img-top" src="${event.agenda_pelatihan.poster_agenda}" 
+                                    alt="${event.agenda_pelatihan.pelatihan.nama_pelatihan}" 
+                                    onerror="this.onerror=null; this.src='{{ asset('assets/images/default-pelatihan.jpg') }}';">
+
+                                <div class="card-body">
+                                    <h5 class="card-title">${event.agenda_pelatihan.pelatihan.nama_pelatihan}</h5>
+                                    <p class="card-text">Status Pembayaran: ${event.status_pembayaran}</p>
+                                    <p class="card-text">Tanggal Mulai: ${tanggalMulai}</p>
+                                    <p class="card-text">Tanggal Selesai: ${tanggalSelesai}</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    `;
-
-                });
-
+                        `;
+                    });
 
                     document.getElementById('trainingCards').innerHTML = pelatihanHTML || '<p>Pendaftar ini belum pernah mengikuti pelatihan</p>';
+
                 } else {
                     console.error(data.message);
                 }

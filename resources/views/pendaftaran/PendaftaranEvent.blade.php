@@ -202,7 +202,7 @@ Arutala | Pendaftaran Event
             const pendaftar = data.pendaftar;
             const agenda = data.agenda;
             const pelatihan = data.pelatihan;
-            const imageUrl = data.image_url;
+            const imageUrl = data.agenda.poster_agenda;
 
             document.getElementById('id_agenda').value = agenda.id_agenda;
             document.getElementById('eventName').textContent = pelatihan.nama_pelatihan;
