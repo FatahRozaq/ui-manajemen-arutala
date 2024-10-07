@@ -250,13 +250,32 @@ class ApiAgendaController extends Controller
                 'end_date.required' => 'Tanggal selesai wajib diisi.',
                 'end_date.after_or_equal' => 'Tanggal selesai harus sama atau setelah tanggal mulai.',
                 'sesi.required' => 'Sesi pelatihan wajib diisi.',
+                'sesi.string' => 'Sesi pelatihan harus berupa teks.',
                 'investasi.required' => 'Investasi wajib diisi.',
+                'investasi.integer' => 'Investasi harus berupa angka.',
+                'investasi.min' => 'Investasi harus bernilai positif.',
+                'investasi_info.array' => 'Informasi investasi harus berupa array.',
+                'investasi_info.min' => 'Setidaknya satu informasi investasi harus diisi.',
+                'investasi_info.*.string' => 'Setiap informasi investasi harus berupa teks.',
                 'diskon.integer' => 'Diskon harus berupa angka antara 0 dan 100.',
+                'diskon.min' => 'Diskon minimal harus bernilai 0%.',
+                'diskon.max' => 'Diskon maksimal hanya sampai 100%.',
+                'status.required' => 'Status pelatihan wajib dipilih.',
                 'status.in' => 'Status pelatihan tidak valid.',
+                'start_pendaftaran.required' => 'Tanggal mulai pendaftaran wajib diisi.',
+                'start_pendaftaran.before_or_equal' => 'Tanggal mulai pendaftaran harus sebelum atau sama dengan tanggal mulai pelatihan.',
+                'end_pendaftaran.required' => 'Tanggal akhir pendaftaran wajib diisi.',
+                'end_pendaftaran.after_or_equal' => 'Tanggal akhir pendaftaran harus setelah atau sama dengan tanggal mulai pendaftaran.',
+                'link_mayar.required' => 'Link pembayaran wajib diisi.',
                 'link_mayar.url' => 'Link pembayaran harus berupa URL yang valid.',
+                'link_mayar.max' => 'Link pembayaran tidak boleh melebihi 255 karakter.',
+                'id_mentor.required' => 'Setidaknya satu mentor harus dipilih.',
+                'id_mentor.array' => 'Mentor harus berupa array.',
+                'poster_agenda.image' => 'Poster harus berupa file gambar.',
+                'poster_agenda.mimes' => 'Poster hanya boleh dalam format jpeg, png, jpg, gif, atau svg.',
+                'poster_agenda.max' => 'Ukuran file poster tidak boleh melebihi 2 MB.'
             ]);
 
-            // Jika validasi gagal, kembalikan response error
             if ($validator->fails()) {
                 return response()->json([
                     'message' => 'Validasi gagal',

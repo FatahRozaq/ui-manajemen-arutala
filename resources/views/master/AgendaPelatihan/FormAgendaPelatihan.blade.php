@@ -341,9 +341,13 @@ $(document).ready(function() {
             isValid = false;
         }
 
+        // Validasi Start Date Pendaftaran
         var startPendaftaran = $('#startPendaftaran').val();
         if (!startPendaftaran) {
             $('#startPendaftaranError').show().text('Start Pendaftaran wajib diisi.');
+            isValid = false;
+        } else if (startPendaftaran > startDate) {
+            $('#startPendaftaranError').show().text('Start Pendaftaran tidak boleh setelah Start Date.');
             isValid = false;
         }
 
@@ -353,9 +357,10 @@ $(document).ready(function() {
             $('#endPendaftaranError').show().text('End Pendaftaran wajib diisi.');
             isValid = false;
         } else if (endPendaftaran < startPendaftaran) {
-            $('#endPendaftaranError').show().text('End Pendaftaran tidak boleh lebih awal dari start pendaftaran.');
+            $('#endPendaftaranError').show().text('End Pendaftaran tidak boleh lebih awal dari Start Pendaftaran.');
             isValid = false;
         }
+
 
         // Validasi Investasi
         var investasi = $('input[name="investasi"]').val();

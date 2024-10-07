@@ -43,8 +43,7 @@
                     
                         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
                             <li class="dropdown-header">
-                                <span id="notification-count">0</span> pelatihan yang belum dibayar
-                                {{-- <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a> --}}
+                                <span id="notification-count">0</span> pelatihan yang belum dibaca
                             </li>
                             <li>
                                 <hr class="dropdown-divider">
@@ -63,103 +62,141 @@
                     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
                     <script>
                     document.addEventListener('DOMContentLoaded', function() {
-    // Fungsi untuk memuat notifikasi pelatihan yang belum dibayar
-    function loadNotifications() {
-        const authToken = localStorage.getItem('auth_token'); // Ambil token dari localStorage
+                        function loadNotifications() {
+                            const authToken = localStorage.getItem('auth_token'); // Ambil token dari localStorage
+                            if (!authToken) {
+                                console.error('No auth token found');
+                                return;
+                            }
+                    
+                            // Ambil notifikasi yang sudah dibaca dari localStorage
+                            let readNotifications = JSON.parse(localStorage.getItem('read_notifications')) || [];
+                            console.log("Read notifications from localStorage on page load:", readNotifications); // Debugging
+                    
+                            // Pastikan semua ID disimpan sebagai string
+                            readNotifications = readNotifications.map(String);
+                    
+                            // Lakukan request ke API untuk mengambil notifikasi
+                            axios.get('/api/my-notifications', {
+                                headers: {
+                                    'Authorization': `Bearer ${authToken}` // Kirim token di header Authorization
+                                }
+                            })
+                            .then(function(response) {
+                                const notifications = response.data.data; // Ambil data notifikasi dari response
+                                const notificationList = document.getElementById('notification-list');
+                                notificationList.innerHTML = ''; // Kosongkan daftar notifikasi sebelum diisi ulang
+                    
+                                // Filter notifikasi yang belum dibaca
+                                const unreadNotifications = notifications.filter(function(notification) {
+                                    return !readNotifications.includes(String(notification.id_pendaftaran)); // Perbandingan dengan string
+                                });
+                    
+                                console.log("Unread notifications:", unreadNotifications); // Debugging
+                    
+                                // Update jumlah notifikasi unread pada badge
+                                const unreadCount = unreadNotifications.length;
+                                document.getElementById('notification-badge').textContent = unreadCount;
+                                document.getElementById('notification-count').textContent = unreadCount;
+                    
+                                // Cek apakah ada notifikasi
+                                if (notifications.length > 0) {
+                                    notifications.forEach(function(notification) {
+                                        // Cek apakah notifikasi sudah dibaca
+                                        const isRead = readNotifications.includes(String(notification.id_pendaftaran));
+                    
+                                        // Buat item HTML untuk setiap notifikasi dengan latar belakang berbeda
+                                        const listItem = `
+                                            <li class="message-item ${isRead ? 'read' : 'unread'}" data-id="${notification.id_pendaftaran}">
+                                                <a href="javascript:void(0)">
+                                                    <img 
+                                                        src="${notification.gambar_pelatihan ? notification.gambar_pelatihan : '/assets/images/default-pelatihan.jpg'}"
+                                                        alt="Pelatihan"
+                                                        width="40"
+                                                        height="auto"
+                                                        onerror="this.onerror=null;this.src='/assets/images/default-pelatihan.jpg';"
+                                                    >
+                                                    <div>
+                                                        <h4>${notification.nama_pelatihan}</h4>
+                                                        <p style="color: red;">Belum dibayar</p>
+                                                        <p>${new Date(notification.start_date).toLocaleDateString()} - ${new Date(notification.end_date).toLocaleDateString()}</p>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <hr class="dropdown-divider">
+                                            </li>
+                                        `;
+                                        // Tambahkan item ke dalam daftar
+                                        notificationList.insertAdjacentHTML('beforeend', listItem);
+                                    });
+                                } else {
+                                    // Jika tidak ada notifikasi, tampilkan pesan kosong
+                                    notificationList.innerHTML = `
+                                        <li class="message-item">
+                                            <div>
+                                                <p>Tidak ada pelatihan yang belum dibayar.</p>
+                                            </div>
+                                        </li>
+                                    `;
+                                }
+                    
+                                // Tambahkan event listener untuk mengklik notifikasi
+                                document.querySelectorAll('.message-item').forEach(function(item) {
+                                    item.addEventListener('click', function() {
+                                        const notificationId = this.getAttribute('data-id');
+                                        console.log("Clicked notification ID:", notificationId); // Debugging
+                    
+                                        // Ubah class unread menjadi read
+                                        if (!this.classList.contains('read')) {
+                                            this.classList.remove('unread');
+                                            this.classList.add('read');
+                                            console.log("Notification marked as read:", this); // Debugging
+                    
+                                            // Simpan ID notifikasi yang sudah dibaca ke localStorage
+                                            if (!readNotifications.includes(notificationId)) {
+                                                readNotifications.push(String(notificationId)); // Simpan sebagai string
+                                                localStorage.setItem('read_notifications', JSON.stringify(readNotifications));
+                                                console.log("Updated read notifications in localStorage:", readNotifications); // Debugging
+                                            }
+                    
+                                            // Update badge
+                                            const unreadCount = Math.max(0, parseInt(document.getElementById('notification-badge').textContent) - 1);
+                                            document.getElementById('notification-badge').textContent = unreadCount;
+                                            document.getElementById('notification-count').textContent = unreadCount;
 
-        if (!authToken) {
-            console.error('No auth token found');
-            return;
-        }
-
-        // Lakukan request ke API menggunakan token yang tersimpan
-        axios.get('/api/my-notifications', {
-            headers: {
-                'Authorization': `Bearer ${authToken}` // Kirim token di header Authorization
-            }
-        })
-        .then(function(response) {
-            const notifications = response.data.data; // Ambil data notifikasi dari response
-            const notificationCount = notifications.length;
-
-            // Update jumlah notifikasi pada badge
-            document.getElementById('notification-badge').textContent = notificationCount;
-            document.getElementById('notification-count').textContent = notificationCount;
-
-            // Ambil elemen daftar notifikasi
-            const notificationList = document.getElementById('notification-list');
-            notificationList.innerHTML = ''; // Kosongkan daftar notifikasi sebelum diisi ulang
-
-            // Cek apakah ada notifikasi
-            if (notificationCount > 0) {
-                notifications.forEach(function(notification) {
-                    // Buat item HTML untuk setiap notifikasi
-                    const listItem = `
-                        <li class="message-item">
-                            <a href="{{ route('event.history') }}">
-                                <img 
-                                    src="${notification.gambar_pelatihan ? notification.gambar_pelatihan : '/assets/images/default-pelatihan.jpg'}"
-                                    alt="Pelatihan"
-                                    width="40"
-                                    height="auto"
-                                    onerror="this.onerror=null;this.src='/assets/images/default-pelatihan.jpg';"
-                                >
-                                <div>
-                                    <h4>${notification.nama_pelatihan}</h4>
-                                    <p style="color: red;">Belum dibayar</p>
-                                    <p>${new Date(notification.start_date).toLocaleDateString()} - ${new Date(notification.end_date).toLocaleDateString()}</p>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                    `;
-                    // Tambahkan item ke dalam daftar
-                    notificationList.insertAdjacentHTML('beforeend', listItem);
-                });
-            } else {
-                // Jika tidak ada notifikasi, tampilkan pesan kosong
-                notificationList.innerHTML = `
-                    <li class="message-item">
-                        <div>
-                            <p>Tidak ada pelatihan yang belum dibayar.</p>
-                        </div>
-                    </li>
-                `;
-            }
-        })
-        .catch(function(error) {
-            console.error('Error fetching notifications:', error);
-            const notificationList = document.getElementById('notification-list');
-            notificationList.innerHTML = '<p class="error">Gagal memuat data notifikasi. Silakan coba lagi nanti.</p>';
-        });
-    }
-
-    // Fungsi untuk membuka dropdown jika login berhasil
-    function openDropdownIfLoginSuccess() {
-        const loginSuccess = localStorage.getItem('login_success');
-
-        if (loginSuccess) {
-            const dropdownElement = document.getElementById('messagesDropdown');
-            const dropdownInstance = new bootstrap.Dropdown(dropdownElement); // Bootstrap 5 dropdown instance
-            dropdownInstance.show(); // Buka dropdown
-
-            // Hapus flag setelah dropdown terbuka agar tidak terbuka terus
-            localStorage.removeItem('login_success');
-        }
-    }
-
-    // Panggil fungsi loadNotifications saat halaman dimuat
-    loadNotifications();
-
-    // Panggil fungsi openDropdownIfLoginSuccess untuk membuka dropdown jika login berhasil
-    openDropdownIfLoginSuccess();
-});
-
+                                            window.location.href = "{{ route('event.history') }}";
+                                        }
+                                    });
+                                });
+                            })
+                            .catch(function(error) {
+                                console.error('Error fetching notifications:', error);
+                                const notificationList = document.getElementById('notification-list');
+                                notificationList.innerHTML = '<p class="error">Gagal memuat data notifikasi. Silakan coba lagi nanti.</p>';
+                            });
+                        }
+                    
+                        // Panggil fungsi loadNotifications saat halaman dimuat
+                        loadNotifications();
+                    });
+                    
                     </script>
                     
-
+                    <style>
+                        /* Warna latar belakang untuk notifikasi yang belum dibaca */
+                        .message-item.unread {
+                            background-color: #f0f0f0; /* Warna abu-abu untuk yang belum dibaca */
+                        }
+                    
+                        /* Warna latar belakang untuk notifikasi yang sudah dibaca */
+                        .message-item.read {
+                            background-color: white;
+                        }
+                    </style>
+                    
+                    
+                    
 
                     <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
                         <span id="navbarUserName" class="d-none d-md-block dropdown-toggle ps-2" style="font-size: 14px;">Peserta</span>
