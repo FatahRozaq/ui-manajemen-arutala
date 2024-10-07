@@ -14,6 +14,12 @@ Arutala | Data Agenda
     #dataAgendaPelatihanTable tbody tr {
         cursor: pointer; /* Ubah cursor menjadi pointer */
     }
+
+    .disabled-link {
+        pointer-events: none; /* Mencegah klik */
+        cursor: not-allowed;  /* Ubah cursor menjadi tidak diizinkan */
+    }
+
 </style>
 
 <div class="pagetitle d-flex justify-content-between align-items-center">
@@ -115,19 +121,25 @@ Arutala | Data Agenda
                 {
                     "data": null,
                     "render": function(data, type, row) {
-                        return `
-                         <a href="agendapelatihan/detail?id=${row.id_agenda}" class="view-icon" title="View">
-                                    <i class="fas fa-eye text-primary"></i>
-                                </a>
-                            <a href="agendapelatihan/update?id=${row.id_agenda}" title="Update">
-                                <i class="fas fa-edit text-warning"></i>
+                        let isDisabled = (row.status.toLowerCase() === 'masa pendaftaran' || row.status.toLowerCase() === 'planning');
+                        let updateIcon = `
+                            <a href="agendapelatihan/update?id=${row.id_agenda}" title="Update" class="${isDisabled ? 'disabled-link' : ''}">
+                                <i class="fas fa-edit ${isDisabled ? 'text-secondary' : 'text-warning'}"></i>
                             </a>
+                        `;
+
+                        return `
+                            <a href="agendapelatihan/detail?id=${row.id_agenda}" class="view-icon" title="View">
+                                <i class="fas fa-eye text-primary"></i>
+                            </a>
+                            ${updateIcon}
                             <a href="#" class="delete-icon" data-id="${row.id_agenda}" title="Delete">
                                 <i class="fas fa-trash-alt text-danger"></i>
                             </a>
                         `;
                     }
                 }
+
             ]
         });
     

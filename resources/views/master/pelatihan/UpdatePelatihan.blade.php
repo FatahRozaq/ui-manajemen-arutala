@@ -185,8 +185,6 @@ document.addEventListener('DOMContentLoaded', function () {
             // Pastikan gambar ditampilkan
             existingImage.style.display = 'block';
 
-
-
             // Isi materi
             data.materi.forEach(function(materi, index) {
                 if (index === 0) {

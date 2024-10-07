@@ -68,6 +68,13 @@ h5 {
   font-size: 12px;
 }
 
+.form-select {
+  height: 30px;
+  border-radius: 0 4px 4px 0;
+  font-size: 12px;
+}
+
+
 .form-control.is-invalid {
   border-color: red;
 }

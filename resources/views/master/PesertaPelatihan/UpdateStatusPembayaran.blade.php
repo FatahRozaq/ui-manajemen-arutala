@@ -192,7 +192,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }).then((result) => {
                     // Pastikan namaPelatihan dan batch tidak null atau undefined sebelum redirect
                     if (namaPelatihan && batch) {
-                        window.location.href = `/admin/pesertapelatihan?nama_pelatihan=${encodeURIComponent(namaPelatihan)}&batch=${batch}`;
+                        window.location.href = `/admin/pesertapelatihan`;
                     } else {
                         // Fallback ke URL default jika parameter tidak tersedia
                         window.location.href = '/admin/pesertapelatihan';
