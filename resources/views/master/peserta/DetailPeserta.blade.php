@@ -45,7 +45,7 @@ Arutala | Detail Data Pendaftar
         border-top-left-radius: 10px;
         border-top-right-radius: 10px;
         object-fit: cover;
-        height: 200px; /* Tentukan tinggi maksimal gambar */
+        height: 200px;
         width: 225px; 
     }
 

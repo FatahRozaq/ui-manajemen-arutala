@@ -107,7 +107,7 @@ class ApiTransaksiController extends Controller
     public function registerWebhook()
     {
         $response = Http::withHeaders([
-            'Authorization' => 'Bearer Paste-Your-API-Key-Here',
+            'Authorization' => 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIzNDEzMjc4OC0zMmUyLTQzMzQtYTZhMC0zOGRiNzllMDE5MGMiLCJhY2NvdW50SWQiOiI2MzhjZWRiYS03NDBhLTQ1NjItODM5MC04MDc1MjE4MzFlMDYiLCJjcmVhdGVkQXQiOiIxNzI4MzUzMjg3OTI0Iiwicm9sZSI6ImRldmVsb3BlciIsInN1YiI6ImFydXRhbGEubW1AZ21haWwuY29tIiwibmFtZSI6IkFydXRhbGFMYWIiLCJsaW5rIjoiYWRtaW4tYXJ1dGFsYWxhYiIsImlzU2VsZkRvbWFpbiI6bnVsbCwiaWF0IjoxNzI4MzUzMjg3fQ.J8Oh0t-XOMY2vcElO6mucQ94QCHdHZ_HHDKngDJhL8zt2pFN4warAd23gaUn-pbTG0VGDn-yNxH5BJPbJUYzGW8JPVW24q-zRRNWL3zpoq78LS8clU5sDMPrRHwXpjO7ytMUhY7ajKLinnXD_uTeshS7lgiS-XlHNV-8wikRIYrROotuPmb57PkOv_B1ISW8ReiRHmdDxYJyGFeSCVUKgVmMfv_0hqukPSxSZwlUkJGZd0CUGkd4JGBGc0oTcvlrx88Y0Tr2qXaSqp1JDRwaE2fU6DxPTbaBtJ-8uF1Ck4lHaPMInllaXZwiJvPYLUKhuR_QrDc4aj6wRUR-VBar_Q',
         ])->post('https://api.mayar.id/hl/v1/webhook/register', [
             'urlHook' => 'https://example.mayar.com'
         ]);
@@ -119,9 +119,9 @@ class ApiTransaksiController extends Controller
     public function testWebhook()
     {
         $response = Http::withHeaders([
-            'Authorization' => 'Bearer Paste-Your-API-Key-Here',
+            'Authorization' => 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIzNDEzMjc4OC0zMmUyLTQzMzQtYTZhMC0zOGRiNzllMDE5MGMiLCJhY2NvdW50SWQiOiI2MzhjZWRiYS03NDBhLTQ1NjItODM5MC04MDc1MjE4MzFlMDYiLCJjcmVhdGVkQXQiOiIxNzI4MzUzMjg3OTI0Iiwicm9sZSI6ImRldmVsb3BlciIsInN1YiI6ImFydXRhbGEubW1AZ21haWwuY29tIiwibmFtZSI6IkFydXRhbGFMYWIiLCJsaW5rIjoiYWRtaW4tYXJ1dGFsYWxhYiIsImlzU2VsZkRvbWFpbiI6bnVsbCwiaWF0IjoxNzI4MzUzMjg3fQ.J8Oh0t-XOMY2vcElO6mucQ94QCHdHZ_HHDKngDJhL8zt2pFN4warAd23gaUn-pbTG0VGDn-yNxH5BJPbJUYzGW8JPVW24q-zRRNWL3zpoq78LS8clU5sDMPrRHwXpjO7ytMUhY7ajKLinnXD_uTeshS7lgiS-XlHNV-8wikRIYrROotuPmb57PkOv_B1ISW8ReiRHmdDxYJyGFeSCVUKgVmMfv_0hqukPSxSZwlUkJGZd0CUGkd4JGBGc0oTcvlrx88Y0Tr2qXaSqp1JDRwaE2fU6DxPTbaBtJ-8uF1Ck4lHaPMInllaXZwiJvPYLUKhuR_QrDc4aj6wRUR-VBar_Q',
         ])->post('https://api.mayar.id/hl/v1/webhook/test', [
-            'urlHook' => 'https://example.mayar.com'
+            'urlHook' => 'https://atms.arutalalab.net/api/mayar/webhook'
         ]);
 
         return response()->json(json_decode($response->body()));

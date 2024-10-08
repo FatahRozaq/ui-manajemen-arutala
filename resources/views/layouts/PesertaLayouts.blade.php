@@ -176,12 +176,7 @@
                         }
                     </style>
                     
-                    
-                    
-                    
-                    
-
-                    <a class="nav-link nav-profile d-flex pe-0 mr-5" href="#" data-bs-toggle="dropdown">
+                    <a class="nav-link nav-profile d-flex pe-0 mr-5 mt-1" href="#" data-bs-toggle="dropdown">
                         <span id="navbarUserName" class="d-none d-md-block dropdown-toggle ps-2" style="font-size: 14px;">Peserta</span>
                         <i class="fa-solid fa-circle-user" style="font-size: 25px; margin-left:20px; margin-right:20px;"></i>
                     </a>

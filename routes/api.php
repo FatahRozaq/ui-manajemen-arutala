@@ -65,6 +65,7 @@ Route::prefix('pendaftar')->group(function () {
 Route::middleware('auth:api')->prefix('profile')->group(function () {
     Route::put('update', [ApiProfilePeserta::class, 'update']);
     Route::get('/', [ApiProfilePeserta::class, 'show']);
+    Route::post('/change-password', [ApiProfilePeserta::class, 'changePassword']);
 });
 
 Route::middleware('auth:api')->prefix('pendaftaran-event')->group(function () {
@@ -163,4 +164,4 @@ Route::prefix('sertifikat')->group(function () {
 
 Route::get('/produk', [ApiLamanPesertaController::class, 'getProduk']);
 Route::post('/mayar/webhook', [ApiTransaksiController::class, 'handleWebhook']);
-Route::post('/webhook-handler', [ApiTransaksiController::class, 'sendWebhookTest']);
+Route::post('/test-webhook', [ApiTransaksiController::class, 'sendWebhookTest']);

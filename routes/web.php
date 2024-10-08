@@ -99,6 +99,7 @@ Route::middleware([AuthCheck::class . ':pendaftar'])->prefix('peserta')->group(f
     Route::prefix('profile')->group(function () {
         Route::get('/', [ProfileController::class, 'show'])->name('peserta.profile');
         Route::get('/update', [ProfileController::class, 'update'])->name('peserta.profile.update');
+        Route::get('/change-password', [ProfileController::class, 'changePassword'])->name('peserta.profile.password');
     });
 
     // Pendaftaran Event

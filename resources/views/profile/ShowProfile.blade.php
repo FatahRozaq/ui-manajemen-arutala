@@ -19,13 +19,21 @@ Arutala | Profile Peserta
 
 @section('content')
 
-<div class="pagetitle d-flex justify-content-between align-items-center">
+<div class="pagetitle d-flex justify-content-between align-items-center flex-column flex-md-row">
     <h1>Profile</h1>
-    <a href="{{ route('peserta.profile.update') }}" class="btn d-flex align-items-center custom-btn" style="background-color: #344C92; color: white;">
-        <i class="fa-regular fa-pen-to-square"></i>
-        Update Profile
-    </a>
+    <div class="d-flex gap-2 mt-3 mt-md-0">
+        <a href="{{ route('peserta.profile.password') }}" class="btn d-flex align-items-center custom-btn" style="background-color: #344C92; color: white;">
+            <i class="fa-regular fa-eye me-1"></i>
+            Ubah Password
+        </a>
+
+        <a href="{{ route('peserta.profile.update') }}" class="btn d-flex align-items-center custom-btn" style="background-color: #344C92; color: white;">
+            <i class="fa-regular fa-pen-to-square me-1"></i>
+            Update Profile
+        </a>
+    </div>
 </div>
+
 
 <section class="section">
     <div class="row">

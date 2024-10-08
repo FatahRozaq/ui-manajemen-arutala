@@ -10,7 +10,9 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Exceptions\JWTException;
+use Illuminate\Validation\ValidationException;
 
 class ApiProfilePeserta extends Controller
 {
@@ -21,7 +23,6 @@ class ApiProfilePeserta extends Controller
             // $user = JWTAuth::parseToken()->authenticate();
             // $idUser = $user->id;
             $idUser = auth('api')->id();
-            // dd($idUser);
             $pendaftar = Pendaftar::where('id_pendaftar', $idUser)->first();
 
             if (!$pendaftar) {
@@ -166,6 +167,69 @@ class ApiProfilePeserta extends Controller
                 'statusCode' => Response::HTTP_INTERNAL_SERVER_ERROR,
                 'status' => 'error',
                 'error' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function changePassword(Request $request)
+    {
+        try {
+            // Validasi input
+            $messages = [
+                'current_password.required' => 'Password saat ini wajib diisi.',
+                'new_password.required' => 'Password baru wajib diisi.',
+                'new_password.min' => 'Password baru harus terdiri dari minimal 8 karakter.',
+            ];
+        
+            $validator = Validator::make($request->all(), [
+                'current_password' => 'required|string',
+                'new_password' => 'required|string|min:8',
+            ], $messages);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'message' => 'Validasi gagal',
+                    'statusCode' => Response::HTTP_BAD_REQUEST,
+                    'status' => 'error',
+                    'errors' => $validator->errors()
+                ], Response::HTTP_BAD_REQUEST);
+            }
+
+            // Ambil pengguna saat ini
+            $idUser = auth('api')->id();
+            $pendaftar = Pendaftar::where('id_pendaftar', $idUser)->first();
+
+            // Verifikasi password lama
+            if (!Hash::check($request->current_password, $pendaftar->password)) {
+                throw ValidationException::withMessages([
+                    'current_password' => ['Password saat ini tidak cocok'],
+                ]);
+            }
+
+            // Update password baru
+            $pendaftar->update([
+                'password' => Hash::make($request->new_password),
+            ]);
+
+            return response()->json([
+                'message' => 'Password berhasil diubah',
+                'statusCode' => Response::HTTP_OK,
+                'status' => 'success',
+            ], Response::HTTP_OK);
+
+        } catch (ValidationException $e) {
+            return response()->json([
+                'message' => 'Gagal mengubah password',
+                'error' => $e->errors(),
+                'statusCode' => Response::HTTP_UNPROCESSABLE_ENTITY,
+                'status' => 'error',
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => 'Terjadi kesalahan saat mengubah password',
+                'error' => $e->getMessage(),
+                'statusCode' => Response::HTTP_INTERNAL_SERVER_ERROR,
+                'status' => 'error',
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
