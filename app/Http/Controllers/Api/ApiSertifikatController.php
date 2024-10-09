@@ -57,21 +57,21 @@ class ApiSertifikatController extends Controller
 
             if ($request->hasFile('file_sertifikat')) {
                 if ($sertifikat && $sertifikat->file_sertifikat) {
-                    // Ambil nomor dari file lama
+                    // Get number from old file
                     $existingFileName = basename($sertifikat->file_sertifikat);
                     $existingNumber = explode('_', $existingFileName)[0];
                     $numberPrefix = $existingNumber;
 
-                    // Hapus file lama
+                    // Delete old file
                     $oldFilePath = str_replace(env('MINIO_URL') . '/' . env('MINIO_BUCKET') . '/', '', $sertifikat->file_sertifikat);
                     if (Storage::disk('minio')->exists($oldFilePath)) {
                         Storage::disk('minio')->delete($oldFilePath);
                     }
                 } else {
-                    // Dapatkan nomor terakhir
+                    // Get last file number
                     $pelatihanName = Str::slug($pendaftaranEvent->agendaPelatihan->pelatihan->nama_pelatihan);
-                    $batch = 'batch' . $pendaftaranEvent->agendaPelatihan->batch;
-                    $path = 'sertifikat/' . $pelatihanName . '/' . $batch;
+                    $batch = 'batch-' . $pendaftaranEvent->agendaPelatihan->batch;
+                    $path = 'sertifikat/' . $pelatihanName . '/' . $batch . '/sertifikat-kompetensi';
 
                     $filesInFolder = Storage::disk('minio')->files($path);
                     if (count($filesInFolder) > 0) {
@@ -104,7 +104,7 @@ class ApiSertifikatController extends Controller
                     'data' => $sertifikat
                 ], Response::HTTP_OK);
             } else {
-                // Buat sertifikat baru
+                // Create new sertifikat
                 Sertifikat::create([
                     'id_pendaftaran' => $idPendaftaran,
                     'id_pendaftar' => $pendaftaranEvent->id_peserta,
@@ -130,6 +130,7 @@ class ApiSertifikatController extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
 
     public function uploadKehadiran(Request $request)
     {

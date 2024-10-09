@@ -118,11 +118,11 @@ Arutala | Sertifikat Peserta
                                                 <p class="text-muted"><i class="fas fa-calendar-alt"></i> ${new Date(certificate.pendaftaran.agenda_pelatihan.start_date).toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' })} - ${new Date(certificate.pendaftaran.agenda_pelatihan.end_date).toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' })}</p>
                                             </div>
                                             <div class="button-group">
-                                                <a href="#" class="btn btn-success btn-sm btn-custom download-cert-btn" data-idpendaftaran="${certificate.id_pendaftaran}">
-                                                    <i class="fas fa-download"></i> Download
+                                                <a href="#" class="btn btn-success btn-sm btn-custom download-competency-cert-btn" data-idpendaftaran="${certificate.id_pendaftaran}">
+                                                    Kompetensi
                                                 </a>
-                                                <a href="#" class="btn btn-primary btn-sm btn-custom view-cert-btn" data-idpendaftaran="${certificate.id_pendaftaran}">
-                                                    <i class="fas fa-eye"></i> Lihat
+                                                <a href="#" class="btn btn-primary btn-sm btn-custom download-attendance-cert-btn" data-idpendaftaran="${certificate.id_pendaftaran}">
+                                                    Kehadiran
                                                 </a>
                                             </div>
                                         </div>
@@ -131,18 +131,18 @@ Arutala | Sertifikat Peserta
                             certificateList.append(card);
                         });
 
-                        // Attach event listener to "Lihat" buttons
-                        $('.view-cert-btn').on('click', function(e) {
+                        // Attach event listener to "Sertifikat Kompetensi" buttons
+                        $('.download-competency-cert-btn').on('click', function(e) {
                             e.preventDefault();
                             const idPendaftaran = $(this).data('idpendaftaran');
-                            viewCertificate(idPendaftaran);
+                            openCertOptions(idPendaftaran, 'kompetensi');
                         });
 
-                        // Attach event listener to "Download" buttons
-                        $('.download-cert-btn').on('click', function(e) {
+                        // Attach event listener to "Sertifikat Kehadiran" buttons
+                        $('.download-attendance-cert-btn').on('click', function(e) {
                             e.preventDefault();
                             const idPendaftaran = $(this).data('idpendaftaran');
-                            downloadCertificate(idPendaftaran);
+                            openCertOptions(idPendaftaran, 'kehadiran');
                         });
                     }
                 })
@@ -156,8 +156,24 @@ Arutala | Sertifikat Peserta
                 });
         }
 
-        function viewCertificate(idPendaftaran) {
-            axios.get(`/api/sertifikat/view/${idPendaftaran}`)
+        function openCertOptions(idPendaftaran, type) {
+            Swal.fire({
+                title: 'Pilih Opsi',
+                showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonText: 'Download',
+                denyButtonText: 'Lihat',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    downloadCertificate(idPendaftaran, type);
+                } else if (result.isDenied) {
+                    viewCertificate(idPendaftaran, type);
+                }
+            });
+        }
+
+        function viewCertificate(idPendaftaran, type) {
+            axios.get(`/api/sertifikat/view-${type}/${idPendaftaran}`)
                 .then(response => {
                     const fileUrl = response.data.data.file_url;
 
@@ -190,8 +206,8 @@ Arutala | Sertifikat Peserta
                 });
         }
 
-        function downloadCertificate(idPendaftaran) {
-            axios.get(`/api/sertifikat/download?id_pendaftaran=${idPendaftaran}`, {
+        function downloadCertificate(idPendaftaran, type) {
+            axios.get(`/api/sertifikat/download-${type}?id_pendaftaran=${idPendaftaran}`, {
                     responseType: 'blob' // Set response type to blob to handle file download
                 })
                 .then(response => {
@@ -224,8 +240,6 @@ Arutala | Sertifikat Peserta
                     });
                 });
         }
-
     });
-
 </script>
 @endsection
