@@ -65,12 +65,12 @@ Arutala | Data Peserta Pelatihan
     </div>
 </div>
 
-<!-- Modal untuk Upload Sertifikat -->
+<!-- Modal untuk Upload Sertifikat Kompetensi -->
 <div class="modal fade sertifikat" id="uploadSertifikatModal" tabindex="-1" role="dialog" aria-labelledby="uploadSertifikatModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="uploadSertifikatModalLabel">Upload Sertifikat</h5>
+                <h5 class="modal-title" id="uploadSertifikatModalLabel">Upload Sertifikat Kompetensi</h5>
                 <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button> -->
@@ -92,6 +92,35 @@ Arutala | Data Peserta Pelatihan
         </div>
     </div>
 </div>
+
+<!-- Modal untuk Upload Sertifikat Kehadiran -->
+<div class="modal fade sertifikat" id="uploadSertifikatKehadiranModal" tabindex="-1" role="dialog" aria-labelledby="uploadSertifikatKehadiranModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="uploadSertifikatKehadiranModalLabel">Upload Sertifikat Kehadiran</h5>
+                <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button> -->
+            </div>
+            <div class="modal-body">
+                <form id="uploadSertifikatKehadiranForm">
+                    <div class="form-group">
+                        <label for="sertifikat_kehadiran">Pilih File Sertifikat</label>
+                        <input type="file" class="form-control" id="sertifikat_kehadiran" name="sertifikat_kehadiran" required>
+                    </div>
+                    <input type="hidden" id="id_pendaftaran_kehadiran" name="id_pendaftaran">
+                    <input type="hidden" id="id_agenda_kehadiran" name="id_agenda">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                <button type="button" class="btn btn-primary" id="uploadKehadiranButton">Upload</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <div class="modal fade" id="previewModal" tabindex="-1" role="dialog" aria-labelledby="previewModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
@@ -145,7 +174,8 @@ Arutala | Data Peserta Pelatihan
                                         <th>Batch</th>
                                         <th>No Kontak</th>
                                         <th>Status Pembayaran</th>
-                                        <th>Aksi</th>
+                                        <th>Kompetensi</th>
+                                        <th>Kehadiran</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -367,54 +397,79 @@ function fetchDefaultData() {
     }
 
 
-        // Inisialisasi DataTables
-        let tablePaid = $('#dataDetailPelatihanTablePaid').DataTable({
-    dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6 d-flex justify-content-end"f<"filter-import">>>rtip',
-    responsive: true,
-    ajax: {
-        type: 'GET',
-        dataSrc: function (json) {
-            return json.data;
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-            // Kosongkan fungsi untuk tidak menampilkan kesalahan di konsol
-        }
-    },
-    columns: [
-        { data: 'nama_peserta' },
-        { data: 'nama_pelatihan' },
-        { data: 'batch' },
-        { data: 'no_kontak' },
-        {
-            data: 'status_pembayaran',
-            render: function(data) {
-                let colorClass = data.toLowerCase() === 'paid' ? 'text-success' : 'text-warning';
-                return `<span class="${colorClass}">${data}</span>`;
+    // Inisialisasi DataTables
+    let tablePaid = $('#dataDetailPelatihanTablePaid').DataTable({
+        dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6 d-flex justify-content-end"f<"filter-import">>>rtip',
+        responsive: true,
+        ajax: {
+            type: 'GET',
+            dataSrc: function (json) {
+                return json.data;
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                // Kosongkan fungsi untuk tidak menampilkan kesalahan di konsol
             }
         },
-        {
-            data: null,
-            render: function(data, type, row) {
-                const idPendaftaran = row.id_pendaftaran || 'undefined';
-                const idAgenda = row.id_agenda || 'undefined';
-                return `
-                <a href="pesertapelatihan/updatestatus?id_pendaftaran=${idPendaftaran}&id_agenda=${idAgenda}" class="update-icon" title="Update">
-                    <i class="fas fa-edit text-warning"></i>
-                </a>
-                <a href="javascript:void(0)" class="update-icon" title="Upload Sertifikat" onclick="openUploadModal(${idPendaftaran}, ${idAgenda})">
-                    <i class="fa-solid fa-cloud-arrow-up text-info"></i>
-                </a>
-                <a href="/api/sertifikat/download?id_pendaftaran=${idPendaftaran}&id_agenda=${idAgenda}" class="update-icon" title="Download Sertifikat">
-                    <i class="fa-solid fa-download text-success"></i>
-                </a>
-                <a href="#" class="view-cert-icon" data-idpendaftaran="${idPendaftaran}" data-idagenda="${idAgenda}" title="View Sertifikat">
-                    <i class="fa-solid fa-eye text-primary"></i>
-                </a>
-                `;
+        columns: [
+            { data: 'nama_peserta' },
+            { data: 'nama_pelatihan' },
+            { data: 'batch' },
+            { data: 'no_kontak' },
+            {
+                data: 'status_pembayaran',
+                render: function(data, type, row) {
+                    let colorClass = data.toLowerCase() === 'paid' ? 'text-success' : 'text-warning';
+                    const idPendaftaran = row.id_pendaftaran || 'undefined';
+                    const idAgenda = row.id_agenda || 'undefined';
+
+                    return `
+                        <span class="${colorClass}">${data}</span>
+                        <a href="pesertapelatihan/updatestatus?id_pendaftaran=${idPendaftaran}&id_agenda=${idAgenda}" class="update-icon" title="Update">
+                            <i class="fas fa-edit text-warning ml-2"></i>
+                        </a>
+                    `;
+                }
+            },
+            {
+                data: null,
+                render: function(data, type, row) {
+                    const idPendaftaran = row.id_pendaftaran || 'undefined';
+                    const idAgenda = row.id_agenda || 'undefined';
+                    
+                    return `
+                        <a href="javascript:void(0)" class="update-icon" title="Upload Sertifikat Kompetensi" onclick="openUploadModal(${idPendaftaran}, ${idAgenda})">
+                            <i class="fa-solid fa-cloud-arrow-up text-info"></i>
+                        </a>
+                        <a href="/api/sertifikat/download-kompetensi?id_pendaftaran=${idPendaftaran}&id_agenda=${idAgenda}" class="update-icon" title="Download Sertifikat Kompetensi">
+                            <i class="fa-solid fa-download text-success"></i>
+                        </a>
+                        <a href="#" class="view-cert-icon" data-idpendaftaran="${idPendaftaran}" data-idagenda="${idAgenda}" title="View Sertifikat Kompetensi">
+                            <i class="fa-solid fa-eye text-primary"></i>
+                        </a>
+                    `;
+                }
+            },
+            {
+                data: null,
+                render: function(data, type, row) {
+                    const idPendaftaran = row.id_pendaftaran || 'undefined';
+                    const idAgenda = row.id_agenda || 'undefined';
+                    return `
+                    <a href="javascript:void(0)" class="update-icon" title="Upload Sertifikat Kehadiran" onclick="openUploadKehadiranModal(${idPendaftaran}, ${idAgenda})">
+                        <i class="fa-solid fa-cloud-arrow-up text-info"></i>
+                    </a>
+                    <a href="/api/sertifikat/download-kehadiran?id_pendaftaran=${idPendaftaran}&id_agenda=${idAgenda}" class="update-icon" title="Download Sertifikat Kehadiran">
+                        <i class="fa-solid fa-download text-success"></i>
+                    </a>
+                    <a href="#" class="view-cert-icon-kehadiran" data-idpendaftaran="${idPendaftaran}" data-idagenda="${idAgenda}" title="View Sertifikat Kehadiran">
+                        <i class="fa-solid fa-eye text-primary"></i>
+                    </a>
+                    `;
+                }
             }
-        }
-    ]
-});
+
+        ]
+    });
 
 
 
@@ -657,50 +712,88 @@ function fetchDefaultData() {
     });
 
     // Function to open the upload modal
-function openUploadModal(idPendaftaran, idAgenda) {
-    $('#id_pendaftaran').val(idPendaftaran);
-    $('#id_agenda').val(idAgenda);
-    $('#uploadSertifikatModal').modal('show');
-}
-
-$.ajaxSetup({
-    headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    function openUploadModal(idPendaftaran, idAgenda) {
+        $('#id_pendaftaran').val(idPendaftaran);
+        $('#id_agenda').val(idAgenda);
+        $('#uploadSertifikatModal').modal('show');
     }
-});
 
-// Handle upload button click
-$('#uploadButton').on('click', function() {
-    let formData = new FormData($('#uploadSertifikatForm')[0]);
-    
-    $.ajax({
-        url: '/api/sertifikat/upload',  // API endpoint for upload
-        type: 'POST',
-        data: formData,
-        processData: false,  // Prevent jQuery from processing the data
-        contentType: false,  // Prevent jQuery from setting the content type
-        success: function(response) {
-            // Jika upload berhasil, tampilkan notifikasi sukses
-            Swal.fire({
-                icon: 'success',
-                title: 'Berhasil',
-                text: response.message,
-            });
+    function openUploadKehadiranModal(idPendaftaran, idAgenda) {
+        $('#id_pendaftaran_kehadiran').val(idPendaftaran);
+        $('#id_agenda_kehadiran').val(idAgenda);
+        $('#uploadSertifikatKehadiranModal').modal('show');
+    }
 
-            // Close the modal
-            $('#uploadSertifikatModal').modal('hide');
-            tablePaid.ajax.reload(); // Reload datatable setelah upload
-        },
-        error: function(xhr) {
-            // Jika upload gagal, tampilkan notifikasi error
-            Swal.fire({
-                icon: 'error',
-                title: 'Gagal',
-                text: xhr.responseJSON.message,
-            });
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
-});
+
+    // Handle upload button click
+    $('#uploadButton').on('click', function() {
+        let formData = new FormData($('#uploadSertifikatForm')[0]);
+        console.log([...formData.entries()]);
+        $.ajax({
+            url: '/api/sertifikat/upload-kompetensi',  // API endpoint for upload
+            type: 'POST',
+            data: formData,
+            processData: false,  // Prevent jQuery from processing the data
+            contentType: false,  // Prevent jQuery from setting the content type
+            success: function(response) {
+                // Jika upload berhasil, tampilkan notifikasi sukses
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil',
+                    text: response.message,
+                });
+
+                // Close the modal
+                $('#uploadSertifikatModal').modal('hide');
+                tablePaid.ajax.reload(); // Reload datatable setelah upload
+            },
+            error: function(xhr) {
+                // Jika upload gagal, tampilkan notifikasi error
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal',
+                    text: xhr.responseJSON.message,
+                });
+            }
+        });
+    });
+
+    $('#uploadKehadiranButton').on('click', function() {
+        let formData = new FormData($('#uploadSertifikatKehadiranForm')[0]);
+        console.log([...formData.entries()]);
+        $.ajax({
+            url: '/api/sertifikat/upload-kehadiran',  // API endpoint for upload
+            type: 'POST',
+            data: formData,
+            processData: false,  // Prevent jQuery from processing the data
+            contentType: false,  // Prevent jQuery from setting the content type
+            success: function(response) {
+                // Jika upload berhasil, tampilkan notifikasi sukses
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil',
+                    text: response.message,
+                });
+
+                // Close the modal
+                $('#uploadSertifikatKehadiranModal').modal('hide');
+                tablePaid.ajax.reload(); // Reload datatable setelah upload
+            },
+            error: function(xhr) {
+                // Jika upload gagal, tampilkan notifikasi error
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal',
+                    text: xhr.responseJSON.message,
+                });
+            }
+        });
+    });
 
 $('#dataDetailPelatihanTablePaid').on('click', '.view-cert-icon', function(e) {
     e.preventDefault();
@@ -709,7 +802,7 @@ $('#dataDetailPelatihanTablePaid').on('click', '.view-cert-icon', function(e) {
     const idAgenda = $(this).data('idagenda');
 
     $.ajax({
-        url: `/api/sertifikat/view/${idPendaftaran}`, // Adjust URL as needed
+        url: `/api/sertifikat/view-kompetensi/${idPendaftaran}`, // Adjust URL as needed
         type: 'GET',
         success: function(response) {
             if (response.status === 'success') {
@@ -759,6 +852,65 @@ $('#dataDetailPelatihanTablePaid').on('click', '.view-cert-icon', function(e) {
         }
     });
 });
+
+$('#dataDetailPelatihanTablePaid').on('click', '.view-cert-icon-kehadiran', function(e) {
+    e.preventDefault();
+
+    const idPendaftaran = $(this).data('idpendaftaran');
+    const idAgenda = $(this).data('idagenda');
+
+    $.ajax({
+        url: `/api/sertifikat/view-kehadiran/${idPendaftaran}`, // Adjust URL as needed
+        type: 'GET',
+        success: function(response) {
+            if (response.status === 'success') {
+                const fileUrl = response.data.file_url;
+                const fileExtension = fileUrl.split('.').pop().toLowerCase(); // Get file extension
+
+                // Conditional rendering based on file type
+                let previewContent = '';
+
+                if (['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension)) {
+                    previewContent = `
+                        <img src="${fileUrl}" class="img-fluid" style="object-fit: contain; width: 100%; max-height: 80vh;" />
+                    `;
+                } else if (fileExtension === 'pdf') {
+                    previewContent = `
+                        <iframe src="${fileUrl}" class="w-100" style="height:80vh;" frameborder="0"></iframe>
+                    `;
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'File tidak didukung',
+                        text: 'Format file tidak dikenali.',
+                        confirmButtonText: 'Tutup'
+                    });
+                    return;
+                }
+
+                // Inject content into modal
+                $('#previewModal .modal-body').html(previewContent);
+                $('#previewModal').modal('show');
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal Mengambil Sertifikat',
+                    text: 'Sertifikat tidak ditemukan atau belum di upload',
+                    confirmButtonText: 'Tutup'
+                });
+            }
+        },
+        error: function(xhr) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Terjadi Kesalahan',
+                text: 'Gagal memuat sertifikat atau sertifikat belum di upload. Silakan coba lagi.',
+                confirmButtonText: 'Tutup'
+            });
+        }
+    });
+});
+
 
 
 $(document).on('click', 'a[title="Download Sertifikat"]', function (e) {

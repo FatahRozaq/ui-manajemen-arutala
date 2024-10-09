@@ -21,7 +21,8 @@ class Sertifikat extends Model
         'created_time',
         'modified_by',
         'modified_time',
-        'is_deleted'
+        'is_deleted',
+        'sertifikat_kehadiran'
     ];
 
     public $timestamps = false;

@@ -155,9 +155,13 @@ Route::middleware('auth:admin')->prefix('admin-profile')->group(function () {
 });
 
 Route::prefix('sertifikat')->group(function () {
-    Route::post('/upload', [ApiSertifikatController::class, 'upload']);
-    Route::get('/download', [ApiSertifikatController::class, 'download']);
-    Route::get('/view/{idPendaftaran}', [ApiSertifikatController::class, 'view']);
+    Route::post('/upload-kompetensi', [ApiSertifikatController::class, 'uploadKompetensi']);
+    Route::get('/download-kompetensi', [ApiSertifikatController::class, 'downloadKompetensi']);
+    Route::get('/view-kompetensi/{idPendaftaran}', [ApiSertifikatController::class, 'viewKompetensi']);
+
+    Route::post('/upload-kehadiran', [ApiSertifikatController::class, 'uploadKehadiran']);
+    Route::get('/download-kehadiran', [ApiSertifikatController::class, 'downloadKehadiran']);
+    Route::get('/view-kehadiran/{idPendaftaran}', [ApiSertifikatController::class, 'viewKehadiran']);
 
     Route::middleware('auth:api')->get('/peserta', [ApiSertifikatController::class, 'sertifikatPendaftar']);
 });
