@@ -165,7 +165,7 @@ Arutala | Update Data Mentor
                             confirmButtonText: 'OK'
                         }).then((result) => {
                             if (result.isConfirmed) {
-                                window.location.href = '/admin/mentor';
+                                window.location.href = `/admin/mentor/detail?id=${mentorId}`;
                             }
                         });
                     })
@@ -186,12 +186,12 @@ Arutala | Update Data Mentor
                                 document.getElementById('error-activity').textContent = errors.aktivitas[0];
                             }
 
-                            Swal.fire({
-                                title: 'Error!',
-                                text: error.response.data.message,
-                                icon: 'error',
-                                confirmButtonText: 'OK'
-                            });
+                            // Swal.fire({
+                            //     title: 'Error!',
+                            //     text: error.response.data.message,
+                            //     icon: 'error',
+                            //     confirmButtonText: 'OK'
+                            // });
                         } else {
                             Swal.fire({
                                 title: 'Error!',

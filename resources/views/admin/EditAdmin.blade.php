@@ -137,12 +137,12 @@ Arutala | Update Data Admin
                                 document.getElementById('error-email').textContent = errors.email[0];
                             }
 
-                            Swal.fire({
-                                title: 'Error!',
-                                text: error.response.data.message,
-                                icon: 'error',
-                                confirmButtonText: 'OK'
-                            });
+                            // Swal.fire({
+                            //     title: 'Error!',
+                            //     text: error.response.data.message,
+                            //     icon: 'error',
+                            //     confirmButtonText: 'OK'
+                            // });
                         } else {
                             Swal.fire({
                                 title: 'Error!',

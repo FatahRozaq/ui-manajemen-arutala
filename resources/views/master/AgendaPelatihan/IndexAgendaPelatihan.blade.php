@@ -81,37 +81,31 @@ Arutala | Data Agenda
                 "dataSrc": "data"
             },
             "columns": [
-                { 
+                {
                     "data": "nama_pelatihan",
                     "render": function(data, type, row) {
                         return `<span class="clickable-cell" style="text-decoration:underline;">${data}</span>`;
                     }
                 },
-                { 
+                {
                     "data": "batch",
                     "render": function(data, type, row) {
                         return `<span class="clickable-cell" style="text-decoration:underline;">${data}</span>`;
                     }
                 },
                 { "data": "jumlah_peserta" },
-                { 
-            "data": "start_date",
-            "render": function(data, type, row) {
-                // Ubah string tanggal ke objek Date
-                let dateObj = new Date(data);
-                
-                // Ekstrak hari, bulan, dan tahun
-                let day = String(dateObj.getDate()).padStart(2, '0');
-                let month = String(dateObj.getMonth() + 1).padStart(2, '0'); // Bulan dimulai dari 0
-                let year = String(dateObj.getFullYear()).slice(-2); // Ambil 2 digit terakhir tahun
-                
-                // Gabungkan menjadi format dd mm yy
-                let formattedDate = `${day}-${month}-${year}`;
-                
-                return formattedDate; // Mengembalikan tanggal dalam format dd mm yy
-            }
-        },
-                { 
+                {
+                    "data": "start_date",
+                    "render": function(data, type, row) {
+                        let dateObj = new Date(data);
+                        let day = String(dateObj.getDate()).padStart(2, '0');
+                        let month = String(dateObj.getMonth() + 1).padStart(2, '0');
+                        let year = String(dateObj.getFullYear()).slice(-2);
+                        let formattedDate = `${day}-${month}-${year}`;
+                        return formattedDate;
+                    }
+                },
+                {
                     "data": "status",
                     "render": function(data, type, row) {
                         let colorClass = data.toLowerCase();
@@ -127,7 +121,6 @@ Arutala | Data Agenda
                                 <i class="fas fa-edit ${isDisabled ? 'text-secondary' : 'text-warning'}"></i>
                             </a>
                         `;
-
                         return `
                             <a href="agendapelatihan/detail?id=${row.id_agenda}" class="view-icon" title="View">
                                 <i class="fas fa-eye text-primary"></i>
@@ -139,9 +132,11 @@ Arutala | Data Agenda
                         `;
                     }
                 }
-
-            ]
+            ],
+            // Sorting based on nama_pelatihan first, then batch
+            "order": [[0, 'asc'], [1, 'asc']]
         });
+
     
         // Event listener untuk kolom yang dapat diklik saja
         $('#dataAgendaPelatihanTable tbody').on('click', '.clickable-cell', function() {

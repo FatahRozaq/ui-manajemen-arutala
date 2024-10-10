@@ -171,7 +171,7 @@ class ApiMentorController extends Controller
             'nama_mentor.max' => 'Nama mentor tidak boleh lebih dari 255 karakter.',
             'email.required' => 'Email harus diisi.',
             'email.email' => 'Email tidak valid.',
-            'email.regex' => 'Email harus berakhiran dengan domain valid seperti .com, .org, atau .net.',
+            'email.regex' => 'Email harus berakhiran dengan domain valid .com, .org, .net, .edu, gov, .mil, .int, .info, .co, .id .',
             'email.max' => 'Email tidak boleh lebih dari 255 karakter.',
             'email.unique' => 'Email sudah terdaftar.',
             'no_kontak.required' => 'Nomor kontak harus diisi.',
