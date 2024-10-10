@@ -163,6 +163,7 @@ class ApiPendaftaranEventController extends Controller
                 ], Response::HTTP_NOT_FOUND);
             }
 
+
             $pendaftaranEvent = PendaftaranEvent::create([
                 'id_peserta' => $pendaftar->id_pendaftar,
                 'id_agenda' => $request->id_agenda,

@@ -86,7 +86,7 @@ class ApiKelolaAdminController extends Controller
             'email.email' => 'Email tidak valid.',
             'email.max' => 'Email tidak boleh lebih dari 255 karakter.',
             'email.unique' => 'Email sudah terdaftar.',
-            'email.regex' => 'Email harus berakhiran dengan domain valid seperti .com, .org, atau .net.',
+            'email.regex' => 'Email harus berakhiran dengan domain valid .com, .org, .net, .edu, gov, .mil, .int, .info, .co, .id .',
         ]);
 
         if ($validator->fails()) {
