@@ -33,7 +33,7 @@ class ApiProfilePeserta extends Controller
                 ], Response::HTTP_NOT_FOUND);
             }
 
-            // Hilangkan awalan +62 dari nomor kontak untuk ditampilkan
+            // Hilangkan awalan +62 dari Kontak untuk ditampilkan
             $pendaftar->no_kontak = ltrim($pendaftar->no_kontak, '+62');
 
             return response()->json([
@@ -97,11 +97,11 @@ class ApiProfilePeserta extends Controller
             'email.max' => 'Email tidak boleh lebih dari 255 karakter',
             'email.unique' => 'Email sudah digunakan. Gunakan email yang lain',
             'email.regex' => 'Email harus berakhiran dengan domain valid .com, .org, .net, .edu, gov, .mil, .int, .info, .co, .id .',
-            'no_kontak.required' => 'Nomor kontak harus diisi',
-            'no_kontak.string' => 'Nomor kontak harus berupa teks',
-            'no_kontak.min' => 'Nomor kontak harus minimal 10 digit.',
-            'no_kontak.max' => 'Nomor kontak tidak boleh lebih dari 15 karakter.',
-            'no_kontak.regex' => 'Nomor kontak tidak boleh diawali dengan 0, 62, atau +62. Gunakan nomor tanpa kode negara atau awalan 0.',
+            'no_kontak.required' => 'Kontak harus diisi',
+            'no_kontak.string' => 'Kontak harus berupa teks',
+            'no_kontak.min' => 'Kontak harus minimal 10 digit.',
+            'no_kontak.max' => 'Kontak tidak boleh lebih dari 15 karakter.',
+            'no_kontak.regex' => 'Kontak tidak boleh diawali dengan 0, 62, atau +62. Gunakan nomor tanpa kode negara atau awalan 0.',
             'aktivitas.required' => 'Aktivitas harus diisi',
             'aktivitas.string' => 'Aktivitas harus berupa teks',
             'aktivitas.max' => 'Aktivitas tidak boleh lebih dari 15 karakter',

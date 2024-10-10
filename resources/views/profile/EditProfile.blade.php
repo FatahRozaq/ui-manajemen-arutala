@@ -53,7 +53,7 @@ Arutala | Profile Peserta
                         </div>
 
                         <div class="column mb-4">
-                            <label for="no_kontak" class="col-sm-4 col-form-label font-weight-bold">No Kontak</label>
+                            <label for="no_kontak" class="col-sm-4 col-form-label font-weight-bold">Kontak</label>
                             <div class="col-sm-12 d-flex">
                                 <div class="default-internal" style="padding-top: 15px;">
                                     <label>+62</label>

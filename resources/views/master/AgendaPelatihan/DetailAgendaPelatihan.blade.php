@@ -119,7 +119,7 @@ Arutala | Detail Data Agenda
 
                         <!-- Start Date -->
                         <div class="form-group row position-relative">
-                            <label for="startDateInput" class="col-sm-3 col-form-label">Start</label>
+                            <label for="startDateInput" class="col-sm-3 col-form-label">Start Pelatihan</label>
                             <div class="col-sm-7">
                                 <input type="date" class="form-control disable" id="startDateInput" aria-label="readonly input example" readonly>
                             </div>
@@ -127,7 +127,7 @@ Arutala | Detail Data Agenda
 
                         <!-- End Date -->
                         <div class="form-group row position-relative">
-                            <label for="endDateInput" class="col-sm-3 col-form-label">End</label>
+                            <label for="endDateInput" class="col-sm-3 col-form-label">End Pelatihan</label>
                             <div class="col-sm-7">
                                 <input type="date" class="form-control disable" id="endDateInput" aria-label="readonly input example" readonly>
                             </div>

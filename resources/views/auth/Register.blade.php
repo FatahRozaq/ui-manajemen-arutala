@@ -23,7 +23,7 @@ Arutala | Register Peserta
             </div>
             <input type="number" name="no_kontak" id="noKontak" class="form-control" placeholder="8112121971">
         </div>
-        <label for="no_kontak" class="form-label kontak">No Kontak</label>
+        <label for="no_kontak" class="form-label kontak">Kontak</label>
         <span class="text-danger" id="error-no_kontak"></span>
     </div>
 

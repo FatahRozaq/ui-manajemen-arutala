@@ -131,7 +131,7 @@ Arutala | Update Data Agenda
 
                         <!-- Start Date -->
                         <div class="form-group row position-relative">
-                            <label for="startDateInput" class="col-sm-3 col-form-label">Start</label>
+                            <label for="startDateInput" class="col-sm-3 col-form-label">Start Pelatihan</label>
                             <div class="col-sm-7">
                                 <input type="date" class="form-control" id="startDateInput" name="start_date">
                                 <small id="error-startDate" class="text-danger" style="display: none;"></small>
@@ -140,7 +140,7 @@ Arutala | Update Data Agenda
 
                         <!-- End Date -->
                         <div class="form-group row position-relative">
-                            <label for="endDateInput" class="col-sm-3 col-form-label">End</label>
+                            <label for="endDateInput" class="col-sm-3 col-form-label">End Pelatihan</label>
                             <div class="col-sm-7">
                                 <input type="date" class="form-control" id="endDateInput" name="end_date">
                                 <small id="error-endDate" class="text-danger" style="display: none;"></small>
@@ -235,6 +235,7 @@ Arutala | Update Data Agenda
                             <label for="mentorInput" class="col-sm-3 col-form-label">Mentor</label>
                             <div class="col-sm-7 form-mentor">
                                 <select id="mentorInput" name="id_mentor[]" class="form" multiple></select>
+                                <small id="error-idMentor" class="text-danger" style="display: none;"></small>
                             </div>
                         </div>
                         </div>
@@ -281,6 +282,20 @@ $(document).ready(function() {
             }
         }
     })[0].selectize;
+
+    // var isValid = true
+    // var mentor = $('#mentorInput').val();
+    // if (!mentor || mentor.length === 0) {
+    //     $('#mentorError').show().text('Mentor wajib diisi.');
+    //     isValid = false;
+    // } else {
+    //     $('#mentorError').hide();
+    // }
+
+    // // Jika validasi gagal, jangan kirim form
+    // if (!isValid) {
+    //     return;
+    // }
 
     // Fetch mentor data from the API
     axios.get('/api/mentor')
@@ -481,6 +496,11 @@ $(document).ready(function() {
                             if (errors.investasi) {
                                 $('#investasiInput').addClass('is-invalid');
                                 $('<small class="text-danger">' + errors.investasi[0] + '</small>').insertAfter('#investasiInput');
+                            }
+
+                            if (errors.id_mentor) {
+                                $('#mentorInput').addClass('is-invalid');
+                                $('<small class="text-danger">' + errors.id_mentor[0] + '</small>').insertAfter('#mentorInput');
                             }
 
                             if (errors.poster_agenda) {

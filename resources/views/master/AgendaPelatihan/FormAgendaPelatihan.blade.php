@@ -101,7 +101,7 @@ Arutala | Tambah Data Agenda
 
                         <!-- Start Date -->
                         <div class="form-group row position-relative">
-                            <label for="startDate" class="col-sm-3 col-form-label">Start Date</label>
+                            <label for="startDate" class="col-sm-3 col-form-label">Start Pelatihan</label>
                             <div class="col-sm-6">
                                 <input type="date" name="start_date" class="form-control" id="startDate">
                                 <small id="startDateError" class="text-danger" style="display:none;"></small>
@@ -110,7 +110,7 @@ Arutala | Tambah Data Agenda
 
                         <!-- End Date -->
                         <div class="form-group row position-relative">
-                            <label for="endDate" class="col-sm-3 col-form-label">End Date</label>
+                            <label for="endDate" class="col-sm-3 col-form-label">End Pelatihan</label>
                             <div class="col-sm-6">
                                 <input type="date" name="end_date" class="form-control" id="endDate">
                                 <small id="endDateError" class="text-danger" style="display:none;"></small>
@@ -359,6 +359,9 @@ $(document).ready(function() {
         } else if (endPendaftaran < startPendaftaran) {
             $('#endPendaftaranError').show().text('End Pendaftaran tidak boleh lebih awal dari Start Pendaftaran.');
             isValid = false;
+        } else if (endPendaftaran > endDate) {
+            $('#endPendaftaranError').show().text('End Pendaftaran tidak boleh lebih dari Akhir Pelatihan.');
+            isValid = false;
         }
 
 
@@ -383,6 +386,14 @@ $(document).ready(function() {
         if (!linkMayar) {
             $('#linkMayarError').show().text('Link pembayaran wajib diisi.');
             isValid = false;
+        }
+
+        var mentor = $('#mentorInput').val();
+        if (!mentor || mentor.length === 0) {
+            $('#mentorError').show().text('Mentor wajib diisi.');
+            isValid = false;
+        } else {
+            $('#mentorError').hide();
         }
 
         // Jika validasi gagal, jangan kirim form

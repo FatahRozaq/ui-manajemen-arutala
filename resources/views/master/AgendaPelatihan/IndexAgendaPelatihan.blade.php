@@ -116,6 +116,7 @@ Arutala | Data Agenda
                     "data": null,
                     "render": function(data, type, row) {
                         let isDisabled = (row.status.toLowerCase() === 'selesai' || row.status.toLowerCase() === 'sedang berlangsung'|| row.status.toLowerCase() === 'pendaftaran berakhir');
+                        let isDisabledDelete = (row.status.toLowerCase() === 'selesai' || row.status.toLowerCase() === 'sedang berlangsung'|| row.status.toLowerCase() === 'pendaftaran berakhir' || row.status.toLowerCase() === 'masa pendaftaran');
                         let updateIcon = `
                             <a href="agendapelatihan/update?id=${row.id_agenda}" title="Update" class="${isDisabled ? 'disabled-link' : ''}">
                                 <i class="fas fa-edit ${isDisabled ? 'text-secondary' : 'text-warning'}"></i>
@@ -126,8 +127,8 @@ Arutala | Data Agenda
                                 <i class="fas fa-eye text-primary"></i>
                             </a>
                             ${updateIcon}
-                            <a href="#" class="delete-icon" data-id="${row.id_agenda}" title="Delete">
-                                <i class="fas fa-trash-alt text-danger"></i>
+                            <a href="#" class="delete-icon ${isDisabledDelete ? 'disabled-link' : ''}" data-id="${row.id_agenda}" title="Delete">
+                                <i class="fas fa-trash-alt ${isDisabledDelete ? 'text-secondary' : 'text-danger'}"></i>
                             </a>
                         `;
                     }

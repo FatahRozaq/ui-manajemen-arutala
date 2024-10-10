@@ -78,7 +78,7 @@ class ApiPendaftaranEventController extends Controller
                     'max:15',
                     function ($attribute, $value, $fail) {
                         if (preg_match('/^0/', $value) || preg_match('/^62/', $value) || preg_match('/^\+62/', $value)) {
-                            $fail('Nomor kontak tidak boleh diawali dengan 0, 62, atau +62.');
+                            $fail('Kontak tidak boleh diawali dengan 0, 62, atau +62.');
                         }
                     }
                 ],
@@ -107,10 +107,10 @@ class ApiPendaftaranEventController extends Controller
                 'email.email' => 'Format email tidak valid.',
                 'email.max' => 'Email tidak boleh lebih dari 255 karakter.',
                 'email.regex' => 'Email harus berakhiran dengan domain valid seperti .com, .org, atau .net.',
-                'no_kontak.required' => 'Nomor kontak wajib diisi.',
-                'no_kontak.string' => 'Nomor kontak harus berupa teks.',
-                'no_kontak.min' => 'Nomor kontak harus minimal 10 digit.',
-                'no_kontak.max' => 'Nomor kontak tidak boleh lebih dari 15 karakter.',
+                'no_kontak.required' => 'Kontak wajib diisi.',
+                'no_kontak.string' => 'Kontak harus berupa teks.',
+                'no_kontak.min' => 'Kontak harus minimal 10 digit.',
+                'no_kontak.max' => 'Kontak tidak boleh lebih dari 15 karakter.',
                 'aktivitas.required' => 'Aktivitas wajib diisi.',
                 'aktivitas.string' => 'Aktivitas harus berupa teks.',
                 'nama_instansi.string' => 'Nama Instansi harus berupa teks.',

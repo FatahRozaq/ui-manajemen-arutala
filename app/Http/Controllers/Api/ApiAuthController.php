@@ -28,10 +28,10 @@ class ApiAuthController extends Controller
                 'password.required' => 'Password wajib diisi.',
                 'password.string' => 'Password harus berupa teks.',
                 'password.min' => 'Password harus terdiri dari minimal 8 karakter.',
-                'no_kontak.required' => 'Nomor kontak wajib diisi.',
-                'no_kontak.regex' => 'Nomor kontak tidak boleh diawali dengan 0, 62, atau +62 dan hanya boleh berisi angka.',
-                'no_kontak.min' => 'Nomor kontak harus minimal 10 digit.',
-                'no_kontak.max' => 'Nomor kontak tidak boleh lebih dari 15 karakter.',
+                'no_kontak.required' => 'Kontak wajib diisi.',
+                'no_kontak.regex' => 'Kontak tidak boleh diawali dengan 0, 62, atau +62 dan hanya boleh berisi angka.',
+                'no_kontak.min' => 'Kontak harus minimal 10 digit.',
+                'no_kontak.max' => 'Kontak tidak boleh lebih dari 15 karakter.',
             ];
 
             $request->validate([

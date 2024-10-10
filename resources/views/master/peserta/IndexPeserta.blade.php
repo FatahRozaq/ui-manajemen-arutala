@@ -105,6 +105,7 @@ Arutala | Data Pendaftar
                 {
                     "data": null,
                     "render": function(data, type, row) {
+                        let isDisabledDelete = (row.jumlah_pelatihan >= 1 );
                         return `
                             <a href="{{ url('admin/pendaftar/detail?idPendaftar=${row.id_pendaftar}') }}" class="view-icon" title="View">
                                 <i class="fas fa-eye text-primary"></i>
@@ -112,8 +113,8 @@ Arutala | Data Pendaftar
                             <a href="{{ url('admin/pendaftar/edit?idPendaftar=${row.id_pendaftar}') }}" class="update-icon" data-id="${row.id_pendaftar}" title="Update">
                                 <i class="fas fa-edit text-warning"></i>
                             </a>
-                            <a href="#" class="delete-icon" data-id="${row.id_pendaftar}" title="Delete">
-                                <i class="fas fa-trash-alt text-danger"></i>
+                            <a href="#" class="delete-icon ${isDisabledDelete ? 'disabled-link' : ''}" data-id="${row.id_pendaftar}" title="Delete">
+                                <i class="fas fa-trash-alt ${isDisabledDelete ? 'text-secondary' : 'text-danger'}"></i>
                             </a>
                         `;
                     }
