@@ -35,11 +35,8 @@ class AuthController extends Controller
 
     public function logout()
     {
-        if (Session::has('user')) {
-            Session::flush();
-        }
-
+        Session::flush();
+        
         return redirect()->route('login.page')->with('success', 'Logged out successfully!');
     }
-
 }
