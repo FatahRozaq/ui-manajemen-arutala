@@ -166,12 +166,12 @@ Arutala | Tambah Mentor
                         }
 
                         // Tampilkan pesan error global dari API menggunakan SweetAlert
-                        Swal.fire({
-                            title: 'Error!',
-                            text: error.response.data.message,
-                            icon: 'error',
-                            confirmButtonText: 'OK'
-                        });
+                        // Swal.fire({
+                        //     title: 'Error!',
+                        //     text: error.response.data.message,
+                        //     icon: 'error',
+                        //     confirmButtonText: 'OK'
+                        // });
                     } else {
                         Swal.fire({
                             title: 'Error!',
