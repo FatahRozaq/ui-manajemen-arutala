@@ -142,7 +142,7 @@ class ApiMasterPendaftar extends Controller
             'email.email' => 'Format email tidak valid',
             'email.max' => 'Email tidak boleh lebih dari 255 karakter',
             'email.unique' => 'Email sudah digunakan. Gunakan email yang lain',
-            'email.regex' => 'Email harus berakhiran dengan domain valid seperti .com, .org, atau .net.',
+            'email.regex' => 'Email harus berakhiran dengan domain valid .com, .org, .net, .edu, gov, .mil, .int, .info, .co, .id .',
             'no_kontak.required' => 'Nomor kontak harus diisi',
             'no_kontak.string' => 'Nomor kontak harus berupa teks',
             'no_kontak.min' => 'Nomor kontak harus minimal 10 digit.',

@@ -96,7 +96,7 @@ class ApiProfilePeserta extends Controller
             'email.email' => 'Format email tidak valid',
             'email.max' => 'Email tidak boleh lebih dari 255 karakter',
             'email.unique' => 'Email sudah digunakan. Gunakan email yang lain',
-            'email.regex' => 'Email harus berakhiran dengan domain valid seperti .com, .org, atau .net.',
+            'email.regex' => 'Email harus berakhiran dengan domain valid .com, .org, .net, .edu, gov, .mil, .int, .info, .co, .id .',
             'no_kontak.required' => 'Nomor kontak harus diisi',
             'no_kontak.string' => 'Nomor kontak harus berupa teks',
             'no_kontak.min' => 'Nomor kontak harus minimal 10 digit.',
@@ -180,20 +180,11 @@ class ApiProfilePeserta extends Controller
                 'new_password.required' => 'Password baru wajib diisi.',
                 'new_password.min' => 'Password baru harus terdiri dari minimal 8 karakter.',
             ];
-        
+
             $validator = Validator::make($request->all(), [
                 'current_password' => 'required|string',
                 'new_password' => 'required|string|min:8',
             ], $messages);
-
-            if ($validator->fails()) {
-                return response()->json([
-                    'message' => 'Validasi gagal',
-                    'statusCode' => Response::HTTP_BAD_REQUEST,
-                    'status' => 'error',
-                    'errors' => $validator->errors()
-                ], Response::HTTP_BAD_REQUEST);
-            }
 
             // Ambil pengguna saat ini
             $idUser = auth('api')->id();
@@ -201,9 +192,18 @@ class ApiProfilePeserta extends Controller
 
             // Verifikasi password lama
             if (!Hash::check($request->current_password, $pendaftar->password)) {
-                throw ValidationException::withMessages([
-                    'current_password' => ['Password saat ini tidak cocok'],
-                ]);
+                // Tambahkan error secara manual ke validator
+                $validator->errors()->add('current_password', 'Password saat ini tidak cocok');
+            }
+
+            // Jika ada kesalahan pada validator (termasuk yang ditambahkan secara manual)
+            if ($validator->fails()) {
+                return response()->json([
+                    'message' => 'Validasi gagal',
+                    'statusCode' => Response::HTTP_BAD_REQUEST,
+                    'status' => 'error',
+                    'errors' => $validator->errors()
+                ], Response::HTTP_BAD_REQUEST);
             }
 
             // Update password baru
@@ -217,13 +217,6 @@ class ApiProfilePeserta extends Controller
                 'status' => 'success',
             ], Response::HTTP_OK);
 
-        } catch (ValidationException $e) {
-            return response()->json([
-                'message' => 'Gagal mengubah password',
-                'error' => $e->errors(),
-                'statusCode' => Response::HTTP_UNPROCESSABLE_ENTITY,
-                'status' => 'error',
-            ], Response::HTTP_UNPROCESSABLE_ENTITY);
         } catch (Exception $e) {
             return response()->json([
                 'message' => 'Terjadi kesalahan saat mengubah password',
@@ -233,4 +226,5 @@ class ApiProfilePeserta extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
 }
