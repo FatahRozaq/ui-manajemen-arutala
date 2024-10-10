@@ -1342,3 +1342,10 @@ ul .d-flex .notif-user {
   width: 40px;
   height: auto;
 }
+
+@media (max-width: 576px) {
+  .notif-user {
+    margin-right: -30px;
+  }
+}
+
