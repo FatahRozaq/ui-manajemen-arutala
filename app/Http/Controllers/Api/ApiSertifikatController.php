@@ -267,7 +267,6 @@ class ApiSertifikatController extends Controller
                     'status' => 'error',
                 ], Response::HTTP_NOT_FOUND);
             }
-
         } catch (Exception $e) {
             return response()->json([
                 'message' => 'Gagal mengunduh sertifikat',
@@ -303,7 +302,6 @@ class ApiSertifikatController extends Controller
                     'status' => 'error',
                 ], Response::HTTP_NOT_FOUND);
             }
-
         } catch (Exception $e) {
             return response()->json([
                 'message' => 'Gagal mengunduh sertifikat kehadiran',
@@ -355,7 +353,7 @@ class ApiSertifikatController extends Controller
             'status' => 'success',
             'data' => [
                 'file_url' => $kehadiran->sertifikat_kehadiran,
-                'nama_peserta' => $kehadiran->pendaftar->nama, 
+                'nama_peserta' => $kehadiran->pendaftar->nama,
             ]
         ], Response::HTTP_OK);
     }
@@ -367,7 +365,7 @@ class ApiSertifikatController extends Controller
             $idUser = auth('api')->id();
 
             $sertifikat = Sertifikat::with(['pendaftaran.agendaPelatihan.pelatihan'])
-                ->whereHas('pendaftaran', function($query) use ($idUser) {
+                ->whereHas('pendaftaran', function ($query) use ($idUser) {
                     $query->where('id_peserta', $idUser);
                 })
                 ->where('is_deleted', false)
@@ -388,6 +386,4 @@ class ApiSertifikatController extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
-
-
 }

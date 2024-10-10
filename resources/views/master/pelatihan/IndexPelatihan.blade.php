@@ -34,7 +34,7 @@ Arutala | Data Pelatihan
                           </tr>
                       </thead>
                       <tbody>
-                          <!-- Data will be populated by DataTables -->
+                          
                       </tbody>
                   </table>
               </div>
@@ -52,7 +52,7 @@ Arutala | Data Pelatihan
 <!-- DataTables CSS and JS -->
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script> <!-- Tambahkan JS untuk responsive DataTables -->
+<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.9/js/responsive.bootstrap4.min.js"></script>
 
 <!-- Font Awesome for icons -->
@@ -74,7 +74,7 @@ Arutala | Data Pelatihan
             },
             "columns": [
                 { 
-        "data": "nama_pelatihan", 
+        "data": "nama_pelatihan",
         "render": function(data, type, row) {
             let imageUrl = row.gambar_pelatihan && row.gambar_pelatihan !== 'null' && row.gambar_pelatihan !== 'undefined' ? row.gambar_pelatihan : '/assets/images/default-pelatihan.jpg';
             
@@ -82,7 +82,9 @@ Arutala | Data Pelatihan
             if (type === 'display') {
                 return `
                     <div class="d-flex align-items-center">
-                        <img src="${imageUrl}" alt="Gambar Pelatihan" onerror="this.onerror=null;this.src='/assets/images/default-pelatihan.jpg';" style="width: 40px; height: 20px; margin-right: 10px;">
+                        <img src="${imageUrl}" alt="Gambar Pelatihan" 
+                            onerror="this.onerror=null;this.src='/assets/images/default-pelatihan.jpg';"
+                            style="width: 20px; height: 20px; margin-right: 10px; border-radius: 50%; object-fit: cover;">
                         <span>${data}</span>
                     </div>`;
             }
