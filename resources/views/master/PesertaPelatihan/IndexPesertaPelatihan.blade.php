@@ -37,6 +37,12 @@ Arutala | Data Peserta Pelatihan
     
 </div>
 
+<div id="loadingIndicator" style="display: none;">
+    <div class="spinner-border text-primary" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
+</div>
+
 <!-- Modal untuk Filter -->
 <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -260,16 +266,35 @@ Arutala | Data Peserta Pelatihan
         let id_agenda = null; // Deklarasikan id_agenda sebagai variabel dinamis
 
         // Ambil parameter dari URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const namaPelatihan = urlParams.get('nama_pelatihan');
-        const batch = urlParams.get('batch');
-        
-        if (namaPelatihan && batch) {
-            fetchFilteredData(namaPelatihan, batch);
-        } else {
-            // Ambil data default jika parameter tidak ada
-            fetchDefaultData();
-        }
+        const storedNamaPelatihan = localStorage.getItem('selectedNamaPelatihan');
+const storedBatch = localStorage.getItem('selectedBatch');
+
+// Hanya panggil fetchDefaultData jika tidak ada data di localStorage
+if (!storedNamaPelatihan || !storedBatch) {
+    fetchDefaultData();
+} else {
+    // Jika ada data di localStorage, terapkan filter otomatis
+    fetchPelatihanBatchData(() => {
+        $('#pelatihan').val(storedNamaPelatihan);
+        updateBatchDropdownFromName(storedNamaPelatihan, function() {
+            $('#batch').val(storedBatch);
+
+            // Otomatis memanggil fungsi untuk menerapkan filter berdasarkan nilai yang dipilih
+            fetchFilteredData(storedNamaPelatihan, storedBatch);
+            
+            // Hapus data dari localStorage setelah digunakan agar tidak mempengaruhi navigasi berikutnya
+            localStorage.removeItem('selectedNamaPelatihan');
+            localStorage.removeItem('selectedBatch');
+        });
+    });
+}
+
+        // if (namaPelatihan && batch) {
+        //     fetchFilteredData(namaPelatihan, batch);
+        // } else {
+        //     // Ambil data default jika parameter tidak ada
+        //     fetchDefaultData();
+        // }
 
         // Jika ada parameter nama_pelatihan dan batch, lakukan fetch data
         fetchPelatihanBatchData(() => {
@@ -380,25 +405,35 @@ Arutala | Data Peserta Pelatihan
 }
 
 function fetchDefaultData() {
-        axios.get('/api/peserta-pembayaran')
-            .then(function(response) {
-                const data = response.data.data;
+    // Periksa apakah ada data storedNamaPelatihan dan storedBatch di localStorage
+    const storedNamaPelatihan = localStorage.getItem('selectedNamaPelatihan');
+    const storedBatch = localStorage.getItem('selectedBatch');
 
-                // Pisahkan data berdasarkan status pembayaran
-                const paidData = data.filter(item => item.status_pembayaran.toLowerCase() === 'paid' || item.status_pembayaran.toLowerCase() === 'sudah');
-                const unpaidData = data.filter(item => item.status_pembayaran.toLowerCase() === 'unpaid' || item.status_pembayaran.toLowerCase() === '');
-                const processData = data.filter(item => item.status_pembayaran.toLowerCase() === 'process' || item.status_pembayaran.toLowerCase() === 'proses');
-
-
-                // Update DataTables dengan data yang telah dipisahkan
-                tablePaid.clear().rows.add(paidData).draw();
-                tableUnpaid.clear().rows.add(unpaidData).draw();
-                tableProcess.clear().rows.add(processData).draw();
-            })
-            .catch(function(error) {
-                console.error('Error fetching default data:', error);
-            });
+    // Jika terdapat data di localStorage, jangan jalankan fetchDefaultData
+    if (storedNamaPelatihan && storedBatch) {
+        console.log('Skipping fetchDefaultData because storedNamaPelatihan and storedBatch are present.');
+        return; // Keluar dari fungsi jika data ditemukan di localStorage
     }
+
+    // Jika tidak ada data di localStorage, jalankan fetchDefaultData seperti biasa
+    axios.get('/api/peserta-pembayaran')
+        .then(function(response) {
+            const data = response.data.data;
+
+            // Pisahkan data berdasarkan status pembayaran
+            const paidData = data.filter(item => item.status_pembayaran.toLowerCase() === 'paid' || item.status_pembayaran.toLowerCase() === 'sudah');
+            const unpaidData = data.filter(item => item.status_pembayaran.toLowerCase() === 'unpaid' || item.status_pembayaran.toLowerCase() === '');
+            const processData = data.filter(item => item.status_pembayaran.toLowerCase() === 'process' || item.status_pembayaran.toLowerCase() === 'proses');
+
+            // Update DataTables dengan data yang telah dipisahkan
+            tablePaid.clear().rows.add(paidData).draw();
+            tableUnpaid.clear().rows.add(unpaidData).draw();
+            tableProcess.clear().rows.add(processData).draw();
+        })
+        .catch(function(error) {
+            console.error('Error fetching default data:', error);
+        });
+}
 
 
     // Inisialisasi DataTables
@@ -957,4 +992,3 @@ $(document).on('click', 'a[title="Download Sertifikat"]', function (e) {
 </script>
 
 @endsection
-

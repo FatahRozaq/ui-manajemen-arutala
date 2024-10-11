@@ -90,7 +90,7 @@ Arutala | Data Agenda
                 {
                     "data": "batch",
                     "render": function(data, type, row) {
-                        return `<span class="clickable-cell" style="text-decoration:underline;">${data}</span>`;
+                        return `<span class="clickable-cell" >${data}</span>`;
                     }
                 },
                 { "data": "jumlah_peserta" },
@@ -149,7 +149,13 @@ Arutala | Data Agenda
                 var namaPelatihan = data.nama_pelatihan;
                 var batch = data.batch;
                 // Redirect ke halaman Peserta Pelatihan dengan parameter nama_pelatihan dan batch
-                window.location.href = `/admin/pesertapelatihan?nama_pelatihan=${namaPelatihan}&batch=${batch}`;
+                // Simpan nama_pelatihan dan batch ke localStorage sebelum redirect
+                localStorage.setItem('selectedNamaPelatihan', namaPelatihan);
+                localStorage.setItem('selectedBatch', batch);
+
+                // Redirect ke halaman indexpesertapelatihan tanpa parameter
+                window.location.href = `/admin/pesertapelatihan`;
+
             }
         });
     
