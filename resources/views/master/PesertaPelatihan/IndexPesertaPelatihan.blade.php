@@ -33,6 +33,12 @@ Arutala | Data Peserta Pelatihan
     
 </div>
 
+<div id="loadingIndicator" style="display: none;">
+    <div class="spinner-border text-primary" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
+</div>
+
 <!-- Modal untuk Filter -->
 <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -260,6 +266,32 @@ Arutala | Data Peserta Pelatihan
         const namaPelatihan = urlParams.get('nama_pelatihan');
         const batch = urlParams.get('batch');
         
+        const storedNamaPelatihan = localStorage.getItem('selectedNamaPelatihan');
+        const storedBatch = localStorage.getItem('selectedBatch');
+
+        // $('#loadingIndicator').show();
+
+        if (storedNamaPelatihan && storedBatch) {
+            // Tunggu hingga dropdown pelatihan dan batch diisi sebelum mengatur nilai dan menerapkan filter
+            fetchPelatihanBatchData(() => {
+                $('#pelatihan').val(storedNamaPelatihan);
+                updateBatchDropdownFromName(storedNamaPelatihan, function() {
+                    $('#batch').val(storedBatch);
+
+                    // Otomatis memanggil fungsi untuk menerapkan filter berdasarkan nilai yang dipilih
+                    if (storedNamaPelatihan && storedBatch) {
+                        fetchFilteredData(storedNamaPelatihan, storedBatch);
+                    }
+                    $('#loadingIndicator').hide();
+                });
+            });
+
+
+            // Hapus data dari localStorage setelah digunakan agar tidak tersimpan untuk navigasi berikutnya
+            localStorage.removeItem('selectedNamaPelatihan');
+            localStorage.removeItem('selectedBatch');
+        }
+
         if (namaPelatihan && batch) {
             fetchFilteredData(namaPelatihan, batch);
         } else {
