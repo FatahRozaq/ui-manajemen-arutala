@@ -27,20 +27,22 @@ Arutala | Detail Event
         <li class="breadcrumb-item active" aria-current="page">Detail Event</li>
       </ol>
   </nav>
-<div class="event-detail-container row">
-    <div class="event-detail col-lg-8 row">
+<div class="event-detail-container">
+    <div class="event-detail">
         <div class="event-header">
             <h1 id="event-title" class="event-title"></h1>
         </div>
         
-        <div class="event-body row">
-            <div class="col-lg-5">
+        <div class="event-body">
+           
+            <div class="image-container">
             <div class="image-detail">
                 <img id="event-image" src="" alt="" class="event-image">
             </div>
+        
         </div>
 
-        <div class="col-lg-7">
+        <div class="detail-benefit-materi">
             <p id="event-description" class="description"></p>
             
             
@@ -75,7 +77,7 @@ Arutala | Detail Event
             <button class="register-button" onclick="daftar()">Daftar</button>
         </div> --}}
     </div>
-    <div class="col-lg-3 card">
+    <div class="card">
         <div class="image-title">
             {{-- <img 
                 src="${event.gambar_pelatihan ? event.gambar_pelatihan : '/assets/images/default-pelatihan.jpg'}"
@@ -95,7 +97,7 @@ Arutala | Detail Event
             <p id="event-date"></p> <!-- Tambahkan ini untuk menampilkan tanggal -->
         </div>
         
-        <div class="section section-benefit">
+        <div class="section section-benefit-2">
             <h5 class="event-color-blue">Benefit :</h5>
             <ul id="benefit-list-2"></ul>
         </div>

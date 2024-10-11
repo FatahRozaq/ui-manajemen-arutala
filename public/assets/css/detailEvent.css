@@ -1,7 +1,8 @@
 .event-detail-container {
     width: 100%;
-    /* display: flex;
-    flex-direction: row; */
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
     /* justify-content: space-between; */
     /* gap: 2px; */
     
@@ -57,11 +58,16 @@
     margin-right: 5px;
 }
 
+.event-body{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
 
 
 .event-detail {
     background-color: #fff;
-    width: 100%;
+    width: 70%;
     justify-self: center;
     border-radius: 10px;
     padding: 20px;
@@ -70,10 +76,19 @@
     margin: 0 auto;
 }
 
+.card{
+    width: 30%;
+}
+
 .event-header {
     display: flex;
     /* justify-content: center; */
 }
+
+.image-container{
+    width: 40%;
+}
+
 
 .event-title {
     font-size: 26px;
@@ -99,6 +114,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.detail-benefit-materi {
+    width: 60%;
 }
 
 .event-body {
@@ -194,23 +213,7 @@
     width: 50%;
 }
 
-@media (max-width: 700px) {
-    .mentor-investasi {
-        flex-direction: column;
-    }
 
-    .section {
-        margin-bottom: 20px; /* Tambahkan jarak antara section jika diperlukan */
-    }
-
-    .section-mentor{
-        width: 100%;
-    }
-
-    .section-investasi{
-        width: 100%;
-    }
-}
 
 .mentor-invest {
     display: flex;
@@ -283,5 +286,163 @@
 @media (max-width: 700px) {
     .register-button {
         width: 30%;
+    }
+
+    
+}
+
+@media (min-width:700px) and (max-width: 988px) {
+    .image-detail{
+        width: 40%;
+        /* height: 500px; */
+    }
+
+    .event-detail-container {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        /* justify-content: space-between; */
+        /* gap: 2px; */
+        
+    }
+
+    .event-body{
+        display: flex;
+        flex-direction: row;
+    }
+
+    .card {
+        width: 40%;
+    }
+
+   
+
+    
+}
+
+
+@media (min-width: 450px) and (max-width: 700px) {
+    .mentor-investasi {
+        flex-direction: column;
+    }
+
+    .event-detail-container{
+        flex-direction: column;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .event-detail{
+        width: 100%;
+    }
+
+    .card-info{
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+        /* display: flex; */
+    }
+
+    .card {
+        width: 100%;
+    }
+
+    .register-button{
+        width: 100%;
+    }
+
+    .event-footer{
+        width: 100%;
+    }
+
+    .section {
+        margin-bottom: 20px; /* Tambahkan jarak antara section jika diperlukan */
+    }
+
+    .section-mentor{
+        width: 100%;
+    }
+
+    .section-investasi{
+        width: 100%;
+    }
+
+    .section-benefit-2{
+        display: none !important;
+    }
+}
+
+@media (max-width: 450px) {
+    .mentor-investasi {
+        flex-direction: column;
+    }
+
+    .event-body{
+        flex-direction: column;
+    }
+
+    .detail-benefit-materi{
+        width: 100%;
+    }
+
+    .image-container{
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .image-detail{
+        width: 60%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .event-detail-container{
+        flex-direction: column;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .event-detail{
+        width: 100%;
+    }
+
+    .card-info{
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+        /* display: flex; */
+    }
+
+    .card {
+        width: 100%;
+    }
+
+    .register-button{
+        width: 100%;
+    }
+
+    .event-footer{
+        width: 100%;
+    }
+
+    .section {
+        margin-bottom: 20px; /* Tambahkan jarak antara section jika diperlukan */
+    }
+
+    .section-mentor{
+        width: 100%;
+    }
+
+    .section-investasi{
+        width: 100%;
+    }
+
+    .section-benefit-2{
+        display: none !important;
     }
 }

@@ -81,6 +81,7 @@
   /* height: 300px; */
   height: 350px;
   border-radius: 10px;
+  object-fit: cover;
 }
 
 h3 {
@@ -136,7 +137,7 @@ h3 {
 }
 
 /* Media query untuk lebar layar di bawah 375px */
-@media (min-width: 375px) and (max-width: 510px) {
+@media (min-width: 425px) and (max-width: 510px) {
   .card {
     width: calc(50% - 10px); /* Mengatur lebar kartu menjadi 100% pada layar lebih kecil dari 375px */
     padding: 2px;
@@ -187,6 +188,16 @@ h3 {
     justify-content: center;
   }
 
+  .image-title{}
+
+  .event-image {
+    width: 100%;
+    /* height: 300px; */
+    height: 300px;
+    border-radius: 10px;
+    object-fit: cover;
+  }
+
 }
 
 /* Tambahkan border-radius untuk kedua tombol */
@@ -216,4 +227,36 @@ h3 {
 .tombol-daftar:hover {
     transform: scale(1.03); 
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Memberikan bayangan saat di-hover */
+}
+
+@media (max-width: 423px) {
+  .card {
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    width: 700px;
+    /* max-width: 300px; */
+    height: 550px;
+    padding: 3px;
+    border: solid 1px rgb(215, 215, 215);
+    cursor: pointer;
+    transition: all 0.3s ease; /* Menambahkan transisi halus */
+  }
+
+  .image-title{
+    max-width: 400px;
+  }
+
+  .cards{
+    display: flex;
+    max-width: 500px;
+
+  }
+  .event-image{
+    max-height: 400px;
+  }
+
 }
