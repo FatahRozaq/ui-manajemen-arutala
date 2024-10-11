@@ -293,20 +293,20 @@ if (!storedNamaPelatihan || !storedBatch) {
         // }
 
         // Jika ada parameter nama_pelatihan dan batch, lakukan fetch data
-    //     fetchPelatihanBatchData(() => {
-    //     // Jika ada parameter nama_pelatihan dan batch
-    //     if (namaPelatihan && batch) {
-    //         $('#pelatihan').val(namaPelatihan);
-    //         updateBatchDropdownFromName(namaPelatihan, function() {
-    //             $('#batch').val(batch);
-    //             // Panggil fetchData untuk mengambil data berdasarkan filter
-    //             fetchData(namaPelatihan, batch);
-    //         });
-    //     } else {
-    //         // Jika tidak ada parameter, tampilkan data default
-    //         fetchDefaultData();
-    //     }
-    // });
+        fetchPelatihanBatchData(() => {
+        // Jika ada parameter nama_pelatihan dan batch
+        if (namaPelatihan && batch) {
+            $('#pelatihan').val(namaPelatihan);
+            updateBatchDropdownFromName(namaPelatihan, function() {
+                $('#batch').val(batch);
+                // Panggil fetchData untuk mengambil data berdasarkan filter
+                fetchData(namaPelatihan, batch);
+            });
+        } else {
+            // Jika tidak ada parameter, tampilkan data default
+            fetchDefaultData();
+        }
+    });
 
         function fetchPelatihanBatchData(callback = null) {
             axios.get('/api/peserta-pelatihan/pelatihan-batch')
@@ -985,4 +985,3 @@ $(document).on('click', 'a[title="Download Sertifikat"]', function (e) {
 </script>
 
 @endsection
-
