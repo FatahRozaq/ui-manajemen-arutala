@@ -194,51 +194,51 @@ class ApiPesertaPelatihanController extends Controller
     }
 
     public function getAllPesertaPembayaran()
-{
-    try {
-        // Ambil semua data pendaftaran event beserta relasi yang diperlukan
-        $pendaftaranEvents = PendaftaranEvent::with(['agendaPelatihan.pelatihan', 'pendaftar'])
-            ->get();
+    {
+        try {
+            // Ambil semua data pendaftaran event beserta relasi yang diperlukan
+            $pendaftaranEvents = PendaftaranEvent::with(['agendaPelatihan.pelatihan', 'pendaftar'])
+                ->get();
 
-        // Siapkan data response
-        $data = $pendaftaranEvents->map(function ($event) {
-            // Cek apakah ada sertifikat kompetensi dan sertifikat kehadiran
-            $sertifikat = Sertifikat::where('id_pendaftaran', $event->id_pendaftaran)->first();
+            // Siapkan data response
+            $data = $pendaftaranEvents->map(function ($event) {
+                // Cek apakah ada sertifikat kompetensi dan sertifikat kehadiran
+                $sertifikat = Sertifikat::where('id_pendaftaran', $event->id_pendaftaran)->first();
 
-            $sertifikatKompetensi = $sertifikat && $sertifikat->file_sertifikat !== null;
-            $sertifikatKehadiran = $sertifikat && $sertifikat->sertifikat_kehadiran !== null;
+                $sertifikatKompetensi = $sertifikat && $sertifikat->file_sertifikat !== null;
+                $sertifikatKehadiran = $sertifikat && $sertifikat->sertifikat_kehadiran !== null;
 
-            return [
-                // 'id_pelatihan' => $event->agendaPelatihan->pelatihan->id_pelatihan,
-                'nama_pelatihan' => $event->agendaPelatihan->pelatihan->nama_pelatihan,
-                'id_agenda' => $event->agendaPelatihan->id_agenda,
-                'batch' => $event->agendaPelatihan->batch,
-                'nama_peserta' => $event->pendaftar->nama,
-                'no_kontak' => $event->pendaftar->no_kontak,
-                'id_pendaftaran' => $event->id_pendaftaran,
-                'status_pembayaran' => $event->status_pembayaran,
-                'sertifikat_kompetensi' => $sertifikatKompetensi,
-                'sertifikat_kehadiran' => $sertifikatKehadiran,
-            ];
-        });
+                return [
+                    // 'id_pelatihan' => $event->agendaPelatihan->pelatihan->id_pelatihan,
+                    'nama_pelatihan' => $event->agendaPelatihan->pelatihan->nama_pelatihan,
+                    'id_agenda' => $event->agendaPelatihan->id_agenda,
+                    'batch' => $event->agendaPelatihan->batch,
+                    'nama_peserta' => $event->pendaftar->nama,
+                    'no_kontak' => $event->pendaftar->no_kontak,
+                    'id_pendaftaran' => $event->id_pendaftaran,
+                    'status_pembayaran' => $event->status_pembayaran,
+                    'sertifikat_kompetensi' => $sertifikatKompetensi,
+                    'sertifikat_kehadiran' => $sertifikatKehadiran,
+                ];
+            });
 
-        // Return response
-        return response()->json([
-            'data' => $data,
-            'message' => 'Data pembayaran peserta berhasil ditemukan',
-            'statusCode' => 200,
-            'status' => 'success'
-        ], 200);
-    } catch (\Exception $e) {
-        return response()->json([
-            'data' => null,
-            'message' => 'Gagal menemukan data pembayaran peserta',
-            'statusCode' => 500,
-            'status' => 'error',
-            'error' => $e->getMessage()
-        ], 500);
+            // Return response
+            return response()->json([
+                'data' => $data,
+                'message' => 'Data pembayaran peserta berhasil ditemukan',
+                'statusCode' => 200,
+                'status' => 'success'
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'data' => null,
+                'message' => 'Gagal menemukan data pembayaran peserta',
+                'statusCode' => 500,
+                'status' => 'error',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
-}
 
 
     public function exportFiltered(Request $request)
