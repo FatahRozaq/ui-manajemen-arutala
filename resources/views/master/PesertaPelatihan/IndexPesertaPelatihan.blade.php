@@ -272,25 +272,27 @@ Arutala | Data Peserta Pelatihan
         // $('#loadingIndicator').show();
 
         if (storedNamaPelatihan && storedBatch) {
-            // Tunggu hingga dropdown pelatihan dan batch diisi sebelum mengatur nilai dan menerapkan filter
             fetchPelatihanBatchData(() => {
                 $('#pelatihan').val(storedNamaPelatihan);
                 updateBatchDropdownFromName(storedNamaPelatihan, function() {
                     $('#batch').val(storedBatch);
 
                     // Otomatis memanggil fungsi untuk menerapkan filter berdasarkan nilai yang dipilih
-                    if (storedNamaPelatihan && storedBatch) {
-                        fetchFilteredData(storedNamaPelatihan, storedBatch);
-                    }
+                    fetchFilteredData(storedNamaPelatihan, storedBatch);
+                    
+                    // Sembunyikan indikator loading jika sudah selesai
                     $('#loadingIndicator').hide();
                 });
             });
 
-
-            // Hapus data dari localStorage setelah digunakan agar tidak tersimpan untuk navigasi berikutnya
+            // Hapus data dari localStorage setelah digunakan agar tidak mempengaruhi navigasi berikutnya
             localStorage.removeItem('selectedNamaPelatihan');
             localStorage.removeItem('selectedBatch');
+        } else {
+            // Jika data pelatihan dan batch tidak ditemukan, panggil fetchDefaultData()
+            fetchDefaultData();
         }
+
 
         if (namaPelatihan && batch) {
             fetchFilteredData(namaPelatihan, batch);
@@ -300,20 +302,20 @@ Arutala | Data Peserta Pelatihan
         }
 
         // Jika ada parameter nama_pelatihan dan batch, lakukan fetch data
-        fetchPelatihanBatchData(() => {
-        // Jika ada parameter nama_pelatihan dan batch
-        if (namaPelatihan && batch) {
-            $('#pelatihan').val(namaPelatihan);
-            updateBatchDropdownFromName(namaPelatihan, function() {
-                $('#batch').val(batch);
-                // Panggil fetchData untuk mengambil data berdasarkan filter
-                fetchData(namaPelatihan, batch);
-            });
-        } else {
-            // Jika tidak ada parameter, tampilkan data default
-            fetchDefaultData();
-        }
-    });
+    //     fetchPelatihanBatchData(() => {
+    //     // Jika ada parameter nama_pelatihan dan batch
+    //     if (namaPelatihan && batch) {
+    //         $('#pelatihan').val(namaPelatihan);
+    //         updateBatchDropdownFromName(namaPelatihan, function() {
+    //             $('#batch').val(batch);
+    //             // Panggil fetchData untuk mengambil data berdasarkan filter
+    //             fetchData(namaPelatihan, batch);
+    //         });
+    //     } else {
+    //         // Jika tidak ada parameter, tampilkan data default
+    //         fetchDefaultData();
+    //     }
+    // });
 
         function fetchPelatihanBatchData(callback = null) {
             axios.get('/api/peserta-pelatihan/pelatihan-batch')
@@ -408,25 +410,35 @@ Arutala | Data Peserta Pelatihan
 }
 
 function fetchDefaultData() {
-        axios.get('/api/peserta-pembayaran')
-            .then(function(response) {
-                const data = response.data.data;
+    // Periksa apakah ada data storedNamaPelatihan dan storedBatch di localStorage
+    const storedNamaPelatihan = localStorage.getItem('selectedNamaPelatihan');
+    const storedBatch = localStorage.getItem('selectedBatch');
 
-                // Pisahkan data berdasarkan status pembayaran
-                const paidData = data.filter(item => item.status_pembayaran.toLowerCase() === 'paid' || item.status_pembayaran.toLowerCase() === 'sudah');
-                const unpaidData = data.filter(item => item.status_pembayaran.toLowerCase() === 'unpaid' || item.status_pembayaran.toLowerCase() === '');
-                const processData = data.filter(item => item.status_pembayaran.toLowerCase() === 'process' || item.status_pembayaran.toLowerCase() === 'proses');
-
-
-                // Update DataTables dengan data yang telah dipisahkan
-                tablePaid.clear().rows.add(paidData).draw();
-                tableUnpaid.clear().rows.add(unpaidData).draw();
-                tableProcess.clear().rows.add(processData).draw();
-            })
-            .catch(function(error) {
-                console.error('Error fetching default data:', error);
-            });
+    // Jika terdapat data di localStorage, jangan jalankan fetchDefaultData
+    if (storedNamaPelatihan && storedBatch) {
+        console.log('Skipping fetchDefaultData because storedNamaPelatihan and storedBatch are present.');
+        return; // Keluar dari fungsi jika data ditemukan di localStorage
     }
+
+    // Jika tidak ada data di localStorage, jalankan fetchDefaultData seperti biasa
+    axios.get('/api/peserta-pembayaran')
+        .then(function(response) {
+            const data = response.data.data;
+
+            // Pisahkan data berdasarkan status pembayaran
+            const paidData = data.filter(item => item.status_pembayaran.toLowerCase() === 'paid' || item.status_pembayaran.toLowerCase() === 'sudah');
+            const unpaidData = data.filter(item => item.status_pembayaran.toLowerCase() === 'unpaid' || item.status_pembayaran.toLowerCase() === '');
+            const processData = data.filter(item => item.status_pembayaran.toLowerCase() === 'process' || item.status_pembayaran.toLowerCase() === 'proses');
+
+            // Update DataTables dengan data yang telah dipisahkan
+            tablePaid.clear().rows.add(paidData).draw();
+            tableUnpaid.clear().rows.add(unpaidData).draw();
+            tableProcess.clear().rows.add(processData).draw();
+        })
+        .catch(function(error) {
+            console.error('Error fetching default data:', error);
+        });
+}
 
 
     // Inisialisasi DataTables
