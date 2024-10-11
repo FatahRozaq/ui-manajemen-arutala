@@ -87,13 +87,13 @@ class ApiPendaftaranEventController extends Controller
                 'provinsi' => [
                     'required',
                     'string',
-                    'max:50',
+                    'max:255',
                     'not_in:Pilih Provinsi'
                 ],
                 'kab_kota' => [
                     'required',
                     'string',
-                    'max:50',
+                    'max:255',
                     'not_in:Pilih Kab/Kota'
                 ],
             ], [
@@ -110,7 +110,7 @@ class ApiPendaftaranEventController extends Controller
                 'no_kontak.required' => 'Kontak wajib diisi.',
                 'no_kontak.string' => 'Kontak harus berupa teks.',
                 'no_kontak.min' => 'Kontak harus minimal 10 digit.',
-                'no_kontak.max' => 'Kontak tidak boleh lebih dari 15 karakter.',
+                'no_kontak.max' => 'Kontak tidak boleh lebih dari 255 karakter.',
                 'aktivitas.required' => 'Aktivitas wajib diisi.',
                 'aktivitas.string' => 'Aktivitas harus berupa teks.',
                 'nama_instansi.string' => 'Nama Instansi harus berupa teks.',
