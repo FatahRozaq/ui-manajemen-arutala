@@ -87,10 +87,11 @@ Arutala | Data Peserta Pelatihan
             </div>
             <div class="modal-body">
                 <form id="uploadSertifikatForm">
-                    <div class="form-group">
-                        <label for="file_sertifikat">Pilih File Sertifikat</label>
-                        <input type="file" class="form-control" id="file_sertifikat" name="file_sertifikat" required>
-                    </div>
+                <div class="form-group">
+                    <label for="file_sertifikat">Pilih File Sertifikat</label>
+                    <input type="file" class="form-control" id="file_sertifikat" name="file_sertifikat" required>
+                    <small class="text-danger" id="fileError" style="display:none;"></small> <!-- Untuk pesan error -->
+                </div>
                     <input type="hidden" id="id_pendaftaran" name="id_pendaftaran">
                     <input type="hidden" id="id_agenda" name="id_agenda">
                 </form>
@@ -115,10 +116,12 @@ Arutala | Data Peserta Pelatihan
             </div>
             <div class="modal-body">
                 <form id="uploadSertifikatKehadiranForm">
-                    <div class="form-group">
-                        <label for="sertifikat_kehadiran">Pilih File Sertifikat</label>
-                        <input type="file" class="form-control" id="sertifikat_kehadiran" name="sertifikat_kehadiran" required>
-                    </div>
+                <div class="form-group">
+                    <label for="sertifikat_kehadiran">Pilih File Sertifikat</label>
+                    <input type="file" class="form-control" id="sertifikat_kehadiran" name="sertifikat_kehadiran" required>
+                    <small class="text-danger" id="kehadiranFileError" style="display:none;"></small> <!-- Untuk pesan error -->
+                </div>
+
                     <input type="hidden" id="id_pendaftaran_kehadiran" name="id_pendaftaran">
                     <input type="hidden" id="id_agenda_kehadiran" name="id_agenda">
                 </form>
@@ -774,68 +777,130 @@ function fetchDefaultData() {
 
     // Handle upload button click
     $('#uploadButton').on('click', function() {
-        let formData = new FormData($('#uploadSertifikatForm')[0]);
-        console.log([...formData.entries()]);
-        $.ajax({
-            url: '/api/sertifikat/upload-kompetensi',  // API endpoint for upload
-            type: 'POST',
-            data: formData,
-            processData: false,  // Prevent jQuery from processing the data
-            contentType: false,  // Prevent jQuery from setting the content type
-            success: function(response) {
-                // Jika upload berhasil, tampilkan notifikasi sukses
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Berhasil',
-                    text: response.message,
-                });
+    let fileInput = $('#file_sertifikat')[0].files[0];
+    let fileError = $('#fileError');
+    
+    // Reset pesan error dan status error
+    fileError.text('').hide();
+    let isValid = true;
+    
+    // Validasi jika file kosong
+    if (!fileInput) {
+        fileError.text('File tidak boleh kosong').show();
+        isValid = false;
+    } else {
+        // Validasi tipe file (hanya gambar atau PDF)
+        let allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'application/pdf'];
+        if (!allowedTypes.includes(fileInput.type)) {
+            fileError.text('File harus berupa gambar (jpeg, jpg atau png) atau PDF').show();
+            isValid = false;
+        }
+        
+        // Validasi ukuran file (maks 4 MB)
+        let maxSize = 4 * 1024 * 1024; // 4 MB dalam byte
+        if (fileInput.size > maxSize) {
+            fileError.text('Ukuran file harus lebih kecil dari 4 MB').show();
+            isValid = false;
+        }
+    }
 
-                // Close the modal
-                $('#uploadSertifikatModal').modal('hide');
-                tablePaid.ajax.reload(); // Reload datatable setelah upload
-            },
-            error: function(xhr) {
-                // Jika upload gagal, tampilkan notifikasi error
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Gagal',
-                    text: xhr.responseJSON.message,
-                });
-            }
-        });
+    // Jika validasi gagal, tidak perlu melanjutkan
+    if (!isValid) return;
+
+    // Jika lolos validasi, lanjutkan proses upload
+    let formData = new FormData($('#uploadSertifikatForm')[0]);
+    $.ajax({
+        url: '/api/sertifikat/upload-kompetensi',  // API endpoint for upload
+        type: 'POST',
+        data: formData,
+        processData: false,  // Prevent jQuery from processing the data
+        contentType: false,  // Prevent jQuery from setting the content type
+        success: function(response) {
+            // Jika upload berhasil, tampilkan notifikasi sukses
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil',
+                text: response.message,
+            });
+
+            // Close the modal
+            $('#uploadSertifikatModal').modal('hide');
+            tablePaid.ajax.reload(); // Reload datatable setelah upload
+        },
+        error: function(xhr) {
+            // Jika upload gagal, tampilkan notifikasi error
+            // Swal.fire({
+            //     icon: 'error',
+            //     title: 'Gagal',
+            //     text: xhr.responseJSON.message,
+            // });
+        }
     });
+});
 
-    $('#uploadKehadiranButton').on('click', function() {
-        let formData = new FormData($('#uploadSertifikatKehadiranForm')[0]);
-        console.log([...formData.entries()]);
-        $.ajax({
-            url: '/api/sertifikat/upload-kehadiran',  // API endpoint for upload
-            type: 'POST',
-            data: formData,
-            processData: false,  // Prevent jQuery from processing the data
-            contentType: false,  // Prevent jQuery from setting the content type
-            success: function(response) {
-                // Jika upload berhasil, tampilkan notifikasi sukses
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Berhasil',
-                    text: response.message,
-                });
 
-                // Close the modal
-                $('#uploadSertifikatKehadiranModal').modal('hide');
-                tablePaid.ajax.reload(); // Reload datatable setelah upload
-            },
-            error: function(xhr) {
-                // Jika upload gagal, tampilkan notifikasi error
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Gagal',
-                    text: xhr.responseJSON.message,
-                });
-            }
-        });
+$('#uploadKehadiranButton').on('click', function() {
+    let fileInput = $('#sertifikat_kehadiran')[0].files[0];
+    let fileError = $('#kehadiranFileError');
+    
+    // Reset pesan error dan status error
+    fileError.text('').hide();
+    let isValid = true;
+    
+    // Validasi jika file kosong
+    if (!fileInput) {
+        fileError.text('File tidak boleh kosong').show();
+        isValid = false;
+    } else {
+        // Validasi tipe file (hanya gambar atau PDF)
+        let allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'application/pdf'];
+        if (!allowedTypes.includes(fileInput.type)) {
+            fileError.text('File harus berupa gambar (jpeg, png, gif) atau PDF').show();
+            isValid = false;
+        }
+        
+        // Validasi ukuran file (maks 4 MB)
+        let maxSize = 4 * 1024 * 1024; // 4 MB dalam byte
+        if (fileInput.size > maxSize) {
+            fileError.text('Ukuran file harus lebih kecil dari 4 MB').show();
+            isValid = false;
+        }
+    }
+
+    // Jika validasi gagal, tidak perlu melanjutkan
+    if (!isValid) return;
+
+    // Jika lolos validasi, lanjutkan proses upload
+    let formData = new FormData($('#uploadSertifikatKehadiranForm')[0]);
+    $.ajax({
+        url: '/api/sertifikat/upload-kehadiran',  // API endpoint for upload
+        type: 'POST',
+        data: formData,
+        processData: false,  // Prevent jQuery from processing the data
+        contentType: false,  // Prevent jQuery from setting the content type
+        success: function(response) {
+            // Jika upload berhasil, tampilkan notifikasi sukses
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil',
+                text: response.message,
+            });
+
+            // Close the modal
+            $('#uploadSertifikatKehadiranModal').modal('hide');
+            tablePaid.ajax.reload(); // Reload datatable setelah upload
+        },
+        error: function(xhr) {
+            // Jika upload gagal, tampilkan notifikasi error
+            // Swal.fire({
+            //     icon: 'error',
+            //     title: 'Gagal',
+            //     text: xhr.responseJSON.message,
+            // });
+        }
     });
+});
+
 
 $('#dataDetailPelatihanTablePaid').on('click', '.view-cert-icon', function(e) {
     e.preventDefault();

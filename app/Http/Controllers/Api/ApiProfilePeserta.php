@@ -101,7 +101,7 @@ class ApiProfilePeserta extends Controller
             'no_kontak.string' => 'Kontak harus berupa teks',
             'no_kontak.min' => 'Kontak harus minimal 10 digit.',
             'no_kontak.max' => 'Kontak tidak boleh lebih dari 15 karakter.',
-            'no_kontak.regex' => 'Kontak tidak boleh diawali dengan 0, 62, atau +62. Gunakan nomor tanpa kode negara atau awalan 0.',
+            'no_kontak.regex' => 'Kontak tidak boleh diawali dengan 0 dan tidak boleh memakai spesial karakter',
             'aktivitas.required' => 'Aktivitas harus diisi',
             'aktivitas.string' => 'Aktivitas harus berupa teks',
             'aktivitas.max' => 'Aktivitas tidak boleh lebih dari 15 karakter',
