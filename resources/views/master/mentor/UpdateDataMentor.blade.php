@@ -15,14 +15,29 @@ Arutala | Update Data Mentor
     .breadcrumb-item {
         font-size: 12px;
     }
-  </style>
+
+    .default-internal {
+        padding: 0.375rem 0.75rem;
+        background-color: #e9ecef;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem 0 0 0.25rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .form-control {
+        border-radius: 0 0.25rem 0.25rem 0;
+    }
+</style>
   
-  <nav aria-label="breadcrumb">
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="/admin/mentor">Mentor</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Update Mentor</li>
-      </ol>
-  </nav>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/admin/mentor">Mentor</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Update Mentor</li>
+    </ol>
+</nav>
+
 <form id="editMentorForm">
 @csrf
 @method('PUT')
@@ -42,56 +57,55 @@ Arutala | Update Data Mentor
                     <div class="card-body" style="padding-top: 50px">
 
                         <!-- Form for Editing Mentor Details -->
-                        
 
-                            <div class="row mb-4">
-                                <label for="name" class="col-sm-2 col-form-label">Nama Mentor</label>
-                                <div class="col-sm-6">
-                                    <input type="text" name="name" id="name" class="form-control">
-                                    <span class="text-danger" id="error-name"></span>
+                        <div class="row mb-4">
+                            <label for="nama_mentor" class="col-sm-2 col-form-label">Nama Mentor</label>
+                            <div class="col-sm-6">
+                                <input type="text" name="nama_mentor" id="nama_mentor" class="form-control">
+                                <span class="text-danger" id="error-nama_mentor"></span>
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <label for="email" class="col-sm-2 col-form-label">Email</label>
+                            <div class="col-sm-6">
+                                <input type="email" name="email" id="email" class="form-control">
+                                <span class="text-danger" id="error-email"></span>
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <label for="no_kontak" class="col-sm-2 col-form-label">Kontak</label>
+                            
+                            <div class="col-sm-6 d-flex">
+                                <div class="default-internal">
+                                    +62
+                                </div>
+                                <div class="">
+                                    <input type="text" name="no_kontak" id="no_kontak" class="form-control">
+                                    <span class="text-danger" id="error-no_kontak"></span>
                                 </div>
                             </div>
+                            
+                        </div>
 
-                            <div class="row mb-4">
-                                <label for="email" class="col-sm-2 col-form-label">Email</label>
-                                <div class="col-sm-6">
-                                    <input type="email" name="email" id="email" class="form-control">
-                                    <span class="text-danger" id="error-email"></span>
+                        <div class="row mb-4">
+                            <label for="aktivitas" class="col-sm-2 col-form-label">Aktivitas</label>
+                            <div class="col-sm-6">
+                                <div class="custom-select-wrapper position-relative">
+                                    <select name="aktivitas" id="aktivitas" class="form-control">
+                                        <option value="" disabled>Pilih Aktivitas</option>
+                                        <option value="Mahasiswa">Mahasiswa</option>
+                                        <option value="Dosen">Dosen</option>
+                                        <option value="Karyawan">Karyawan</option>
+                                        <option value="Freelance">Freelance</option>
+                                    </select>
+                                    <i class="fa fa-chevron-down position-absolute"
+                                        style="right: 15px; top: 50%; transform: translateY(-50%); pointer-events: none;"></i>
                                 </div>
+                                <span class="text-danger" id="error-aktivitas"></span>
                             </div>
-
-                            <div class="row mb-4">
-                                <label for="inputKontak" class="col-sm-2 col-form-label">Kontak</label>
-                                
-                                <div class="col-sm-6 d-flex">
-                                    <div class="default-internal">
-                                        +62
-                                    </div>
-                                    <div class="">
-                                        <input type="text" name="contact" id="contact" class="form-control">
-                                        <span class="text-danger" style="" id="error-contact"></span>
-                                    </div>
-                                </div>
-                                
-                            </div>
-
-                            <div class="row mb-4">
-                                <label for="activity" class="col-sm-2 col-form-label">Aktivitas</label>
-                                <div class="col-sm-6">
-                                    <div class="custom-select-wrapper position-relative">
-                                        <select name="activity" id="activity" class="form-control">
-                                            <option value="" disabled>Pilih Aktivitas</option>
-                                            <option value="Mahasiswa">Mahasiswa</option>
-                                            <option value="Dosen">Dosen</option>
-                                            <option value="Karyawan">Karyawan</option>
-                                            <option value="Freelance">Freelance</option>
-                                        </select>
-                                        <i class="fa fa-chevron-down position-absolute"
-                                            style="right: 15px; top: 50%; transform: translateY(-50%); pointer-events: none;"></i>
-                                    </div>
-                                    <span class="text-danger" id="error-activity"></span>
-                                </div>
-                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -102,33 +116,128 @@ Arutala | Update Data Mentor
 
 @section('scripts')
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const urlParams = new URLSearchParams(window.location.search);
-        const mentorId = urlParams.get('id');
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('editMentorForm');
 
-        const form = document.getElementById('editMentorForm');
+    // Function to retrieve mentor ID from URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const mentorId = urlParams.get('id');
 
-        axios.get(`/api/mentor/${mentorId}`)
-            .then(function (response) {
-                const mentor = response.data.data;
-                document.getElementById('name').value = mentor.nama_mentor;
-                document.getElementById('email').value = mentor.email;
-                document.getElementById('contact').value = mentor.no_kontak;
-                document.getElementById('activity').value = mentor.aktivitas;
-            })
-            .catch(function (error) {
-                Swal.fire({
-                    title: 'Error!',
-                    text: 'Gagal mengambil data mentor.',
-                    icon: 'error',
-                    confirmButtonText: 'OK'
-                });
+    // Validation Functions
+    const validateEmail = (email) => {
+        const regex = /^[\w\.-]+@[a-zA-Z\d\.-]+\.(com|org|net|edu|gov|mil|int|info|co|id)$/;
+        return regex.test(email);
+    };
+
+    const validateNoKontak = (no_kontak) => {
+        const regex = /^\+?[1-9][0-9]{9,14}$/;
+        return regex.test(no_kontak);
+    };
+
+    const clearErrorMessages = () => {
+        document.getElementById('error-nama_mentor').textContent = '';
+        document.getElementById('error-email').textContent = '';
+        document.getElementById('error-no_kontak').textContent = '';
+        document.getElementById('error-aktivitas').textContent = '';
+    };
+
+    // Real-time Validation Event Listeners
+    document.getElementById('nama_mentor').addEventListener('input', function () {
+        if (this.value.trim() === '') {
+            document.getElementById('error-nama_mentor').textContent = 'Nama mentor harus diisi.';
+        } else {
+            document.getElementById('error-nama_mentor').textContent = '';
+        }
+    });
+
+    document.getElementById('email').addEventListener('input', function () {
+        if (this.value.trim() === '') {
+            document.getElementById('error-email').textContent = 'Email harus diisi.';
+        } else if (!validateEmail(this.value)) {
+            document.getElementById('error-email').textContent = 'Email tidak valid. Email harus berakhiran dengan domain valid .com, .org, .net, .edu, gov, .mil, .int, .info, .co, .id.';
+        } else {
+            document.getElementById('error-email').textContent = '';
+        }
+    });
+
+    document.getElementById('no_kontak').addEventListener('input', function () {
+        if (this.value.trim() === '') {
+            document.getElementById('error-no_kontak').textContent = 'Kontak harus diisi.';
+        } else if (!validateNoKontak(this.value)) {
+            document.getElementById('error-no_kontak').textContent = 'Kontak tidak valid.';
+        } else {
+            document.getElementById('error-no_kontak').textContent = '';
+        }
+    });
+
+    document.getElementById('aktivitas').addEventListener('change', function () {
+        if (this.value.trim() === '') {
+            document.getElementById('error-aktivitas').textContent = 'Aktivitas harus diisi.';
+        } else {
+            document.getElementById('error-aktivitas').textContent = '';
+        }
+    });
+
+    // Fetch Existing Mentor Data
+    axios.get(`/api/mentor/${mentorId}`)
+        .then(function (response) {
+            const mentor = response.data.data;
+            document.getElementById('nama_mentor').value = mentor.nama_mentor;
+            document.getElementById('email').value = mentor.email;
+            document.getElementById('no_kontak').value = mentor.no_kontak;
+            document.getElementById('aktivitas').value = mentor.aktivitas;
+        })
+        .catch(function (error) {
+            Swal.fire({
+                title: 'Error!',
+                text: 'Gagal mengambil data mentor.',
+                icon: 'error',
+                confirmButtonText: 'OK'
             });
+        });
 
-        form.addEventListener('submit', function (event) {
-            event.preventDefault();
+    // Form Submission Handler
+    form.addEventListener('submit', function (event) {
+        event.preventDefault();
 
-            // Tampilkan pesan konfirmasi sebelum mengupdate data
+        // Clear previous errors
+        clearErrorMessages();
+
+        // Validate all fields before submission
+        let isValid = true;
+
+        const namaMentor = document.getElementById('nama_mentor').value.trim();
+        if (namaMentor === '') {
+            document.getElementById('error-nama_mentor').textContent = 'Nama mentor harus diisi.';
+            isValid = false;
+        }
+
+        const emailValue = document.getElementById('email').value.trim();
+        if (emailValue === '') {
+            document.getElementById('error-email').textContent = 'Email harus diisi.';
+            isValid = false;
+        } else if (!validateEmail(emailValue)) {
+            document.getElementById('error-email').textContent = 'Email tidak valid. Email harus berakhiran dengan domain valid .com, .org, .net, .edu, gov, .mil, .int, .info, .co, .id.';
+            isValid = false;
+        }
+
+        const noKontakValue = document.getElementById('no_kontak').value.trim();
+        if (noKontakValue === '') {
+            document.getElementById('error-no_kontak').textContent = 'Kontak harus diisi.';
+            isValid = false;
+        } else if (!validateNoKontak(noKontakValue)) {
+            document.getElementById('error-no_kontak').textContent = 'Kontak tidak valid.';
+            isValid = false;
+        }
+
+        const aktivitasValue = document.getElementById('aktivitas').value.trim();
+        if (aktivitasValue === '') {
+            document.getElementById('error-aktivitas').textContent = 'Aktivitas harus diisi.';
+            isValid = false;
+        }
+
+        if (isValid) {
+            // Show confirmation before submission
             Swal.fire({
                 title: 'Konfirmasi',
                 text: 'Apakah Anda yakin ingin memperbarui data mentor ini?',
@@ -140,23 +249,16 @@ Arutala | Update Data Mentor
                 cancelButtonText: 'Batal'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Clear previous errors
-                    document.getElementById('error-name').textContent = '';
-                    document.getElementById('error-email').textContent = '';
-                    document.getElementById('error-contact').textContent = '';
-                    document.getElementById('error-activity').textContent = '';
+                    // Get values from the form
+                    const data = {
+                        nama_mentor: namaMentor,
+                        email: emailValue,
+                        no_kontak: noKontakValue,
+                        aktivitas: aktivitasValue
+                    };
 
-                    const name = document.getElementById('name').value;
-                    const email = document.getElementById('email').value;
-                    const contact = document.getElementById('contact').value;
-                    const activity = document.getElementById('activity').value;
-
-                    axios.put(`/api/mentor/update/${mentorId}`, {
-                        nama_mentor: name,
-                        email: email,
-                        no_kontak: contact,
-                        aktivitas: activity
-                    })
+                    // Send data via Axios
+                    axios.put(`/api/mentor/update/${mentorId}`, data)
                     .then(function (response) {
                         Swal.fire({
                             title: 'Sukses!',
@@ -170,28 +272,20 @@ Arutala | Update Data Mentor
                         });
                     })
                     .catch(function (error) {
-                        console.error('Error updating mentor:', error);
                         if (error.response && error.response.data && error.response.data.errors) {
                             const errors = error.response.data.errors;
                             if (errors.nama_mentor) {
-                                document.getElementById('error-name').textContent = errors.nama_mentor[0];
+                                document.getElementById('error-nama_mentor').textContent = errors.nama_mentor[0];
                             }
                             if (errors.email) {
                                 document.getElementById('error-email').textContent = errors.email[0];
                             }
                             if (errors.no_kontak) {
-                                document.getElementById('error-contact').textContent = errors.no_kontak[0];
+                                document.getElementById('error-no_kontak').textContent = errors.no_kontak[0];
                             }
                             if (errors.aktivitas) {
-                                document.getElementById('error-activity').textContent = errors.aktivitas[0];
+                                document.getElementById('error-aktivitas').textContent = errors.aktivitas[0];
                             }
-
-                            // Swal.fire({
-                            //     title: 'Error!',
-                            //     text: error.response.data.message,
-                            //     icon: 'error',
-                            //     confirmButtonText: 'OK'
-                            // });
                         } else {
                             Swal.fire({
                                 title: 'Error!',
@@ -203,8 +297,8 @@ Arutala | Update Data Mentor
                     });
                 }
             });
-        });
+        }
     });
-
+});
 </script>
 @endsection

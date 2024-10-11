@@ -49,7 +49,7 @@ class ApiMentorController extends Controller
             'no_kontak' => [
                 'required',
                 'string',
-                'regex:/^(?!0|62|\+62)[0-9]+$/',
+                'regex:/^\+?[1-9][0-9]{9,14}$/',
                 'min:10',  
                 'max:15'
             ],
@@ -67,7 +67,7 @@ class ApiMentorController extends Controller
             'no_kontak.string' => 'Kontak harus berupa string.',
             'no_kontak.min' => 'Kontak harus minimal 10 digit.',
             'no_kontak.max' => 'Kontak tidak boleh lebih dari 15 karakter.',
-            'no_kontak.regex' => 'Kontak tidak boleh diawali dengan 0, 62, atau +62 dan hanya boleh berisi angka.',
+            'no_kontak.regex' => 'Kontak tidak boleh diawali dengan 0 dan tidak boleh memakai spesial karakter',
             'aktivitas.required' => 'Aktivitas harus diisi.',
             'aktivitas.string' => 'Aktivitas harus berupa string.',
             'aktivitas.max' => 'Aktivitas tidak boleh lebih dari 15 karakter.',
@@ -160,7 +160,7 @@ class ApiMentorController extends Controller
             'no_kontak' => [
                 'required',
                 'string',
-                'regex:/^(?!0|62|\+62)[0-9]+$/',
+                'regex:/^\+?[1-9][0-9]{9,14}$/',
                 'min:10',  
                 'max:15'
             ],
@@ -178,7 +178,7 @@ class ApiMentorController extends Controller
             'no_kontak.string' => 'Kontak harus berupa string.',
             'no_kontak.min' => 'Kontak harus minimal 10 digit.',
             'no_kontak.max' => 'Kontak tidak boleh lebih dari 15 karakter.',
-            'no_kontak.regex' => 'Kontak tidak boleh diawali dengan 0, 62, atau +62 dan hanya boleh berisi angka.',
+            'no_kontak.regex' => 'Kontak tidak boleh diawali dengan 0 dan tidak boleh memakai spesial karakter',
             'aktivitas.required' => 'Aktivitas harus diisi.',
             'aktivitas.string' => 'Aktivitas harus berupa string.',
             'aktivitas.max' => 'Aktivitas tidak boleh lebih dari 15 karakter.',

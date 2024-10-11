@@ -1354,3 +1354,24 @@ ul .d-flex .notif-user {
   cursor: not-allowed;  
 }
 
+.form-control {
+  border-radius: 0 4px 4px 0;
+}
+
+.breadcrumb {
+  background-color: transparent;
+  padding-left: 0;
+  padding-bottom: 0;
+}
+
+.breadcrumb-item {
+  font-size: 12px;
+}
+
+.is-invalid {
+  border-color: #dc3545;
+}
+
+.text-danger {
+  font-size: 0.875em;
+}

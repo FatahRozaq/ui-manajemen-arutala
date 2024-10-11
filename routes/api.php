@@ -163,6 +163,8 @@ Route::prefix('sertifikat')->group(function () {
     Route::get('/download-kehadiran', [ApiSertifikatController::class, 'downloadKehadiran']);
     Route::get('/view-kehadiran/{idPendaftaran}', [ApiSertifikatController::class, 'viewKehadiran']);
 
+    Route::get('/check/{id_pendaftaran}', [ApiSertifikatController::class, 'checkSertifikat']);
+
     Route::middleware('auth:api')->get('/peserta', [ApiSertifikatController::class, 'sertifikatPendaftar']);
 });
 

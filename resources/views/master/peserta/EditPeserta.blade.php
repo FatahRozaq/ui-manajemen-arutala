@@ -124,6 +124,7 @@ Arutala | Update Data Pendaftar
                                         <option value="" disabled selected>Pilih Aktivitas</option>
                                         <option value="Pelajar">Pelajar</option>
                                         <option value="Mahasiswa">Mahasiswa</option>
+                                        <option value="Fresh Graduate">Fresh Graduate</option>
                                         <option value="Dosen">Dosen</option>
                                         <option value="Karyawan">Karyawan</option>
                                         <option value="Pencari Kerja">Pencari Kerja</option>
@@ -261,7 +262,7 @@ Arutala | Update Data Pendaftar
 
         function toggleNamaInstansi(aktivitas) {
             const namaInstansiContainer = document.getElementById('namaInstansiContainer');
-            if (['Pelajar', 'Mahasiswa', 'Dosen', 'Karyawan'].includes(aktivitas)) {
+            if (['Pelajar', 'Mahasiswa', 'Dosen', 'Karyawan', 'Fresh Graduate'].includes(aktivitas)) {
                 namaInstansiContainer.style.display = 'block';
                 namaInstansiTitle.style.display = 'block';
             } else {
