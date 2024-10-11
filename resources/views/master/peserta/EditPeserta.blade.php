@@ -58,32 +58,31 @@ Arutala | Update Data Pendaftar
     .breadcrumb-item {
         font-size: 12px;
     }
-  </style>
+</style>
   
-  <nav aria-label="breadcrumb">
-      <ol class="breadcrumb">
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/admin/pendaftar">Pendaftar</a></li>
         <li class="breadcrumb-item active" aria-current="page">Update Pendaftar</li>
-      </ol>
-  </nav>
+    </ol>
+</nav>
 
 <form id="updatePesertaForm">
-@csrf
-<div class="pagetitle d-flex justify-content-between align-items-center">
-    <h1>Update Data Pendaftar</h1>
-    <button type="submit" class="btn d-flex align-items-center custom-btn" style="background-color: #344C92; color: white;">
-        <i class="fa-regular fa-floppy-disk"></i>
-        Simpan Perubahan
-    </button>
-</div>
+    @csrf
+    <div class="pagetitle d-flex justify-content-between align-items-center">
+        <h1>Update Data Pendaftar</h1>
+        <button type="submit" class="btn d-flex align-items-center custom-btn" style="background-color: #344C92; color: white;">
+            <i class="fa-regular fa-floppy-disk"></i>
+            Simpan Perubahan
+        </button>
+    </div>
 
-<section class="section">
-    <div class="row">
-        <div class="col-lg-12">
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-12">
 
-            <div class="card">
-                <div class="card-body" style="padding-top: 20px">
-                    
+                <div class="card">
+                    <div class="card-body" style="padding-top: 20px">
                         
                         <div class="row mb-4">
                             <label for="namaPeserta" class="col-sm-2 col-form-label">Nama Peserta</label>
@@ -95,7 +94,7 @@ Arutala | Update Data Pendaftar
                         <div class="row mb-4">
                             <label for="emailPeserta" class="col-sm-2 col-form-label">Email</label>
                             <div class="col-sm-6">
-                                <input type="email" id="emailPeserta" name="email" class="form-control">
+                                <input type="email" id="emailPeserta" name="email" class="form-control" disabled>
                                 <span class="text-danger" id="error-email"></span>
                             </div>
                         </div>
@@ -112,7 +111,7 @@ Arutala | Update Data Pendaftar
                         <div class="row mb-4">
                             <label for="linkedinPeserta" class="col-sm-2 col-form-label">LinkedIn</label>
                             <div class="col-sm-6">
-                                <input type="text" id="linkedinPeserta" name="linkedin" class="form-control" >
+                                <input type="text" id="linkedinPeserta" name="linkedin" class="form-control">
                                 <span class="text-danger" id="error-linkedin"></span>
                             </div>
                         </div>
@@ -130,10 +129,8 @@ Arutala | Update Data Pendaftar
                                         <option value="Pencari Kerja">Pencari Kerja</option>
                                         <option value="Lain-lain">Lain-lain</option>
                                     </select>
-                                    
                                     <i class="fas fa-chevron-down position-absolute" style="right: 30px; top: 50%; transform: translateY(-50%); pointer-events: none;"></i>
                                 </div>
-                                
                                 <span class="text-danger" id="error-aktivitas"></span>
                             </div>
                         </div>
@@ -144,7 +141,6 @@ Arutala | Update Data Pendaftar
                             <div class="col-12 col-md-6 mb-3">
                                 <label for="provinsiPeserta" class="col-form-label">Provinsi</label>
                                 <select name="provinsi" id="provinsiPeserta" class="form-control select2">
-                                    
                                 </select>
                                 <span class="text-danger" id="error-provinsi"></span>
                             </div>
@@ -152,7 +148,6 @@ Arutala | Update Data Pendaftar
                             <div class="col-12 col-md-6 mb-3">
                                 <label for="kabkotaPeserta" class="col-form-label">Kab/Kota</label>
                                 <select name="kab_kota" id="kabkotaPeserta" class="form-control select2">
-                                    
                                 </select>
                                 <span class="text-danger" id="error-kab_kota"></span>
                             </div>
@@ -168,16 +163,18 @@ Arutala | Update Data Pendaftar
                             </div>
                         </div>
 
-                        
-                    </form>
-
+                    </div>
                 </div>
+
             </div>
-
         </div>
+    </section>
 
-    </div>
-</section>
+</form>
+
+<!-- Include Axios and SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
@@ -236,99 +233,227 @@ Arutala | Update Data Pendaftar
             });
         }
 
+        function loadKabupaten(provinsiId, selectedKabupaten) {
+            fetch(`https://ibnux.github.io/data-indonesia/kabupaten/${provinsiId}.json`)
+            .then(response => response.json())
+            .then(data => {
+                $('#kabkotaPeserta').empty();
+                $('#kabkotaPeserta').append('<option value="" disabled selected>Pilih Kab/Kota</option>');
+                data.forEach(kab => {
+                    const isSelected = (kab.id === selectedKabupaten) ? 'selected' : '';
+                    $('#kabkotaPeserta').append(`<option value="${kab.id}" ${isSelected}>${kab.nama}</option>`);
+                });
+            });
+        }
+
         $('#provinsiPeserta').change(function() {
             const provinsiId = $(this).val();
             $('#kabkotaPeserta').empty().append('<option value="" disabled selected>Pilih Kab/Kota</option>');
 
             if (provinsiId) {
-                fetch(`https://ibnux.github.io/data-indonesia/kabupaten/${provinsiId}.json`)
-                .then(response => response.json())
-                .then(data => {
-                    data.forEach(kabupaten => {
-                        const isSelected = (kabupaten.nama === selectedKabupaten) ? 'selected' : '';
-                        $('#kabkotaPeserta').append(`<option value="${kabupaten.id}" ${isSelected}>${kabupaten.nama}</option>`);
-                    });
-
-                    if (selectedKabupaten) {
-                        $('#kabkotaPeserta').val(data.find(kab => kab.nama === selectedKabupaten).id).trigger('change');
-                    }
-                });
+                loadKabupaten(provinsiId, selectedKabupaten);
             }
         });
 
-        document.getElementById('aktivitasPeserta').addEventListener('change', function () {
-            toggleNamaInstansi(this.value);
-        });
-
-        function toggleNamaInstansi(aktivitas) {
-            const namaInstansiContainer = document.getElementById('namaInstansiContainer');
-            if (['Pelajar', 'Mahasiswa', 'Dosen', 'Karyawan', 'Fresh Graduate'].includes(aktivitas)) {
-                namaInstansiContainer.style.display = 'block';
-                namaInstansiTitle.style.display = 'block';
+        function toggleNamaInstansi(value) {
+            if (value === 'Mahasiswa' || value === 'Dosen' || value === 'Karyawan') {
+                $('#namaInstansiContainer').show();
+                $('#namaInstansiTitle').show();
             } else {
-                namaInstansiContainer.style.display = 'none';
-                namaInstansiTitle.style.display = 'none';
-                document.getElementById('instansiPeserta').value = '';
+                $('#namaInstansiContainer').hide();
+                $('#namaInstansiTitle').hide();
             }
         }
 
-        document.getElementById('updatePesertaForm').addEventListener('submit', function (e) {
-            e.preventDefault(); 
+        $('#aktivitasPeserta').on('change', function() {
+            const value = $(this).val();
+            toggleNamaInstansi(value);
+        });
 
-            Swal.fire({
-                title: 'Apakah Anda yakin?',
-                text: 'Perubahan pada data peserta akan disimpan!',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, simpan!',
-                cancelButtonText: 'Tidak, batalkan'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    clearErrors();
+        // Validasi Real-time
+        $('#namaPeserta').on('input', function() {
+            validateField('namaPeserta', 'error-nama', 'Nama tidak boleh kosong');
+        });
 
-                    const formData = {
-                        nama: document.getElementById('namaPeserta').value,
-                        email: document.getElementById('emailPeserta').value,
-                        no_kontak: document.getElementById('kontakPeserta').value,
-                        aktivitas: document.getElementById('aktivitasPeserta').value,
-                        nama_instansi: document.getElementById('instansiPeserta').value,
-                        provinsi: $('#provinsiPeserta option:selected').text(),
-                        kab_kota: $('#kabkotaPeserta option:selected').text(),
-                        linkedin: document.getElementById('linkedinPeserta').value,
-                        modified_by: 'Admin'
-                    };
+        $('#emailPeserta').on('input', function() {
+            validateEmail('emailPeserta', 'error-email');
+        });
 
-                    axios.put(`/api/pendaftar/${idPendaftar}`, formData)
-                        .then(function(response) {
-                            Swal.fire({
-                                title: 'Sukses!',
-                                text: response.data.message,
-                                icon: 'success',
-                                confirmButtonText: 'OK'
-                            }).then(function(result) {
-                                if (result.isConfirmed) {
-                                    window.location.href = `/admin/pendaftar/detail?idPendaftar=${idPendaftar}`;
+        $('#kontakPeserta').on('input', function() {
+            validateContact('kontakPeserta', 'error-no_kontak');
+        });
+
+        // $('#linkedinPeserta').on('input', function() {
+        //     validateField('linkedinPeserta', 'error-linkedin', 'LinkedIn tidak boleh kosong');
+        // });
+
+        $('#aktivitasPeserta').on('change', function() {
+            validateField('aktivitasPeserta', 'error-aktivitas', 'Aktivitas harus dipilih');
+        });
+
+        $('#provinsiPeserta').on('change', function() {
+            validateField('provinsiPeserta', 'error-provinsi', 'Provinsi harus dipilih');
+        });
+
+        $('#kabkotaPeserta').on('change', function() {
+            validateField('kabkotaPeserta', 'error-kab_kota', 'Kabupaten/Kota harus dipilih');
+        });
+
+        function validateField(inputId, errorId, errorMessage) {
+            const input = $(`#${inputId}`).val();
+            if (!input) {
+                $(`#${errorId}`).text(errorMessage);
+                $(`#${inputId}`).addClass('is-invalid');
+                return false;
+            } else {
+                $(`#${errorId}`).text('');
+                $(`#${inputId}`).removeClass('is-invalid');
+                return true;
+            }
+        }
+
+        function validateContact(inputId, errorId) {
+            const contact = $(`#${inputId}`).val();
+            const contactPattern = /^[1-9][0-9]{9,14}$/; // Adjusted to remove '+' as it's already prefixed
+
+            if (!contact) {
+                $(`#${errorId}`).text('Kontak harus diisi');
+                $(`#${inputId}`).addClass('is-invalid');
+                return false;
+            } else if (typeof contact !== 'string') {
+                $(`#${errorId}`).text('Kontak harus berupa teks');
+                $(`#${inputId}`).addClass('is-invalid');
+                return false;
+            } else if (contact.length < 10) {
+                $(`#${errorId}`).text('Kontak harus minimal 10 digit.');
+                $(`#${inputId}`).addClass('is-invalid');
+                return false;
+            } else if (contact.length > 15) {
+                $(`#${errorId}`).text('Kontak tidak boleh lebih dari 15 digit.');
+                $(`#${inputId}`).addClass('is-invalid');
+                return false;
+            } else if (!contactPattern.test(contact)) {
+                $(`#${errorId}`).text('Kontak tidak boleh diawali dengan 0 dan tidak boleh memakai spesial karakter');
+                $(`#${inputId}`).addClass('is-invalid');
+                return false;
+            } else {
+                $(`#${errorId}`).text('');
+                $(`#${inputId}`).removeClass('is-invalid');
+                return true;
+            }
+        }
+
+        function validateEmail(inputId, errorId) {
+            const email = $(`#${inputId}`).val();
+            const emailPattern = /^[\w\.-]+@[a-zA-Z\d\.-]+\.(com|org|net|edu|gov|mil|int|info|co|id|ac\.id)$/;
+            if (!emailPattern.test(email)) {
+                $(`#${errorId}`).text('Email tidak valid');
+                $(`#${inputId}`).addClass('is-invalid');
+                return false;
+            } else {
+                $(`#${errorId}`).text('');
+                $(`#${inputId}`).removeClass('is-invalid');
+                return true;
+            }
+        }
+
+        function validateInstansi() {
+            const aktivitas = $('#aktivitasPeserta').val();
+            if (aktivitas === 'Mahasiswa' || aktivitas === 'Dosen' || aktivitas === 'Karyawan') {
+                return validateField('instansiPeserta', 'error-nama_instansi', 'Instansi harus diisi');
+            } else {
+                // If instansi is not required, clear any previous errors
+                $('#error-nama_instansi').text('');
+                $('#instansiPeserta').removeClass('is-invalid');
+                return true;
+            }
+        }
+
+        function validateForm() {
+            let isValid = true;
+
+            // Validate each field and update isValid accordingly
+            if (!validateField('namaPeserta', 'error-nama', 'Nama tidak boleh kosong')) isValid = false;
+            if (!validateEmail('emailPeserta', 'error-email')) isValid = false;
+            if (!validateContact('kontakPeserta', 'error-no_kontak')) isValid = false;
+            // Uncomment if LinkedIn is required
+            // if (!validateField('linkedinPeserta', 'error-linkedin', 'LinkedIn tidak boleh kosong')) isValid = false;
+            if (!validateField('aktivitasPeserta', 'error-aktivitas', 'Aktivitas harus dipilih')) isValid = false;
+            if (!validateField('provinsiPeserta', 'error-provinsi', 'Provinsi harus dipilih')) isValid = false;
+            if (!validateField('kabkotaPeserta', 'error-kab_kota', 'Kabupaten/Kota harus dipilih')) isValid = false;
+            if (!validateInstansi()) isValid = false;
+
+            return isValid;
+        }
+
+        $('#updatePesertaForm').submit(function(e) {
+            e.preventDefault();
+
+            // First, validate the form
+            if (validateForm()) {
+                // If valid, show confirmation popup
+                Swal.fire({
+                    title: 'Yakin ingin mengupdate data?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Ya, update!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        clearErrors();
+
+                        const formData = {
+                            nama: document.getElementById('namaPeserta').value,
+                            email: document.getElementById('emailPeserta').value,
+                            no_kontak: '+62' + document.getElementById('kontakPeserta').value, // Added '+62' prefix
+                            aktivitas: document.getElementById('aktivitasPeserta').value,
+                            nama_instansi: document.getElementById('instansiPeserta').value,
+                            provinsi: $('#provinsiPeserta option:selected').text(),
+                            kab_kota: $('#kabkotaPeserta option:selected').text(),
+                            linkedin: document.getElementById('linkedinPeserta').value,
+                            modified_by: 'Admin'
+                        };
+
+                        axios.put(`/api/pendaftar/${idPendaftar}`, formData)
+                            .then(response => {
+                                if (response.data.status === 'success') {
+                                    Swal.fire({
+                                        title: 'Sukses!',
+                                        text: response.data.message,
+                                        icon: 'success',
+                                        confirmButtonText: 'OK'
+                                    }).then(function(result) {
+                                        if (result.isConfirmed) {
+                                            window.location.href = `/admin/pendaftar/detail?idPendaftar=${idPendaftar}`;
+                                        }
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        title: 'Error',
+                                        text: response.data.message,
+                                        icon: 'error',
+                                        confirmButtonText: 'OK'
+                                    });
                                 }
-                            });
-                        })
-                        .catch(function(error) {
-                            if (error.response && error.response.data && error.response.data.errors) {
-                                displayErrors(error.response.data.errors);
-                            } else {
+                            })
+                            .catch(error => {
                                 Swal.fire({
-                                    title: 'Error!',
-                                    text: 'Terjadi kesalahan saat memperbarui data peserta.',
+                                    title: 'Error',
+                                    text: 'Terjadi kesalahan saat mengupdate data',
                                     icon: 'error',
                                     confirmButtonText: 'OK'
                                 });
-                            }
-                        });
-                }
-            });
+                            });
+                    }
+                });
+            } else {
+                // If not valid, do not show popup and errors are already displayed by validateForm
+                // Optionally, you can scroll to the first error field
+                $('html, body').animate({
+                    scrollTop: $('.is-invalid').first().offset().top - 100
+                }, 500);
+            }
         });
-
 
         function displayErrors(errors) {
             for (let key in errors) {
@@ -348,9 +473,7 @@ Arutala | Update Data Pendaftar
             errorElements.forEach(element => element.textContent = '');
             inputElements.forEach(element => element.classList.remove('is-invalid'));
         }
+
     });
 </script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.6/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
 @endsection
