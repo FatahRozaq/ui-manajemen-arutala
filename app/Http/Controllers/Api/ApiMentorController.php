@@ -49,7 +49,7 @@ class ApiMentorController extends Controller
             'no_kontak' => [
                 'required',
                 'string',
-                'regex:/^(?!0|62|\+62)[0-9]+$/',
+                'regex:/^\+?[1-9][0-9]{9,14}$/',
                 'min:10',  
                 'max:15'
             ],
@@ -160,7 +160,7 @@ class ApiMentorController extends Controller
             'no_kontak' => [
                 'required',
                 'string',
-                'regex:/^(?!0|62|\+62)[0-9]+$/',
+                'regex:/^\+?[1-9][0-9]{9,14}$/',
                 'min:10',  
                 'max:15'
             ],

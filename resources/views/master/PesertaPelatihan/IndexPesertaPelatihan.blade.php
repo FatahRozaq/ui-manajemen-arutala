@@ -16,6 +16,10 @@ Arutala | Data Peserta Pelatihan
     display: flex;
  }
 
+ .disabled {
+    color: red;
+ }
+
 </style>
 
 <div class="pagetitle">
@@ -435,39 +439,42 @@ function fetchDefaultData() {
                 render: function(data, type, row) {
                     const idPendaftaran = row.id_pendaftaran || 'undefined';
                     const idAgenda = row.id_agenda || 'undefined';
-                    
+                    let disableKompetensi = row.sertifikat_kompetensi;
+                    let disableKompetensiIcon = row.sertifikat_kompetensi;
                     return `
                         <a href="javascript:void(0)" class="update-icon" title="Upload Sertifikat Kompetensi" onclick="openUploadModal(${idPendaftaran}, ${idAgenda})">
                             <i class="fa-solid fa-cloud-arrow-up text-info"></i>
                         </a>
-                        <a href="/api/sertifikat/download-kompetensi?id_pendaftaran=${idPendaftaran}&id_agenda=${idAgenda}" class="update-icon" title="Download Sertifikat Kompetensi">
-                            <i class="fa-solid fa-download text-success"></i>
+                        <a href="/api/sertifikat/download-kompetensi?id_pendaftaran=${idPendaftaran}&id_agenda=${idAgenda}" class="update-icon ${disableKompetensi ? '' : 'disabled-link'}" data-id="${row.id_pendaftar}" title="Download Sertifikat Kompetensi">
+                            <i class="fa-solid fa-download ${disableKompetensiIcon ? 'text-success' : 'text-secondary'}"></i>
                         </a>
-                        <a href="#" class="view-cert-icon" data-idpendaftaran="${idPendaftaran}" data-idagenda="${idAgenda}" title="View Sertifikat Kompetensi">
-                            <i class="fa-solid fa-eye text-primary"></i>
+                        <a href="#" class="view-cert-icon ${disableKompetensi ? '' : 'disabled-link'}" data-idpendaftaran="${idPendaftaran}" data-idagenda="${idAgenda}" title="View Sertifikat Kompetensi">
+                            <i class="fa-solid fa-eye ${disableKompetensiIcon ? 'text-primary' : 'text-secondary'}"></i>
                         </a>
                     `;
                 }
-            },
+            }
+            ,
             {
                 data: null,
                 render: function(data, type, row) {
                     const idPendaftaran = row.id_pendaftaran || 'undefined';
                     const idAgenda = row.id_agenda || 'undefined';
+                    let disableKehadiran = row.sertifikat_kehadiran;
+                    let disableKehadiranIcon = row.sertifikat_kehadiran;
                     return `
-                    <a href="javascript:void(0)" class="update-icon" title="Upload Sertifikat Kehadiran" onclick="openUploadKehadiranModal(${idPendaftaran}, ${idAgenda})">
-                        <i class="fa-solid fa-cloud-arrow-up text-info"></i>
-                    </a>
-                    <a href="/api/sertifikat/download-kehadiran?id_pendaftaran=${idPendaftaran}&id_agenda=${idAgenda}" class="update-icon" title="Download Sertifikat Kehadiran">
-                        <i class="fa-solid fa-download text-success"></i>
-                    </a>
-                    <a href="#" class="view-cert-icon-kehadiran" data-idpendaftaran="${idPendaftaran}" data-idagenda="${idAgenda}" title="View Sertifikat Kehadiran">
-                        <i class="fa-solid fa-eye text-primary"></i>
-                    </a>
+                        <a href="javascript:void(0)" class="update-icon" title="Upload Sertifikat Kehadiran" onclick="openUploadKehadiranModal(${idPendaftaran}, ${idAgenda})">
+                            <i class="fa-solid fa-cloud-arrow-up text-info"></i>
+                        </a>
+                        <a href="/api/sertifikat/download-kehadiran?id_pendaftaran=${idPendaftaran}&id_agenda=${idAgenda}" class="update-icon ${disableKehadiran ? '' : 'disabled-link'}" title="Download Sertifikat Kehadiran">
+                            <i class="fa-solid fa-download ${disableKehadiranIcon ? 'text-success' : 'text-secondary'}"></i>
+                        </a>
+                        <a href="#" class="view-cert-icon-kehadiran ${disableKehadiran ? '' : 'disabled-link'}" data-idpendaftaran="${idPendaftaran}" data-idagenda="${idAgenda}" title="View Sertifikat Kehadiran">
+                            <i class="fa-solid fa-eye ${disableKehadiranIcon ? 'text-primary' : 'text-secondary'}"></i>
+                        </a>
                     `;
                 }
             }
-
         ]
     });
 

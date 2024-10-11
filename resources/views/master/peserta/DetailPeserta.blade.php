@@ -15,6 +15,7 @@ Arutala | Detail Data Pendaftar
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         transition: transform 0.3s ease;
         width: fit-content;
+        height: 600px;
     }
 
     .training-card .card:hover {
@@ -44,9 +45,9 @@ Arutala | Detail Data Pendaftar
     .training-card img {
         border-top-left-radius: 10px;
         border-top-right-radius: 10px;
-        object-fit: cover;
-        height: 200px;
-        width: 225px; 
+        /* object-fit: cover; */
+        height: 300px;
+        width: 250px; 
     }
 
     @media (min-width: 768px) {

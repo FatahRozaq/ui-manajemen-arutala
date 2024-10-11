@@ -386,4 +386,36 @@ class ApiSertifikatController extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    public function checkSertifikat($id_pendaftaran)
+    {
+        try {
+            // Fetch the certificate based on id_pendaftaran
+            $sertifikat = Sertifikat::where('id_pendaftaran', $id_pendaftaran)
+                                    ->whereNotNull('file_sertifikat')
+                                    ->first();
+
+            // If certificate exists and is not null, return success response
+            if ($sertifikat) {
+                return response()->json([
+                    'exists' => true,
+                    'message' => 'Certificate found.'
+                ], 200); // HTTP 200 OK
+            }
+
+            // If no certificate found, return response indicating absence
+            return response()->json([
+                'exists' => false,
+                'message' => 'No certificate found.'
+            ], 404); // HTTP 404 Not Found
+
+        } catch (\Exception $e) {
+            // Catch any exceptions and return a response with the error message
+            return response()->json([
+                'exists' => false,
+                'message' => 'An error occurred: ' . $e->getMessage()
+            ], 500); // HTTP 500 Internal Server Error
+        }
+    }
+
 }
