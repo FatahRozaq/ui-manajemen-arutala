@@ -2,6 +2,7 @@
 
 @section('content')
 
+
 <div class="pagetitle">
     <h1>Dashboard</h1>
   </div><!-- End Page Title -->
@@ -281,69 +282,10 @@ fetchTotalPeserta(); // Default fetch without any filters
     <div class="col-xxl-3 col-xl-3">
 
       <div class="card info-card customers-card">
-
-        {{-- <div class="filter">
-          <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow wide-dropdown">
-            <li class="dropdown-header text-start">
-              <h6>Filter</h6>
-            </li>
-            <li class="dropdown-item">
-              <label for="year">Tahun:</label>
-              <select id="year" class="form-select">
-                
-                <option value="2021">2021</option>
-                <option value="2022">2022</option>
-                <option value="2023">2023</option>
-                <option value="2024">2024</option>
-              </select>
-            </li>
-            <li class="dropdown-item d-flex justify-content-between align-items-center">
-              <div>
-                <label for="start-month">Bulan Awal:</label>
-                <select id="start-month" class="form-select">
-                  <option value="1">Januari</option>
-                  <option value="2">Februari</option>
-                  <option value="3">Maret</option>
-                  <option value="4">April</option>
-                  <option value="5">Mei</option>
-                  <option value="6">Juni</option>
-                  <option value="7">Juli</option>
-                  <option value="8">Agustus</option>
-                  <option value="9">September</option>
-                  <option value="10">Oktober</option>
-                  <option value="11">November</option>
-                  <option value="12">Desember</option>
-                </select>
-              </div>
-              <div>
-                <label for="end-month">Bulan Akhir:</label>
-                <select id="end-month" class="form-select">
-                  <option value="1">Januari</option>
-                  <option value="2">Februari</option>
-                  <option value="3">Maret</option>
-                  <option value="4">April</option>
-                  <option value="5">Mei</option>
-                  <option value="6">Juni</option>
-                  <option value="7">Juli</option>
-                  <option value="8">Agustus</option>
-                  <option value="9">September</option>
-                  <option value="10">Oktober</option>
-                  <option value="11">November</option>
-                  <option value="12">Desember</option>
-                </select>
-              </div>
-            </li>
-            <li class="dropdown-footer text-end">
-              <button class="btn btn-primary apply-btn">Apply</button>
-            </li>
-          </ul>
-        </div> --}}
-        
         
 
         <div class="card-body">
-          <h5 class="card-title">Pelatihan <span></span></h5>
+          <h5 class="card-title">Pelatihan Berlangsung <span></span></h5>
         
           <div class="d-flex align-items-center">
             <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
@@ -401,259 +343,145 @@ fetchTotalPeserta(); // Default fetch without any filters
 
 
           <!-- Reports -->
-          <div class="col-12">
-            <div class="card">
-                <!-- Filter for Months and Years -->
-                <div class="filter">
-                    
-                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow wide-dropdown" id="month-year-filter-list">
-                        <li class="dropdown-header text-start">
-                            <h6>Filter</h6>
-                        </li>
-                        <li class="dropdown-item">
-                            <label for="year">Tahun:</label>
-                            <select id="year" class="form-select">
-                                <option value="2024">2024</option>
-                                <option value="2023">2023</option>
-                                <option value="2022">2022</option>
-                                <option value="2021">2021</option> 
-                            </select>
-                        </li>
-                        <li class="dropdown-item d-flex justify-content-between align-items-center">
-                            <div>
-                                <label for="start-month">Bulan Awal:</label>
-                                <select id="start-month" class="form-select">
-                                    <option value="1">Januari</option>
-                                    <option value="2">Februari</option>
-                                    <option value="3">Maret</option>
-                                    <option value="4">April</option>
-                                    <option value="5">Mei</option>
-                                    <option value="6">Juni</option>
-                                    <option value="7">Juli</option>
-                                    <option value="8">Agustus</option>
-                                    <option value="9">September</option>
-                                    <option value="10">Oktober</option>
-                                    <option value="11">November</option>
-                                    <option value="12">Desember</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label for="end-month">Bulan Akhir:</label>
-                                <select id="end-month" class="form-select">
-                                    <option value="1">Januari</option>
-                                    <option value="2">Februari</option>
-                                    <option value="3">Maret</option>
-                                    <option value="4">April</option>
-                                    <option value="5">Mei</option>
-                                    <option value="6">Juni</option>
-                                    <option value="7">Juli</option>
-                                    <option value="8">Agustus</option>
-                                    <option value="9">September</option>
-                                    <option value="10">Oktober</option>
-                                    <option value="11">November</option>
-                                    <option value="12">Desember</option>
-                                </select>
-                            </div>
-                        </li>
-                        <li class="dropdown-footer text-end">
-                            <button class="btn btn-primary apply-btn-bulan">Apply</button>
-                        </li>
-                    </ul>
+          <div class="col-12 card">
+            <div class="card-body">
+                {{-- <h5 class="card-title">Tren Jumlah Peserta</h5> --}}
         
-                    <!-- Filter for Training Types -->
-                    <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow" id="filter-list">
-                        <!-- Dropdown filters will be dynamically generated here -->
-                        <li class="dropdown-header text-start">
-                            <h6>Filter</h6>
-                        </li>
-                    </ul>
-                </div>
+                <!-- Highcharts Stacked Bar Chart -->
+                <figure class="highcharts-figure">
+                    <div id="container" style="width: 100%; height: 600px;"></div>
+                    <p class="highcharts-description">
+                    </p>
+                </figure>
         
-                <div class="card-body">
-                    <h5 class="card-title">Tren Jumlah Peserta</h5>
+                <script src="https://code.highcharts.com/highcharts.js"></script>
+                <script src="https://code.highcharts.com/modules/exporting.js"></script>
+                <script src="https://code.highcharts.com/modules/export-data.js"></script>
+                <script src="https://code.highcharts.com/modules/accessibility.js"></script>
         
-                    <!-- Line Chart -->
-                    <div id="reportsChart"></div>
-                    <script>
- document.addEventListener("DOMContentLoaded", () => {
-    const allSeries = {}; // Ini akan menampung data dari API
-    let selectedFilters = new Set();
-    let selectedYear = new Date().getFullYear(); // Tahun default saat ini
-    let selectedStartMonth = 1; // Bulan awal default (Januari)
-    let selectedEndMonth = 12; // Bulan akhir default (Desember)
+                <script>
+          <div class="col-12 card">
+            <div class="card-body">
+                
+        
+                <!-- Highcharts Stacked Bar Chart -->
+                <figure class="highcharts-figure">
+                    <div id="container" style="width: 100%; height: 700px;"></div>
+                    <p class="highcharts-description">
+                    </p>
+                </figure>
+        
+                <script src="https://code.highcharts.com/highcharts.js"></script>
+                <script src="https://code.highcharts.com/modules/exporting.js"></script>
+                <script src="https://code.highcharts.com/modules/export-data.js"></script>
+                <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+        
+                <script>
+                  fetch('/api/dashboard/tren-pelatihan')
+                    .then(response => response.json())
+                    .then(data => {
+                        const categories = data.tren_pelatihan.map(p => p.nama_pelatihan);
+                        let batchSeries = [];
 
-    const chart = new ApexCharts(document.querySelector("#reportsChart"), {
-        series: [],
-        chart: {
-            height: 350,
-            type: 'area',
-            toolbar: {
-                show: false
-            },
-        },
-        markers: {
-            size: 4
-        },
-        colors: ['#4154f1', '#2eca6a', '#ff771d', '#f54291', '#42f5e6'],
-        fill: {
-            type: "gradient",
-            gradient: {
-                shadeIntensity: 1,
-                opacityFrom: 0.3,
-                opacityTo: 0.4,
-                stops: [0, 90, 100]
-            }
-        },
-        dataLabels: {
-            enabled: false
-        },
-        stroke: {
-            curve: 'smooth',
-            width: 1
-        },
-        xaxis: {
-            type: 'datetime', // Ensure that xaxis is treated as datetime
-            categories: [] // Bulan akan diisi berdasarkan data API
-        },
-        tooltip: {
-            x: {
-                format: 'MM/yyyy' // Format bulan dan tahun
-            },
-        }
-    });
+                        data.tren_pelatihan.forEach((pelatihan, pelatihanIndex) => {
+                            
+                            pelatihan.agendas.sort((a, b) => a.batch - b.batch);
+                            
+                            pelatihan.agendas.forEach(agenda => {
+                                const batchName = 'Batch ' + agenda.batch;
+                                const existingBatch = batchSeries.find(series => series.name === batchName);
 
-    chart.render();
+                                if (existingBatch) {
+                                    existingBatch.data[pelatihanIndex] = agenda.jumlah_peserta;
+                                } else {
+                                    // Tambahkan batch baru hanya jika batch tersebut memiliki data peserta
+                                    const newBatchData = Array(data.tren_pelatihan.length).fill(null);
+                                    newBatchData[pelatihanIndex] = agenda.jumlah_peserta;
 
-    const updateChart = () => {
-        const series = [];
-        const filteredCategories = new Set(); // Use Set to store unique months
-
-        selectedFilters.forEach(filter => {
-            Object.keys(allSeries).forEach(key => {
-                if (key.includes(filter) && allSeries[key]) {
-                    const filteredData = allSeries[key].filter(dataPoint => {
-                        const date = new Date(dataPoint.date); // Asumsikan dataPoint memiliki properti 'date'
-                        const year = date.getFullYear();
-                        const month = date.getMonth() + 1; // Months are 0-indexed in JavaScript
-                        return (
-                            year === selectedYear &&
-                            month >= selectedStartMonth &&
-                            month <= selectedEndMonth
-                        );
-                    });
-
-                    if (filteredData.length > 0) {
-                        series.push({ name: key, data: filteredData.map(data => [new Date(data.date).getTime(), data.jumlah_peserta]) });
-                        filteredData.forEach(data => {
-                            const date = new Date(data.date);
-                            filteredCategories.add(date.getTime()); // Store timestamps to ensure uniqueness
-                        });
-                    }
-                }
-            });
-        });
-
-        chart.updateOptions({
-            xaxis: {
-                categories: Array.from(filteredCategories).sort((a, b) => a - b).map(timestamp => new Date(timestamp).toLocaleString('default', { month: 'short', year: 'numeric' }))
-            }
-        });
-
-        chart.updateSeries(series);
-    };
-
-    const fetchTrenPelatihan = () => {
-        fetch('/api/dashboard/tren-pelatihan')
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'success') {
-                    const trenData = data.tren_pelatihan;
-                    const months = new Set();
-
-                    trenData.forEach(pelatihan => {
-                        pelatihan.agenda.forEach(agenda => {
-                            agenda.jumlah_peserta_per_bulan.forEach(bulanData => {
-                                const filterName = `${pelatihan.nama_pelatihan} Batch ${agenda.batch}`;
-                                if (!allSeries[filterName]) {
-                                    allSeries[filterName] = [];
+                                    batchSeries.push({
+                                        name: batchName,
+                                        data: newBatchData
+                                    });
                                 }
-                                allSeries[filterName].push({ date: bulanData.bulan, jumlah_peserta: bulanData.jumlah_peserta });
                             });
                         });
+
+                        // Membalik urutan batchSeries agar batch awal muncul di kiri (paling bawah dalam chart stacking)
+                        batchSeries.reverse();
+
+                        Highcharts.chart('container', {
+                            chart: {
+                                type: 'bar'
+                            },
+                            title: {
+                                text: 'Tren Jumlah Peserta'
+                            },
+                            xAxis: {
+                                categories: categories
+                            },
+                            yAxis: {
+                                min: 0,
+                                title: {
+                                    text: 'Jumlah Peserta'
+                                }
+                            },
+                            legend: {
+                                reversed: true
+                            },
+                            plotOptions: {
+                                series: {
+                                    stacking: 'normal',
+                                    dataLabels: {
+                                        enabled: true
+                                    }
+                                }
+                            },
+                            series: batchSeries
+                        });
                     });
 
-                    updateCheckboxFilters(Object.keys(allSeries));
-                    selectedFilters = new Set(Object.keys(allSeries));
-                    updateChart();
-                } else {
-                    console.error('Error fetching tren pelatihan:', data.message);
-                }
-            })
-            .catch(error => console.error('Error fetching tren pelatihan:', error));
-    };
 
-    const updateCheckboxFilters = (filters) => {
-        const filterList = document.getElementById('filter-list');
-        filterList.innerHTML = '<li class="dropdown-header text-start"><h6>Filter</h6></li>';
-        filters.forEach(filter => {
-            const listItem = document.createElement('li');
-            listItem.innerHTML = `
-                <label class="pelatihan dropdown-item">
-                    <input type="checkbox" class="filter-checkbox" data-filter="${filter}" checked>
-                    ${filter}
-                </label>
-            `;
-            filterList.appendChild(listItem);
-        });
-
-        document.querySelectorAll('.filter-checkbox').forEach(item => {
-            item.addEventListener('change', event => {
-                const filter = event.target.getAttribute('data-filter');
-                if (event.target.checked) {
-                    selectedFilters.add(filter);
-                } else {
-                    selectedFilters.delete(filter);
-                }
-                updateChart();
-            });
-        });
-    };
-
-    document.getElementById('year').addEventListener('change', (event) => {
-        selectedYear = parseInt(event.target.value);
-    });
-
-    document.getElementById('start-month').addEventListener('change', (event) => {
-        selectedStartMonth = parseInt(event.target.value);
-    });
-
-    document.getElementById('end-month').addEventListener('change', (event) => {
-        selectedEndMonth = parseInt(event.target.value);
-    });
-
-    document.querySelector('.apply-btn-bulan').addEventListener('click', () => {
-        updateChart();
-    });
-
-    fetchTrenPelatihan();
-});
-
-                    </script>
-                </div>
+                </script>
             </div>
-          </div>        
-          
-          <style>
-            .filter-checkbox {
-              margin-right: 8px;
-            }
-          </style>
+        </div>
+        
 
-            <div class="pieChart5Teratas d-flex justify-content-between" style="gap: 20px;">
+        <div class="card">
+    <div class="top-selling overflow-auto">
+
+        <div class="card-body">
+            <h5 class="card-title">Agenda Pelatihan</h5>
+
+            <!-- Table with DataTables integration -->
+            <table id="trainingAgendaTable" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Nama Pelatihan</th>
+                        <th>Batch</th>
+                        <th>Start</th>
+                        <th>End</th>
+                        <th>Total Pendaftar</th>
+                        <th>Total Peserta</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Dynamic Data Will Be Injected Here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+                
+        
+
+            
+<div class="pieChart5Teratas d-flex justify-content-between" style="gap: 30px; width:100%;">
 
               <!-- Card untuk Provinsi -->
-              <div class="card d-flex flex-grow-1" style="flex-basis: 48%;">
+              <div class="card d-flex " style="flex-basis: 50%; width:100%;">
                 <div class="filter">
                   <a class="icon" href="#" data-bs-toggle="dropdown"></a>
                 </div>
@@ -666,7 +494,7 @@ fetchTotalPeserta(); // Default fetch without any filters
               </div>
 
               <!-- Card untuk Kota -->
-              <div class="card d-flex flex-grow-1" style="flex-basis: 48%;">
+              <div class="card d-flex" style="flex-basis: 50%; width:100%;">
                 <div class="filter">
                   <a class="icon" href="#" data-bs-toggle="dropdown"></a>
                 </div>
@@ -682,6 +510,7 @@ fetchTotalPeserta(); // Default fetch without any filters
 
             <!-- Script untuk Mengambil Data dari API dan Membuat Pie Chart -->
             <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+            
             <script>
              // Fetch data untuk 5 provinsi teratas
             axios.get('/api/dashboard/top-provinces')
@@ -736,7 +565,7 @@ fetchTotalPeserta(); // Default fetch without any filters
 
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title">Jumlah Pendaftar Berdasarkan Perguruan Tinggi</h5>
+              <h5 class="card-title">Jumlah Pendaftar Berdasarkan Sekolah dan Perguruan Tinggi</h5>
               {{-- <p></p> --}}
 
               <!-- Table with stripped rows -->
@@ -813,69 +642,9 @@ fetchTotalPeserta(); // Default fetch without any filters
       
 
           <!-- Top Selling -->
-          <div class="col-12">
-            <div class="card top-selling overflow-auto">
-        
-                <div class="card-body pb-0">
-                    <h5 class="card-title">Agenda Pelatihan</h5>
-        
-                    <table class="table table-borderless">
-                        <thead>
-                            <tr>
-                                <th scope="col">Nama Pelatihan</th>
-                                <th scope="col">Batch</th>
-                                <th scope="col">Start</th>
-                                <th scope="col">End</th>
-                                <th scope="col">Total Pendaftar</th>
-                                <th scope="col">Total Peserta</th>
-                            </tr>
-                        </thead>
-                        <tbody id="training-agenda">
-                            <!-- Dynamic Data Will Be Injected Here -->
-                        </tbody>
-                    </table>
-        
-                </div>
-        
-            </div>
-        </div><!-- End Top Selling -->
-        
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                // Fetch data from the API
-                axios.get('/api/dashboard/training-agenda')
-                    .then(function(response) {
-                        const agendaData = response.data.data;
-                        const tableBody = document.getElementById('training-agenda');
-                        
-                        // Clear any existing content in the table body
-                        tableBody.innerHTML = '';
-        
-                        // Loop through the data and create table rows
-                        agendaData.forEach(function(item) {
-                            const row = document.createElement('tr');
-                            
-                            row.innerHTML = `
-                                <td>${item.nama_pelatihan}</td>
-                                <td>${item.batch}</td>
-                                <td>${new Date(item.start_date).toLocaleDateString('id-ID')}</td>
-                                <td>${new Date(item.end_date).toLocaleDateString('id-ID')}</td>
-                                <td>${item.total_pendaftar}</td>
-                                <td>${item.total_peserta}</td>
-                            `;
-                            
-                            tableBody.appendChild(row);
-                        });
-                    })
-                    .catch(function(error) {
-                        console.error('Error fetching data:', error);
-                    });
-            });
-        </script>
-        
+          
 
         </div>
-      {{-- </div><!-- End Left side columns --> --}}
 
 
       </div><!-- End Right side columns -->
@@ -891,13 +660,20 @@ fetchTotalPeserta(); // Default fetch without any filters
 <!-- jQuery, DataTables, and Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css"/>
+<!-- DataTables Library -->
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+
+<!-- Responsive DataTables -->
+<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.9/js/responsive.bootstrap4.min.js"></script>
+
 
 <script>
 $(document).ready(function() {
     // DataTable for Jumlah Peserta Berdasarkan Perguruan Tinggi
     $('#dataUniversitiesParticipantsTable').DataTable({
+      "responsive": true,
         "ajax": {
             "url": "/api/dashboard/universities-participants",
             "dataSrc": "data"
@@ -905,10 +681,12 @@ $(document).ready(function() {
         "columns": [
             { "data": "nama_instansi" },
             { "data": "total_peserta" }
-        ]
+        ],
+        "order": [[1, "desc"]]
     });
 
     $('#dataActivityTable').DataTable({
+      "responsive": true,
         "ajax": {
             "url": "/api/dashboard/participants-by-activity",
             "dataSrc": "data"
@@ -916,10 +694,12 @@ $(document).ready(function() {
         "columns": [
             { "data": "aktivitas" },
             { "data": "total_peserta" }
-        ]
+        ],
+        "order": [[1, "desc"]]
     });
 
     $('#dataCompanyTable').DataTable({
+      "responsive": true,
         "ajax": {
             "url": "/api/dashboard/companies-participants",
             "dataSrc": "data"
@@ -927,8 +707,38 @@ $(document).ready(function() {
         "columns": [
             { "data": "nama_instansi" },
             { "data": "total_peserta" }
-        ]
+        ],
+        "order": [[1, "desc"]]
     });
+
+    $('#trainingAgendaTable').DataTable({
+          "responsive": true,
+            "ajax": {
+              
+                "url": "/api/dashboard/training-agenda",
+                "dataSrc": "data"
+            },
+            "columns": [
+                { "data": "nama_pelatihan" },
+                { "data": "batch" },
+                { 
+                    "data": "start_date",
+                    "render": function(data) {
+                        return new Date(data).toLocaleDateString('id-ID');
+                    }
+                },
+                { 
+                    "data": "end_date",
+                    "render": function(data) {
+                        return new Date(data).toLocaleDateString('id-ID');
+                    }
+                },
+                { "data": "total_pendaftar" },
+                { "data": "total_peserta" }
+            ],
+            "order": [[0, "asc"], [1, "asc"]]
+
+        });
 });
 
 
