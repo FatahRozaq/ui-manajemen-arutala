@@ -510,7 +510,8 @@ function fetchDefaultData() {
                     `;
                 }
             }
-        ]
+            ],
+            "order":  [2, "asc"]
     });
 
 
@@ -553,7 +554,8 @@ function fetchDefaultData() {
                     `;
                 }
             }
-        ]
+        ],
+        "order": [[1, "asc"], [2, "asc"]]
     });
 
     let tableProcess = $('#dataDetailPelatihanTableProcess').DataTable({
@@ -595,38 +597,23 @@ function fetchDefaultData() {
     ]
 });
 
-   function fetchFilteredData(pelatihan, batch) {
-    // Jika pelatihan atau batch dipilih sebagai "all", tampilkan semua data
+function fetchFilteredData(pelatihan, batch) {
+    // Jika pelatihan dan batch dipilih sebagai "all", tampilkan semua data tanpa filter
     if (pelatihan === 'all' && batch === 'all') {
         fetchDefaultData(); // Menampilkan data tanpa filter
         return;
     }
 
-    // Dapatkan id_agenda berdasarkan pelatihan dan batch
-    axios.get(`/api/peserta-pelatihan/get-agenda-id`, {
-        params: {
-            nama_pelatihan: pelatihan !== 'all' ? pelatihan : null, // Hanya kirim nama pelatihan jika bukan "all"
-            batch: batch !== 'all' ? batch : null // Hanya kirim batch jika bukan "all"
-        }
-    })
-    .then(function(response) {
-        if (response.data && response.data.id_agenda) {
-            id_agenda = response.data.id_agenda;
-
-            // Fetch data peserta setelah mendapatkan id_agenda
-            axios.get(`/api/peserta-pelatihan/agenda/${id_agenda}/peserta`, {
-                params: {
-                    nama_pelatihan: pelatihan !== 'all' ? pelatihan : null,
-                    batch: batch !== 'all' ? batch : null
-                }
-            })
+    // Jika batch adalah "all", gunakan API baru yang hanya memfilter berdasarkan nama pelatihan
+    if (pelatihan !== 'all' && batch === 'all') {
+        axios.get(`/api/peserta-pelatihan/by-pelatihan`, { params: { nama_pelatihan: pelatihan } })
             .then(function(response) {
-                const filteredData = response.data.data || [];
+                const data = response.data.data || [];
 
                 // Pisahkan data berdasarkan status pembayaran
-                const paidData = filteredData.filter(item => item.status_pembayaran.toLowerCase() === 'paid' || item.status_pembayaran.toLowerCase() === 'sudah');
-                const unpaidData = filteredData.filter(item => item.status_pembayaran.toLowerCase() === 'unpaid' || item.status_pembayaran.toLowerCase() === 'belum bayar');
-                const processData = filteredData.filter(item => item.status_pembayaran.toLowerCase() === 'process' || item.status_pembayaran.toLowerCase() === 'proses');
+                const paidData = data.filter(item => item.status_pembayaran.toLowerCase() === 'paid' || item.status_pembayaran.toLowerCase() === 'sudah');
+                const unpaidData = data.filter(item => item.status_pembayaran.toLowerCase() === 'unpaid' || item.status_pembayaran.toLowerCase() === 'belum bayar');
+                const processData = data.filter(item => item.status_pembayaran.toLowerCase() === 'process' || item.status_pembayaran.toLowerCase() === 'proses');
 
                 // Update DataTables dengan data yang telah dipisahkan
                 tablePaid.clear().rows.add(paidData).draw();
@@ -634,20 +621,41 @@ function fetchDefaultData() {
                 tableProcess.clear().rows.add(processData).draw();
             })
             .catch(function(error) {
-                console.error('Error fetching filtered data:', error);
-                alert('Error fetching filtered data. Please try again.');
+                console.error('Error fetching data by pelatihan:', error);
+                alert('Error fetching data by pelatihan. Please try again.');
             });
-        } else {
-            console.error('ID Agenda not found');
-            alert('No agenda found for the selected filter.');
-        }
-    })
-    .catch(function(error) {
-        console.error('Error fetching agenda ID:', error);
-        alert('Error fetching agenda ID. Please try again.');
-    });
-}
+    } else {
+        // Jika batch memiliki nilai tertentu, gunakan API yang memfilter berdasarkan nama pelatihan dan batch
+        axios.get('/api/peserta-pelatihan/get-agenda-id', { params: { nama_pelatihan: pelatihan, batch: batch } })
+            .then(function(response) {
+                const id_agenda = response.data.id_agenda;
 
+                // Menggunakan API getPesertaByAgenda dengan id_agenda yang ditemukan
+                axios.get(`/api/peserta-pelatihan/agenda/${id_agenda}/peserta`)
+                    .then(function(eventResponse) {
+                        const filteredData = eventResponse.data.data || [];
+
+                        // Pisahkan data berdasarkan status pembayaran
+                        const paidData = filteredData.filter(item => item.status_pembayaran.toLowerCase() === 'paid' || item.status_pembayaran.toLowerCase() === 'sudah');
+                        const unpaidData = filteredData.filter(item => item.status_pembayaran.toLowerCase() === 'unpaid' || item.status_pembayaran.toLowerCase() === 'belum bayar');
+                        const processData = filteredData.filter(item => item.status_pembayaran.toLowerCase() === 'process' || item.status_pembayaran.toLowerCase() === 'proses');
+
+                        // Update DataTables dengan data yang telah dipisahkan
+                        tablePaid.clear().rows.add(paidData).draw();
+                        tableUnpaid.clear().rows.add(unpaidData).draw();
+                        tableProcess.clear().rows.add(processData).draw();
+                    })
+                    .catch(function(error) {
+                        console.error('Error fetching data by agenda:', error);
+                        alert('Error fetching data by agenda. Please try again.');
+                    });
+            })
+            .catch(function(error) {
+                console.error('Error fetching agenda ID:', error);
+                alert('Error fetching agenda ID. Please try again.');
+            });
+    }
+}
 
 
     // Panggil fetch default data saat halaman dimuat
