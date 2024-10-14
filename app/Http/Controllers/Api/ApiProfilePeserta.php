@@ -209,6 +209,8 @@ class ApiProfilePeserta extends Controller
             // Update password baru
             $pendaftar->update([
                 'password' => Hash::make($request->new_password),
+                'modified_by' => "Pendaftar",
+                'modified_time' => now()
             ]);
 
             return response()->json([

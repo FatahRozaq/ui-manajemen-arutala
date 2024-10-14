@@ -251,7 +251,18 @@ Arutala | Update Data Pendaftar
             $('#kabkotaPeserta').empty().append('<option value="" disabled selected>Pilih Kab/Kota</option>');
 
             if (provinsiId) {
-                loadKabupaten(provinsiId, selectedKabupaten);
+                fetch(`https://ibnux.github.io/data-indonesia/kabupaten/${provinsiId}.json`)
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach(kabupaten => {
+                        const isSelected = (kabupaten.nama === selectedKabupaten) ? 'selected' : '';
+                        $('#kabkotaPeserta').append(`<option value="${kabupaten.id}" ${isSelected}>${kabupaten.nama}</option>`);
+                    });
+
+                    if (selectedKabupaten) {
+                        $('#kabkotaPeserta').val(data.find(kab => kab.nama === selectedKabupaten).id).trigger('change');
+                    }
+                });
             }
         });
 
