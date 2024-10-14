@@ -31,6 +31,8 @@ class ApiLamanPesertaController extends Controller
             $agendas = AgendaPelatihan::with('pelatihan')
                 ->where('start_pendaftaran', '<=', $currentDate)
                 ->where('end_pendaftaran', '>=', $currentDate)
+                ->where('is_deleted', false)
+                ->where('status', 'Masa Pendaftaran')
                 ->orderBy('start_date', 'desc')
                 ->get();
 

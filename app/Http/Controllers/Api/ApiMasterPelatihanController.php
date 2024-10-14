@@ -17,7 +17,9 @@ class ApiMasterPelatihanController extends Controller
     {
         try {
             // Ambil pelatihan beserta gambar dan agenda terkait
-            $pelatihan = Pelatihan::with('agendaPelatihan')
+            $pelatihan = Pelatihan::with(['agendaPelatihan' => function ($query) {
+                $query->where('is_deleted', false); // Filter agendaPelatihan yang is_deleted = false
+            }])
                 ->where('is_deleted', false)
                 ->get(['id_pelatihan', 'nama_pelatihan', 'gambar_pelatihan']);
 
@@ -27,7 +29,7 @@ class ApiMasterPelatihanController extends Controller
                     'id_pelatihan' => $item->id_pelatihan,
                     'nama_pelatihan' => $item->nama_pelatihan,
                     'gambar_pelatihan' => $item->gambar_pelatihan,
-                    'jumlah_batch' => $item->agendaPelatihan->count(), // Hitung jumlah batch
+                    'jumlah_batch' => $item->agendaPelatihan->count(), // Hanya hitung agenda yang tidak dihapus
                 ];
             });
 
@@ -46,6 +48,7 @@ class ApiMasterPelatihanController extends Controller
             ], 500);
         }
     }
+
 
     public function store(Request $request)
     {

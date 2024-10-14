@@ -56,6 +56,7 @@ Arutala | Data Peserta Pelatihan
                     <div class="mb-3">
                         <label for="pelatihan" class="form-label">Pelatihan:</label>
                         <select id="pelatihan" class="form-select">
+
                             <!-- Pilihan pelatihan akan dimuat dengan JavaScript -->
                         </select>
                     </div>
@@ -292,13 +293,6 @@ if (!storedNamaPelatihan || !storedBatch) {
     });
 }
 
-        // if (namaPelatihan && batch) {
-        //     fetchFilteredData(namaPelatihan, batch);
-        // } else {
-        //     // Ambil data default jika parameter tidak ada
-        //     fetchDefaultData();
-        // }
-
         // Jika ada parameter nama_pelatihan dan batch, lakukan fetch data
         fetchPelatihanBatchData(() => {
         // Jika ada parameter nama_pelatihan dan batch
@@ -315,49 +309,52 @@ if (!storedNamaPelatihan || !storedBatch) {
         }
     });
 
-        function fetchPelatihanBatchData(callback = null) {
-            axios.get('/api/peserta-pelatihan/pelatihan-batch')
-                .then(function(response) {
-                    const pelatihanBatchData = response.data.data;
+function fetchPelatihanBatchData(callback = null) {
+    axios.get('/api/peserta-pelatihan/pelatihan-batch')
+        .then(function(response) {
+            const pelatihanBatchData = response.data.data;
 
-                    // Isi dropdown pelatihan
-                    const pelatihanSelect = $('#pelatihan');
-                    pelatihanSelect.empty();
-                    pelatihanBatchData.forEach(function(item) {
-                        pelatihanSelect.append(`<option value="${item.nama_pelatihan}">${item.nama_pelatihan}</option>`);
-                    });
+            // Isi dropdown pelatihan dengan pilihan --All--
+            const pelatihanSelect = $('#pelatihan');
+            pelatihanSelect.empty();
+            pelatihanSelect.append('<option value="all">--All--</option>'); // Tambahkan pilihan --All--
+            pelatihanBatchData.forEach(function(item) {
+                pelatihanSelect.append(`<option value="${item.nama_pelatihan}">${item.nama_pelatihan}</option>`);
+            });
 
-                    // Isi dropdown batch saat halaman dimuat
-                    updateBatchDropdown(pelatihanBatchData);
+            // Isi dropdown batch dengan pilihan --All-- saat halaman dimuat
+            updateBatchDropdown(pelatihanBatchData);
 
-                    // Event listener untuk perubahan dropdown pelatihan
-                    pelatihanSelect.on('change', function() {
-                        updateBatchDropdown(pelatihanBatchData);
-                    });
+            // Event listener untuk perubahan dropdown pelatihan
+            pelatihanSelect.on('change', function() {
+                updateBatchDropdown(pelatihanBatchData);
+            });
 
-                    // Jika ada callback, panggil setelah data dimuat
-                    if (callback) {
-                        callback();
-                    }
-                })
-                .catch(function(error) {
-                    console.error('Error fetching pelatihan and batch data:', error);
-                });
-        }
-
-        function updateBatchDropdown(pelatihanBatchData) {
-            const selectedPelatihan = $('#pelatihan').val();
-            const batchSelect = $('#batch');
-            batchSelect.empty();
-
-            // Isi dropdown batch berdasarkan pelatihan yang dipilih
-            const selectedItem = pelatihanBatchData.find(item => item.nama_pelatihan === selectedPelatihan);
-            if (selectedItem) {
-                selectedItem.batches.forEach(function(batch) {
-                    batchSelect.append(`<option value="${batch}">${batch}</option>`);
-                });
+            // Jika ada callback, panggil setelah data dimuat
+            if (callback) {
+                callback();
             }
-        }
+        })
+        .catch(function(error) {
+            console.error('Error fetching pelatihan and batch data:', error);
+        });
+}
+function updateBatchDropdown(pelatihanBatchData) {
+    const selectedPelatihan = $('#pelatihan').val();
+    const batchSelect = $('#batch');
+    batchSelect.empty();
+
+    // Isi dropdown batch dengan pilihan --All--
+    batchSelect.append('<option value="all">--All--</option>'); // Tambahkan pilihan --All--
+
+    // Isi dropdown batch berdasarkan pelatihan yang dipilih
+    const selectedItem = pelatihanBatchData.find(item => item.nama_pelatihan === selectedPelatihan);
+    if (selectedItem) {
+        selectedItem.batches.forEach(function(batch) {
+            batchSelect.append(`<option value="${batch}">${batch}</option>`);
+        });
+    }
+}
 
         function updateBatchDropdownFromName(namaPelatihan, callback) {
             axios.get('/api/peserta-pelatihan/pelatihan-batch')
@@ -513,7 +510,8 @@ function fetchDefaultData() {
                     `;
                 }
             }
-        ]
+            ],
+            "order":  [2, "asc"]
     });
 
 
@@ -556,7 +554,8 @@ function fetchDefaultData() {
                     `;
                 }
             }
-        ]
+        ],
+        "order": [[1, "asc"], [2, "asc"]]
     });
 
     let tableProcess = $('#dataDetailPelatihanTableProcess').DataTable({
@@ -598,44 +597,64 @@ function fetchDefaultData() {
     ]
 });
 
-    function fetchFilteredData(pelatihan, batch) {
-    // Dapatkan id_agenda berdasarkan pelatihan dan batch
-    axios.get(`/api/peserta-pelatihan/get-agenda-id`, {
-        params: {
-            nama_pelatihan: pelatihan,
-            batch: batch
-        }
-    })
-    .then(function(response) {
-        id_agenda = response.data.id_agenda;
+function fetchFilteredData(pelatihan, batch) {
+    // Jika pelatihan dan batch dipilih sebagai "all", tampilkan semua data tanpa filter
+    if (pelatihan === 'all' && batch === 'all') {
+        fetchDefaultData(); // Menampilkan data tanpa filter
+        return;
+    }
 
-        // Fetch data peserta setelah mendapatkan id_agenda
-        axios.get(`/api/peserta-pelatihan/agenda/${id_agenda}/peserta`, {
-            params: {
-                nama_pelatihan: pelatihan,
-                batch: batch
-            }
-        })
-        .then(function(response) {
-            const filteredData = response.data.data;
+    // Jika batch adalah "all", gunakan API baru yang hanya memfilter berdasarkan nama pelatihan
+    if (pelatihan !== 'all' && batch === 'all') {
+        axios.get(`/api/peserta-pelatihan/by-pelatihan`, { params: { nama_pelatihan: pelatihan } })
+            .then(function(response) {
+                const data = response.data.data || [];
 
-            // Pisahkan data berdasarkan status pembayaran
-            const paidData = filteredData.filter(item => item.status_pembayaran.toLowerCase() === 'paid' || item.status_pembayaran.toLowerCase() === 'sudah');
-            const unpaidData = filteredData.filter(item => item.status_pembayaran.toLowerCase() === 'unpaid' || item.status_pembayaran.toLowerCase() === 'belum bayar');
-            const processData = filteredData.filter(item => item.status_pembayaran.toLowerCase() === 'process' || item.status_pembayaran.toLowerCase() === 'proses');
+                // Pisahkan data berdasarkan status pembayaran
+                const paidData = data.filter(item => item.status_pembayaran.toLowerCase() === 'paid' || item.status_pembayaran.toLowerCase() === 'sudah');
+                const unpaidData = data.filter(item => item.status_pembayaran.toLowerCase() === 'unpaid' || item.status_pembayaran.toLowerCase() === 'belum bayar');
+                const processData = data.filter(item => item.status_pembayaran.toLowerCase() === 'process' || item.status_pembayaran.toLowerCase() === 'proses');
 
-            // Update DataTables dengan data yang telah dipisahkan
-            tablePaid.clear().rows.add(paidData).draw();
-            tableUnpaid.clear().rows.add(unpaidData).draw();
-            tableProcess.clear().rows.add(processData).draw();
-        })
-        .catch(function(error) {
-            console.error('Error fetching filtered data:', error);
-        });
-    })
-    .catch(function(error) {
-        console.error('Error fetching agenda ID:', error);
-    });
+                // Update DataTables dengan data yang telah dipisahkan
+                tablePaid.clear().rows.add(paidData).draw();
+                tableUnpaid.clear().rows.add(unpaidData).draw();
+                tableProcess.clear().rows.add(processData).draw();
+            })
+            .catch(function(error) {
+                console.error('Error fetching data by pelatihan:', error);
+                alert('Error fetching data by pelatihan. Please try again.');
+            });
+    } else {
+        // Jika batch memiliki nilai tertentu, gunakan API yang memfilter berdasarkan nama pelatihan dan batch
+        axios.get('/api/peserta-pelatihan/get-agenda-id', { params: { nama_pelatihan: pelatihan, batch: batch } })
+            .then(function(response) {
+                const id_agenda = response.data.id_agenda;
+
+                // Menggunakan API getPesertaByAgenda dengan id_agenda yang ditemukan
+                axios.get(`/api/peserta-pelatihan/agenda/${id_agenda}/peserta`)
+                    .then(function(eventResponse) {
+                        const filteredData = eventResponse.data.data || [];
+
+                        // Pisahkan data berdasarkan status pembayaran
+                        const paidData = filteredData.filter(item => item.status_pembayaran.toLowerCase() === 'paid' || item.status_pembayaran.toLowerCase() === 'sudah');
+                        const unpaidData = filteredData.filter(item => item.status_pembayaran.toLowerCase() === 'unpaid' || item.status_pembayaran.toLowerCase() === 'belum bayar');
+                        const processData = filteredData.filter(item => item.status_pembayaran.toLowerCase() === 'process' || item.status_pembayaran.toLowerCase() === 'proses');
+
+                        // Update DataTables dengan data yang telah dipisahkan
+                        tablePaid.clear().rows.add(paidData).draw();
+                        tableUnpaid.clear().rows.add(unpaidData).draw();
+                        tableProcess.clear().rows.add(processData).draw();
+                    })
+                    .catch(function(error) {
+                        console.error('Error fetching data by agenda:', error);
+                        alert('Error fetching data by agenda. Please try again.');
+                    });
+            })
+            .catch(function(error) {
+                console.error('Error fetching agenda ID:', error);
+                alert('Error fetching agenda ID. Please try again.');
+            });
+    }
 }
 
 
@@ -678,7 +697,6 @@ function fetchDefaultData() {
         $('#filterModal').modal('hide');
     });
 
-    // Existing code...
 
 
 

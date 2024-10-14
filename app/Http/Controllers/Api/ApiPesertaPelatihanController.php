@@ -76,6 +76,44 @@ class ApiPesertaPelatihanController extends Controller
         }
     }
 
+    public function getPesertaByPelatihan(Request $request)
+    {
+        $namaPelatihan = $request->query('nama_pelatihan');
+
+        // Validasi parameter nama pelatihan
+        if (empty($namaPelatihan)) {
+            return response()->json(['message' => 'Parameter nama_pelatihan hilang'], 400);
+        }
+
+        // Ambil semua data peserta berdasarkan nama pelatihan, tanpa memperhitungkan batch
+        $pendaftaranEvents = PendaftaranEvent::whereHas('agendaPelatihan.pelatihan', function ($query) use ($namaPelatihan) {
+            $query->where('nama_pelatihan', $namaPelatihan);
+        })
+            ->with(['agendaPelatihan.pelatihan', 'pendaftar'])
+            ->get();
+
+        // Format data untuk respons
+        $data = $pendaftaranEvents->map(function ($event) {
+            return [
+                'id_pendaftaran' => $event->id_pendaftaran,
+                'id_agenda' => $event->id_agenda,
+                'nama_pelatihan' => $event->agendaPelatihan->pelatihan->nama_pelatihan,
+                'batch' => $event->agendaPelatihan->batch,
+                'nama_peserta' => $event->pendaftar->nama,
+                'no_kontak' => $event->pendaftar->no_kontak,
+                'status_pembayaran' => $event->status_pembayaran,
+            ];
+        });
+
+        return response()->json([
+            'data' => $data,
+            'message' => 'Data peserta pelatihan berhasil ditemukan',
+            'statusCode' => 200,
+            'status' => 'success'
+        ], 200);
+    }
+
+
     public function getAgendaId(Request $request)
     {
         $namaPelatihan = $request->query('nama_pelatihan');
@@ -98,6 +136,29 @@ class ApiPesertaPelatihanController extends Controller
             return response()->json(['message' => 'Agenda tidak ditemukan'], 404);
         }
     }
+
+    public function getAgendaIds(Request $request)
+    {
+        $namaPelatihan = $request->query('nama_pelatihan');
+
+        // Validasi parameter nama pelatihan
+        if (empty($namaPelatihan)) {
+            return response()->json(['message' => 'Parameter nama_pelatihan hilang'], 400);
+        }
+
+        // Ambil semua id_agenda terkait nama_pelatihan
+        $agendaIds = AgendaPelatihan::whereHas('pelatihan', function ($query) use ($namaPelatihan) {
+            $query->where('nama_pelatihan', $namaPelatihan);
+        })
+            ->pluck('id_agenda');
+
+        if ($agendaIds->isNotEmpty()) {
+            return response()->json(['id_agendas' => $agendaIds], 200);
+        } else {
+            return response()->json(['message' => 'No agendas found for the selected pelatihan'], 404);
+        }
+    }
+
 
 
 
@@ -194,51 +255,51 @@ class ApiPesertaPelatihanController extends Controller
     }
 
     public function getAllPesertaPembayaran()
-{
-    try {
-        // Ambil semua data pendaftaran event beserta relasi yang diperlukan
-        $pendaftaranEvents = PendaftaranEvent::with(['agendaPelatihan.pelatihan', 'pendaftar'])
-            ->get();
+    {
+        try {
+            // Ambil semua data pendaftaran event beserta relasi yang diperlukan
+            $pendaftaranEvents = PendaftaranEvent::with(['agendaPelatihan.pelatihan', 'pendaftar'])
+                ->get();
 
-        // Siapkan data response
-        $data = $pendaftaranEvents->map(function ($event) {
-            // Cek apakah ada sertifikat kompetensi dan sertifikat kehadiran
-            $sertifikat = Sertifikat::where('id_pendaftaran', $event->id_pendaftaran)->first();
+            // Siapkan data response
+            $data = $pendaftaranEvents->map(function ($event) {
+                // Cek apakah ada sertifikat kompetensi dan sertifikat kehadiran
+                $sertifikat = Sertifikat::where('id_pendaftaran', $event->id_pendaftaran)->first();
 
-            $sertifikatKompetensi = $sertifikat && $sertifikat->file_sertifikat !== null;
-            $sertifikatKehadiran = $sertifikat && $sertifikat->sertifikat_kehadiran !== null;
+                $sertifikatKompetensi = $sertifikat && $sertifikat->file_sertifikat !== null;
+                $sertifikatKehadiran = $sertifikat && $sertifikat->sertifikat_kehadiran !== null;
 
-            return [
-                // 'id_pelatihan' => $event->agendaPelatihan->pelatihan->id_pelatihan,
-                'nama_pelatihan' => $event->agendaPelatihan->pelatihan->nama_pelatihan,
-                'id_agenda' => $event->agendaPelatihan->id_agenda,
-                'batch' => $event->agendaPelatihan->batch,
-                'nama_peserta' => $event->pendaftar->nama,
-                'no_kontak' => $event->pendaftar->no_kontak,
-                'id_pendaftaran' => $event->id_pendaftaran,
-                'status_pembayaran' => $event->status_pembayaran,
-                'sertifikat_kompetensi' => $sertifikatKompetensi,
-                'sertifikat_kehadiran' => $sertifikatKehadiran,
-            ];
-        });
+                return [
+                    // 'id_pelatihan' => $event->agendaPelatihan->pelatihan->id_pelatihan,
+                    'nama_pelatihan' => $event->agendaPelatihan->pelatihan->nama_pelatihan,
+                    'id_agenda' => $event->agendaPelatihan->id_agenda,
+                    'batch' => $event->agendaPelatihan->batch,
+                    'nama_peserta' => $event->pendaftar->nama,
+                    'no_kontak' => $event->pendaftar->no_kontak,
+                    'id_pendaftaran' => $event->id_pendaftaran,
+                    'status_pembayaran' => $event->status_pembayaran,
+                    'sertifikat_kompetensi' => $sertifikatKompetensi,
+                    'sertifikat_kehadiran' => $sertifikatKehadiran,
+                ];
+            });
 
-        // Return response
-        return response()->json([
-            'data' => $data,
-            'message' => 'Data pembayaran peserta berhasil ditemukan',
-            'statusCode' => 200,
-            'status' => 'success'
-        ], 200);
-    } catch (\Exception $e) {
-        return response()->json([
-            'data' => null,
-            'message' => 'Gagal menemukan data pembayaran peserta',
-            'statusCode' => 500,
-            'status' => 'error',
-            'error' => $e->getMessage()
-        ], 500);
+            // Return response
+            return response()->json([
+                'data' => $data,
+                'message' => 'Data pembayaran peserta berhasil ditemukan',
+                'statusCode' => 200,
+                'status' => 'success'
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'data' => null,
+                'message' => 'Gagal menemukan data pembayaran peserta',
+                'statusCode' => 500,
+                'status' => 'error',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
-}
 
 
     public function exportFiltered(Request $request)

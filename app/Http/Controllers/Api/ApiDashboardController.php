@@ -139,38 +139,31 @@ class ApiDashboardController extends Controller
             ], 500);
         }
     }
+
     public function trenPelatihan()
     {
         try {
-            // Ambil data pelatihan dan jumlah peserta per agenda per bulan berdasarkan start_pendaftaran dari agenda_pelatihan
             $pelatihanTren = Pelatihan::where('is_deleted', false)
                 ->with(['agendaPelatihan' => function ($query) {
                     $query->where('is_deleted', false)
-                        ->with(['pendaftaranEvent' => function ($q) {
-                            $q->join('agenda_pelatihan', 'pendaftaran_event.id_agenda', '=', 'agenda_pelatihan.id_agenda')
-                                ->select('pendaftaran_event.id_agenda', DB::raw('DATE_TRUNC(\'month\', agenda_pelatihan.start_date) as bulan'), DB::raw('COUNT(pendaftaran_event.id_peserta) as jumlah_peserta'))
-                                ->where('pendaftaran_event.is_deleted', false)
-                                ->groupBy('pendaftaran_event.id_agenda', 'bulan');
-                        }]);
+                        ->withCount(['pendaftaranEvent as jumlah_peserta' => function ($q) {
+                            $q->where('is_deleted', false)
+                                ->where('status_pembayaran', 'Paid');
+                        }])
+                        ->orderBy('batch', 'asc'); // Urutkan batch dari kecil ke besar
                 }])
                 ->get()
                 ->map(function ($pelatihan) {
+                    $agendas = $pelatihan->agendaPelatihan->map(function ($agenda) {
+                        return [
+                            'batch' => $agenda->batch,
+                            'jumlah_peserta' => $agenda->jumlah_peserta ?? 0
+                        ];
+                    });
+
                     return [
-                        'id_pelatihan' => $pelatihan->id_pelatihan,
                         'nama_pelatihan' => $pelatihan->nama_pelatihan,
-                        'agenda' => $pelatihan->agendaPelatihan->map(function ($agenda) {
-                            return [
-                                'id_agenda' => $agenda->id_agenda,
-                                'batch' => $agenda->batch,
-                                'start_date' => $agenda->start_date,
-                                'jumlah_peserta_per_bulan' => $agenda->pendaftaranEvent->map(function ($event) {
-                                    return [
-                                        'bulan' => $event->bulan,
-                                        'jumlah_peserta' => $event->jumlah_peserta
-                                    ];
-                                })
-                            ];
-                        })
+                        'agendas' => $agendas->toArray()
                     ];
                 });
 
@@ -197,7 +190,8 @@ class ApiDashboardController extends Controller
             // Ambil 5 provinsi dengan jumlah pendaftar terbanyak
             $topProvinces = Pendaftar::select('provinsi', DB::raw('COUNT(*) as jumlah'))
                 ->where('is_deleted', false)
-                ->whereNotNull('provinsi') // Filter untuk provinsi tidak null
+                ->whereNotNull('provinsi')
+                ->where('provinsi', '!=', '')
                 ->groupBy('provinsi')
                 ->orderBy('jumlah', 'desc')
                 ->limit(5)
@@ -224,7 +218,7 @@ class ApiDashboardController extends Controller
     {
         try {
             // Mengelompokkan data berdasarkan nama_instansi dengan aktivitas 'Mahasiswa'
-            $universities = Pendaftar::whereIn('aktivitas', ['Mahasiswa', 'Dosen'])
+            $universities = Pendaftar::whereIn('aktivitas', ['Mahasiswa', 'Dosen', 'Pelajar', 'Fresh Graduate', 'Pencari Kerja'])
 
                 // ->where('aktivitas', 'Dosen')
                 ->whereNotNull('nama_instansi')
@@ -256,7 +250,7 @@ class ApiDashboardController extends Controller
     {
         try {
             // Mengelompokkan data berdasarkan nama_instansi dengan aktivitas selain 'Mahasiswa'
-            $companies = Pendaftar::where('aktivitas', '!=', 'Mahasiswa')
+            $companies = Pendaftar::where('aktivitas', ['Karyawan', 'Lain-lain'])
                 // ->where('aktivitas', '!=', 'Dosen')
                 ->whereNotNull('nama_instansi')
                 ->where('is_deleted', false)
@@ -339,7 +333,8 @@ class ApiDashboardController extends Controller
             // Ambil 5 kota/kabupaten dengan jumlah pendaftar terbanyak
             $topCities = Pendaftar::select('kab_kota', DB::raw('COUNT(*) as jumlah'))
                 ->where('is_deleted', false)
-                ->whereNotNull('kab_kota') // Filter untuk kota/kabupaten tidak null
+                ->whereNotNull('kab_kota')
+                ->where('kab_kota', '!=', '')
                 ->groupBy('kab_kota')
                 ->orderBy('jumlah', 'desc')
                 ->limit(5)
@@ -385,51 +380,6 @@ class ApiDashboardController extends Controller
             ], 500);
         }
     }
-
-    // public function getTrainingAgenda()
-    // {
-    //     try {
-    //         // Query to fetch the training agenda along with the counts
-    //         $trainingAgenda = DB::table('agenda_pelatihan')
-    //             ->join('pelatihan', 'agenda_pelatihan.id_pelatihan', '=', 'pelatihan.id_pelatihan')
-    //             ->leftJoin('pendaftaran_event', function ($join) {
-    //                 $join->on('agenda_pelatihan.id_agenda', '=', 'pendaftaran_event.id_agenda')
-    //                     ->where('pendaftaran_event.is_deleted', false);
-    //             })
-    //             ->select(
-    //                 'pelatihan.nama_pelatihan',
-    //                 'agenda_pelatihan.batch',
-    //                 'agenda_pelatihan.start_date',
-    //                 'agenda_pelatihan.end_date',
-    //                 DB::raw('COUNT(pendaftaran_event.id_peserta) as total_pendaftar'),
-    //                 DB::raw("SUM(CASE WHEN pendaftaran_event.status_pembayaran = 'Paid' THEN 1 ELSE 0 END) as total_peserta")
-    //             )
-    //             ->where('agenda_pelatihan.is_deleted', false)
-    //             ->where('pelatihan.is_deleted', false)
-    //             ->groupBy(
-    //                 'pelatihan.nama_pelatihan',
-    //                 'agenda_pelatihan.batch',
-    //                 'agenda_pelatihan.start_date',
-    //                 'agenda_pelatihan.end_date'
-    //             )
-    //             ->orderBy('pelatihan.nama_pelatihan', 'asc')
-    //             ->get();
-
-    //         return response()->json([
-    //             'data' => $trainingAgenda,
-    //             'message' => 'Data agenda pelatihan berhasil ditemukan',
-    //             'statusCode' => 200,
-    //             'status' => 'success'
-    //         ], 200);
-    //     } catch (\Exception $e) {
-    //         return response()->json([
-    //             'message' => 'Gagal mendapatkan data agenda pelatihan',
-    //             'statusCode' => 500,
-    //             'status' => 'error',
-    //             'error' => $e->getMessage()
-    //         ], 500);
-    //     }
-    // }
 
 
     public function getTrainingAgenda()

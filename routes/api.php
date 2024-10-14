@@ -106,6 +106,9 @@ Route::get('/peserta-pembayaran', [ApiPesertaPelatihanController::class, 'getAll
 Route::get('/peserta-pelatihan/pelatihan-batch', [ApiPesertaPelatihanController::class, 'getPelatihanDanBatch']);
 Route::get('/peserta-pelatihan/get-agenda-id', [ApiPesertaPelatihanController::class, 'getAgendaId']);
 Route::get('/peserta-pelatihan/export', [ApiPesertaPelatihanController::class, 'exportExcel']);
+Route::get('/peserta-pelatihan/get-agenda-ids', [ApiPesertaPelatihanController::class, 'getAgendaIds']);
+Route::get('/peserta-pelatihan/by-pelatihan', [ApiPesertaPelatihanController::class, 'getPesertaByPelatihan']);
+
 
 
 Route::middleware('auth:api')->prefix('laman-peserta')->group(function () {
