@@ -95,7 +95,7 @@ class ApiMasterPendaftar extends Controller
             ]);
 
             return response()->json([
-                'message' => "Pendaftar $namaPendaftar berhasil dihapus (soft delete)",
+                'message' => "Pendaftar $namaPendaftar berhasil dihapus",
                 'statusCode' => Response::HTTP_OK,
                 'status' => 'success'
             ], Response::HTTP_OK);

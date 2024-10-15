@@ -70,23 +70,23 @@ class ApiKelolaAdminController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'nama' => 'required|string|max:255',
-            'email' => [
-                'required',
-                'string',
-                'email',
-                'regex:/^[\w\.-]+@[a-zA-Z\d\.-]+\.(com|org|net|edu|gov|mil|int|info|co|id)$/',
-                'max:255',
-                'unique:admin,email,' . $id . ',id_admin'
-            ],
+            // 'email' => [
+            //     'required',
+            //     'string',
+            //     'email',
+            //     'regex:/^[\w\.-]+@[a-zA-Z\d\.-]+\.(com|org|net|edu|gov|mil|int|info|co|id)$/',
+            //     'max:255',
+            //     'unique:admin,email,' . $id . ',id_admin'
+            // ],
         ], [
             'nama.required' => 'Nama harus diisi.',
             'nama.string' => 'Nama harus berupa string.',
             'nama.max' => 'Nama tidak boleh lebih dari 255 karakter.',
-            'email.required' => 'Email harus diisi.',
-            'email.email' => 'Email tidak valid.',
-            'email.max' => 'Email tidak boleh lebih dari 255 karakter.',
-            'email.unique' => 'Email sudah terdaftar.',
-            'email.regex' => 'Email harus berakhiran dengan domain valid .com, .org, .net, .edu, gov, .mil, .int, .info, .co, .id .',
+            // 'email.required' => 'Email harus diisi.',
+            // 'email.email' => 'Email tidak valid.',
+            // 'email.max' => 'Email tidak boleh lebih dari 255 karakter.',
+            // 'email.unique' => 'Email sudah terdaftar.',
+            // 'email.regex' => 'Email harus berakhiran dengan domain valid .com, .org, .net, .edu, gov, .mil, .int, .info, .co, .id .',
         ]);
 
         if ($validator->fails()) {
@@ -113,7 +113,7 @@ class ApiKelolaAdminController extends Controller
 
             $admin->update([
                 'nama' => $request->nama,
-                'email' => $request->email,
+                // 'email' => $request->email,
                 'modified_by' => 'Admin',
                 'modified_time' => Carbon::now(),
             ]);
