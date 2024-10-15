@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use Carbon\Carbon;
 use App\Models\Pelatihan;
 use App\Models\Pendaftar;
 use Illuminate\Http\Request;
@@ -140,23 +141,43 @@ class ApiDashboardController extends Controller
         }
     }
 
-    public function trenPelatihan()
+    public function trenPelatihan(Request $request)
     {
         try {
+            // Ambil filter dari request (jika ada)
+            $year = $request->input('year');
+            $startMonth = $request->input('start_month');
+            $endMonth = $request->input('end_month');
+
+            // Inisialisasi startDate dan endDate sebagai null
+            $startDate = null;
+            $endDate = null;
+
+            // Jika filter tahun dan bulan ada, buat rentang tanggal
+            if ($year && $startMonth && $endMonth) {
+                $startDate = Carbon::createFromDate($year, $startMonth, 1)->startOfMonth();
+                $endDate = Carbon::createFromDate($year, $endMonth, 1)->endOfMonth();
+            }
+
             $pelatihanTren = Pelatihan::where('is_deleted', false)
-                ->with(['agendaPelatihan' => function ($query) {
+                ->with(['agendaPelatihan' => function ($query) use ($startDate, $endDate) {
                     $query->where('is_deleted', false)
+                        ->when($startDate && $endDate, function ($q) use ($startDate, $endDate) {
+                            // Hanya filter berdasarkan start_date jika filter diberikan
+                            $q->whereBetween('start_date', [$startDate, $endDate]);
+                        })
+                        ->orderBy('batch', 'asc')
                         ->withCount(['pendaftaranEvent as jumlah_peserta' => function ($q) {
                             $q->where('is_deleted', false)
                                 ->where('status_pembayaran', 'Paid');
-                        }])
-                        ->orderBy('batch', 'asc'); // Urutkan batch dari kecil ke besar
+                        }]);
                 }])
                 ->get()
                 ->map(function ($pelatihan) {
                     $agendas = $pelatihan->agendaPelatihan->map(function ($agenda) {
                         return [
                             'batch' => $agenda->batch,
+                            'start_date' => $agenda->start_date,
                             'jumlah_peserta' => $agenda->jumlah_peserta ?? 0
                         ];
                     });
@@ -182,6 +203,8 @@ class ApiDashboardController extends Controller
             ], 500);
         }
     }
+
+
 
 
     public function getTopProvinces()

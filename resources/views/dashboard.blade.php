@@ -343,31 +343,72 @@ fetchTotalPeserta(); // Default fetch without any filters
 
 
           <!-- Reports -->
+          
           <div class="col-12 card">
             <div class="card-body">
-                {{-- <h5 class="card-title">Tren Jumlah Peserta</h5> --}}
-        
-                <!-- Highcharts Stacked Bar Chart -->
-                <figure class="highcharts-figure">
-                    <div id="container" style="width: 100%; height: 600px;"></div>
-                    <p class="highcharts-description">
-                    </p>
-                </figure>
-        
-                <script src="https://code.highcharts.com/highcharts.js"></script>
-                <script src="https://code.highcharts.com/modules/exporting.js"></script>
-                <script src="https://code.highcharts.com/modules/export-data.js"></script>
-                <script src="https://code.highcharts.com/modules/accessibility.js"></script>
-        
-                <script>
-          <div class="col-12 card">
-            <div class="card-body">
+              <div class="filter">
+            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow wide-dropdown">
+              <li class="dropdown-header text-start">
+                <h6>Filter</h6>
+              </li>
+              <li class="dropdown-item">
+                <label for="year-tren">Tahun:</label>
+                <select id="year-tren" class="form-select">
+                  <option value="2024">2024</option>
+                  <option value="2023">2023</option>
+                  <option value="2022">2022</option>
+                  <option value="2021">2021</option>
+                </select>
+              </li>
+              <li class="dropdown-item d-flex justify-content-between align-items-center">
+                <div>
+                  <label for="start-month-tren">Bulan Awal:</label>
+                  <select id="start-month-tren" class="form-select">
+                    <option value="1">Januari</option>
+                    <option value="2">Februari</option>
+                    <option value="3">Maret</option>
+                    <option value="4">April</option>
+                    <option value="5">Mei</option>
+                    <option value="6">Juni</option>
+                    <option value="7">Juli</option>
+                    <option value="8">Agustus</option>
+                    <option value="9">September</option>
+                    <option value="10">Oktober</option>
+                    <option value="11">November</option>
+                    <option value="12">Desember</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="end-month-tren">Bulan Akhir:</label>
+                  <select id="end-month-tren" class="form-select">
+                    <option value="1">Januari</option>
+                    <option value="2">Februari</option>
+                    <option value="3">Maret</option>
+                    <option value="4">April</option>
+                    <option value="5">Mei</option>
+                    <option value="6">Juni</option>
+                    <option value="7">Juli</option>
+                    <option value="8">Agustus</option>
+                    <option value="9">September</option>
+                    <option value="10">Oktober</option>
+                    <option value="11">November</option>
+                    <option value="12">Desember</option>
+                  </select>
+                </div>
+              </li>
+              <li class="dropdown-footer text-end">
+                <button class="btn btn-primary apply-btn-tren">Apply</button>
+              </li>
+            </ul>
+          </div>
                 
         
                 <!-- Highcharts Stacked Bar Chart -->
                 <figure class="highcharts-figure">
                     <div id="container" style="width: 100%; height: 700px;"></div>
                     <p class="highcharts-description">
+                    
                     </p>
                 </figure>
         
@@ -377,68 +418,88 @@ fetchTotalPeserta(); // Default fetch without any filters
                 <script src="https://code.highcharts.com/modules/accessibility.js"></script>
         
                 <script>
-                  fetch('/api/dashboard/tren-pelatihan')
-                    .then(response => response.json())
-                    .then(data => {
-                        const categories = data.tren_pelatihan.map(p => p.nama_pelatihan);
-                        let batchSeries = [];
+                 // Fungsi untuk mengambil data dari API
+function fetchData(url) {
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            const categories = data.tren_pelatihan.map(p => p.nama_pelatihan);
+            let batchSeries = [];
 
-                        data.tren_pelatihan.forEach((pelatihan, pelatihanIndex) => {
-                            
-                            pelatihan.agendas.sort((a, b) => a.batch - b.batch);
-                            
-                            pelatihan.agendas.forEach(agenda => {
-                                const batchName = 'Batch ' + agenda.batch;
-                                const existingBatch = batchSeries.find(series => series.name === batchName);
+            data.tren_pelatihan.forEach((pelatihan, pelatihanIndex) => {
+                pelatihan.agendas.sort((a, b) => a.batch - b.batch);
+                
+                pelatihan.agendas.forEach(agenda => {
+                    const batchName = 'Batch ' + agenda.batch;
+                    const existingBatch = batchSeries.find(series => series.name === batchName);
 
-                                if (existingBatch) {
-                                    existingBatch.data[pelatihanIndex] = agenda.jumlah_peserta;
-                                } else {
-                                    // Tambahkan batch baru hanya jika batch tersebut memiliki data peserta
-                                    const newBatchData = Array(data.tren_pelatihan.length).fill(null);
-                                    newBatchData[pelatihanIndex] = agenda.jumlah_peserta;
+                    if (existingBatch) {
+                        existingBatch.data[pelatihanIndex] = agenda.jumlah_peserta;
+                    } else {
+                        const newBatchData = Array(data.tren_pelatihan.length).fill(null);
+                        newBatchData[pelatihanIndex] = agenda.jumlah_peserta;
 
-                                    batchSeries.push({
-                                        name: batchName,
-                                        data: newBatchData
-                                    });
-                                }
-                            });
+                        batchSeries.push({
+                            name: batchName,
+                            data: newBatchData
                         });
+                    }
+                });
+            });
 
-                        // Membalik urutan batchSeries agar batch awal muncul di kiri (paling bawah dalam chart stacking)
-                        batchSeries.reverse();
+            // Membalik urutan batchSeries agar batch awal muncul di kiri
+            batchSeries.reverse();
 
-                        Highcharts.chart('container', {
-                            chart: {
-                                type: 'bar'
-                            },
-                            title: {
-                                text: 'Tren Jumlah Peserta'
-                            },
-                            xAxis: {
-                                categories: categories
-                            },
-                            yAxis: {
-                                min: 0,
-                                title: {
-                                    text: 'Jumlah Peserta'
-                                }
-                            },
-                            legend: {
-                                reversed: true
-                            },
-                            plotOptions: {
-                                series: {
-                                    stacking: 'normal',
-                                    dataLabels: {
-                                        enabled: true
-                                    }
-                                }
-                            },
-                            series: batchSeries
-                        });
-                    });
+            Highcharts.chart('container', {
+                chart: {
+                    type: 'bar'
+                },
+                title: {
+                    text: 'Tren Jumlah Peserta'
+                },
+                xAxis: {
+                    categories: categories
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: 'Jumlah Peserta'
+                    }
+                },
+                legend: {
+                    reversed: true
+                },
+                plotOptions: {
+                    series: {
+                        stacking: 'normal',
+                        dataLabels: {
+                            enabled: true
+                        }
+                    }
+                },
+                series: batchSeries
+            });
+        })
+        .catch(error => console.log('Error fetching data:', error));
+}
+
+// Ambil data default saat halaman pertama kali dibuka (semua data)
+document.addEventListener('DOMContentLoaded', function() {
+    fetchData('/api/dashboard/tren-pelatihan'); // Panggil API tanpa filter
+});
+
+// Event listener untuk tombol Apply (filter data berdasarkan pilihan user)
+document.querySelector('.apply-btn-tren').addEventListener('click', function () {
+    const year = document.getElementById('year-tren').value;
+    const startMonth = document.getElementById('start-month-tren').value;
+    const endMonth = document.getElementById('end-month-tren').value;
+
+    // Buat URL dengan parameter filter
+    const url = `/api/dashboard/tren-pelatihan?year=${year}&start_month=${startMonth}&end_month=${endMonth}`;
+
+    // Ambil data yang difilter
+    fetchData(url);
+});
 
 
                 </script>
