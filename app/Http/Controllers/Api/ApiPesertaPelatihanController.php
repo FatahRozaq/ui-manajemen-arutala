@@ -266,8 +266,9 @@ class ApiPesertaPelatihanController extends Controller
                 // Cek apakah ada sertifikat kompetensi dan sertifikat kehadiran
                 $sertifikat = Sertifikat::where('id_pendaftaran', $event->id_pendaftaran)->first();
 
-                $sertifikatKompetensi = $sertifikat && $sertifikat->file_sertifikat !== null;
-                $sertifikatKehadiran = $sertifikat && $sertifikat->sertifikat_kehadiran !== null;
+                $sertifikatKompetensi = $sertifikat && ($sertifikat->file_sertifikat !== null && $sertifikat->file_sertifikat !== '');
+                $sertifikatKehadiran = $sertifikat && ($sertifikat->sertifikat_kehadiran !== null && $sertifikat->sertifikat_kehadiran !== '');
+
 
                 return [
                     // 'id_pelatihan' => $event->agendaPelatihan->pelatihan->id_pelatihan,
