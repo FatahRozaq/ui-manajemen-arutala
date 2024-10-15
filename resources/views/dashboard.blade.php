@@ -399,6 +399,7 @@ fetchTotalPeserta(); // Default fetch without any filters
               </li>
               <li class="dropdown-footer text-end">
                 <button class="btn btn-primary apply-btn-tren">Apply</button>
+                <button class="btn btn-secondary clear-filter-btn">Clear</button>
               </li>
             </ul>
           </div>
@@ -499,6 +500,11 @@ document.querySelector('.apply-btn-tren').addEventListener('click', function () 
 
     // Ambil data yang difilter
     fetchData(url);
+});
+
+document.querySelector('.clear-filter-btn').addEventListener('click', function () {
+    // Panggil API tanpa filter
+    fetchData('/api/dashboard/tren-pelatihan');
 });
 
 

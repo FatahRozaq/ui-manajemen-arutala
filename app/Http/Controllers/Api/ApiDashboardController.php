@@ -174,7 +174,10 @@ class ApiDashboardController extends Controller
                 }])
                 ->get()
                 ->map(function ($pelatihan) {
-                    $agendas = $pelatihan->agendaPelatihan->map(function ($agenda) {
+                    // Filter agenda yang memiliki jumlah peserta > 0 (batch yang valid)
+                    $agendas = $pelatihan->agendaPelatihan->filter(function ($agenda) {
+                        return $agenda->jumlah_peserta > 0; // Hanya ambil agenda dengan peserta
+                    })->map(function ($agenda) {
                         return [
                             'batch' => $agenda->batch,
                             'start_date' => $agenda->start_date,
@@ -182,11 +185,20 @@ class ApiDashboardController extends Controller
                         ];
                     });
 
-                    return [
-                        'nama_pelatihan' => $pelatihan->nama_pelatihan,
-                        'agendas' => $agendas->toArray()
-                    ];
-                });
+                    // Hitung total peserta dari semua agenda
+                    $totalPeserta = $agendas->sum('jumlah_peserta');
+
+                    // Kembalikan pelatihan hanya jika memiliki agenda yang valid
+                    if ($agendas->isNotEmpty()) {
+                        return [
+                            // Tampilkan nama pelatihan dengan total peserta
+                            'nama_pelatihan' => $pelatihan->nama_pelatihan . ' (' . $totalPeserta . ')',
+                            'agendas' => $agendas->toArray()
+                        ];
+                    }
+                })
+                ->filter() // Hapus pelatihan yang tidak memiliki agenda setelah difilter
+                ->values(); // Reset indeks
 
             return response()->json([
                 'tren_pelatihan' => $pelatihanTren,
@@ -203,7 +215,6 @@ class ApiDashboardController extends Controller
             ], 500);
         }
     }
-
 
 
 
