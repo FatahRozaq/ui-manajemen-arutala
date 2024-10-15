@@ -218,7 +218,7 @@ class ApiDashboardController extends Controller
     {
         try {
             // Mengelompokkan data berdasarkan nama_instansi dengan aktivitas 'Mahasiswa'
-            $universities = Pendaftar::whereIn('aktivitas', ['Mahasiswa', 'Dosen', 'Pelajar', 'Fresh Graduate', 'Pencari Kerja'])
+            $universities = Pendaftar::whereIn('aktivitas', ['Mahasiswa', 'Pelajar', 'Fresh Graduate', 'Pencari Kerja'])
 
                 // ->where('aktivitas', 'Dosen')
                 ->whereNotNull('nama_instansi')
@@ -250,7 +250,7 @@ class ApiDashboardController extends Controller
     {
         try {
             // Mengelompokkan data berdasarkan nama_instansi dengan aktivitas selain 'Mahasiswa'
-            $companies = Pendaftar::where('aktivitas', ['Karyawan', 'Lain-lain'])
+            $companies = Pendaftar::where('aktivitas', ['Karyawan', 'Lain-lain', 'Dosen'])
                 // ->where('aktivitas', '!=', 'Dosen')
                 ->whereNotNull('nama_instansi')
                 ->where('is_deleted', false)
