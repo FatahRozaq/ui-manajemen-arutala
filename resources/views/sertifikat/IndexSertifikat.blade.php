@@ -49,6 +49,15 @@ Arutala | Sertifikat Peserta
         margin-top: 10px;
     }
 
+    .disabled-link {
+        pointer-events: none;
+        opacity: 0.6;
+        background-color: #6c757d; /* Gray background */
+        color: white; /* Ensure the text is readable */
+        border-color: #6c757d; /* Match border with background */
+    }
+
+
     @media (max-width: 576px) {
         .button-group {
             flex-direction: column;
@@ -58,6 +67,7 @@ Arutala | Sertifikat Peserta
             width: 100%;
         }
     }
+
 </style>
 @endsection
 
@@ -108,6 +118,9 @@ Arutala | Sertifikat Peserta
                         certificateList.append('<p>Anda belum memiliki sertifikat.</p>');
                     } else {
                         certificates.forEach(certificate => {
+                            const isCompetencyDisabled = !certificate.file_sertifikat || certificate.file_sertifikat === '';
+                            const isAttendanceDisabled = !certificate.sertifikat_kehadiran || certificate.sertifikat_kehadiran === '';
+                            
                             const card = `
                                 <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
                                     <div class="card h-100 fixed-size">
@@ -118,16 +131,17 @@ Arutala | Sertifikat Peserta
                                                 <p class="text-muted"><i class="fas fa-calendar-alt"></i> ${new Date(certificate.pendaftaran.agenda_pelatihan.start_date).toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' })} - ${new Date(certificate.pendaftaran.agenda_pelatihan.end_date).toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' })}</p>
                                             </div>
                                             <div class="button-group">
-                                                <a href="#" class="btn btn-success btn-sm btn-custom download-competency-cert-btn" data-idpendaftaran="${certificate.id_pendaftaran}">
+                                                <a href="#" class="btn btn-success btn-sm btn-custom download-competency-cert-btn ${isCompetencyDisabled ? 'disabled-link' : ''}" data-idpendaftaran="${certificate.id_pendaftaran}">
                                                     Kompetensi
                                                 </a>
-                                                <a href="#" class="btn btn-primary btn-sm btn-custom download-attendance-cert-btn" data-idpendaftaran="${certificate.id_pendaftaran}">
+                                                <a href="#" class="btn btn-primary btn-sm btn-custom download-attendance-cert-btn ${isAttendanceDisabled ? 'disabled-link' : ''}" data-idpendaftaran="${certificate.id_pendaftaran}">
                                                     Kehadiran
                                                 </a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>`;
+                            
                             certificateList.append(card);
                         });
 
@@ -135,14 +149,18 @@ Arutala | Sertifikat Peserta
                         $('.download-competency-cert-btn').on('click', function(e) {
                             e.preventDefault();
                             const idPendaftaran = $(this).data('idpendaftaran');
-                            openCertOptions(idPendaftaran, 'kompetensi');
+                            if (!$(this).hasClass('disabled-link')) {
+                                openCertOptions(idPendaftaran, 'kompetensi');
+                            }
                         });
 
                         // Attach event listener to "Sertifikat Kehadiran" buttons
                         $('.download-attendance-cert-btn').on('click', function(e) {
                             e.preventDefault();
                             const idPendaftaran = $(this).data('idpendaftaran');
-                            openCertOptions(idPendaftaran, 'kehadiran');
+                            if (!$(this).hasClass('disabled-link')) {
+                                openCertOptions(idPendaftaran, 'kehadiran');
+                            }
                         });
                     }
                 })
@@ -155,6 +173,8 @@ Arutala | Sertifikat Peserta
                     });
                 });
         }
+
+
 
         function openCertOptions(idPendaftaran, type) {
             Swal.fire({
