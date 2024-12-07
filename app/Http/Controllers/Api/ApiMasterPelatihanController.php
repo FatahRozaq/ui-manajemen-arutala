@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Pelatihan;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\AgendaPelatihan;
 use Illuminate\Support\Facades\DB;
@@ -75,13 +76,23 @@ class ApiMasterPelatihanController extends Controller
                 'benefit.*.string' => 'Setiap benefit harus berupa string.',
             ]);
 
+            $nama_pelatihan = $request->input('nama_pelatihan');
+            $sanitized_nama_pelatihan = Str::slug($nama_pelatihan, '_'); // Mengubah spasi menjadi underscore dan menghapus karakter tidak valid
+
+            // Tentukan path folder berdasarkan struktur yang diinginkan
+            $folderPath = 'uploads/pelatihan/' . $sanitized_nama_pelatihan;
+
             // Simpan file gambar ke MinIO dan ambil nama file jika ada
             if ($request->hasFile('gambar_pelatihan')) {
                 $fileName = time() . '.' . $request->gambar_pelatihan->extension();
-                $filePath = 'uploads/' . $fileName;
+                $filePath = $folderPath . '/' . $fileName;
 
-                // Unggah gambar ke MinIO
-                Storage::disk('minio')->put($filePath, file_get_contents($request->file('gambar_pelatihan')));
+                // Unggah gambar ke MinIO menggunakan metode storeAs
+                $request->file('gambar_pelatihan')->storeAs(
+                    $folderPath,
+                    $fileName,
+                    'minio'
+                );
 
                 // Buat URL manual untuk gambar yang diunggah
                 $gambarUrl = env('MINIO_URL') . '/' . env('MINIO_BUCKET') . '/' . $filePath;
