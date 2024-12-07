@@ -56,9 +56,9 @@ class ApiMasterPelatihanController extends Controller
             // Validasi request
             $request->validate([
                 'nama_pelatihan' => 'required|string|max:255|unique:pelatihan,nama_pelatihan',
-                'gambar_pelatihan' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg|max:1048',
+                'gambar_pelatihan' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg|max:5120',
                 'deskripsi' => 'required|string|max:1000',
-                'materi' => 'required|array|min:1', // Pastikan array tidak kosong
+                'materi' => 'required|array|min:1',
                 'materi.*' => 'string|max:255',
                 'benefit' => 'required|array|min:1',
                 'benefit.*' => 'string|max:255',
@@ -66,7 +66,7 @@ class ApiMasterPelatihanController extends Controller
                 'nama_pelatihan.required' => 'Nama pelatihan wajib diisi.',
                 'nama_pelatihan.unique' => 'Nama pelatihan sudah ada, silakan gunakan nama lain.',
                 'gambar_pelatihan.mimes' => 'Gambar pelatihan harus berupa file dengan format jpeg, png, jpg, gif, atau svg.',
-                'gambar_pelatihan.max' => 'Ukuran gambar pelatihan tidak boleh lebih dari 1MB.',
+                'gambar_pelatihan.max' => 'Ukuran gambar pelatihan tidak boleh lebih dari 5MB.',
                 'deskripsi.required' => 'Deskripsi wajib diisi.',
                 'deskripsi.max' => 'Deskripsi tidak boleh lebih dari 1000 karakter.',
                 'materi.required' => 'Materi wajib diisi dan tidak boleh kosong.',
@@ -166,7 +166,7 @@ class ApiMasterPelatihanController extends Controller
         // Validasi request
         $request->validate([
             'nama_pelatihan' => 'required|string|max:255|unique:pelatihan,nama_pelatihan,' . $id . ',id_pelatihan',
-            'gambar_pelatihan' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg|max:1048',
+            'gambar_pelatihan' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg|max:5120',
             'deskripsi' => 'required|string|max:1000',
             'materi' => 'required|array|min:1',
             'materi.*' => 'required|string|max:255',
@@ -176,7 +176,7 @@ class ApiMasterPelatihanController extends Controller
             'nama_pelatihan.required' => 'Nama pelatihan wajib diisi.',
             'nama_pelatihan.unique' => 'Nama pelatihan sudah ada, silakan gunakan nama lain.',
             'gambar_pelatihan.mimes' => 'Gambar pelatihan harus berupa file dengan format jpeg, png, jpg, gif, atau svg.',
-            'gambar_pelatihan.max' => 'Ukuran gambar pelatihan tidak boleh lebih dari 1MB.',
+            'gambar_pelatihan.max' => 'Ukuran gambar pelatihan tidak boleh lebih dari 5MB.',
             'deskripsi.required' => 'Deskripsi wajib diisi.',
             'deskripsi.max' => 'Deskripsi tidak boleh lebih dari 1000 karakter',
             'materi.required' => 'Materi wajib diisi dan tidak boleh kosong.',

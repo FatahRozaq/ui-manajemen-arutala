@@ -301,9 +301,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 isValid = false;  // Set isValid ke false jika validasi gagal
             }
 
-            // Validasi ukuran gambar tidak lebih dari 1MB
-            if (gambarPelatihan.size > 1048576) { // 1MB = 1048576 bytes
-                document.getElementById('error-image').textContent = 'Ukuran gambar tidak boleh lebih dari 1MB.';
+           
+            if (gambarPelatihan.size > 5242880) { 
+                document.getElementById('error-image').textContent = 'Ukuran gambar tidak boleh lebih dari 5MB.';
                 document.getElementById('error-image').style.display = 'block';
                 isValid = false;  // Set isValid ke false jika validasi gagal
             }
@@ -394,9 +394,8 @@ document.addEventListener('DOMContentLoaded', function () {
                                 return;
                             }
 
-                            // Validasi ukuran gambar tidak lebih dari 1MB (1048576 bytes)
-                            if (gambarPelatihan && gambarPelatihan.size > 1048576) {
-                                document.getElementById('error-image').textContent = 'Ukuran gambar tidak boleh lebih dari 1MB.';
+                            if (gambarPelatihan && gambarPelatihan.size > 5242880) {
+                                document.getElementById('error-image').textContent = 'Ukuran gambar tidak boleh lebih dari 5MB.';
                                 document.getElementById('error-image').style.display = 'block';
                                 return;
                             }
