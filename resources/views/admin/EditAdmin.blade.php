@@ -34,7 +34,7 @@ Arutala | Update Data Admin
 @section('content')
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="/admin/admin">Admin</a></li>
+        <li class="breadcrumb-item"><a href="/admin/kelola-admin">Admin</a></li>
         <li class="breadcrumb-item active" aria-current="page">Update Admin</li>
     </ol>
 </nav>
