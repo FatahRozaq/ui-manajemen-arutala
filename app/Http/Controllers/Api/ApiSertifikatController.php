@@ -448,11 +448,13 @@ class ApiSertifikatController extends Controller
             $agenda = AgendaPelatihan::where('id_pelatihan', $pelatihan->id_pelatihan)
                 ->where('batch', $request->input('batch'))->first();    
 
-            $pendaftarans = PendaftaranEvent::with('pendaftar')
-                ->where('id_agenda', $agenda->id_agenda)
-                ->where('is_deleted', false)
+            $pendaftarans = PendaftaranEvent::join('pendaftar', 'pendaftar.id_pendaftar', '=', 'pendaftaran_event.id_peserta')
+                ->join('agenda_pelatihan', 'agenda_pelatihan.id_agenda', '=', 'pendaftaran_event.id_agenda')
+                ->where('agenda_pelatihan.id_agenda', $agenda->id_agenda)
+                ->where('pendaftar.is_deleted', false)
+                ->orderBy('pendaftar.nama', 'asc') // Sorting by 'nama' of 'pendaftar'
                 ->get();
-
+            
             if ($pendaftarans->isEmpty()) {
                 return response()->json([
                     'message' => 'Tidak ada data pendaftaran yang ditemukan',
