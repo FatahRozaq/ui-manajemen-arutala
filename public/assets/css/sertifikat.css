@@ -1,0 +1,228 @@
+body {
+    font-family: "Open Sans", sans-serif;
+    background: #f6f9ff;
+    color: #444444;
+    font-size: 12px;
+  }
+
+.header {
+    transition: all 0.5s;
+    z-index: 997;
+    height: 40px;
+    box-shadow: 0px 2px 20px rgba(1, 41, 112, 0.1);
+    background-color: #fff;
+    padding-left: 0px;
+}
+
+.logo img {
+    width: 100px;
+    height: auto;
+}
+
+.logo {
+    margin: 0px;
+    width: 120px;
+}
+
+.title-nav {
+    margin-top: 10px;
+    margin-left: 25px;
+    color: #000A65;
+}
+
+#main {
+    margin-top: 80px;
+    padding: 20px 30px;
+    transition: all 0.3s;
+    left: 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.row-1 {
+    display: flex;
+    /* gap: 30px; */
+    width: 80%;
+    justify-content: space-between;
+}
+
+.row-2 {
+    display: flex;
+    /* background: red; */
+    width: 80% ;
+    height: auto;
+    border-radius: 28px;
+    /* padding-right: 100px; */
+    justify-content: center;
+}
+
+.file-sertifikat {
+    width: 616px;
+    height: auto;
+    /* background: white; */
+}
+
+.file-sertifikat img {
+    width: 600px;
+    height: 435px;
+}
+
+.card-pendaftar {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    width: 348px;
+    height: 435px;
+    background: white;
+    padding-top: 40px;
+    border-radius: 28px;
+}
+
+.card-pendaftar .fa-solid.fa-circle-user {
+    font-size: 80px;
+    color: #000A65;
+}
+
+.card-pendaftar .id-sertifikat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.card-pendaftar .tanggal-sertifikat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.card-pendaftar .label-card-pendaftar {
+    color: #838383;
+    font-size: 24px;
+    font-weight: normal;
+}
+
+.card-pendaftar .content-card-pendaftar {
+    color: #000000;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.nama{
+    font-weight: bold;
+    font-size: 24px;
+}
+
+.row-2 .content-pelatihan {
+    background: white;
+    width: 100%;
+    height: auto;
+    border-radius: 28px;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.content-pelatihan .title-content {
+    font-size: 36px;
+    font-weight: bold;
+}
+
+.deskripsi-content {
+    font-size: 16px;
+    font-weight: normal;
+}
+
+.content-pelatihan .label-content {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+@media (max-width: 1200px) {
+    .row-1, .row-2 {
+        width: 90%;
+    }
+    .file-sertifikat {
+        width: 100%;
+    }
+    .card-pendaftar {
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .row-1 {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .file-sertifikat, .card-pendaftar {
+        width: 100%;
+    }
+
+    .title-nav {
+        display: none; /* Sembunyikan title */
+    }
+
+    .logo {
+        margin: 0 auto; /* Pusatkan logo */
+    }
+
+    .header {
+        justify-content: center; /* Atur elemen header menjadi rata tengah */
+    }
+}
+
+@media (max-width: 576px) {
+    .title-nav h2 {
+        font-size: 18px;
+    }
+
+    .card-pendaftar .label-card-pendaftar,
+    .card-pendaftar .content-card-pendaftar,
+    .nama {
+        font-size: 18px;
+    }
+
+    .content-pelatihan .title-content {
+        font-size: 24px;
+    }
+
+    .content-pelatihan .label-content {
+        font-size: 18px;
+    }
+
+    .deskripsi-content {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 375px) {
+    .header {
+        height: auto;
+        text-align: center;
+    }
+
+    .logo img {
+        width: 80px;
+    }
+
+    .title-nav {
+        margin: 10px 0;
+        font-size: 14px;
+    }
+
+    #main {
+        margin-top: 60px;
+        padding: 10px 15px;
+    }
+
+    .card-pendaftar {
+        padding: 20px;
+        gap: 10px;
+    }
+}

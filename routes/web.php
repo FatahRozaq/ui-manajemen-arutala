@@ -90,6 +90,10 @@ Route::middleware([AuthCheck::class . ':admin'])->prefix('admin')->group(functio
         Route::get('/', [PesertaPelatihanController::class, 'index'])->name('peserta.index');
         Route::get('/updatestatus', [PesertaPelatihanController::class, 'show'])->name('peserta.show');
     });
+
+    Route::prefix('sertifikat')->group(function () {
+        Route::get('/generateQR', [SertifkatController::class, 'generateQR'])->name('sertifikat.generateQR');
+    });  
 });
 
 // Peserta Routes Group
@@ -112,6 +116,8 @@ Route::middleware([AuthCheck::class . ':pendaftar'])->prefix('peserta')->group(f
         Route::get('/', [SertifkatController::class, 'index'])->name('peserta.sertifikat');
     });
 });
+
+Route::get('sertifikat/{certificate_number}', [SertifkatController::class, 'show'])->name('peserta.sertifikat.show');
 
 // Authentication
 Route::get('/login-page', [AuthController::class, 'LoginPage'])->name('login.page');

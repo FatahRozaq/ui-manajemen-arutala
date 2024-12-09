@@ -10,4 +10,14 @@ class SertifkatController extends Controller
     {
         return view('sertifikat/IndexSertifikat');
     }
+
+    public function show()
+    {
+        return view('sertifikat/ShowSertifikat');
+    }
+
+    public function generateQR()
+    {
+        return view('sertifikat/GenerateQRSertifikat');
+    }
 }

@@ -176,4 +176,49 @@ class ApiTransaksiController extends Controller
 
         return response()->json(json_decode($response->body()));
     }
+
+    public function balance()
+    {
+        // Insert the API key directly here
+        $apiKey = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIzNDEzMjc4OC0zMmUyLTQzMzQtYTZhMC0zOGRiNzllMDE5MGMiLCJhY2NvdW50SWQiOiI2MzhjZWRiYS03NDBhLTQ1NjItODM5MC04MDc1MjE4MzFlMDYiLCJjcmVhdGVkQXQiOiIxNzMxMzYzNzQ0NTM5Iiwicm9sZSI6ImRldmVsb3BlciIsInN1YiI6ImFydXRhbGEubW1AZ21haWwuY29tIiwibmFtZSI6IkFydXRhbGFMYWIiLCJsaW5rIjoiYWRtaW4tYXJ1dGFsYWxhYiIsImlzU2VsZkRvbWFpbiI6bnVsbCwiaWF0IjoxNzMxMzYzNzQ0fQ.GboC2bEZf5oF_Q3NxOBl-V3XstyCjCSpXhA8AMZ7gRD6YkaVezaO6l2NXrlFYQbfcIEDNQzfiulYfIESWNTNgaDZ6OQIwO_pG05_2bETCwjmknFQJTS2ZaPANDz-ToQT_G-6C22QPTDFgX02XhAfSnTGBHrORXGTpkHyChUnY-FszCgXPatieisjBRPwDVDeyiUB3TGAGYPmUVmITm9-gNN3hKlPb3_zNk7i_LK5gG8xskXpN3OHdkmUlQmpdNP-NZV31dAOBTISG7QgYRydq9p3iaTyhOA4hli44hyAThrDkskPhcBKluTClHxydf6R8uvDcit0fKQKnBXClIwvgw';
+
+        // Make the HTTP GET request with the API key
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . $apiKey,
+        ])->get('https://api.mayar.club/hl/v1/balance');
+
+        // Check for errors or handle the response
+        if ($response->successful()) {
+            return response()->json($response->json(), 200);
+        } else {
+            return response()->json([
+                'error' => 'Unable to retrieve balance.',
+                'details' => $response->json()
+            ], $response->status());
+        }
+    }
+
+    public function dataTransaksi()
+    {
+        // API key provided earlier
+        $apiKey = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIzNDEzMjc4OC0zMmUyLTQzMzQtYTZhMC0zOGRiNzllMDE5MGMiLCJhY2NvdW50SWQiOiI2MzhjZWRiYS03NDBhLTQ1NjItODM5MC04MDc1MjE4MzFlMDYiLCJjcmVhdGVkQXQiOiIxNzMxMzYzNzQ0NTM5Iiwicm9sZSI6ImRldmVsb3BlciIsInN1YiI6ImFydXRhbGEubW1AZ21haWwuY29tIiwibmFtZSI6IkFydXRhbGFMYWIiLCJsaW5rIjoiYWRtaW4tYXJ1dGFsYWxhYiIsImlzU2VsZkRvbWFpbiI6bnVsbCwiaWF0IjoxNzMxMzYzNzQ0fQ.GboC2bEZf5oF_Q3NxOBl-V3XstyCjCSpXhA8AMZ7gRD6YkaVezaO6l2NXrlFYQbfcIEDNQzfiulYfIESWNTNgaDZ6OQIwO_pG05_2bETCwjmknFQJTS2ZaPANDz-ToQT_G-6C22QPTDFgX02XhAfSnTGBHrORXGTpkHyChUnY-FszCgXPatieisjBRPwDVDeyiUB3TGAGYPmUVmITm9-gNN3hKlPb3_zNk7i_LK5gG8xskXpN3OHdkmUlQmpdNP-NZV31dAOBTISG7QgYRydq9p3iaTyhOA4hli44hyAThrDkskPhcBKluTClHxydf6R8uvDcit0fKQKnBXClIwvgw';
+
+        // Send GET request to the transactions endpoint
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . $apiKey,
+        ])->get('https://api.mayar.club/hl/v1/transactions', [
+            'page' => 1,
+            'pageSize' => 10,
+        ]);
+
+        // Check for a successful response
+        if ($response->successful()) {
+            return response()->json($response->json(), 200);
+        } else {
+            return response()->json([
+                'error' => 'Unable to retrieve transactions.',
+                'details' => $response->json()
+            ], $response->status());
+        }
+    }
 }

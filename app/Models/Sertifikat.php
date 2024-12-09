@@ -22,7 +22,13 @@ class Sertifikat extends Model
         'modified_by',
         'modified_time',
         'is_deleted',
-        'sertifikat_kehadiran'
+        'sertifikat_kehadiran',
+        'certificate_number_kompetensi',
+        'certificate_number_kehadiran',
+        'qr_kompetensi',
+        'qr_kehadiran',
+        'path_qr_kompetensi',
+        'path_qr_kehadiran'
     ];
 
     public $timestamps = false;

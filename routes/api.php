@@ -169,8 +169,13 @@ Route::prefix('sertifikat')->group(function () {
     Route::get('/check/{id_pendaftaran}', [ApiSertifikatController::class, 'checkSertifikat']);
 
     Route::middleware('auth:api')->get('/peserta', [ApiSertifikatController::class, 'sertifikatPendaftar']);
+
+    Route::post('/generateQR', [ApiSertifikatController::class, 'generateQR']);
+    Route::get('/detail-sertifikat/{certificateNumber}', [ApiSertifikatController::class, 'detailSertifikat']);
 });
 
 Route::get('/produk', [ApiLamanPesertaController::class, 'getProduk']);
 Route::post('/mayar/webhook', [ApiTransaksiController::class, 'handleWebhook']);
 Route::post('/test-webhook', [ApiTransaksiController::class, 'sendWebhookTest']);
+Route::get('/test-balance', [ApiTransaksiController::class, 'balance']);
+Route::get('/get-transaction', [ApiTransaksiController::class, 'dataTransaksi']);

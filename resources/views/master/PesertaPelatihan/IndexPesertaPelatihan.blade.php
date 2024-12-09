@@ -31,10 +31,6 @@ Arutala | Data Peserta Pelatihan
     {{-- <button type="button" class="button-filter btn btn-secondary mb-2 p-2" > --}}
         <i class="button-filter bi bi-funnel ml-2" style="font-size:22px; cursor: pointer" data-bs-toggle="modal" data-bs-target="#filterModal" aria-label="Filter"></i>
     {{-- </button> --}}
-    
-    
-    
-    
 </div>
 
 <div id="loadingIndicator" style="display: none;">
@@ -163,14 +159,19 @@ Arutala | Data Peserta Pelatihan
                         <button class="nav-link" id="nav-unpaid-tab" data-bs-toggle="tab" data-bs-target="#nav-unpaid" type="button" role="tab" aria-controls="nav-unpaid" aria-selected="false">Belum Bayar</button>
                         <button class="nav-link" id="nav-process-tab" data-bs-toggle="tab" data-bs-target="#nav-process" type="button" role="tab" aria-controls="nav-process" aria-selected="false">Process</button>
                     </div>
-                    <form id="exportForm" class="d-inline">
-                        @csrf
-                        <input type="hidden" name="nama_pelatihan" id="exportPelatihan">
-                        <input type="hidden" name="batch" id="exportBatch">
-                        <button type="button" id="exportButton" class="btn btn-success mb-2">
-                            Export
-                        </button>
-                    </form>
+
+                    <div class="d-flex gap-1">
+                        <a href="{{ route('sertifikat.generateQR') }}"class="btn btn-primary mb-2">Generate QR Sertifikat</a>
+                        <form id="exportForm" class="d-inline">
+                            @csrf
+                            <input type="hidden" name="nama_pelatihan" id="exportPelatihan">
+                            <input type="hidden" name="batch" id="exportBatch">
+                            <button type="button" id="exportButton" class="btn btn-success mb-2">
+                                Export
+                            </button>
+                        </form>
+                    </div>
+                    
                 </div>
                 
             </nav>

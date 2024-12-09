@@ -4,15 +4,18 @@ namespace App\Http\Controllers\Api;
 
 use Exception;
 use Carbon\Carbon;
+use App\Models\Pelatihan;
 use App\Models\Sertifikat;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use App\Models\AgendaPelatihan;
 use App\Models\PendaftaranEvent;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 
 class ApiSertifikatController extends Controller
@@ -417,5 +420,143 @@ class ApiSertifikatController extends Controller
             ], 500); // HTTP 500 Internal Server Error
         }
     }
+
+    public function generateQR(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'nama_pelatihan' => 'required|string',
+            'batch' => 'required',
+            'certificate_number' => 'required|string',
+            'jenis_sertifikat' => 'required|in:kompetensi,kehadiran',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Validasi gagal',
+                'status' => 'error',
+                'errors' => $validator->errors(),
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        $namaPelatihan = Str::slug($request->nama_pelatihan);
+        $batch = 'batch-' . $request->batch;
+        $certificateNumber = $request->certificate_number;
+        $jenisSertifikat = $request->jenis_sertifikat;
+
+        try {
+            $pelatihan = Pelatihan::where('nama_pelatihan', $request->input('nama_pelatihan'))->first();
+            $agenda = AgendaPelatihan::where('id_pelatihan', $pelatihan->id_pelatihan)
+                ->where('batch', $request->input('batch'))->first();    
+
+            $pendaftarans = PendaftaranEvent::with('pendaftar')
+                ->where('id_agenda', $agenda->id_agenda)
+                ->where('is_deleted', false)
+                ->get();
+
+            if ($pendaftarans->isEmpty()) {
+                return response()->json([
+                    'message' => 'Tidak ada data pendaftaran yang ditemukan',
+                    'status' => 'error',
+                ], Response::HTTP_NOT_FOUND);
+            }
+
+            $files = [];
+            $path = "qr-codes/$namaPelatihan/$batch/$jenisSertifikat";
+
+            foreach ($pendaftarans as $index => $pendaftaran) {
+                $urutan = str_pad($index + 1, 3, '0', STR_PAD_LEFT);
+                $url = "https://atms.arutalalab.net/sertifikat/$certificateNumber.$urutan";
+                $namaPeserta = $pendaftaran->pendaftar->nama;
+                $qrCodeName = "$namaPeserta.$certificateNumber.$urutan.svg";
+
+                // Generate QR code sebagai PNG tanpa imagick
+                $qrImage = QrCode::format('svg')
+                    ->size(300)
+                    ->generate($url);
+
+                $filePath = "$path/$qrCodeName";
+                Storage::disk('minio')->put($filePath, $qrImage);
+
+                // Simpan ke database
+                Sertifikat::updateOrCreate(
+                    [
+                        'id_pendaftaran' => $pendaftaran->id_pendaftaran,
+                    ],
+                    [
+                        $jenisSertifikat === 'kompetensi' ? 'qr_kompetensi' : 'qr_kehadiran' => $url,
+                        $jenisSertifikat === 'kompetensi' ? 'path_qr_kompetensi' : 'path_qr_kehadiran' => env('MINIO_URL') . '/' . env('MINIO_BUCKET') . '/' . $filePath,
+                        'certificate_number_' . $jenisSertifikat => "$certificateNumber.$urutan",
+                        'modified_by' => 'Admin',
+                        'modified_time' => Carbon::now(),
+                    ]
+                );
+
+                $files[] = $filePath;
+            }
+
+            // Generate ZIP file
+            $zipFileName = "$namaPelatihan-$batch-$jenisSertifikat.zip";
+            $zipFilePath = "qr-codes/$namaPelatihan/$batch/$zipFileName";
+
+            $zip = new \ZipArchive();
+            $zipTempFile = tempnam(sys_get_temp_dir(), 'zip');
+            $zip->open($zipTempFile, \ZipArchive::CREATE | \ZipArchive::OVERWRITE);
+
+            foreach ($files as $file) {
+                $fileContent = Storage::disk('minio')->get($file);
+                $zip->addFromString(basename($file), $fileContent);
+            }
+
+            $zip->close();
+            Storage::disk('minio')->put($zipFilePath, file_get_contents($zipTempFile));
+            unlink($zipTempFile);
+
+            return response()->json([
+                'message' => 'QR Codes berhasil di-generate',
+                'status' => 'success',
+                'download_url' => env('MINIO_URL') . '/' . env('MINIO_BUCKET') . '/' . $zipFilePath,
+            ], Response::HTTP_OK);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Gagal menghasilkan QR Code',
+                'status' => 'error',
+                'error' => $e->getMessage(),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function detailSertifikat($certificateNumber)
+    {
+        // Cari sertifikat berdasarkan certificate_number_kompetensi
+        $sertifikat = Sertifikat::with([
+            'pendaftar',
+            'pendaftaran.agendaPelatihan.pelatihan'
+        ])
+        ->where('certificate_number_kompetensi', $certificateNumber)
+        ->orWhere('certificate_number_kehadiran', $certificateNumber)
+        ->first();
+
+        // Jika tidak ditemukan, kembalikan pesan error
+        if (!$sertifikat) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Certificate not found',
+            ], 404);
+        }
+
+        // Strukturkan data untuk response
+        $response = [
+            'pendaftar' => $sertifikat->pendaftar,
+            'pelatihan' => $sertifikat->pendaftaran->agendaPelatihan->pelatihan ?? null,
+            'agendaPelatihan' => $sertifikat->pendaftaran->agendaPelatihan ?? null,
+            'sertifikat' => $sertifikat,
+        ];
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $response,
+        ], 200);
+    }
+
 
 }

@@ -15,12 +15,17 @@ return new class extends Migration
             $table->id('id_sertifikat');
             $table->unsignedBigInteger('id_pendaftar');
             $table->unsignedBigInteger('id_pendaftaran');
-            $table->string('file_sertifikat');
+            $table->string('file_sertifikat', 255)->nullable();
             $table->string('created_by', 255)->nullable();
             $table->timestamp('created_time')->nullable();
             $table->string('modified_by', 255)->nullable();
             $table->timestamp('modified_time')->nullable();
             $table->boolean('is_deleted')->default(false);
+            $table->string('sertifikat_kehadiran', 255);
+            $table->string('certificate_number_kompetensi', 255)->nullable();
+            $table->string('certificate_number_kehadiran', 255)->nullable();
+            $table->string('qr_kompetensi', 255)->nullable();
+            $table->string('qr_kehadiran', 255)->nullable();
             $table->timestamps();
 
             $table->foreign('id_pendaftar')->references('id_pendaftar')->on('pendaftar');
