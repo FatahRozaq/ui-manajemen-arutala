@@ -306,10 +306,15 @@ $(document).ready(function() {
                 $('#linkMayarInput').val(data.link_mayar);
 
                 if (data.poster_agenda) {
-                    $('#posterAgenda').attr('src', data.poster_agenda);  // Set the poster URL
+                    $('#posterAgenda').attr('src', data.poster_agenda)
+                        .off('error') // Hapus penanganan error sebelumnya jika ada
+                        .on('error', function() {
+                            $(this).attr('src', '/assets/images/default-pelatihan.jpg');
+                        });  // Set the poster URL dan tambahkan penanganan error
                 } else {
                     $('#posterAgenda').attr('src', '/assets/images/default-pelatihan.jpg');  // Default image if no poster
                 }
+
 
                 // Populate mentor selectize field with selected mentors
                 if (data.mentors && data.mentors.length > 0) {

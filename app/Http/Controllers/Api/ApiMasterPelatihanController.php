@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Pelatihan;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\AgendaPelatihan;
 use Illuminate\Support\Facades\DB;
@@ -56,9 +57,9 @@ class ApiMasterPelatihanController extends Controller
             // Validasi request
             $request->validate([
                 'nama_pelatihan' => 'required|string|max:255|unique:pelatihan,nama_pelatihan',
-                'gambar_pelatihan' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg|max:1048',
+                'gambar_pelatihan' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg|max:5120',
                 'deskripsi' => 'required|string|max:1000',
-                'materi' => 'required|array|min:1', // Pastikan array tidak kosong
+                'materi' => 'required|array|min:1',
                 'materi.*' => 'string|max:255',
                 'benefit' => 'required|array|min:1',
                 'benefit.*' => 'string|max:255',
@@ -66,7 +67,7 @@ class ApiMasterPelatihanController extends Controller
                 'nama_pelatihan.required' => 'Nama pelatihan wajib diisi.',
                 'nama_pelatihan.unique' => 'Nama pelatihan sudah ada, silakan gunakan nama lain.',
                 'gambar_pelatihan.mimes' => 'Gambar pelatihan harus berupa file dengan format jpeg, png, jpg, gif, atau svg.',
-                'gambar_pelatihan.max' => 'Ukuran gambar pelatihan tidak boleh lebih dari 1MB.',
+                'gambar_pelatihan.max' => 'Ukuran gambar pelatihan tidak boleh lebih dari 5MB.',
                 'deskripsi.required' => 'Deskripsi wajib diisi.',
                 'deskripsi.max' => 'Deskripsi tidak boleh lebih dari 1000 karakter.',
                 'materi.required' => 'Materi wajib diisi dan tidak boleh kosong.',
@@ -75,13 +76,23 @@ class ApiMasterPelatihanController extends Controller
                 'benefit.*.string' => 'Setiap benefit harus berupa string.',
             ]);
 
+            $nama_pelatihan = $request->input('nama_pelatihan');
+            $sanitized_nama_pelatihan = Str::slug($nama_pelatihan, '_'); // Mengubah spasi menjadi underscore dan menghapus karakter tidak valid
+
+            // Tentukan path folder berdasarkan struktur yang diinginkan
+            $folderPath = 'uploads/pelatihan/' . $sanitized_nama_pelatihan;
+
             // Simpan file gambar ke MinIO dan ambil nama file jika ada
             if ($request->hasFile('gambar_pelatihan')) {
                 $fileName = time() . '.' . $request->gambar_pelatihan->extension();
-                $filePath = 'uploads/' . $fileName;
+                $filePath = $folderPath . '/' . $fileName;
 
-                // Unggah gambar ke MinIO
-                Storage::disk('minio')->put($filePath, file_get_contents($request->file('gambar_pelatihan')));
+                // Unggah gambar ke MinIO menggunakan metode storeAs
+                $request->file('gambar_pelatihan')->storeAs(
+                    $folderPath,
+                    $fileName,
+                    'minio'
+                );
 
                 // Buat URL manual untuk gambar yang diunggah
                 $gambarUrl = env('MINIO_URL') . '/' . env('MINIO_BUCKET') . '/' . $filePath;
@@ -166,7 +177,7 @@ class ApiMasterPelatihanController extends Controller
         // Validasi request
         $request->validate([
             'nama_pelatihan' => 'required|string|max:255|unique:pelatihan,nama_pelatihan,' . $id . ',id_pelatihan',
-            'gambar_pelatihan' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg|max:1048',
+            'gambar_pelatihan' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg|max:5120',
             'deskripsi' => 'required|string|max:1000',
             'materi' => 'required|array|min:1',
             'materi.*' => 'required|string|max:255',
@@ -176,7 +187,7 @@ class ApiMasterPelatihanController extends Controller
             'nama_pelatihan.required' => 'Nama pelatihan wajib diisi.',
             'nama_pelatihan.unique' => 'Nama pelatihan sudah ada, silakan gunakan nama lain.',
             'gambar_pelatihan.mimes' => 'Gambar pelatihan harus berupa file dengan format jpeg, png, jpg, gif, atau svg.',
-            'gambar_pelatihan.max' => 'Ukuran gambar pelatihan tidak boleh lebih dari 1MB.',
+            'gambar_pelatihan.max' => 'Ukuran gambar pelatihan tidak boleh lebih dari 5MB.',
             'deskripsi.required' => 'Deskripsi wajib diisi.',
             'deskripsi.max' => 'Deskripsi tidak boleh lebih dari 1000 karakter',
             'materi.required' => 'Materi wajib diisi dan tidak boleh kosong.',

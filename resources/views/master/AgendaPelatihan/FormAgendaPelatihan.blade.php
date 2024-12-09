@@ -396,6 +396,24 @@ $(document).ready(function() {
             $('#mentorError').hide();
         }
 
+        var posterFile = $('#posterAgenda')[0].files[0];
+        if (posterFile) {
+            // Validasi Ukuran File (Maksimum 5MB)
+            var maxSizeMB = 5;
+            var maxSizeBytes = maxSizeMB * 1024 * 1024; // 5MB dalam bytes
+            if (posterFile.size > maxSizeBytes) {
+                $('#posterAgendaError').show().text('Ukuran file poster tidak boleh melebihi 5 MB.');
+                isValid = false;
+            }
+
+            // Validasi Format File
+            var allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif', 'image/svg+xml'];
+            if (!allowedTypes.includes(posterFile.type)) {
+                $('#posterAgendaError').show().text('Format file poster harus jpeg, png, jpg');
+                isValid = false;
+            }
+        }
+
         // Jika validasi gagal, jangan kirim form
         if (!isValid) {
             return;

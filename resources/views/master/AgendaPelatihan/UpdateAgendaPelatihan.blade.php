@@ -354,7 +354,11 @@ $(document).ready(function() {
                 $('#linkMayarInput').val(data.link_mayar);
 
                 if (data.poster_agenda) {
-                    $('#posterAgenda').attr('src', data.poster_agenda);  // Set the poster URL
+                    $('#posterAgenda').attr('src', data.poster_agenda)
+                        .off('error') // Hapus penanganan error sebelumnya jika ada
+                        .on('error', function() {
+                            $(this).attr('src', '/assets/images/default-pelatihan.jpg');
+                        });  // Set the poster URL dan tambahkan penanganan error
                 } else {
                     $('#posterAgenda').attr('src', '/assets/images/default-pelatihan.jpg');  // Default image if no poster
                 }
@@ -419,10 +423,34 @@ $(document).ready(function() {
     // Handle Update Button Click
     $('#updateAgendaForm').submit(function(event) {
     event.preventDefault();
+    $('#error-posterAgenda').hide().text('');
+    $('input[name="poster_agenda"]').removeClass('is-invalid');
+
+    const fileInput = $('input[name="poster_agenda"]')[0];
+    if (fileInput.files.length > 0) {
+        const file = fileInput.files[0];
+        const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
+        const maxSize = 5 * 1024 * 1024; // 5MB
+
+        if (!allowedTypes.includes(file.type)) {
+            event.preventDefault();
+            $('#error-posterAgenda').show().text('Format file harus PNG, JPEG, atau JPG.');
+            $('input[name="poster_agenda"]').addClass('is-invalid');
+            return;
+        }
+
+        if (file.size > maxSize) {
+            event.preventDefault();
+            $('#error-posterAgenda').show().text('Ukuran file tidak boleh lebih dari 5MB.');
+            $('input[name="poster_agenda"]').addClass('is-invalid');
+            return;
+        }
+    }
 
     // Hapus pesan error lama dan class is-invalid sebelum validasi baru
     $('.is-invalid').removeClass('is-invalid'); // Menghapus class is-invalid
     $('small.text-danger').remove(); // Menghapus elemen <small> dengan pesan error
+
 
         // Tampilkan pop-up konfirmasi sebelum melakukan update
         Swal.fire({
@@ -454,6 +482,8 @@ $(document).ready(function() {
                     .catch(function(error) {
                         if (error.response && error.response.status === 422) {
                             const errors = error.response.data.errors;
+
+                            
 
                             // Tampilkan error untuk start_date
                             if (errors.start_date) {

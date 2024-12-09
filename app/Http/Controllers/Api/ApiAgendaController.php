@@ -100,7 +100,7 @@ class ApiAgendaController extends Controller
                 'end_pendaftaran' => 'required|date',
                 'link_mayar' => 'required|string|max:255',
                 'id_mentor' => 'required|array',
-                'poster_agenda' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+                'poster_agenda' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:5120'
             ]);
 
             // Verifikasi bahwa pelatihan ada
@@ -232,7 +232,7 @@ class ApiAgendaController extends Controller
                 'nama_pelatihan' => 'required|string|max:255',
                 'start_date' => 'required|date',
                 'end_date' => 'required|date|after_or_equal:start_date',
-                'sesi' => 'required|string|max:255', // Validasi sesi menjadi string
+                'sesi' => 'required|string|max:255',
                 'investasi' => 'required|integer|min:0',
                 'investasi_info' => 'nullable|array|min:1',
                 'investasi_info.*' => 'nullable|string|max:255',
@@ -240,9 +240,9 @@ class ApiAgendaController extends Controller
                 'status' => 'required|string|in:Planning,Masa Pendaftaran,Sedang Berlangsung,Selesai,Pendaftaran Berakhir',
                 'start_pendaftaran' => 'required|date|before_or_equal:start_date',
                 'end_pendaftaran' => 'required|date|after_or_equal:start_pendaftaran|before_or_equal:end_date',
-                'link_mayar' => 'required|string|url|max:255',
+                'link_mayar' => 'required|string|max:255',
                 'id_mentor' => 'required|array|min:1',
-                'poster_agenda' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'poster_agenda' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:5120',
             ], [
                 // Custom error messages
                 'nama_pelatihan.required' => 'Nama pelatihan wajib diisi.',
@@ -268,13 +268,12 @@ class ApiAgendaController extends Controller
                 'end_pendaftaran.after_or_equal' => 'Tanggal akhir pendaftaran harus setelah atau sama dengan tanggal mulai pendaftaran.',
                 'end_pendaftaran.before_or_equal' => 'Tanggal akhir pendaftaran tidak boleh setelah akhir pelatihan.',
                 'link_mayar.required' => 'Link pembayaran wajib diisi.',
-                'link_mayar.url' => 'Link pembayaran harus berupa URL yang valid.',
                 'link_mayar.max' => 'Link pembayaran tidak boleh melebihi 255 karakter.',
                 'id_mentor.required' => 'Setidaknya satu mentor harus dipilih.',
                 'id_mentor.array' => 'Mentor harus berupa array.',
                 'poster_agenda.image' => 'Poster harus berupa file gambar.',
                 'poster_agenda.mimes' => 'Poster hanya boleh dalam format jpeg, png, jpg, gif, atau svg.',
-                'poster_agenda.max' => 'Ukuran file poster tidak boleh melebihi 2 MB.'
+                'poster_agenda.max' => 'Ukuran file poster tidak boleh melebihi 5 MB.'
             ]);
 
             if ($validator->fails()) {

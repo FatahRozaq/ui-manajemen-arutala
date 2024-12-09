@@ -97,7 +97,7 @@ input.form-control, textarea.form-control {
                             <label for="formFile" class="col-form-label col-sm-2">Gambar</label>
                             <div class="col-sm-7">
                                 <input class="form-control" type="file" id="formFile" name="gambar_pelatihan">
-                                <small id="gambarError" class="text-danger" style="display:none;"></small>
+                                <small id="error-image" class="text-danger" style="display:none;"></small>
                             </div>
                         </div>
 
@@ -301,8 +301,8 @@ input.form-control, textarea.form-control {
             }
 
             // Validasi ukuran gambar
-            if (gambarInput.size > 1048576) { // 1MB = 1048576 bytes
-                document.getElementById('error-image').textContent = 'Ukuran gambar tidak boleh lebih dari 1MB.';
+            if (gambarInput.size > 5242880) {
+                document.getElementById('error-image').textContent = 'Ukuran gambar tidak boleh lebih dari 5MB.';
                 document.getElementById('error-image').style.display = 'block';
                 return;
             }

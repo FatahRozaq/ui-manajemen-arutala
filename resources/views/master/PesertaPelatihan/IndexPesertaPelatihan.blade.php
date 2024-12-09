@@ -258,6 +258,8 @@ Arutala | Data Peserta Pelatihan
 
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap4.min.css"/>
+
 
 <script>
     $(document).ready(function() {
@@ -437,7 +439,7 @@ function fetchDefaultData() {
 }
 
 
-    // Inisialisasi DataTables
+    
     let tablePaid = $('#dataDetailPelatihanTablePaid').DataTable({
         dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6 d-flex justify-content-end"f<"filter-import">>>rtip',
         responsive: true,
