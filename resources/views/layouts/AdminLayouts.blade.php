@@ -104,7 +104,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ request()->is('admin/pesertapelatihan*') ? '' : 'collapsed' }}" href="{{ route('peserta.index') }}">
+                <a class="nav-link {{ request()->is('admin/pesertapelatihan*') || request()->is('admin/sertifikat/generateQR*') ? '' : 'collapsed' }}" href="{{ route('peserta.index') }}">
                     <i class="fa-solid fa-calendar-days"></i>
                     <span>Peserta Pelatihan</span>
                 </a>

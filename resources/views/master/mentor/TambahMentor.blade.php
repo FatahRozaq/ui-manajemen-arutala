@@ -223,7 +223,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const aktivitas = document.getElementById('aktivitas').value;
 
                     // Send data via Axios
-                    axios.post('/admin/mentor/store', {
+                    axios.post('/api/mentor/tambah', {
                         nama_mentor: nama_mentor,
                         email: email,
                         no_kontak: no_kontak,
