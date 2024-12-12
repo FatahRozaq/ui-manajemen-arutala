@@ -5,6 +5,7 @@ Arutala | Login Peserta
 @endsection
 
 @section('form-content')
+
 <div class="form-title">
     Masuk
 </div>

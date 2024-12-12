@@ -46,9 +46,6 @@ Route::middleware([AuthCheck::class . ':admin'])->get('/admin/dashboard', [Dashb
 
 // Admin Routes Group
 Route::middleware([AuthCheck::class . ':admin'])->prefix('admin')->group(function () {
-    // Admin - Auth
-    Route::get('/', [AdminAuthController::class, 'login'])->name('admin.login');
-
     // Admin - Peserta
     Route::prefix('pendaftar')->group(function () {
         Route::get('/', [MasterPesertaController::class, 'index'])->name('pendaftar.index');
@@ -124,7 +121,7 @@ Route::get('/login-page', [AuthController::class, 'LoginPage'])->name('login.pag
 Route::get('/register-page', [AuthController::class, 'RegisterPage'])->name('register.page');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-
+Route::get('/admin', [AdminAuthController::class, 'login'])->name('admin.login');
 
 // Route::middleware([AuthCheck::class . ':admin'])->get('/detailpelatihan', [MasterPelatihanController::class, 'show'])->name('pelatihan.show');
 // Route::middleware([AuthCheck::class . ':admin'])->get('/form-agenda', [AgendaPelatihanController::class, 'formAgenda'])->name('agenda.form');
