@@ -252,19 +252,54 @@ class ApiMasterPendaftar extends Controller
             Excel::import(new PendaftarImport, $request->file('file'));
 
             return response()->json([
-                'message' => 'Data berhasil diimpor dari Excel',
+                'message' => 'Data berhasil diimpor dari file Excel.',
                 'statusCode' => Response::HTTP_OK,
                 'status' => 'success'
             ], Response::HTTP_OK);
-        } catch (\Exception $e) {
+        } catch (\Illuminate\Database\QueryException $e) {
+            // Tangani kesalahan basis data seperti pelanggaran unique constraint
             return response()->json([
-                'message' => $e->getMessage(),
+                'message' => 'Gagal mengimpor data. Kemungkinan ada data yang sudah ada di sistem. Periksa apakah data email atau kolom lainnya bersifat unik.',
+                'details' => $e->getMessage(),
+                'statusCode' => Response::HTTP_CONFLICT,
+                'status' => 'error'
+            ], Response::HTTP_CONFLICT);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Tangani kesalahan validasi
+            return response()->json([
+                'message' => 'Validasi gagal. Silakan periksa kembali file yang diunggah.',
+                'details' => $e->errors(),
+                'statusCode' => Response::HTTP_BAD_REQUEST,
+                'status' => 'error'
+            ], Response::HTTP_BAD_REQUEST);
+        } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
+            // Tangani kesalahan validasi data di file Excel
+            $failures = $e->failures();
+            $errorMessages = [];
+            foreach ($failures as $failure) {
+                $errorMessages[] = [
+                    'row' => $failure->row(),
+                    'attribute' => $failure->attribute(),
+                    'errors' => $failure->errors()
+                ];
+            }
+            return response()->json([
+                'message' => 'Data dalam file Excel tidak valid. Silakan periksa kembali.',
+                'details' => $errorMessages,
+                'statusCode' => Response::HTTP_UNPROCESSABLE_ENTITY,
+                'status' => 'error'
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        } catch (\Exception $e) {
+            // Tangani kesalahan umum lainnya
+            return response()->json([
+                'message' => 'Terjadi kesalahan sistem saat mengimpor data. Silakan coba lagi atau hubungi administrator.',
+                'details' => $e->getMessage(),
                 'statusCode' => Response::HTTP_INTERNAL_SERVER_ERROR,
-                'status' => 'error',
-                'error' => $e->getMessage()
+                'status' => 'error'
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
 
     public function exportCsv(): StreamedResponse
     {
