@@ -59,7 +59,7 @@
             <img src="{{ asset('assets/img/logo/ArutalaHitam.png') }}" alt="Logo">
         </div>
         <div class="title-nav">
-            <h2>Sertifikat Digital Arutala Mitra Mandiri</h2>
+            <h2>Sertifikat Digital Arutala Mitra Mandiris</h2>
         </div>
     </header>
 
