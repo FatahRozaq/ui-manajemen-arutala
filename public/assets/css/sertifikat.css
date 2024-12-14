@@ -43,9 +43,10 @@ body {
 
 .row-1 {
     display: flex;
-    /* gap: 30px; */
+    gap: 30px;
     width: 80%;
-    justify-content: space-between;
+    justify-content: center;
+    align-items: center;
 }
 
 .row-2 {
@@ -151,6 +152,40 @@ body {
     height: 500px;
 }
 
+@media (min-width: 1200px) {
+    /* .row-1, .row-2 {
+        width: 70%;
+    }
+
+    .file-sertifikat img {
+        width: 700px;
+        height: auto;
+    }
+
+    .card-pendaftar {
+        width: 400px;
+        height: auto;
+        padding-top: 50px;
+    }
+
+    .content-pelatihan {
+        padding: 40px;
+    }
+
+    .content-pelatihan .title-content {
+        font-size: 40px;
+    }
+
+    .content-pelatihan .label-content {
+        font-size: 28px;
+    }
+
+    .previewCanvas {
+        height: 600px;
+    } */
+}
+
+
 @media (max-width: 1200px) {
     .row-1, .row-2 {
         width: 90%;
@@ -159,7 +194,7 @@ body {
         width: 100%;
     }
     .card-pendaftar {
-        width: 100%;
+        width: 55%;
     }
 }
 

@@ -268,8 +268,8 @@ class ApiPesertaPelatihanController extends Controller
 
                 $sertifikatKompetensi = $sertifikat && ($sertifikat->file_sertifikat !== null && $sertifikat->file_sertifikat !== '');
                 $sertifikatKehadiran = $sertifikat && ($sertifikat->sertifikat_kehadiran !== null && $sertifikat->sertifikat_kehadiran !== '');
-                $QRKompetensi = $sertifikat && ($sertifikat->qr_kompetensi !== null && $sertifikat->qr_kompetensi !== '');
-                $QRKehadiran = $sertifikat && ($sertifikat->qr_kehadiran !== null && $sertifikat->qr_kehadiran !== '');
+                $QRKompetensi = $sertifikat->qr_kompetensi || '';
+                $QRKehadiran = $sertifikat->qr_kehadiran || '';
 
                 return [
                     // 'id_pelatihan' => $event->agendaPelatihan->pelatihan->id_pelatihan,

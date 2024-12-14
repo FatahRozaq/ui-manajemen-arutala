@@ -479,8 +479,8 @@ function fetchDefaultData() {
                     const idAgenda = row.id_agenda || 'undefined';
                     let disableKompetensi = row.sertifikat_kompetensi;
                     let disableKompetensiIcon = row.sertifikat_kompetensi;
-                    let disableQRKompetensi = row.qr_kompetensi;
-                    let disableQRKompetensiIcon = row.qr_kompetensi;
+                    let disableQRKompetensi = row.qr_kompetensi !== null && row.qr_kompetensi !== undefined;
+                    let disableQRKompetensiIcon = row.qr_kompetensi !== null && row.qr_kompetensi !== undefined;
                     return `
                         <a href="javascript:void(0)" class="update-icon" title="Upload Sertifikat Kompetensi" onclick="openUploadModal(${idPendaftaran}, ${idAgenda})">
                             <i class="fa-solid fa-cloud-arrow-up text-info"></i>
@@ -505,8 +505,8 @@ function fetchDefaultData() {
                     const idAgenda = row.id_agenda || 'undefined';
                     let disableKehadiran = row.sertifikat_kehadiran;
                     let disableKehadiranIcon = row.sertifikat_kehadiran;
-                    let disableQRKehadiran = row.qr_kehadiran;
-                    let disableQRKehadiranIcon = row.qr_kehadiran;
+                    let disableQRKehadiran = row.qr_kehadiran !== null && row.qr_kehadiran !== undefined;
+                    let disableQRKehadiranIcon = row.qr_kehadiran !== null && row.qr_kehadiran !== undefined;
                     return `
                         <a href="javascript:void(0)" class="update-icon" title="Upload Sertifikat Kehadiran" onclick="openUploadKehadiranModal(${idPendaftaran}, ${idAgenda})">
                             <i class="fa-solid fa-cloud-arrow-up text-info"></i>
@@ -517,7 +517,7 @@ function fetchDefaultData() {
                         <a href="#" class="view-cert-icon-kehadiran ${disableKehadiran ? '' : 'disabled-link'}" data-idpendaftaran="${idPendaftaran}" data-idagenda="${idAgenda}" title="View Sertifikat Kehadiran">
                             <i class="fa-solid fa-eye ${disableKehadiranIcon ? 'text-primary' : 'text-secondary'}"></i>
                         </a>
-                        <a href="${row.qr_kehadiran}" class="${disableQRKehadiran ? '' : 'disabled-link'}" data-idpendaftaran="${idPendaftaran}" data-idagenda="${idAgenda}" title="View Web Sertifikat Kehadiran">
+                        <a href="${row.qr_kehadiran}" class="${disableQRKehadiran ? '' : 'disabled-link'}" data-idpendaftaran="${idPendaftaran}" data-idagenda="${idAgenda}"  title="View Web Sertifikat Kehadiran">
                             <i class="fa-solid fa-share ${disableQRKehadiranIcon ? 'text-primary' : 'text-secondary'}"></i>
                         </a>
                     `;
