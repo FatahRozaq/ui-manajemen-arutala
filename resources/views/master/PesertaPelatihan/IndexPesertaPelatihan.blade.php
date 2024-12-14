@@ -492,7 +492,7 @@ function fetchDefaultData() {
                         <a href="#" class="view-cert-icon ${disableKompetensi ? '' : 'disabled-link'}" data-idpendaftaran="${idPendaftaran}" data-idagenda="${idAgenda}" title="View Sertifikat Kompetensi">
                             <i class="fa-solid fa-eye ${disableKompetensiIcon ? 'text-primary' : 'text-secondary'}"></i>
                         </a>
-                        <a href="${row.qr_kompetensi}" class="${disableQRKompetensi ? '' : 'disabled-link'}" data-idpendaftaran="${idPendaftaran}" data-idagenda="${idAgenda}" title="View Web Sertifikat Kompetensi">
+                        <a href="${linkQRKompetensi}" class="${disableQRKompetensi ? '' : 'disabled-link'}" data-idpendaftaran="${idPendaftaran}" data-idagenda="${idAgenda}" title="View Web Sertifikat Kompetensi">
                             <i class="fa-solid fa-share ${disableQRKompetensiIcon ? 'text-primary' : 'text-secondary'}"></i>
                         </a>
                     `;
@@ -519,7 +519,7 @@ function fetchDefaultData() {
                         <a href="#" class="view-cert-icon-kehadiran ${disableKehadiran ? '' : 'disabled-link'}" data-idpendaftaran="${idPendaftaran}" data-idagenda="${idAgenda}" title="View Sertifikat Kehadiran">
                             <i class="fa-solid fa-eye ${disableKehadiranIcon ? 'text-primary' : 'text-secondary'}"></i>
                         </a>
-                        <a href="${row.qr_kehadiran}" class="${disableQRKehadiran ? '' : 'disabled-link'}" data-idpendaftaran="${idPendaftaran}" data-idagenda="${idAgenda}"  title="View Web Sertifikat Kehadiran">
+                        <a href="${linkQRKehadiran}" class="${disableQRKehadiran ? '' : 'disabled-link'}" data-idpendaftaran="${idPendaftaran}" data-idagenda="${idAgenda}"  title="View Web Sertifikat Kehadiran">
                             <i class="fa-solid fa-share ${disableQRKehadiranIcon ? 'text-primary' : 'text-secondary'}"></i>
                         </a>
                     `;
