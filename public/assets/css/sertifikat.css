@@ -193,6 +193,9 @@ body {
 
     #pdfCanvas {
         height: 250px;
+        width : 300px;
+        margin-top: 20px;
+        margin-bottom: 20px;
     }
 
     .card-pendaftar .label-card-pendaftar,
