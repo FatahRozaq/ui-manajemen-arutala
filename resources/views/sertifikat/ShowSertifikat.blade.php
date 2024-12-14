@@ -67,7 +67,7 @@
         <div class="row-1">
             <div class="file-sertifikat-container">
                 <div class="file-sertifikat">
-                    <canvas id="pdfCanvas" style="width: 100%; height: 500px;"></canvas>
+                    <canvas id="pdfCanvas" ></canvas>
                     <div class="hover-overlay">
                         <span>Klik untuk memperbesar</span>
                     </div>
@@ -96,12 +96,12 @@
                     <ul id="materi_list"></ul>
                 </div>
                 <div class="durasi">
-                    <label class="label-content" name="durasi_pelatihan">Durasi</label>
+                    <!-- <label class="label-content" name="durasi_pelatihan">Durasi</label> -->
                     <ul id="durasi_list"></ul>
                 </div>
                 <div class="evaluasi">
-                    <label class="label-content" name="evaluasi_pelatihan">Evaluasi</label>
-                    <div id="evaluasi" class="deskripsi-content">Evaluasi tidak tersedia</div>
+                    <!-- <label class="label-content" name="evaluasi_pelatihan">Evaluasi</label> -->
+                    <div id="evaluasi" class="deskripsi-content"></div>
                 </div>
             </div>
         </div>
@@ -144,7 +144,14 @@
                     document.querySelector('.file-sertifikat').addEventListener('click', function () {
                         Swal.fire({
                             title: 'Preview Sertifikat',
-                            html: `<embed src="${fileUrl}" style="width: 100%; height: 500px;">`,
+                            html: `
+                                <div style="width: 100%; height: 500px;">
+                                    <iframe src="${fileUrl}" style="width: 100%; height: 100%;" frameborder="0"></iframe>
+                                    <p style="text-align: center; margin-top: 10px;">
+                                        <a href="${fileUrl}" target="_blank" style="color: #007bff; text-decoration: none;">Buka di tab baru jika tidak bisa ditampilkan</a>
+                                    </p>
+                                </div>
+                            `,
                             showCloseButton: true,
                             showCancelButton: true,
                             confirmButtonText: 'Download',
@@ -165,6 +172,7 @@
                             }
                         });
                     });
+
 
                     document.getElementById('namaPeserta').textContent = data.pendaftar.nama || 'Nama Peserta';
                     if(certificateNumber === data.sertifikat.certificate_number_kompetensi){
@@ -203,7 +211,7 @@
                         durasiList.appendChild(li);
                     });
 
-                    document.getElementById('evaluasi').textContent = data.evaluasi || 'Evaluasi tidak tersedia';
+                    document.getElementById('evaluasi').textContent = data.evaluasi || '';
                 })
                 .catch(function (error) {
                     console.error('Error fetching certificate data:', error);
