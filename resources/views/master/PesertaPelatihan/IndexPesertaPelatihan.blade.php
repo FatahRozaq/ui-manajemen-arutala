@@ -481,6 +481,7 @@ function fetchDefaultData() {
                     let disableKompetensiIcon = row.sertifikat_kompetensi;
                     let disableQRKompetensi = row.qr_kompetensi !== null && row.qr_kompetensi !== undefined;
                     let disableQRKompetensiIcon = row.qr_kompetensi !== null && row.qr_kompetensi !== undefined;
+                    let linkQRKompetensi = row.qr_kompetensi || "#";
                     return `
                         <a href="javascript:void(0)" class="update-icon" title="Upload Sertifikat Kompetensi" onclick="openUploadModal(${idPendaftaran}, ${idAgenda})">
                             <i class="fa-solid fa-cloud-arrow-up text-info"></i>
@@ -507,6 +508,7 @@ function fetchDefaultData() {
                     let disableKehadiranIcon = row.sertifikat_kehadiran;
                     let disableQRKehadiran = row.qr_kehadiran !== null && row.qr_kehadiran !== undefined;
                     let disableQRKehadiranIcon = row.qr_kehadiran !== null && row.qr_kehadiran !== undefined;
+                    let linkQRKehadiran = row.qr_kehadiran || "#";
                     return `
                         <a href="javascript:void(0)" class="update-icon" title="Upload Sertifikat Kehadiran" onclick="openUploadKehadiranModal(${idPendaftaran}, ${idAgenda})">
                             <i class="fa-solid fa-cloud-arrow-up text-info"></i>
