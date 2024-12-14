@@ -67,7 +67,7 @@
         <div class="row-1">
             <div class="file-sertifikat-container">
                 <div class="file-sertifikat">
-                    <canvas id="pdfCanvas" ></canvas>
+                    <canvas id="pdfCanvas" class="previewCanvas"></canvas>
                     <div class="hover-overlay">
                         <span>Klik untuk memperbesar</span>
                     </div>
