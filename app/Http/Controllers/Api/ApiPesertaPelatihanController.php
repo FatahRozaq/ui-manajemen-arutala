@@ -268,8 +268,8 @@ class ApiPesertaPelatihanController extends Controller
 
                 $sertifikatKompetensi = $sertifikat && ($sertifikat->file_sertifikat !== null && $sertifikat->file_sertifikat !== '');
                 $sertifikatKehadiran = $sertifikat && ($sertifikat->sertifikat_kehadiran !== null && $sertifikat->sertifikat_kehadiran !== '');
-                $QRKompetensi = $sertifikat->qr_kompetensi || ' ';
-                $QRKehadiran = $sertifikat->qr_kehadiran || ' ';
+                // $QRKompetensi = $sertifikat->qr_kompetensi || ' ';
+                // $QRKehadiran = $sertifikat->qr_kehadiran || ' ';
 
                 return [
                     // 'id_pelatihan' => $event->agendaPelatihan->pelatihan->id_pelatihan,
@@ -282,8 +282,8 @@ class ApiPesertaPelatihanController extends Controller
                     'status_pembayaran' => $event->status_pembayaran,
                     'sertifikat_kompetensi' => $sertifikatKompetensi,
                     'sertifikat_kehadiran' => $sertifikatKehadiran,
-                    'qr_kompetensi' => $QRKompetensi,
-                    'qr_kehadiran' => $QRKehadiran,
+                    // 'qr_kompetensi' => $QRKompetensi,
+                    // 'qr_kehadiran' => $QRKehadiran,
                 ];
             });
 
