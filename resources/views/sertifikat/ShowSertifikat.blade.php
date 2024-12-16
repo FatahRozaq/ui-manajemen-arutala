@@ -115,11 +115,17 @@
         document.addEventListener('DOMContentLoaded', function () {
             const certificateNumber = window.location.pathname.split('/').pop();
             const apiUrl = `/api/sertifikat/detail-sertifikat/${certificateNumber}`;
-
+            let fileUrl;
             axios.get(apiUrl)
                 .then(function (response) {
                     const data = response.data.data;
-                    const fileUrl = data.sertifikat.file_sertifikat;
+                    if(data.sertifikat.certificate_number_kompetensi == certificateNumber)
+                    {
+                        fileUrl = data.sertifikat.file_sertifikat;
+                    } else {
+                        fileUrl = data.sertifikat.sertifikat_kehadiran;
+                    }
+                    
 
                     const canvas = document.getElementById('pdfCanvas');
                     const pdfjsLib = window['pdfjs-dist/build/pdf'];

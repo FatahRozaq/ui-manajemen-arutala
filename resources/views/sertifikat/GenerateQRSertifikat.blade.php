@@ -48,7 +48,7 @@ Arutala | Generate QR Sertifikat
                         <div class="row mb-4">
                             <label for="nama_pelatihan" class="col-sm-4 col-form-label">Nama Pelatihan</label>
                             <div class="col-sm-8">
-                                <select name="nama_pelatihan" id="namaPelatihan" class="form-control">
+                                <select name="nama_pelatihan" id="namaPelatihan" >
                                     <!-- Options will be populated by JavaScript -->
                                 </select>
                                 <span class="text-danger" id="error-nama-pelatihan"></span>
@@ -97,7 +97,10 @@ Arutala | Generate QR Sertifikat
                             <li class="list-group-item"><code>UI/UX</code> Kode Nama Pelatihan</li>
                             <li class="list-group-item"><code>C</code> Jenis Sertifikat. C = Competency</li>
                             <li class="list-group-item"><code>11</code> Bulan Terbit</li>
+                            <br>
                             <li class="list-group-item">2. **Certificate Number** tidak perlu mengisi nomor urut, akan digenerate otomatis oleh sistem berdasarkan abjad nama peserta</li>
+                            <br>
+                            <li class="list-group-item">3. **Certificate Number** tidak boleh diisi dengan garis miring "/"</li>
                         </ul>
                         <small class="text-muted d-block mt-3">Pastikan semua data terisi dengan benar sebelum menekan tombol submit.</small>
                     </div>
@@ -116,11 +119,10 @@ Arutala | Generate QR Sertifikat
 
 <script>
 $(document).ready(function() {
-    // Mengambil data pelatihan dan mentor menggunakan Axios
-    axios.get('/api/pelatihan-mentor-data') // Endpoint untuk mendapatkan data pelatihan dan mentor
+    // Mengambil data pelatihan menggunakan Axios
+    axios.get('/api/pelatihan-mentor-data') // Endpoint untuk mendapatkan data pelatihan
         .then(function (response) {
             var pelatihans = response.data.pelatihans;
-            var mentors = response.data.mentors;
 
             // Mengisi dropdown Nama Pelatihan
             var pelatihanSelect = $('#namaPelatihan');
@@ -128,33 +130,13 @@ $(document).ready(function() {
                 pelatihanSelect.append('<option value="' + pelatihan.nama_pelatihan + '">' + pelatihan.nama_pelatihan + '</option>');
             });
 
-            // Mengisi dropdown Mentor dengan Selectize
-            var mentorSelectize = $('#mentorInput').selectize({
-                options: mentors.map(function(mentor) {
-                    return { id: mentor.id_mentor, name: mentor.nama_mentor };
-                }),
+            // Inisialisasi Selectize untuk pencarian pada Nama Pelatihan
+            pelatihanSelect.selectize({
                 create: false,
-                placeholder: 'Pilih mentor...',
-                labelField: 'name',
-                valueField: 'id',
-                searchField: ['name'],
-                render: {
-                    item: function(data, escape) {
-                        return '<div class="item">' + escape(data.name) + '<span class="remove bi bi-x" style="font-size:16px"></span></div>';
-                    }
-                },
-                onItemRemove: function(value) {
-                    var selectizeInstance = this;
-                    selectizeInstance.refreshOptions(false);
-                }
+                sortField: 'text',
+                placeholder: 'Cari pelatihan...',
+                searchField: 'text',
             });
-
-            $(document).on('click', '.remove', function() {
-                var $item = $(this).closest('.item');
-                var value = $item.attr('data-value');
-                mentorSelectize[0].selectize.removeItem(value);
-            });
-
         })
         .catch(function (error) {
             console.error('Gagal mengambil data:', error);

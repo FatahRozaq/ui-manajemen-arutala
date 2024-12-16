@@ -424,19 +424,39 @@ class ApiSertifikatController extends Controller
     public function generateQR(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'nama_pelatihan' => 'required|string',
-            'batch' => 'required',
-            'certificate_number' => 'required|string',
+            'nama_pelatihan' => 'required|string|max:255',
+            'batch' => 'required|integer',
+            'certificate_number' => [
+                'required',
+                'string',
+                'regex:/^[^\/]+$/', // Tidak boleh mengandung garis miring
+            ],
             'jenis_sertifikat' => 'required|in:kompetensi,kehadiran',
+        ], [
+            'nama_pelatihan.required' => 'Nama pelatihan harus diisi.',
+            'nama_pelatihan.string' => 'Nama pelatihan harus berupa string.',
+            'nama_pelatihan.max' => 'Nama pelatihan tidak boleh lebih dari 255 karakter.',
+            
+            'batch.required' => 'Batch harus diisi.',
+            'batch.integer' => 'Batch harus berupa angka.',
+        
+            'certificate_number.required' => 'Nomor sertifikat harus diisi.',
+            'certificate_number.string' => 'Nomor sertifikat harus berupa string.',
+            'certificate_number.regex' => 'Nomor sertifikat tidak boleh menggunakan karakter garis miring (/).',
+        
+            'jenis_sertifikat.required' => 'Jenis sertifikat harus diisi.',
+            'jenis_sertifikat.in' => 'Jenis sertifikat harus berupa salah satu dari: kompetensi, kehadiran.',
         ]);
-
+        
         if ($validator->fails()) {
             return response()->json([
                 'message' => 'Validasi gagal',
-                'status' => 'error',
                 'errors' => $validator->errors(),
+                'statusCode' => Response::HTTP_UNPROCESSABLE_ENTITY,
+                'status' => 'error',
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
+        
 
         $namaPelatihan = Str::slug($request->nama_pelatihan);
         $batch = 'batch-' . $request->batch;
