@@ -59,7 +59,9 @@ Arutala | Update Data Mentor
                         <!-- Form for Editing Mentor Details -->
 
                         <div class="row mb-4">
-                            <label for="nama_mentor" class="col-sm-2 col-form-label">Nama Mentor</label>
+                            <label for="nama_mentor" class="col-sm-2 col-form-label">
+                                Nama Mentor <span class="text-danger">*</span> 
+                            </label>
                             <div class="col-sm-6">
                                 <input type="text" name="nama_mentor" id="nama_mentor" class="form-control">
                                 <span class="text-danger" id="error-nama_mentor"></span>
@@ -67,7 +69,9 @@ Arutala | Update Data Mentor
                         </div>
 
                         <div class="row mb-4">
-                            <label for="email" class="col-sm-2 col-form-label">Email</label>
+                            <label for="email" class="col-sm-2 col-form-label">
+                                Email <span class="text-danger">*</span>
+                            </label>
                             <div class="col-sm-6">
                                 <input type="email" name="email" id="email" class="form-control">
                                 <span class="text-danger" id="error-email"></span>
@@ -75,7 +79,9 @@ Arutala | Update Data Mentor
                         </div>
 
                         <div class="row mb-4">
-                            <label for="no_kontak" class="col-sm-2 col-form-label">Kontak</label>
+                            <label for="no_kontak" class="col-sm-2 col-form-label">
+                                Kontak <span class="text-danger">*</span>
+                            </label>
                             
                             <div class="col-sm-6 d-flex">
                                 <div class="default-internal">
@@ -90,7 +96,9 @@ Arutala | Update Data Mentor
                         </div>
 
                         <div class="row mb-4">
-                            <label for="aktivitas" class="col-sm-2 col-form-label">Aktivitas</label>
+                            <label for="aktivitas" class="col-sm-2 col-form-label">
+                                Aktivitas <span class="text-danger">*</span>
+                            </label>
                             <div class="col-sm-6">
                                 <div class="custom-select-wrapper position-relative">
                                     <select name="aktivitas" id="aktivitas" class="form-control">

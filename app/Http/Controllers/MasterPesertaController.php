@@ -29,7 +29,12 @@ class MasterPesertaController extends Controller
         $filePath = public_path('assets/file/' . $filename);
 
         if (File::exists($filePath)) {
-            return Response::download($filePath, $filename);
+            return Response::download($filePath, $filename)
+                ->withHeaders([
+                    'Cache-Control' => 'no-store, no-cache, must-revalidate, max-age=0',
+                    'Pragma' => 'no-cache',
+                    'Expires' => 'Sat, 01 Jan 2000 00:00:00 GMT',
+                ]);
         } else {
             return abort(404, 'File not found');
         }

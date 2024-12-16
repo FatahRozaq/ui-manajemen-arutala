@@ -13,7 +13,7 @@ Arutala | Login Peserta
 <form id="loginForm" class="form-daftar">
     <div class="form-group">
         <input type="email" name="email" class="form-control" placeholder="example@gmail.com">
-        <label for="email" class="form-label">Email</label>
+        <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
         <span class="text-danger" id="error-email"></span>
     </div>
 
@@ -24,7 +24,7 @@ Arutala | Login Peserta
                 <i class="fa fa-eye-slash toggle-password" id="togglePassword"></i>
             </span>
         </div>
-        <label for="password" class="form-label">Password</label>
+        <label for="password" class="form-label">Password <span class="text-danger">*</span></label>
         <span class="text-danger" id="error-password"></span>
     </div>
 

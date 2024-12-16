@@ -43,7 +43,9 @@ Arutala | Ubah Password
                 <div class="card">
                     <div class="card-body" style="padding-top: 50px">
                         <div class="row mb-4">
-                            <label for="current_password" class="col-sm-2 col-form-label">Password Saat Ini</label>
+                            <label for="current_password" class="col-sm-2 col-form-label">
+                                Password Saat Ini <span class="text-danger">*</span>
+                            </label>
                             <div class="col-sm-6 position-relative">
                                 <input type="password" name="current_password" id="current_password" class="form-control">
                                 <span class="text-danger" id="error-current_password"></span>
@@ -52,7 +54,9 @@ Arutala | Ubah Password
                         </div>
 
                         <div class="row mb-4">
-                            <label for="new_password" class="col-sm-2 col-form-label">Password Baru</label>
+                            <label for="new_password" class="col-sm-2 col-form-label">
+                                Password Baru <span class="text-danger">*</span>
+                            </label>
                             <div class="col-sm-6 position-relative">
                                 <input type="password" name="new_password" id="new_password" class="form-control">
                                 <span class="text-danger" id="error-new_password"></span>

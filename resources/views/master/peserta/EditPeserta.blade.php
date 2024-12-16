@@ -92,14 +92,18 @@ Arutala | Update Data Pendaftar
                             </div>
                         </div>
                         <div class="row mb-4">
-                            <label for="emailPeserta" class="col-sm-2 col-form-label">Email</label>
+                            <label for="emailPeserta" class="col-sm-2 col-form-label">
+                                Email <span class="text-danger">*</span>
+                            </label>
                             <div class="col-sm-6">
                                 <input type="email" id="emailPeserta" name="email" class="form-control" disabled>
                                 <span class="text-danger" id="error-email"></span>
                             </div>
                         </div>
                         <div class="row mb-4">
-                            <label for="kontakPeserta" class="col-sm-2 col-form-label">Kontak</label>
+                            <label for="kontakPeserta" class="col-sm-2 col-form-label">
+                                Kontak <span class="text-danger">*</span>
+                            </label>
                             <div class="col-sm-6 d-flex">
                                 <div class="default-internal">+62</div>
                                 <div class="">
@@ -116,7 +120,9 @@ Arutala | Update Data Pendaftar
                             </div>
                         </div>
                         <div class="row mb-4">
-                            <label for="aktivitasPeserta" class="col-sm-2 col-form-label">Aktivitas</label>
+                            <label for="aktivitasPeserta" class="col-sm-2 col-form-label">
+                                Aktivitas <span class="text-danger">*</span>
+                            </label>
                             <div class="col-sm-6 ">
                                 <div class="custom-select-wrapper position-relative">
                                     <select name="aktivitas" id="aktivitasPeserta" class="form-control">
@@ -139,14 +145,18 @@ Arutala | Update Data Pendaftar
                         <h3>Asal Wilayah</h3>
                         <div class="row" style="margin-left: -15px;">
                             <div class="col-12 col-md-6 mb-3">
-                                <label for="provinsiPeserta" class="col-form-label">Provinsi</label>
+                                <label for="provinsiPeserta" class="col-form-label">
+                                    Provinsi <span class="text-danger">*</span>
+                                </label>
                                 <select name="provinsi" id="provinsiPeserta" class="form-control select2">
                                 </select>
                                 <span class="text-danger" id="error-provinsi"></span>
                             </div>
 
                             <div class="col-12 col-md-6 mb-3">
-                                <label for="kabkotaPeserta" class="col-form-label">Kab/Kota</label>
+                                <label for="kabkotaPeserta" class="col-form-label">
+                                    Kab/Kota <span class="text-danger">*</span>
+                                </label>
                                 <select name="kab_kota" id="kabkotaPeserta" class="form-control select2">
                                 </select>
                                 <span class="text-danger" id="error-kab_kota"></span>
@@ -156,7 +166,9 @@ Arutala | Update Data Pendaftar
                         <!-- Instansi/Lembaga -->
                         <h3 id="namaInstansiTitle" style="display: none;">Instansi/Lembaga</h3>
                         <div class="row mb-5 mr-3 mt-4" id="namaInstansiContainer" style="display: none;">
-                            <label for="instansiPeserta" class="col-sm-2 col-form-label">Instansi</label>
+                            <label for="instansiPeserta" class="col-sm-2 col-form-label">
+                                Instansi <span class="text-danger">*</span>
+                            </label>
                             <div class="col-sm-6">
                                 <input type="text" id="instansiPeserta" name="nama_instansi" class="form-control">
                                 <span class="text-danger" id="error-nama_instansi"></span>

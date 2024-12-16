@@ -28,7 +28,9 @@ Arutala | Tambah Admin
                     <div class="card-body" style="padding-top: 50px">
                         <!-- Nama Field -->
                         <div class="row mb-4">
-                            <label for="nama" class="col-sm-2 col-form-label">Nama</label>
+                            <label for="nama" class="col-sm-2 col-form-label">
+                                Nama <span class="text-danger">*</span>
+                            </label>
                             <div class="col-sm-6">
                                 <input type="text" name="nama" id="nama" class="form-control">
                                 <span class="text-danger" id="error-nama"></span>
@@ -37,7 +39,9 @@ Arutala | Tambah Admin
 
                         <!-- Email Field -->
                         <div class="row mb-4">
-                            <label for="email" class="col-sm-2 col-form-label">Email</label>
+                            <label for="email" class="col-sm-2 col-form-label">
+                                Email <span class="text-danger">*</span>
+                            </label>
                             <div class="col-sm-6">
                                 <input type="email" name="email" id="email" class="form-control">
                                 <span class="text-danger" id="error-email"></span>
@@ -46,7 +50,9 @@ Arutala | Tambah Admin
 
                         <!-- Password Field -->
                         <div class="row mb-4">
-                            <label for="password" class="col-sm-2 col-form-label">Password</label>
+                            <label for="password" class="col-sm-2 col-form-label">
+                                Password <span class="text-danger">*</span>
+                            </label>
                             <div class="col-sm-6">
                                 <input type="password" name="password" id="password" class="form-control">
                                 <span class="text-danger" id="error-password"></span>

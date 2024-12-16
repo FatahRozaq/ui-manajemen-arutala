@@ -46,17 +46,22 @@ Arutala | Generate QR Sertifikat
                         <h5 class="card-title">Form Input Data</h5>
 
                         <div class="row mb-4">
-                            <label for="nama_pelatihan" class="col-sm-4 col-form-label">Nama Pelatihan</label>
+                            <label for="nama_pelatihan" class="col-sm-4 col-form-label">
+                                Nama Pelatihan <span class="text-danger">*</span>
+                            </label>
                             <div class="col-sm-8">
-                                <select name="nama_pelatihan" id="namaPelatihan" >
+                                <select name="nama_pelatihan" id="namaPelatihan">
                                     <!-- Options will be populated by JavaScript -->
                                 </select>
                                 <span class="text-danger" id="error-nama-pelatihan"></span>
                             </div>
                         </div>
 
+
                         <div class="row mb-4">
-                            <label for="batch" class="col-sm-4 col-form-label">Batch</label>
+                            <label for="batch" class="col-sm-4 col-form-label">
+                                Batch <span class="text-danger">*</span>
+                            </label>
                             <div class="col-sm-8">
                                 <input type="number" name="batch" id="batch" class="form-control">
                                 <span class="text-danger" id="error-batch"></span>
@@ -64,7 +69,9 @@ Arutala | Generate QR Sertifikat
                         </div>
 
                         <div class="row mb-4">
-                            <label for="jenis_sertifikat" class="col-sm-4 col-form-label">Jenis Sertifikat</label>
+                            <label for="jenis_sertifikat" class="col-sm-4 col-form-label">
+                                Jenis Sertifikat <span class="text-danger">*</span>
+                            </label>
                             <div class="col-sm-8">
                                 <select name="jenis_sertifikat" id="jenisSertifikat" class="form-control">
                                     <option value="" disabled selected>Pilih Jenis Sertifikat</option>
@@ -76,7 +83,9 @@ Arutala | Generate QR Sertifikat
                         </div>
 
                         <div class="row mb-4">
-                            <label for="certificate_number" class="col-sm-4 col-form-label">Certificate Number</label>
+                            <label for="certificate_number" class="col-sm-4 col-form-label">
+                                Certificate Number <span class="text-danger">*</span>
+                            </label>
                             <div class="col-sm-8">
                                 <input type="text" name="certificate_number" id="certificateNumber" class="form-control">
                                 <span class="text-danger" id="error-certificate-number"></span>

@@ -59,7 +59,9 @@ Arutala | Update Data Admin
 
                         <!-- Nama Admin Field -->
                         <div class="row mb-4">
-                            <label for="name" class="col-sm-2 col-form-label">Nama Admin</label>
+                            <label for="name" class="col-sm-2 col-form-label">
+                                Nama Admin <span class="text-danger">*</span>
+                            </label>
                             <div class="col-sm-6">
                                 <input type="text" name="name" id="name" class="form-control">
                                 <span class="text-danger" id="error-name"></span>

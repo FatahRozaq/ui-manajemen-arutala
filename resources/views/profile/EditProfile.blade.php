@@ -37,7 +37,7 @@ Arutala | Profile Peserta
                         <h3>Data Diri</h3>
                         <hr>
                         <div class="column mb-4">
-                            <label for="nama" class="col-sm-4 col-form-label font-weight-bold">Nama Peserta</label>
+                            <label for="nama" class="col-sm-4 col-form-label font-weight-bold">Nama Peserta <span class="text-danger">*</span></label>
                             <div class="col-sm-12">
                                 <input type="text" name="nama" id="nama" class="form-control" value="">
                                 <span class="text-danger" id="error-nama"></span>
@@ -45,7 +45,9 @@ Arutala | Profile Peserta
                         </div>
 
                         <div class="column mb-4">
-                            <label for="email" class="col-sm-4 col-form-label font-weight-bold">Email</label>
+                            <label for="email" class="col-sm-4 col-form-label font-weight-bold">
+                                Email <span class="text-danger">*</span>
+                            </label>
                             <div class="col-sm-12">
                                 <input type="email" name="email" id="email" class="form-control" placeholder="example@gmail.com" disabled>
                                 <span class="text-danger" id="error-email"></span>
@@ -53,7 +55,9 @@ Arutala | Profile Peserta
                         </div>
 
                         <div class="column mb-4">
-                            <label for="no_kontak" class="col-sm-4 col-form-label font-weight-bold">Kontak</label>
+                            <label for="no_kontak" class="col-sm-4 col-form-label font-weight-bold">
+                                Kontak <span class="text-danger">*</span>
+                            </label>
                             <div class="col-sm-12 d-flex">
                                 <div class="default-internal" style="padding-top: 15px;">
                                     <label>+62</label>
@@ -64,7 +68,9 @@ Arutala | Profile Peserta
                         </div>
 
                         <div class="column mb-4">
-                            <label for="aktivitas" class="col-sm-4 col-form-label font-weight-bold">Aktivitas</label>
+                            <label for="aktivitas" class="col-sm-4 col-form-label font-weight-bold">
+                                Aktivitas <span class="text-danger">*</span>
+                            </label>
                             <div class="col-sm-12 position-relative">
                                 <select name="aktivitas" id="aktivitas" class="form-control">
                                     <option value="" disabled selected>Pilih Aktivitas</option>
@@ -99,7 +105,9 @@ Arutala | Profile Peserta
                         <h3>Asal Wilayah</h3>
                         <hr>
                         <div class="column mb-4">
-                            <label for="provinsi" class="col-sm-4 col-form-label font-weight-bold">Provinsi</label>
+                            <label for="provinsi" class="col-sm-4 col-form-label font-weight-bold">
+                                Provinsi <span class="text-danger">*</span>
+                            </label>
                             <div class="col-sm-12">
                                 <select name="provinsi" id="provinsi" class="form-control select2">
                                     <option value="" disabled selected>Pilih Provinsi</option>
@@ -109,7 +117,9 @@ Arutala | Profile Peserta
                         </div>
 
                         <div class="column mb-4">
-                            <label for="kab_kota" class="col-sm-4 col-form-label font-weight-bold">Kab/Kota</label>
+                            <label for="kab_kota" class="col-sm-4 col-form-label font-weight-bold">
+                                Kab/Kota <span class="text-danger">*</span>
+                            </label>
                             <div class="col-sm-12">
                                 <select name="kab_kota" id="kab_kota" class="form-control select2">
                                     <option value="" disabled selected>Pilih Kab/Kota</option>
