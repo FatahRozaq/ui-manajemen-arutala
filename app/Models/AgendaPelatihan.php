@@ -30,7 +30,11 @@ class AgendaPelatihan extends Model
         'created_by',
         'created_time',
         'modified_by',
-        'modified_time'
+        'modified_time',
+        'deskripsi',
+        'materi',
+        'durasi',
+        'evaluasi'
     ];
 
     public $timestamps = false;
