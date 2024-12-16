@@ -10,10 +10,11 @@ Arutala | Data Pendaftar
     <h1>Data Pendaftar</h1>
     
     <div class="button-group d-flex flex-wrap">
-        <a href="{{ route('peserta.download') }}" class="btn btn-info d-flex align-items-center mr-2 mb-2">
-            <i class="fa-solid fa-file-export mr-2"></i>
-            Download Import Template
-        </a>
+    <a href="{{ url('api/peserta/download-template') }}" class="btn btn-info d-flex align-items-center mr-2 mb-2">
+    <i class="fa-solid fa-file-export mr-2"></i>
+    Download Import Template
+</a>
+
         <!-- Form untuk Import Excel -->
         <form id="importForm" action="{{ url('api/pendaftar/import/excel') }}" method="POST" enctype="multipart/form-data" class="mr-2 mb-2">
             @csrf

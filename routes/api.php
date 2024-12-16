@@ -62,6 +62,8 @@ Route::prefix('pendaftar')->group(function () {
     Route::put('/{idPendaftar}', [ApiMasterPendaftar::class, 'update']);
 });
 
+Route::get('/peserta/download-template', [ApiMasterPendaftar::class, 'downloadTemplate'])->name('api.peserta.download');
+
 Route::middleware('auth:api')->prefix('profile')->group(function () {
     Route::put('update', [ApiProfilePeserta::class, 'update']);
     Route::get('/', [ApiProfilePeserta::class, 'show']);

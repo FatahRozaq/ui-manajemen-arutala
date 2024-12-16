@@ -9,6 +9,7 @@ use Illuminate\Http\Response;
 use App\Exports\PendaftarExport;
 use App\Imports\PendaftarImport;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\File;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -411,6 +412,35 @@ class ApiMasterPendaftar extends Controller
                 'statusCode' => Response::HTTP_INTERNAL_SERVER_ERROR,
                 'status' => 'error',
                 'error' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function downloadTemplate()
+    {
+        try {
+            $filename = 'File Template Import Data Pendaftar.xlsx';
+            $filePath = public_path('assets/file/' . $filename);
+
+            // Periksa apakah file ada
+            if (File::exists($filePath)) {
+                // Return file untuk diunduh
+                return response()->download($filePath, $filename);
+            }
+
+            // Jika file tidak ditemukan
+            return response()->json([
+                'message' => 'File template tidak ditemukan',
+                'statusCode' => Response::HTTP_NOT_FOUND,
+                'status' => 'error',
+            ], Response::HTTP_NOT_FOUND);
+        } catch (Exception $e) {
+            // Jika terjadi error
+            return response()->json([
+                'message' => 'Gagal mengunduh file template',
+                'statusCode' => Response::HTTP_INTERNAL_SERVER_ERROR,
+                'status' => 'error',
+                'error' => $e->getMessage(),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }

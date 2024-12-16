@@ -24,19 +24,14 @@ class MasterPesertaController extends Controller
     }
 
     public function download()
-    {
-        $filename = 'File Template Import Data Pendaftar.xlsx';
-        $filePath = public_path('assets/file/' . $filename);
+{
+    $filename = 'File Template Import Data Pendaftar.xlsx';
+    $filePath = public_path('assets/file/' . $filename);
 
-        if (File::exists($filePath)) {
-            return Response::download($filePath, $filename)
-                ->withHeaders([
-                    'Cache-Control' => 'no-store, no-cache, must-revalidate, max-age=0',
-                    'Pragma' => 'no-cache',
-                    'Expires' => 'Sat, 01 Jan 2000 00:00:00 GMT',
-                ]);
-        } else {
-            return abort(404, 'File not found');
-        }
+    if (File::exists($filePath)) {
+        return Response::download($filePath, $filename);
+    } else {
+        return abort(404, 'File not found');
     }
+}
 }
