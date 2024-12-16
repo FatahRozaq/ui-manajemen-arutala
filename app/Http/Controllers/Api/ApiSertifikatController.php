@@ -489,10 +489,9 @@ class ApiSertifikatController extends Controller
                 $urutan = str_pad($index + 1, 3, '0', STR_PAD_LEFT);
                 $url = "https://atms.arutalalab.net/sertifikat/$certificateNumber.$urutan";
                 $namaPeserta = $pendaftaran->pendaftar->nama;
-                $qrCodeName = "$namaPeserta.$certificateNumber.$urutan.svg";
+                $qrCodeName = "$namaPeserta.$certificateNumber.$urutan.png";
 
-                // Generate QR code sebagai PNG tanpa imagick
-                $qrImage = QrCode::format('svg')
+                $qrImage = QrCode::format('png')
                     ->size(300)
                     ->generate($url);
 
