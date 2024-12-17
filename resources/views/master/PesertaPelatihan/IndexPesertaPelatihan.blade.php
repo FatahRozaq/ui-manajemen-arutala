@@ -521,7 +521,7 @@ function fetchDefaultData() {
                         <a href="#" class="view-cert-icon-kehadiran ${disableKehadiran ? '' : 'disabled-link'}" data-idpendaftaran="${idPendaftaran}" data-idagenda="${idAgenda}" title="View Sertifikat Kehadiran">
                             <i class="fa-solid fa-eye ${disableKehadiranIcon ? 'text-primary' : 'text-secondary'}"></i>
                         </a>
-                        <a href="${linkQRKehadiran}" class="${disableQRKehadiran ? '' : 'disabled-link'}" data-idpendaftaran="${idPendaftaran}" data-idagenda="${idAgenda}"  title="View Web Sertifikat Kehadiran">
+                        <a href="${linkQRKehadiran}" class="${disableQRKehadiran ? '' : 'disabled-link'}" data-idpendaftaran="${idPendaftaran}" data-idagenda="${idAgenda}"  title="View Web Sertifikat Kehadiran" target="_blank" rel="noopener noreferrer">
                             <i class="fa-solid fa-share ${disableQRKehadiranIcon ? 'text-primary' : 'text-secondary'}"></i>
                         </a>
                     `;
