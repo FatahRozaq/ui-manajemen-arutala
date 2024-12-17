@@ -100,7 +100,11 @@ class ApiAgendaController extends Controller
                 'end_pendaftaran' => 'required|date',
                 'link_mayar' => 'required|string|max:255',
                 'id_mentor' => 'required|array',
-                'poster_agenda' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:5120'
+                'poster_agenda' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:5120',
+                'deskripsi' => 'required|string|max:255',
+                'materi' => 'required|string|max:255',
+                'durasi' => 'string|max:255',
+                'evaluasi' => 'string|max:255'
             ]);
 
             // Verifikasi bahwa pelatihan ada
@@ -152,6 +156,20 @@ class ApiAgendaController extends Controller
             $agenda->id_pelatihan = $pelatihan->id_pelatihan;
             $agenda->batch = $batch;
             $agenda->id_mentor = json_encode($request->input('id_mentor'));
+            $agenda->deskripsi = $request->input('deskripsi');
+            $agenda->evaluasi = $request->input('evaluasi');
+
+            if ($request->has('materi') && !empty($request->input('materi'))) {
+                $agenda->materi = json_encode($request->input('materi'));
+            } else {
+                $agenda->materi = null;
+            }
+
+            if ($request->has('durasi') && !empty($request->input('durasi'))) {
+                $agenda->durasi = json_encode($request->input('durasi'));
+            } else {
+                $agenda->durasi = null;
+            }
 
             if ($request->hasFile('poster_agenda')) {
                 // Ambil nama pelatihan dan batch dari request atau variabel yang sudah ada
@@ -204,6 +222,10 @@ class ApiAgendaController extends Controller
                     'id_mentor' => json_decode($agenda->id_mentor),
                     'poster_agenda' => $agenda->poster_agenda, // Tambahkan poster_agenda ke dalam response
                     'is_deleted' => $agenda->is_deleted,
+                    'deskripsi' => $agenda->deskripsi,
+                    'materi' => json_decode($agenda->materi),
+                    'durasi' => json_decode($agenda->durasi),
+                    'evaluasi' => $agenda->evaluasi,
                 ],
                 'message' => 'Agenda pelatihan berhasil ditambahkan',
                 'statusCode' => 201,

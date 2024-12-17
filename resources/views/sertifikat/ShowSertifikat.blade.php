@@ -96,11 +96,11 @@
                     <ul id="materi_list"></ul>
                 </div>
                 <div class="durasi">
-                    <!-- <label class="label-content" name="durasi_pelatihan">Durasi</label> -->
+                    <label class="label-content" name="durasi_pelatihan">Durasi</label>
                     <ul id="durasi_list"></ul>
                 </div>
                 <div class="evaluasi">
-                    <!-- <label class="label-content" name="evaluasi_pelatihan">Evaluasi</label> -->
+                    <label class="label-content" name="evaluasi_pelatihan">Evaluasi</label>
                     <div id="evaluasi" class="deskripsi-content"></div>
                 </div>
             </div>
@@ -198,36 +198,75 @@
                         year: 'numeric' 
                     });
 
-                    document.getElementById('namaPelatihan').textContent = data.pelatihan.nama_pelatihan || 'Pelatihan Arutala';
-                    document.getElementById('deskripsiPelatihan').textContent = data.pelatihan.deskripsi || 'Pelatihan Arutala';
+                    // Set nilai default untuk namaPelatihan dan deskripsiPelatihan
+                    const namaPelatihanElement = document.getElementById('namaPelatihan');
+                    namaPelatihanElement.textContent = data.pelatihan?.nama_pelatihan || 'Pelatihan Arutala';
 
+                    const deskripsiPelatihanElement = document.getElementById('deskripsiPelatihan');
+                    deskripsiPelatihanElement.textContent = data.agendaPelatihan?.deskripsi || data.pelatihan?.deskripsi || 'Deskripsi Pelatihan';
+
+                    // Tampilkan list materi
                     const materiList = document.getElementById('materi_list');
-                    materiList.innerHTML = '';
+                    materiList.innerHTML = ''; // Kosongkan daftar materi terlebih dahulu
 
-                    // Parse JSON string from 'materi'
+                    // Parse JSON string dari 'materi' dengan pengecekan error
                     let materiArray = [];
                     try {
-                        materiArray = JSON.parse(data.pelatihan.materi);
+                        if (data.agendaPelatihan?.materi) {
+                            materiArray = JSON.parse(data.agendaPelatihan.materi);
+                        } else if (data.pelatihan?.materi) {
+                            materiArray = JSON.parse(data.pelatihan.materi);
+                        }
                     } catch (error) {
                         console.error("Error parsing 'materi' JSON:", error);
                     }
 
-                    // Tampilkan setiap item materi
-                    materiArray.forEach(materi => {
-                        const li = document.createElement('li');
-                        li.textContent = materi;
-                        materiList.appendChild(li);
-                    });
+                    // Jika ada materi, tampilkan dalam list
+                    if (materiArray.length > 0) {
+                        materiArray.forEach(materi => {
+                            if (materi) { // Pastikan materi tidak kosong/null
+                                const li = document.createElement('li');
+                                li.textContent = materi;
+                                materiList.appendChild(li);
+                            }
+                        });
+                    } else {
+                        // Jika tidak ada materi, sembunyikan elemen list
+                        materiList.style.display = 'none';
+                    }
 
                     const durasiList = document.getElementById('durasi_list');
-                    durasiList.innerHTML = '';
-                    (data.durasi || []).forEach(durasi => {
-                        const li = document.createElement('li');
-                        li.textContent = durasi;
-                        durasiList.appendChild(li);
-                    });
+                    durasiList.innerHTML = ''; // Kosongkan daftar sebelum memuat data baru
 
-                    document.getElementById('evaluasi').textContent = data.evaluasi || '';
+                    // Parse JSON string dari 'durasi' dengan pengecekan error
+                    let durasiArray = [];
+                    try {
+                        durasiArray = JSON.parse(data.agendaPelatihan.durasi || '[]'); // Default ke array kosong jika null
+                    } catch (error) {
+                        console.error("Error parsing 'durasi' JSON:", error);
+                    }
+
+                    // Jika ada data di durasiArray, tambahkan ke daftar
+                    if (durasiArray.length > 0) {
+                        durasiArray.forEach(durasi => {
+                            if (durasi) { // Pastikan durasi tidak kosong/null
+                                const li = document.createElement('li');
+                                li.textContent = durasi;
+                                durasiList.appendChild(li);
+                            }
+                        });
+                    } else {
+                        // Jika tidak ada data, sembunyikan durasiList
+                        durasiList.style.display = 'none';
+                    }
+
+                    // Tampilkan evaluasi jika ada, atau kosongkan
+                    const evaluasiElement = document.getElementById('evaluasi');
+                    evaluasiElement.textContent = data.agendaPelatihan.evaluasi || '';
+                    if (!data.agendaPelatihan.evaluasi) {
+                        evaluasiElement.style.display = 'none'; // Sembunyikan jika tidak ada evaluasi
+                    }
+
                 })
                 .catch(function (error) {
                     console.error('Error fetching certificate data:', error);
