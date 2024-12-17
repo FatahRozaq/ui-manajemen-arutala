@@ -490,16 +490,16 @@ class ApiSertifikatController extends Controller
                 $url = "https://atms.arutalalab.net/sertifikat/$certificateNumber.$urutan";
                 $namaPeserta = $pendaftaran->pendaftar->nama;
                 $qrCodeName = "$namaPeserta.$certificateNumber.$urutan.svg";
-
+            
                 $qrImage = QrCode::format('svg')
                     ->size(300)
                     ->generate($url);
-
+            
                 $filePath = "$path/$qrCodeName";
                 Storage::disk('minio')->put($filePath, $qrImage);
-
+            
                 // Simpan ke database
-                Sertifikat::updateOrCreate(
+                $sertifikat = Sertifikat::updateOrCreate(
                     [
                         'id_pendaftaran' => $pendaftaran->id_pendaftaran,
                     ],
@@ -512,9 +512,18 @@ class ApiSertifikatController extends Controller
                         'modified_time' => Carbon::now(),
                     ]
                 );
-
+            
+                // Jika record baru dibuat, tambahkan created_by dan created_time
+                if ($sertifikat->wasRecentlyCreated) {
+                    $sertifikat->update([
+                        'created_by' => 'Admin',
+                        'created_time' => Carbon::now(),
+                    ]);
+                }
+            
                 $files[] = $filePath;
             }
+            
 
             // Generate ZIP file
             $zipFileName = "$namaPelatihan-$batch-$jenisSertifikat.zip";
