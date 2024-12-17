@@ -109,6 +109,30 @@ Arutala | Detail Data Agenda
                             </div>
                         </div>
 
+                        <div class="form-group row position-relative">
+                            <label for="deskripsiInput" class="col-sm-3 col-form-label">Deskripsi</label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control disable" id="deskripsiInput" disabled readonly>
+                            </div>
+                        </div>
+
+                        <!-- Materi (String) -->
+                        <div id="materiContainer">
+                            <!-- Investasi info fields will be populated here -->
+                        </div>
+
+                        <!-- Durasi (String) -->
+                        <div id="durasiContainer">
+                            <!-- Investasi info fields will be populated here -->
+                        </div>
+
+                        <div class="form-group row position-relative">
+                            <label for="evaluasiInput" class="col-sm-3 col-form-label">Evaluasi</label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control disable" id="evaluasiInput" disabled readonly>
+                            </div>
+                        </div>
+
                         <!-- Batch -->
                         <div class="form-group row position-relative">
                             <label for="batchInput" class="col-sm-3 col-form-label">Batch</label>
@@ -272,6 +296,8 @@ $(document).ready(function() {
 
                 // Populate form fields with data from the response
                 $('#namaPelatihanInput').val(data.nama_pelatihan);
+                $('#deskripsiInput').val(data.deskripsi);
+                $('#evaluasiInput').val(data.evaluasi);
                 $('#sesiInput').val(data.sesi);
                 $('#batchInput').val(data.batch);
                 $('#startDateInput').val(data.start_date);
@@ -299,6 +325,39 @@ $(document).ready(function() {
                         `);
                     });
                 }
+
+                // Materi Info
+                const materiContainer = $('#materiContainer');
+                materiContainer.empty(); // Bersihkan input yang ada
+                if (data.materi && data.materi.length > 0) {
+                    data.materi.forEach((materiItem, index) => {
+                        materiContainer.append(`
+                            <div class="form-group row position-relative mb-1">
+                                <label class="col-sm-3 col-form-label">${index === 0 ? 'Materi' : ''}</label>
+                                <div class="col-sm-7 input-group">
+                                    <input type="text" class="form-control" value="${materiItem}" aria-label="readonly input example" readonly>
+                                </div>
+                            </div>
+                        `);
+                    });
+                }
+
+                // Durasi Info
+                const durasiContainer = $('#durasiContainer');
+                durasiContainer.empty(); // Bersihkan input yang ada
+                if (data.durasi && data.durasi.length > 0) {
+                    data.durasi.forEach((durasiItem, index) => {
+                        durasiContainer.append(`
+                            <div class="form-group row position-relative mb-1">
+                                <label class="col-sm-3 col-form-label">${index === 0 ? 'Durasi' : ''}</label>
+                                <div class="col-sm-7 input-group">
+                                    <input type="text" class="form-control" value="${durasiItem}" aria-label="readonly input example" readonly>
+                                </div>
+                            </div>
+                        `);
+                    });
+                }
+
 
                 $('#investasiInput').val(data.investasi);
                 $('#diskonInput').val(data.diskon);

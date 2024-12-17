@@ -99,6 +99,55 @@ Arutala | Tambah Data Agenda
                             </div>
                         </div>
 
+                        <!-- Deskripsi Agenda -->
+                        <div class="form-group row position-relative mt-3">
+                            <label for="deskripsi" class="col-sm-3 col-form-label">Deskripsi</label>
+                            <div class="col-sm-6">
+                                <input type="text" name="deskripsi" class="form-control" id="deskripsi">
+                                <small id="deskripsiError" class="text-danger" style="display:none;"></small>
+                            </div>
+                        </div>
+
+                        <!-- Materi -->
+                        <div id="materiContainer">
+                            <div class="form-group row position-relative mb-1">
+                                <label class="col-sm-3 col-form-label">Materi</label>
+                                <div class="col-sm-6 input-group">
+                                    <input type="text" name="materi[]" class="form-control" placeholder="Masukkan Materi">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-success add-materi" type="button">
+                                            <i class="bi bi-plus-circle"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Durasi -->
+                        <div id="durasiContainer">
+                            <div class="form-group row position-relative mb-1">
+                                <label class="col-sm-3 col-form-label">Durasi</label>
+                                <div class="col-sm-6 input-group">
+                                    <input type="text" name="durasi[]" class="form-control" placeholder="Masukkan Durasi">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-success add-durasi" type="button">
+                                            <i class="bi bi-plus-circle"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- Evaluasi -->
+                        <div class="form-group row position-relative mt-3">
+                            <label for="evaluasi" class="col-sm-3 col-form-label">Evaluaasi</label>
+                            <div class="col-sm-6">
+                                <input type="text" name="evaluasi" class="form-control" id="evaluasi">
+                                <small id="evaluasiError" class="text-danger" style="display:none;"></small>
+                            </div>
+                        </div>
+
                         <!-- Start Date -->
                         <div class="form-group row position-relative">
                             <label for="startDate" class="col-sm-3 col-form-label">Start Pelatihan</label>
@@ -286,6 +335,49 @@ $(document).ready(function() {
         .catch(function (error) {
             console.error('Gagal mengambil data:', error);
         });
+
+
+    // Tambah kolom baru pada Materi
+    $('#materiContainer').on('click', '.add-materi', function () {
+        var newMateriRow = `
+            <div class="form-group row position-relative mb-1">
+                <label class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-6 input-group">
+                    <input type="text" name="materi[]" class="form-control" placeholder="Masukkan Materi">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary remove-materi" type="button"><i class="bi bi-dash-circle"></i></button>
+                    </div>
+                </div>
+            </div>
+        `;
+        $('#materiContainer').append(newMateriRow);
+    });
+
+    // Hapus kolom Materi
+    $('#materiContainer').on('click', '.remove-materi', function () {
+        $(this).closest('.form-group').remove();
+    });
+
+    // Tambah kolom baru pada Durasi
+    $('#durasiContainer').on('click', '.add-durasi', function () {
+        var newDurasiRow = `
+            <div class="form-group row position-relative mb-1">
+                <label class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-6 input-group">
+                    <input type="text" name="durasi[]" class="form-control" placeholder="Masukkan Durasi">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary remove-durasi" type="button"><i class="bi bi-dash-circle"></i></button>
+                    </div>
+                </div>
+            </div>
+        `;
+        $('#durasiContainer').append(newDurasiRow);
+    });
+
+    // Hapus kolom Durasi
+    $('#durasiContainer').on('click', '.remove-durasi', function () {
+        $(this).closest('.form-group').remove();
+    });
 
 
     // Tambah kolom baru pada Investasi

@@ -101,10 +101,10 @@ class ApiAgendaController extends Controller
                 'link_mayar' => 'required|string|max:255',
                 'id_mentor' => 'required|array',
                 'poster_agenda' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:5120',
-                'deskripsi' => 'required|string|max:255',
-                'materi' => 'required|string|max:255',
-                'durasi' => 'string|max:255',
-                'evaluasi' => 'string|max:255'
+                'deskripsi' => 'required',
+                'materi' => 'required',
+                'durasi' => 'required',
+                'evaluasi' => 'required'
             ]);
 
             // Verifikasi bahwa pelatihan ada
@@ -478,6 +478,10 @@ class ApiAgendaController extends Controller
                     'link_mayar' => $agenda->link_mayar,
                     'poster_agenda' => $agenda->poster_agenda,
                     'mentors' => $mentors,
+                    'deskripsi' => $agenda->deskripsi,
+                    'materi' => json_decode($agenda->materi),
+                    'durasi' => json_decode($agenda->durasi),
+                    'evaluasi' => $agenda->evaluasi,
                     'is_deleted' => $agenda->is_deleted
                 ],
                 'message' => 'Detail agenda pelatihan berhasil ditemukan',
