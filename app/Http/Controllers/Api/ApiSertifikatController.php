@@ -20,11 +20,6 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class ApiSertifikatController extends Controller
 {
-    public function __construct()
-    {
-        Carbon::setLocale('id');
-    }
-
     public function uploadKompetensi(Request $request)
     {
         $validator = Validator::make($request->all(), [
