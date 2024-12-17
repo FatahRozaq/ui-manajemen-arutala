@@ -493,7 +493,7 @@ function fetchDefaultData() {
                         <a href="#" class="view-cert-icon ${disableKompetensi ? '' : 'disabled-link'}" data-idpendaftaran="${idPendaftaran}" data-idagenda="${idAgenda}" title="View Sertifikat Kompetensi">
                             <i class="fa-solid fa-eye ${disableKompetensiIcon ? 'text-primary' : 'text-secondary'}"></i>
                         </a>
-                        <a href="${linkQRKompetensi}" class="${disableQRKompetensi ? '' : 'disabled-link'}" data-idpendaftaran="${idPendaftaran}" data-idagenda="${idAgenda}" title="View Web Sertifikat Kompetensi">
+                        <a href="${linkQRKompetensi}" class="${disableQRKompetensi ? '' : 'disabled-link'}" data-idpendaftaran="${idPendaftaran}" data-idagenda="${idAgenda}" title="View Web Sertifikat Kompetensi" target="_blank" rel="noopener noreferrer">
                             <i class="fa-solid fa-share ${disableQRKompetensiIcon ? 'text-primary' : 'text-secondary'}"></i>
                         </a>
                     `;
