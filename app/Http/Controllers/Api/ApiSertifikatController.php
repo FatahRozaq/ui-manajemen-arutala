@@ -504,6 +504,7 @@ class ApiSertifikatController extends Controller
                         'id_pendaftaran' => $pendaftaran->id_pendaftaran,
                     ],
                     [
+                        'id_pendaftar' => $pendaftaran->id_peserta,
                         $jenisSertifikat === 'kompetensi' ? 'qr_kompetensi' : 'qr_kehadiran' => $url,
                         $jenisSertifikat === 'kompetensi' ? 'path_qr_kompetensi' : 'path_qr_kehadiran' => env('MINIO_URL') . '/' . env('MINIO_BUCKET') . '/' . $filePath,
                         'certificate_number_' . $jenisSertifikat => "$certificateNumber.$urutan",
