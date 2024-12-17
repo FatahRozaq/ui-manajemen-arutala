@@ -186,7 +186,17 @@
                     } else if(certificateNumber === data.sertifikat.certificate_number_kehadiran){
                         document.getElementById('idSertifikat').textContent = data.sertifikat.certificate_number_kehadiran || 'N/A';
                     }
-                    document.getElementById('tanggalDiberikan').textContent = new Date(data.sertifikat.created_time).toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' });
+                    
+                    const createdTime = data.sertifikat.created_time;
+                    const modifiedTime = data.sertifikat.modified_time;
+
+                    document.getElementById('tanggalDiberikan').textContent = new Date(
+                        createdTime || modifiedTime 
+                    ).toLocaleDateString('id-ID', { 
+                        day: '2-digit', 
+                        month: 'long', 
+                        year: 'numeric' 
+                    });
 
                     document.getElementById('namaPelatihan').textContent = data.pelatihan.nama_pelatihan || 'Pelatihan Arutala';
                     document.getElementById('deskripsiPelatihan').textContent = data.pelatihan.deskripsi || 'Pelatihan Arutala';
