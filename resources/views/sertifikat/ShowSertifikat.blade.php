@@ -119,65 +119,109 @@
             axios.get(apiUrl)
                 .then(function (response) {
                     const data = response.data.data;
-                    if(data.sertifikat.certificate_number_kompetensi == certificateNumber)
-                    {
+                    let fileUrl = '';
+
+                    // Tentukan file URL berdasarkan logika yang diberikan
+                    if (data.sertifikat.certificate_number_kompetensi === certificateNumber) {
                         fileUrl = data.sertifikat.file_sertifikat;
                     } else {
                         fileUrl = data.sertifikat.sertifikat_kehadiran;
                     }
-                    
 
                     const canvas = document.getElementById('pdfCanvas');
-                    const pdfjsLib = window['pdfjs-dist/build/pdf'];
+                    const context = canvas.getContext('2d');
+                    const fileExtension = fileUrl.split('.').pop().toLowerCase(); // Ekstensi file
 
-                    pdfjsLib.getDocument(fileUrl).promise.then(function (pdfDoc) {
-                        pdfDoc.getPage(1).then(function (page) {
-                            const viewport = page.getViewport({ scale: 1 });
-                            const context = canvas.getContext('2d');
+                    if (fileExtension === 'pdf') {
+                        // Tampilkan PDF menggunakan pdf.js
+                        const pdfjsLib = window['pdfjs-dist/build/pdf'];
+                        pdfjsLib.getDocument(fileUrl).promise.then(function (pdfDoc) {
+                            pdfDoc.getPage(1).then(function (page) {
+                                const viewport = page.getViewport({ scale: 1 });
 
-                            canvas.height = viewport.height;
-                            canvas.width = viewport.width;
+                                canvas.height = viewport.height;
+                                canvas.width = viewport.width;
 
-                            const renderContext = {
-                                canvasContext: context,
-                                viewport: viewport
-                            };
+                                const renderContext = {
+                                    canvasContext: context,
+                                    viewport: viewport
+                                };
 
-                            page.render(renderContext);
+                                page.render(renderContext);
+                            });
                         });
-                    });
+                    } else if (fileExtension === 'jpg' || fileExtension === 'png' || fileExtension === 'jpeg') {
+                        // Tampilkan gambar langsung pada canvas
+                        const img = new Image();
+                        img.onload = function () {
+                            canvas.height = img.height;
+                            canvas.width = img.width;
+                            context.drawImage(img, 0, 0);
+                        };
+                        img.src = fileUrl;
+                    }
 
+                    // Tambahkan event click untuk menampilkan modal preview
                     document.querySelector('.file-sertifikat').addEventListener('click', function () {
-                        Swal.fire({
-                            title: 'Preview Sertifikat',
-                            html: `
-                                <div style="width: 100%; height: 500px;">
-                                    <iframe src="${fileUrl}" style="width: 100%; height: 100%;" frameborder="0"></iframe>
-                                    <p style="text-align: center; margin-top: 10px;">
-                                        <a href="${fileUrl}" target="_blank" style="color: #007bff; text-decoration: none;">Buka di tab baru jika tidak bisa ditampilkan</a>
-                                    </p>
-                                </div>
-                            `,
-                            showCloseButton: true,
-                            showCancelButton: true,
-                            confirmButtonText: 'Download',
-                            cancelButtonText: 'Tutup',
-                            customClass: {
-                                popup: 'swal2-large-popup' // Tambahkan kelas kustom
-                            },
-                            didOpen: () => {
-                                // Tambahkan style secara langsung ke popup setelah dibuka
-                                document.querySelector('.swal2-large-popup').style.width = '90%'; // Lebar 90%
-                            }
-                        }).then(result => {
-                            if (result.isConfirmed) {
-                                const link = document.createElement('a');
-                                link.href = fileUrl;
-                                link.download = fileUrl.split('/').pop();
-                                link.click();
-                            }
-                        });
-                    });
+    Swal.fire({
+        title: 'Preview Sertifikat',
+        html: `
+            <div style="width: 100%; height: 500px; text-align: center;">
+                ${fileExtension === 'pdf' ? `
+                    <iframe src="${fileUrl}" style="width: 100%; height: 100%;" frameborder="0"></iframe>
+                ` : `
+                    <img src="${fileUrl}" alt="Preview Sertifikat" style="max-width: 100%; max-height: 100%;">
+                `}
+                <p style="text-align: center; margin-top: 10px;">
+                    <a href="${fileUrl}" target="_blank" style="color: #007bff; text-decoration: none;">Buka di tab baru jika tidak bisa ditampilkan</a>
+                </p>
+            </div>
+        `,
+        showCloseButton: true,
+        showCancelButton: true,
+        confirmButtonText: 'Download',
+        cancelButtonText: 'Tutup',
+        customClass: {
+            popup: 'swal2-large-popup'
+        },
+        didOpen: () => {
+            document.querySelector('.swal2-large-popup').style.width = '90%';
+        }
+    }).then(result => {
+        if (result.isConfirmed) {
+            // Unduh file menggunakan Blob
+            fetch(fileUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('File tidak dapat diunduh.');
+                    }
+                    return response.blob();
+                })
+                .then(blob => {
+                    const link = document.createElement('a');
+                    const fileName = fileUrl.split('/').pop();
+                    
+                    // Buat URL untuk Blob
+                    const url = URL.createObjectURL(blob);
+                    link.href = url;
+                    link.download = fileName;
+
+                    // Klik otomatis untuk mengunduh
+                    document.body.appendChild(link);
+                    link.click();
+
+                    // Hapus URL Blob setelah unduhan selesai
+                    URL.revokeObjectURL(url);
+                    document.body.removeChild(link);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    Swal.fire('Error', 'Gagal mengunduh file.', 'error');
+                });
+        }
+    });
+});
+
 
 
                     document.getElementById('namaPeserta').textContent = data.pendaftar.nama || 'Nama Peserta';
