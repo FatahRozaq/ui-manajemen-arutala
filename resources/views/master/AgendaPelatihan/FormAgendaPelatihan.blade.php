@@ -110,33 +110,41 @@ Arutala | Tambah Data Agenda
 
                         <!-- Materi -->
                         <div id="materiContainer">
-                            <div class="form-group row position-relative mb-1">
+                            <div class="form-group row position-relative mb-1 materi-item">
                                 <label class="col-sm-3 col-form-label">Materi</label>
-                                <div class="col-sm-6 input-group">
-                                    <input type="text" name="materi[]" class="form-control" placeholder="Masukkan Materi">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-outline-success add-materi" type="button">
-                                            <i class="bi bi-plus-circle"></i>
-                                        </button>
+                                <div class="col-sm-6">
+                                    <div class="input-group">
+                                        <input type="text" name="materi[]" class="form-control" placeholder="Masukkan Materi">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-success add-materi" type="button">
+                                                <i class="bi bi-plus-circle"></i>
+                                            </button>
+                                        </div>
                                     </div>
+                                    <div id="materiError" class="text-danger mt-1"></div>
                                 </div>
                             </div>
                         </div>
 
+
                         <!-- Durasi -->
                         <div id="durasiContainer">
-                            <div class="form-group row position-relative mb-1">
+                            <div class="form-group row position-relative mb-1 durasi-item">
                                 <label class="col-sm-3 col-form-label">Durasi</label>
-                                <div class="col-sm-6 input-group">
-                                    <input type="text" name="durasi[]" class="form-control" placeholder="Masukkan Durasi">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-outline-success add-durasi" type="button">
-                                            <i class="bi bi-plus-circle"></i>
-                                        </button>
+                                <div class="col-sm-6">
+                                    <div class="input-group">
+                                        <input type="text" name="durasi[]" class="form-control" placeholder="Masukkan Durasi">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-success add-durasi" type="button">
+                                                <i class="bi bi-plus-circle"></i>
+                                            </button>
+                                        </div>
                                     </div>
+                                    <div id="durasiError" class="text-danger mt-1"></div>
                                 </div>
                             </div>
                         </div>
+
 
 
                         <!-- Evaluasi -->
@@ -486,6 +494,55 @@ $(document).ready(function() {
             isValid = false;
         } else {
             $('#mentorError').hide();
+        }
+
+        // Validasi Deskripsi
+        var deskripsi = $('#deskripsi').val();
+        if (!linkMayar) {
+            $('#deskripsiError').show().text('Deskripsi wajib diisi.');
+            isValid = false;
+        }
+
+        // Reset pesan error sebelum validasi
+        // $('#materiError').hide();
+        // $('#durasiError').hide();
+
+        // Validasi Materi
+        $('#materiError').hide().text(''); // Reset error sebelumnya
+        var materiFilled = false; // Status isi input materi
+
+        $('input[name="materi[]"]').each(function () {
+            if ($(this).val().trim() !== '') {
+                materiFilled = true; // Set true jika ada input yang terisi
+            }
+        });
+
+        if (!materiFilled) {
+            $('#materiError').show().text('Setidaknya satu materi harus diisi.');
+            isValid = false;
+        }
+
+        // Validasi Durasi
+        $('#durasiError').hide().text(''); // Reset error sebelumnya
+        var durasiFilled = false; // Status isi input durasi
+
+        $('input[name="durasi[]"]').each(function () {
+            if ($(this).val().trim() !== '') {
+                durasiFilled = true; // Set true jika ada input yang terisi
+            }
+        });
+
+        if (!durasiFilled) {
+            $('#durasiError').show().text('Setidaknya satu durasi harus diisi.');
+            isValid = false;
+        }
+
+
+        // Validasi Evaluasi
+        var evaluasi = $('#evaluasi').val();
+        if (!evaluasi) {
+            $('#evaluasiError').show().text('Evaluasi wajib diisi.');
+            isValid = false;
         }
 
         var posterFile = $('#posterAgenda')[0].files[0];

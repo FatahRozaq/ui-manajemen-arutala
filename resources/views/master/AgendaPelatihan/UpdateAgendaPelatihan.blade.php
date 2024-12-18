@@ -121,6 +121,50 @@ Arutala | Update Data Agenda
                             </div>
                         </div>
 
+                        <!-- Deskripsi -->
+                        <div class="form-group row position-relative mt-3">
+                            <label for="deskripsiInput" class="col-sm-3 col-form-label">Deskripsi</label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" id="deskripsiInput" name="deskripsi">
+                                <small id="error-deskripsi" class="text-danger" style="display: none;"></small>
+                            </div>
+                        </div>
+
+                        <!-- Materi -->
+                        <div id="materiContainer">
+                            <div class="form-group row position-relative mb-1">
+                                <label class="col-sm-3 col-form-label">Materi</label>
+                                <div class="col-sm-7 input-group">
+                                    <input type="text" class="form-control" name="materi[]">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-success add-materi" type="button"><i class="bi bi-plus-circle"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Durasi -->
+                        <div id="durasiContainer">
+                            <div class="form-group row position-relative mb-1">
+                                <label class="col-sm-3 col-form-label">Durasi</label>
+                                <div class="col-sm-7 input-group">
+                                    <input type="text" class="form-control" name="durasi[]">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-success add-durasi" type="button"><i class="bi bi-plus-circle"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Evaluasi -->
+                        <div class="form-group row position-relative mt-3">
+                            <label for="evaluasiInput" class="col-sm-3 col-form-label">Evaluasi</label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" id="evaluasiInput" name="evaluasi">
+                                <small id="error-evaluasi" class="text-danger" style="display: none;"></small>
+                            </div>
+                        </div>
+
                         <!-- Batch -->
                         <div class="form-group row position-relative">
                             <label for="batchInput" class="col-sm-3 col-form-label">Batch</label>
@@ -353,6 +397,57 @@ $(document).ready(function() {
                 $('#statusInput').val(data.status);
                 $('#linkMayarInput').val(data.link_mayar);
 
+                $('#deskripsiInput').val(data.deskripsi);
+
+                if (data.materi && data.materi.length > 0) {
+                    data.materi.forEach(function(info, index) {
+                        if (index === 0) {
+                            $('input[name="materi[]"]').val(info);
+                        } else {
+                            $('#materiContainer').append(`
+                                <div class="form-group row position-relative mb-1">
+                                    <label class="col-sm-3 col-form-label"></label>
+                                    <div class="col-sm-7 input-group">
+                                        <input type="text" class="form-control" name="materi[]" value="${info}">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-secondary remove-materi" type="button"><i class="bi bi-dash-circle"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            `);
+                        }
+                    });
+                } else {
+                    // Jika materi null, maka kosongkan input pertama
+                    $('input[name="materi[]"]').val('');
+                }
+
+                if (data.durasi && data.durasi.length > 0) {
+                    data.durasi.forEach(function(info, index) {
+                        if (index === 0) {
+                            $('input[name="durasi[]"]').val(info);
+                        } else {
+                            $('#durasiContainer').append(`
+                                <div class="form-group row position-relative mb-1">
+                                    <label class="col-sm-3 col-form-label"></label>
+                                    <div class="col-sm-7 input-group">
+                                        <input type="text" class="form-control" name="durasi[]" value="${info}">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-secondary remove-durasi" type="button"><i class="bi bi-dash-circle"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            `);
+                        }
+                    });
+                } else {
+                    // Jika durasi null, maka kosongkan input pertama
+                    $('input[name="durasi[]"]').val('');
+                }
+
+
+                $('#evaluasiInput').val(data.evaluasi);
+
                 if (data.poster_agenda) {
                     $('#posterAgenda').attr('src', data.poster_agenda)
                         .off('error') // Hapus penanganan error sebelumnya jika ada
@@ -419,6 +514,45 @@ $(document).ready(function() {
     $('#investasiInfoContainer').on('click', '.remove-investasi-info', function () {
         $(this).closest('.form-group').remove();
     });
+
+    $('#materiContainer').on('click', '.add-materi', function () {
+        var newMateriRow = `
+            <div class="form-group row position-relative mb-1">
+                <label class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-7 input-group">
+                    <input type="text" name="materi[]" class="form-control">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary remove-materi" type="button"><i class="bi bi-dash-circle"></i></button>
+                    </div>
+                </div>
+            </div>
+        `;
+        $('#materiContainer').append(newMateriRow);
+    });
+
+    $('#materiContainer').on('click', '.remove-materi', function () {
+        $(this).closest('.form-group').remove();
+    });
+
+    $('#durasiContainer').on('click', '.add-durasi', function () {
+        var newDurasiRow = `
+            <div class="form-group row position-relative mb-1">
+                <label class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-7 input-group">
+                    <input type="text" name="durasi[]" class="form-control">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary remove-durasi" type="button"><i class="bi bi-dash-circle"></i></button>
+                    </div>
+                </div>
+            </div>
+        `;
+        $('#durasiContainer').append(newDurasiRow);
+    });
+
+    $('#durasiContainer').on('click', '.remove-durasi', function () {
+        $(this).closest('.form-group').remove();
+    });
+
 
     // Handle Update Button Click
     $('#updateAgendaForm').submit(function(event) {
@@ -531,6 +665,34 @@ $(document).ready(function() {
                             if (errors.id_mentor) {
                                 $('#mentorInput').addClass('is-invalid');
                                 $('<small class="text-danger">' + errors.id_mentor[0] + '</small>').insertAfter('#mentorInput');
+                            }
+
+                            if (errors.deskripsi) {
+                                $('#deskripsiInput').addClass('is-invalid');
+                                $('<small class="text-danger">' + errors.deskripsi[0] + '</small>').insertAfter('#deskripsiInput');
+                            }
+
+                            if (errors.materi) {
+                                $('input[name="materi[]"]').each(function(index) {
+                                    $(this).addClass('is-invalid');
+                                    if (index === 0) {
+                                        $('<small class="text-danger">' + errors.materi[0] + '</small>').insertAfter(this);
+                                    }
+                                });
+                            }
+
+                            if (errors.sesi) {
+                                $('input[name="durasi[]"]').each(function(index) {
+                                    $(this).addClass('is-invalid');
+                                    if (index === 0) {
+                                        $('<small class="text-danger">' + errors.durasi[0] + '</small>').insertAfter(this);
+                                    }
+                                });
+                            }
+
+                            if (errors.evaluasi) {
+                                $('#evaluasiInput').addClass('is-invalid');
+                                $('<small class="text-danger">' + errors.evaluasi[0] + '</small>').insertAfter('#evaluasiInput');
                             }
 
                             if (errors.poster_agenda) {

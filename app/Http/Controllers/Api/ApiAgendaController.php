@@ -265,6 +265,10 @@ class ApiAgendaController extends Controller
                 'link_mayar' => 'required|string|max:255',
                 'id_mentor' => 'required|array|min:1',
                 'poster_agenda' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:5120',
+                'deskripsi' => 'required',
+                'materi' => 'required',
+                'durasi' => 'required',
+                'evaluasi' => 'required',
             ], [
                 // Custom error messages
                 'nama_pelatihan.required' => 'Nama pelatihan wajib diisi.',
@@ -295,7 +299,11 @@ class ApiAgendaController extends Controller
                 'id_mentor.array' => 'Mentor harus berupa array.',
                 'poster_agenda.image' => 'Poster harus berupa file gambar.',
                 'poster_agenda.mimes' => 'Poster hanya boleh dalam format jpeg, png, jpg, gif, atau svg.',
-                'poster_agenda.max' => 'Ukuran file poster tidak boleh melebihi 5 MB.'
+                'poster_agenda.max' => 'Ukuran file poster tidak boleh melebihi 5 MB.',
+                'deskripsi.required' => 'Deskripsi wajib diisi.',
+                'materi.required' => 'Materi wajib diisi.',
+                'durasi.required' => 'Durasi wajib diisi.',
+                'evaluasi.required' => 'Evaluasi wajib diisi.',
             ]);
 
             if ($validator->fails()) {
@@ -386,6 +394,22 @@ class ApiAgendaController extends Controller
                 $agenda->poster_agenda = $gambarUrl;
             }
 
+            if ($request->has('deskripsi')) {
+                $agenda->deskripsi = $request->input('deskripsi');
+            }
+
+            if ($request->has('materi')) {
+                $agenda->materi = json_encode($request->input('materi'));
+            }
+
+            if ($request->has('durasi')) {
+                $agenda->durasi = json_encode($request->input('durasi'));
+            }
+
+            if ($request->has('evaluasi')) {
+                $agenda->evaluasi = $request->input('evaluasi');
+            }
+
             // Simpan perubahan
             $agenda->save();
 
@@ -409,6 +433,10 @@ class ApiAgendaController extends Controller
                     'link_mayar' => $agenda->link_mayar,
                     'poster_agenda' => $agenda->poster_agenda,
                     'id_mentor' => json_decode($agenda->id_mentor),
+                    'deskripsi' => $agenda->deskripsi,
+                    'materi' => json_decode($agenda->materi),
+                    'durasi' => json_decode($agenda->durasi),
+                    'evaluasi' => $agenda->evaluasi,
                 ],
                 'message' => 'Agenda pelatihan berhasil diupdate',
                 'statusCode' => 200,
