@@ -365,7 +365,7 @@ $(document).ready(function() {
                         const isFirst = index === 0;
                         const newMateriRow = `
                             <div class="form-group row position-relative mb-1">
-                                <label class="col-sm-3 col-form-label">${isFirst ? 'Materi' : ''}</label>
+                                <label class="col-sm-3 col-form-label">${isFirst ? 'Materi <span class="text-danger">*</span>' : ''}</label>
                                 <div class="col-sm-6 input-group">
                                     <input type="text" name="materi[]" class="form-control" value="${materi}" placeholder="Masukkan Materi">
                                     <div class="input-group-append">
