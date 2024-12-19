@@ -115,7 +115,7 @@ Arutala | Update Data Agenda
 
                         <!-- Nama Pelatihan -->
                         <div class="form-group row  position-relative">
-                            <label for="namaPelatihanInput" class="col-sm-3 col-form-label">Nama Pelatihan</label>
+                            <label for="namaPelatihanInput" class="col-sm-3 col-form-label">Nama Pelatihan <span class="text-danger">*</span></label>
                             <div class="col-sm-7">
                                 <input type="text" class="form-control" id="namaPelatihanInput" name="nama_pelatihan" readonly>
                             </div>
@@ -123,7 +123,7 @@ Arutala | Update Data Agenda
 
                         <!-- Deskripsi -->
                         <div class="form-group row position-relative mt-3">
-                            <label for="deskripsiInput" class="col-sm-3 col-form-label">Deskripsi</label>
+                            <label for="deskripsiInput" class="col-sm-3 col-form-label">Deskripsi <span class="text-danger">*</span></label>
                             <div class="col-sm-7">
                                 <input type="text" class="form-control" id="deskripsiInput" name="deskripsi">
                                 <small id="error-deskripsi" class="text-danger" style="display: none;"></small>
@@ -133,7 +133,7 @@ Arutala | Update Data Agenda
                         <!-- Materi -->
                         <div id="materiContainer">
                             <div class="form-group row position-relative mb-1">
-                                <label class="col-sm-3 col-form-label">Materi</label>
+                                <label class="col-sm-3 col-form-label">Materi <span class="text-danger">*</span></label>
                                 <div class="col-sm-7 input-group">
                                     <input type="text" class="form-control" name="materi[]">
                                     <div class="input-group-append">
@@ -146,7 +146,7 @@ Arutala | Update Data Agenda
                         <!-- Durasi -->
                         <div id="durasiContainer">
                             <div class="form-group row position-relative mb-1">
-                                <label class="col-sm-3 col-form-label">Durasi</label>
+                                <label class="col-sm-3 col-form-label">Durasi <span class="text-danger">*</span></label>
                                 <div class="col-sm-7 input-group">
                                     <input type="text" class="form-control" name="durasi[]">
                                     <div class="input-group-append">
@@ -158,7 +158,7 @@ Arutala | Update Data Agenda
 
                         <!-- Evaluasi -->
                         <div class="form-group row position-relative mt-3">
-                            <label for="evaluasiInput" class="col-sm-3 col-form-label">Evaluasi</label>
+                            <label for="evaluasiInput" class="col-sm-3 col-form-label">Evaluasi <span class="text-danger">*</span></label>
                             <div class="col-sm-7">
                                 <input type="text" class="form-control" id="evaluasiInput" name="evaluasi">
                                 <small id="error-evaluasi" class="text-danger" style="display: none;"></small>
@@ -167,7 +167,7 @@ Arutala | Update Data Agenda
 
                         <!-- Batch -->
                         <div class="form-group row position-relative">
-                            <label for="batchInput" class="col-sm-3 col-form-label">Batch</label>
+                            <label for="batchInput" class="col-sm-3 col-form-label">Batch <span class="text-danger">*</span></label>
                             <div class="col-sm-7">
                                 <input type="text" class="form-control" id="batchInput" name="batch" readonly>
                             </div>
@@ -175,7 +175,7 @@ Arutala | Update Data Agenda
 
                         <!-- Start Date -->
                         <div class="form-group row position-relative">
-                            <label for="startDateInput" class="col-sm-3 col-form-label">Start Pelatihan</label>
+                            <label for="startDateInput" class="col-sm-3 col-form-label">Start Pelatihan <span class="text-danger">*</span></label>
                             <div class="col-sm-7">
                                 <input type="date" class="form-control" id="startDateInput" name="start_date">
                                 <small id="error-startDate" class="text-danger" style="display: none;"></small>
@@ -184,7 +184,7 @@ Arutala | Update Data Agenda
 
                         <!-- End Date -->
                         <div class="form-group row position-relative">
-                            <label for="endDateInput" class="col-sm-3 col-form-label">End Pelatihan</label>
+                            <label for="endDateInput" class="col-sm-3 col-form-label">End Pelatihan <span class="text-danger">*</span></label>
                             <div class="col-sm-7">
                                 <input type="date" class="form-control" id="endDateInput" name="end_date">
                                 <small id="error-endDate" class="text-danger" style="display: none;"></small>
@@ -194,12 +194,21 @@ Arutala | Update Data Agenda
                         <!-- Sesi -->
                         <div id="sesiContainer">
                             <div class="form-group row position-relative mb-1">
-                                <label class="col-sm-3 col-form-label">Sesi</label>
+                                <label class="col-sm-3 col-form-label">Sesi <span class="text-danger">*</span></label>
                                 <div class="col-sm-7 input-group">
                                     <input type="text" class="form-control"  id="sesiInput" name="sesi">
                                     <small id="error-sesi" class="text-danger" style="display: none;"></small>
                                     
                                 </div>
+                            </div>
+                        </div>
+
+                        <!-- Investasi Numerik -->
+                        <div class="form-group row position-relative mb-1">
+                            <label for="investasiInput" class="col-sm-3 col-form-label">Investasi <span class="text-danger">*</span></label>
+                            <div class="col-sm-7 input-group">
+                                <input type="number" class="form-control" id="investasiInput" name="investasi">
+                                <small id="error-investasi" class="text-danger" style="display: none;"></small>
                             </div>
                         </div>
 
@@ -213,15 +222,6 @@ Arutala | Update Data Agenda
                                         <button class="btn btn-outline-success add-investasi-info" type="button"><i class="bi bi-plus-circle"></i></button>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-
-                        <!-- Investasi Numerik -->
-                        <div class="form-group row position-relative mb-1">
-                            <label for="investasiInput" class="col-sm-3 col-form-label">Investasi</label>
-                            <div class="col-sm-7 input-group">
-                                <input type="number" class="form-control" id="investasiInput" name="investasi">
-                                <small id="error-investasi" class="text-danger" style="display: none;"></small>
                             </div>
                         </div>
 
@@ -249,7 +249,7 @@ Arutala | Update Data Agenda
 
                         <!-- Start Pendaftaran -->
                         <div class="form-group row position-relative">
-                            <label for="startPendaftaranInput" class="col-sm-3 col-form-label">Start Pendaftaran</label>
+                            <label for="startPendaftaranInput" class="col-sm-3 col-form-label">Start Pendaftaran <span class="text-danger">*</span></label>
                             <div class="col-sm-7">
                                 <input type="date" class="form-control" id="startPendaftaranInput" name="start_pendaftaran">
                                 <small id="error-startPendaftaran" class="text-danger" style="display: none;"></small>
@@ -258,7 +258,7 @@ Arutala | Update Data Agenda
 
                         <!-- End Pendaftaran -->
                         <div class="form-group row position-relative">
-                            <label for="endPendaftaranInput" class="col-sm-3 col-form-label">End Pendaftaran</label>
+                            <label for="endPendaftaranInput" class="col-sm-3 col-form-label">End Pendaftaran <span class="text-danger">*</span></label>
                             <div class="col-sm-7">
                                 <input type="date" class="form-control" id="endPendaftaranInput" name="end_pendaftaran">
                                 <small id="error-endPendaftaran" class="text-danger" style="display: none;"></small>
@@ -267,7 +267,7 @@ Arutala | Update Data Agenda
 
                         <!-- Link Pembayaran -->
                         <div class="form-group row position-relative mt-3">
-                            <label for="linkMayarInput" class="col-sm-3 col-form-label">Link Pembayaran</label>
+                            <label for="linkMayarInput" class="col-sm-3 col-form-label">Link Pembayaran <span class="text-danger">*</span></label>
                             <div class="col-sm-7">
                                 <input type="text" class="form-control" id="linkMayarInput" name="link_mayar">
                                 <small id="error-linkMayar" class="text-danger" style="display: none;"></small>
@@ -276,7 +276,7 @@ Arutala | Update Data Agenda
 
                         <!-- Mentor -->
                         <div class="form-group row position-relative">
-                            <label for="mentorInput" class="col-sm-3 col-form-label">Mentor</label>
+                            <label for="mentorInput" class="col-sm-3 col-form-label">Mentor <span class="text-danger">*</span></label>
                             <div class="col-sm-7 form-mentor">
                                 <select id="mentorInput" name="id_mentor[]" class="form" multiple></select>
                                 <small id="error-idMentor" class="text-danger" style="display: none;"></small>

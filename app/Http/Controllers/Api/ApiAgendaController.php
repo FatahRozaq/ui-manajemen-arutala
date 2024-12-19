@@ -556,4 +556,27 @@ class ApiAgendaController extends Controller
             ], 500);
         }
     }
+
+    public function getPelatihanData(Request $request)
+    {
+        $namaPelatihan = $request->query('nama_pelatihan');
+
+        // Ambil data Pelatihan berdasarkan nama
+        $pelatihan = Pelatihan::where('nama_pelatihan', $namaPelatihan)->first();
+
+        if ($pelatihan) {
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'deskripsi' => $pelatihan->deskripsi,
+                    'materi' => json_decode($pelatihan->materi), // Pastikan materi berupa JSON di DB
+                ]
+            ]);
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Pelatihan tidak ditemukan'
+        ], 404);
+    }
 }

@@ -91,7 +91,7 @@ Arutala | Tambah Data Agenda
                         
                         <!-- Nama Pelatihan -->
                         <div class="form-group row position-relative">
-                            <label for="namaPelatihan" class="col-sm-3 col-form-label">Nama Pelatihan</label>
+                            <label for="namaPelatihan" class="col-sm-3 col-form-label">Nama Pelatihan <span class="text-danger">*</span></label>
                             <div class="col-sm-6">
                                 <select name="nama_pelatihan" id="namaPelatihan" class="form-control">
                                     <!-- Options will be populated by JavaScript -->
@@ -101,7 +101,7 @@ Arutala | Tambah Data Agenda
 
                         <!-- Deskripsi Agenda -->
                         <div class="form-group row position-relative mt-3">
-                            <label for="deskripsi" class="col-sm-3 col-form-label">Deskripsi</label>
+                            <label for="deskripsi" class="col-sm-3 col-form-label">Deskripsi <span class="text-danger">*</span></label>
                             <div class="col-sm-6">
                                 <input type="text" name="deskripsi" class="form-control" id="deskripsi">
                                 <small id="deskripsiError" class="text-danger" style="display:none;"></small>
@@ -111,7 +111,7 @@ Arutala | Tambah Data Agenda
                         <!-- Materi -->
                         <div id="materiContainer">
                             <div class="form-group row position-relative mb-1 materi-item">
-                                <label class="col-sm-3 col-form-label">Materi</label>
+                                <label class="col-sm-3 col-form-label">Materi <span class="text-danger">*</span></label>
                                 <div class="col-sm-6">
                                     <div class="input-group">
                                         <input type="text" name="materi[]" class="form-control" placeholder="Masukkan Materi">
@@ -130,7 +130,7 @@ Arutala | Tambah Data Agenda
                         <!-- Durasi -->
                         <div id="durasiContainer">
                             <div class="form-group row position-relative mb-1 durasi-item">
-                                <label class="col-sm-3 col-form-label">Durasi</label>
+                                <label class="col-sm-3 col-form-label">Durasi <span class="text-danger">*</span></label>
                                 <div class="col-sm-6">
                                     <div class="input-group">
                                         <input type="text" name="durasi[]" class="form-control" placeholder="Masukkan Durasi">
@@ -149,7 +149,7 @@ Arutala | Tambah Data Agenda
 
                         <!-- Evaluasi -->
                         <div class="form-group row position-relative mt-3">
-                            <label for="evaluasi" class="col-sm-3 col-form-label">Evaluaasi</label>
+                            <label for="evaluasi" class="col-sm-3 col-form-label">Evaluasi <span class="text-danger">*</span></label>
                             <div class="col-sm-6">
                                 <input type="text" name="evaluasi" class="form-control" id="evaluasi">
                                 <small id="evaluasiError" class="text-danger" style="display:none;"></small>
@@ -158,7 +158,7 @@ Arutala | Tambah Data Agenda
 
                         <!-- Start Date -->
                         <div class="form-group row position-relative">
-                            <label for="startDate" class="col-sm-3 col-form-label">Start Pelatihan</label>
+                            <label for="startDate" class="col-sm-3 col-form-label">Start Pelatihan <span class="text-danger">*</span></label>
                             <div class="col-sm-6">
                                 <input type="date" name="start_date" class="form-control" id="startDate">
                                 <small id="startDateError" class="text-danger" style="display:none;"></small>
@@ -167,7 +167,7 @@ Arutala | Tambah Data Agenda
 
                         <!-- End Date -->
                         <div class="form-group row position-relative">
-                            <label for="endDate" class="col-sm-3 col-form-label">End Pelatihan</label>
+                            <label for="endDate" class="col-sm-3 col-form-label">End Pelatihan <span class="text-danger">*</span></label>
                             <div class="col-sm-6">
                                 <input type="date" name="end_date" class="form-control" id="endDate">
                                 <small id="endDateError" class="text-danger" style="display:none;"></small>
@@ -177,7 +177,7 @@ Arutala | Tambah Data Agenda
                         <!-- Sesi -->
                         {{-- <div id="sesiContainer"> --}}
                             <div class="form-group row position-relative mb-1">
-                                <label class="col-sm-3 col-form-label">Sesi</label>
+                                <label class="col-sm-3 col-form-label">Sesi <span class="text-danger">*</span></label>
                                 <div class="col-sm-6 input-group">
                                     <input type="text" name="sesi" class="form-control">
                                     
@@ -193,7 +193,7 @@ Arutala | Tambah Data Agenda
 
                         <!-- Investasi Numerik -->
                         <div class="form-group row position-relative mb-1">
-                            <label class="col-sm-3 col-form-label">Investasi</label>
+                            <label class="col-sm-3 col-form-label">Investasi <span class="text-danger">*</span></label>
                             <div class="col-sm-6 input-group">
                                 <input type="number" name="investasi" class="form-control">
                                 
@@ -240,7 +240,7 @@ Arutala | Tambah Data Agenda
                         </div>
 
                         <div class="form-group row position-relative">
-                            <label for="startPendaftaran" class="col-sm-3 col-form-label">Start Pendaftaran</label>
+                            <label for="startPendaftaran" class="col-sm-3 col-form-label">Start Pendaftaran <span class="text-danger">*</span></label>
                             <div class="col-sm-6">
                                 <input type="date" name="start_pendaftaran" class="form-control" id="startPendaftaran">
                                 <small id="startPendaftaranError" class="text-danger" style="display:none;"></small>
@@ -248,7 +248,7 @@ Arutala | Tambah Data Agenda
                         </div>
 
                         <div class="form-group row position-relative">
-                            <label for="endPendaftaran" class="col-sm-3 col-form-label">End Pendaftaran</label>
+                            <label for="endPendaftaran" class="col-sm-3 col-form-label">End Pendaftaran <span class="text-danger">*</span></label>
                             <div class="col-sm-6">
                                 <input type="date" name="end_pendaftaran" class="form-control" id="endPendaftaran">
                                 <small id="endPendaftaranError" class="text-danger" style="display:none;"></small>
@@ -257,7 +257,7 @@ Arutala | Tambah Data Agenda
 
                         <!-- Link Pembayaran -->
                         <div class="form-group row position-relative mt-3">
-                            <label for="linkMayar" class="col-sm-3 col-form-label">Link Mayar</label>
+                            <label for="linkMayar" class="col-sm-3 col-form-label">Link Mayar <span class="text-danger">*</span></label>
                             <div class="col-sm-6">
                                 <input type="text" name="link_mayar" class="form-control" id="linkMayar">
                                 <small id="linkMayarError" class="text-danger" style="display:none;"></small>
@@ -266,7 +266,7 @@ Arutala | Tambah Data Agenda
 
                         <!-- Mentor -->
                         <div class="form-group row position-relative">
-                            <label for="mentorInput" class="col-sm-3">Mentor</label>
+                            <label for="mentorInput" class="col-sm-3">Mentor <span class="text-danger">*</span></label>
                             <div class="col-sm-6">
                                 <select id="mentorInput" name="id_mentor[]" class="form" multiple>
                                     <!-- Options will be populated by JavaScript -->
@@ -345,26 +345,118 @@ $(document).ready(function() {
         });
 
 
-    // Tambah kolom baru pada Materi
-    $('#materiContainer').on('click', '.add-materi', function () {
-        var newMateriRow = `
-            <div class="form-group row position-relative mb-1">
-                <label class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-6 input-group">
-                    <input type="text" name="materi[]" class="form-control" placeholder="Masukkan Materi">
-                    <div class="input-group-append">
-                        <button class="btn btn-outline-secondary remove-materi" type="button"><i class="bi bi-dash-circle"></i></button>
-                    </div>
-                </div>
-            </div>
-        `;
-        $('#materiContainer').append(newMateriRow);
+        document.getElementById('namaPelatihan').addEventListener('change', function () {
+        const namaPelatihan = this.value;
+
+        // Panggil API untuk mendapatkan data pelatihan
+        fetch(`/api/agenda/pelatihan-data?nama_pelatihan=${encodeURIComponent(namaPelatihan)}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Isi deskripsi
+                    document.getElementById('deskripsi').value = data.data.deskripsi;
+
+                    // Kosongkan semua input materi sebelumnya
+                    const materiContainer = document.getElementById('materiContainer');
+                    materiContainer.innerHTML = '';
+
+                    // Tambahkan materi ke input
+                    data.data.materi.forEach((materi, index) => {
+                        const isFirst = index === 0;
+                        const newMateriRow = `
+                            <div class="form-group row position-relative mb-1">
+                                <label class="col-sm-3 col-form-label">${isFirst ? 'Materi' : ''}</label>
+                                <div class="col-sm-6 input-group">
+                                    <input type="text" name="materi[]" class="form-control" value="${materi}" placeholder="Masukkan Materi">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-${isFirst ? 'success add-materi' : 'secondary remove-materi'}" type="button">
+                                            <i class="bi bi-${isFirst ? 'plus-circle' : 'dash-circle'}"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        materiContainer.insertAdjacentHTML('beforeend', newMateriRow);
+                    });
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching pelatihan data:', error);
+            });
     });
 
-    // Hapus kolom Materi
-    $('#materiContainer').on('click', '.remove-materi', function () {
-        $(this).closest('.form-group').remove();
+    // Event listener untuk tombol tambah materi
+    document.getElementById('materiContainer').addEventListener('click', function (event) {
+        if (event.target.closest('.add-materi')) {
+            const materiContainer = document.getElementById('materiContainer');
+            const newMateriRow = `
+                <div class="form-group row position-relative mb-1">
+                    <label class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-6 input-group">
+                        <input type="text" name="materi[]" class="form-control" placeholder="Masukkan Materi">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary remove-materi" type="button">
+                                <i class="bi bi-dash-circle"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            materiContainer.insertAdjacentHTML('beforeend', newMateriRow);
+
+            // Hilangkan pesan error jika ada baris baru yang ditambahkan
+            document.getElementById('materiError').style.display = 'none';
+        }
     });
+
+    // Event listener untuk tombol hapus materi
+    document.getElementById('materiContainer').addEventListener('click', function (event) {
+        if (event.target.closest('.remove-materi')) {
+            event.target.closest('.form-group').remove();
+
+            // Validasi setelah baris dihapus
+            const materiInputs = document.querySelectorAll('input[name="materi[]"]');
+            const materiError = document.getElementById('materiError');
+
+            let isAnyMateriFilled = false;
+
+            materiInputs.forEach(input => {
+                if (input.value.trim() !== '') {
+                    isAnyMateriFilled = true;
+                }
+            });
+
+            if (!isAnyMateriFilled) {
+                materiError.style.display = 'block';
+                materiError.textContent = 'Setidaknya satu materi harus diisi.';
+            } else {
+                materiError.style.display = 'none';
+            }
+        }
+    });
+
+    // Tambah kolom baru pada Materi
+    // $('#materiContainer').on('click', '.add-materi', function () {
+    //     var newMateriRow = `
+    //         <div class="form-group row position-relative mb-1">
+    //             <label class="col-sm-3 col-form-label"></label>
+    //             <div class="col-sm-6 input-group">
+    //                 <input type="text" name="materi[]" class="form-control" placeholder="Masukkan Materi">
+    //                 <div class="input-group-append">
+    //                     <button class="btn btn-outline-secondary remove-materi" type="button"><i class="bi bi-dash-circle"></i></button>
+    //                 </div>
+    //             </div>
+    //         </div>
+    //     `;
+    //     $('#materiContainer').append(newMateriRow);
+    // });
+
+    // // Hapus kolom Materi
+    // $('#materiContainer').on('click', '.remove-materi', function () {
+    //     $(this).closest('.form-group').remove();
+    // });
 
     // Tambah kolom baru pada Durasi
     $('#durasiContainer').on('click', '.add-durasi', function () {
@@ -498,14 +590,10 @@ $(document).ready(function() {
 
         // Validasi Deskripsi
         var deskripsi = $('#deskripsi').val();
-        if (!linkMayar) {
-            $('#deskripsiError').show().text('Deskripsi wajib diisi.');
+        if (!deskripsi.trim()) {
+            $('#deskripsiError').show().text('Deskripsi agenda wajib diisi.');
             isValid = false;
         }
-
-        // Reset pesan error sebelum validasi
-        // $('#materiError').hide();
-        // $('#durasiError').hide();
 
         // Validasi Materi
         $('#materiError').hide().text(''); // Reset error sebelumnya
@@ -521,6 +609,7 @@ $(document).ready(function() {
             $('#materiError').show().text('Setidaknya satu materi harus diisi.');
             isValid = false;
         }
+
 
         // Validasi Durasi
         $('#durasiError').hide().text(''); // Reset error sebelumnya

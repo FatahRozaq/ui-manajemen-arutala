@@ -589,5 +589,17 @@ class ApiSertifikatController extends Controller
         ], 200);
     }
 
+    public function getBatchesByPelatihan($idPelatihan)
+    {
+        // $idPelatihan = $request->input('id_pelatihan');
 
+        if (!$idPelatihan) {
+            return response()->json(['message' => 'ID pelatihan diperlukan.'], 400);
+        }
+
+        $batches = AgendaPelatihan::where('id_pelatihan', $idPelatihan)
+            ->pluck('batch'); // Mengambil hanya kolom batch
+
+        return response()->json(['batches' => $batches]);
+    }
 }

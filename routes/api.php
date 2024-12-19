@@ -91,14 +91,13 @@ Route::prefix('agenda')->group(function () {
     Route::put('/update-agenda/{id}', [ApiAgendaController::class, 'updateAgenda']);
     Route::get('/detail-agenda/{id}', [ApiAgendaController::class, 'detailAgenda']);
     Route::delete('/delete-agenda/{id}', [ApiAgendaController::class, 'deleteAgenda']);
+
+    Route::get('/pelatihan/{id}/batches', [ApiSertifikatController::class, 'getBatchesByPelatihan']);
+    Route::get('/pelatihan-data', [ApiAgendaController::class, 'getPelatihanData']);
 });
 
 Route::get('/pelatihan-mentor-data', [ApiAgendaController::class, 'getPelatihanMentorData']);
 Route::post('/peserta-pelatihan/export-filtered', [ApiPesertaPelatihanController::class, 'exportFiltered']);
-
-
-
-
 
 Route::prefix('peserta-pelatihan')->group(function () {
     Route::get('/agenda/{id_agenda}/peserta', [ApiPesertaPelatihanController::class, 'getPesertaByAgenda']);
@@ -181,3 +180,5 @@ Route::post('/mayar/webhook', [ApiTransaksiController::class, 'handleWebhook']);
 Route::post('/test-webhook', [ApiTransaksiController::class, 'sendWebhookTest']);
 Route::get('/test-balance', [ApiTransaksiController::class, 'balance']);
 Route::get('/get-transaction', [ApiTransaksiController::class, 'dataTransaksi']);
+
+

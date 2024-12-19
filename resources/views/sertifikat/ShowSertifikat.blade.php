@@ -163,64 +163,64 @@
 
                     // Tambahkan event click untuk menampilkan modal preview
                     document.querySelector('.file-sertifikat').addEventListener('click', function () {
-    Swal.fire({
-        title: 'Preview Sertifikat',
-        html: `
-            <div style="width: 100%; height: 500px; text-align: center;">
-                ${fileExtension === 'pdf' ? `
-                    <iframe src="${fileUrl}" style="width: 100%; height: 100%;" frameborder="0"></iframe>
-                ` : `
-                    <img src="${fileUrl}" alt="Preview Sertifikat" style="max-width: 100%; max-height: 100%;">
-                `}
-                <p style="text-align: center; margin-top: 10px;">
-                    <a href="${fileUrl}" target="_blank" style="color: #007bff; text-decoration: none;">Buka di tab baru jika tidak bisa ditampilkan</a>
-                </p>
-            </div>
-        `,
-        showCloseButton: true,
-        showCancelButton: true,
-        confirmButtonText: 'Download',
-        cancelButtonText: 'Tutup',
-        customClass: {
-            popup: 'swal2-large-popup'
-        },
-        didOpen: () => {
-            document.querySelector('.swal2-large-popup').style.width = '90%';
-        }
-    }).then(result => {
-        if (result.isConfirmed) {
-            // Unduh file menggunakan Blob
-            fetch(fileUrl)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('File tidak dapat diunduh.');
-                    }
-                    return response.blob();
-                })
-                .then(blob => {
-                    const link = document.createElement('a');
-                    const fileName = fileUrl.split('/').pop();
-                    
-                    // Buat URL untuk Blob
-                    const url = URL.createObjectURL(blob);
-                    link.href = url;
-                    link.download = fileName;
+                        Swal.fire({
+                            title: 'Preview Sertifikat',
+                            html: `
+                                <div style="width: 100%; height: 500px; text-align: center;">
+                                    ${fileExtension === 'pdf' ? `
+                                        <iframe src="${fileUrl}" style="width: 100%; height: 100%;" frameborder="0"></iframe>
+                                    ` : `
+                                        <img src="${fileUrl}" alt="Preview Sertifikat" style="max-width: 100%; max-height: 100%;">
+                                    `}
+                                    <p style="text-align: center; margin-top: 10px;">
+                                        <a href="${fileUrl}" target="_blank" style="color: #007bff; text-decoration: none;">Buka di tab baru jika tidak bisa ditampilkan</a>
+                                    </p>
+                                </div>
+                            `,
+                            showCloseButton: true,
+                            showCancelButton: true,
+                            confirmButtonText: 'Download',
+                            cancelButtonText: 'Tutup',
+                            customClass: {
+                                popup: 'swal2-large-popup'
+                            },
+                            didOpen: () => {
+                                document.querySelector('.swal2-large-popup').style.width = '90%';
+                            }
+                        }).then(result => {
+                            if (result.isConfirmed) {
+                                // Unduh file menggunakan Blob
+                                fetch(fileUrl)
+                                    .then(response => {
+                                        if (!response.ok) {
+                                            throw new Error('File tidak dapat diunduh.');
+                                        }
+                                        return response.blob();
+                                    })
+                                    .then(blob => {
+                                        const link = document.createElement('a');
+                                        const fileName = fileUrl.split('/').pop();
+                                        
+                                        // Buat URL untuk Blob
+                                        const url = URL.createObjectURL(blob);
+                                        link.href = url;
+                                        link.download = fileName;
 
-                    // Klik otomatis untuk mengunduh
-                    document.body.appendChild(link);
-                    link.click();
+                                        // Klik otomatis untuk mengunduh
+                                        document.body.appendChild(link);
+                                        link.click();
 
-                    // Hapus URL Blob setelah unduhan selesai
-                    URL.revokeObjectURL(url);
-                    document.body.removeChild(link);
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    Swal.fire('Error', 'Gagal mengunduh file.', 'error');
-                });
-        }
-    });
-});
+                                        // Hapus URL Blob setelah unduhan selesai
+                                        URL.revokeObjectURL(url);
+                                        document.body.removeChild(link);
+                                    })
+                                    .catch(error => {
+                                        console.error('Error:', error);
+                                        Swal.fire('Error', 'Gagal mengunduh file.', 'error');
+                                    });
+                            }
+                        });
+                    });
 
 
 
