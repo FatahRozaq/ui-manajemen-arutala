@@ -262,7 +262,8 @@ Arutala | Data Peserta Pelatihan
 
 
 <script>
-    let tablePaid;
+    let tablePaid = $('#dataDetailPelatihanTablePaid').DataTable();
+
     $(document).ready(function() {
         // fetchPelatihanBatchData();
         // fetchData();
