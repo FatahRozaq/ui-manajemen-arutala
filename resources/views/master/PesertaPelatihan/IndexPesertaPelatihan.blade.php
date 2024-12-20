@@ -262,8 +262,6 @@ Arutala | Data Peserta Pelatihan
 
 
 <script>
-    let tablePaid = $('#dataDetailPelatihanTablePaid').DataTable();
-
     $(document).ready(function() {
         // fetchPelatihanBatchData();
         // fetchData();
@@ -860,7 +858,7 @@ function fetchFilteredData(pelatihan, batch) {
             text: response.message,
             }).then(() => {
                 // Reload DataTable setelah tombol OK ditekan
-                tablePaid.ajax.reload(null, false);
+                location.reload();
             });
 
             // Close the modal
@@ -925,7 +923,7 @@ $('#uploadKehadiranButton').on('click', function() {
             text: response.message,
             }).then(() => {
                 // Reload DataTable setelah tombol OK ditekan
-                tablePaid.ajax.reload(null, false);
+                location.reload();
             });
 
             // Close the modal
