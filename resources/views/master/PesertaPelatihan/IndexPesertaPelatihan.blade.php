@@ -853,14 +853,16 @@ function fetchFilteredData(pelatihan, batch) {
         success: function(response) {
             // Jika upload berhasil, tampilkan notifikasi sukses
             Swal.fire({
-                icon: 'success',
-                title: 'Berhasil',
-                text: response.message,
+            icon: 'success',
+            title: 'Berhasil',
+            text: response.message,
+            }).then(() => {
+                // Reload DataTable setelah tombol OK ditekan
+                tablePaid.ajax.reload(null, false);
             });
 
             // Close the modal
             $('#uploadSertifikatModal').modal('hide');
-            tablePaid.ajax.reload(null, false); // Reload datatable setelah upload
         },
         error: function(xhr) {
             // Jika upload gagal, tampilkan notifikasi error
@@ -916,14 +918,16 @@ $('#uploadKehadiranButton').on('click', function() {
         success: function(response) {
             // Jika upload berhasil, tampilkan notifikasi sukses
             Swal.fire({
-                icon: 'success',
-                title: 'Berhasil',
-                text: response.message,
+            icon: 'success',
+            title: 'Berhasil',
+            text: response.message,
+            }).then(() => {
+                // Reload DataTable setelah tombol OK ditekan
+                tablePaid.ajax.reload(null, false);
             });
 
             // Close the modal
             $('#uploadSertifikatKehadiranModal').modal('hide');
-            tablePaid.ajax.reload(null, false); // Reload datatable setelah upload
         },
         error: function(xhr) {
             // Jika upload gagal, tampilkan notifikasi error
