@@ -589,17 +589,27 @@ class ApiSertifikatController extends Controller
         ], 200);
     }
 
-    public function getBatchesByPelatihan($idPelatihan)
+    public function getBatchesByPelatihan($namaPelatihan)
     {
-        // $idPelatihan = $request->input('id_pelatihan');
-
-        if (!$idPelatihan) {
-            return response()->json(['message' => 'ID pelatihan diperlukan.'], 400);
+        if (!$namaPelatihan) {
+            return response()->json(['message' => 'Nama pelatihan diperlukan.'], 400);
         }
 
+        // Ambil id_pelatihan berdasarkan nama_pelatihan
+        $idPelatihan = Pelatihan::where('nama_pelatihan', $namaPelatihan)->value('id_pelatihan');
+
+        if (!$idPelatihan) {
+            return response()->json(['message' => 'Pelatihan tidak ditemukan.'], 404);
+        }
+
+        // Ambil batch yang terkait dengan id_pelatihan dan urutkan secara ascending
         $batches = AgendaPelatihan::where('id_pelatihan', $idPelatihan)
+            ->where('is_deleted', false) // Tambahkan kondisi untuk memeriksa is_deleted
+            ->orderBy('batch', 'asc') // Urutkan berdasarkan batch secara ascending
             ->pluck('batch'); // Mengambil hanya kolom batch
+
 
         return response()->json(['batches' => $batches]);
     }
+
 }

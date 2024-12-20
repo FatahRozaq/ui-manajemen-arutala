@@ -92,7 +92,7 @@ Route::prefix('agenda')->group(function () {
     Route::get('/detail-agenda/{id}', [ApiAgendaController::class, 'detailAgenda']);
     Route::delete('/delete-agenda/{id}', [ApiAgendaController::class, 'deleteAgenda']);
 
-    Route::get('/pelatihan/{id}/batches', [ApiSertifikatController::class, 'getBatchesByPelatihan']);
+    Route::get('/pelatihan/batches/{namaPelatihan}', [ApiSertifikatController::class, 'getBatchesByPelatihan']);
     Route::get('/pelatihan-data', [ApiAgendaController::class, 'getPelatihanData']);
 });
 

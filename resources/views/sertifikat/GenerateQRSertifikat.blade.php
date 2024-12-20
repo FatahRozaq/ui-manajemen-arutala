@@ -51,19 +51,32 @@ Arutala | Generate QR Sertifikat
                             </label>
                             <div class="col-sm-8">
                                 <select name="nama_pelatihan" id="namaPelatihan">
-                                    <!-- Options will be populated by JavaScript -->
+                                    <option value="" disabled selected>Pilih Pelatihan...</option>
                                 </select>
                                 <span class="text-danger" id="error-nama-pelatihan"></span>
                             </div>
                         </div>
 
 
-                        <div class="row mb-4">
+
+                        <!-- <div class="row mb-4">
                             <label for="batch" class="col-sm-4 col-form-label">
                                 Batch <span class="text-danger">*</span>
                             </label>
                             <div class="col-sm-8">
                                 <input type="number" name="batch" id="batch" class="form-control">
+                                <span class="text-danger" id="error-batch"></span>
+                            </div>
+                        </div> -->
+
+                        <div class="row mb-4">
+                            <label for="batch" class="col-sm-4 col-form-label">
+                                Batch <span class="text-danger">*</span>
+                            </label>
+                            <div class="col-sm-8">
+                                <select name="batch" id="batch" class="form-control" disabled>
+                                    <option value="" disabled selected>Pilih batch...</option>
+                                </select>
                                 <span class="text-danger" id="error-batch"></span>
                             </div>
                         </div>
@@ -101,7 +114,7 @@ Arutala | Generate QR Sertifikat
                     <div class="card-body" style="padding-top: 20px;">
                         <h5 class="card-title">Keterangan Pengisian</h5>
                         <ul class="list-group">
-                            <li class="list-group-item">1. **Certificate Number** ditulis dalam format seperti: <code>BC2024.UI/UX.A.11</code>.</li>
+                            <li class="list-group-item">1. **Certificate Number** ditulis dalam format seperti: <code>BC2024.UI/UX.A.11</code> Penjelasan certificate number ada di bawah ini</li>
                             <li class="list-group-item"><code>BC2024</code> Jenis Pelatihan dan Tahun Pelaksanaan</li>
                             <li class="list-group-item"><code>UI/UX</code> Kode Nama Pelatihan</li>
                             <li class="list-group-item"><code>C</code> Jenis Sertifikat. C = Competency</li>
@@ -150,6 +163,32 @@ $(document).ready(function() {
         .catch(function (error) {
             console.error('Gagal mengambil data:', error);
         });
+
+    // Event ketika nama pelatihan berubah
+    $('#namaPelatihan').on('change', function() {
+        var namaPelatihan = $(this).val();
+
+        // Reset batch dropdown
+        $('#batch').empty().append('<option value="" disabled selected>Pilih batch...</option>').prop('disabled', true);
+
+        if (namaPelatihan) {
+            // Panggil API untuk mendapatkan batch
+            axios.get('/api/agenda/pelatihan/batches/' + namaPelatihan)
+                .then(function(response) {
+                    var batches = response.data.batches;
+
+                    if (batches.length > 0) {
+                        batches.forEach(function(batch) {
+                            $('#batch').append('<option value="' + batch + '">' + batch + '</option>');
+                        });
+                        $('#batch').prop('disabled', false);
+                    }
+                })
+                .catch(function(error) {
+                    console.error('Gagal mengambil batch:', error);
+                });
+        }
+    });
 
     // Event submit form dengan konfirmasi SweetAlert
     $('#generateQRForm').submit(function(e) {
