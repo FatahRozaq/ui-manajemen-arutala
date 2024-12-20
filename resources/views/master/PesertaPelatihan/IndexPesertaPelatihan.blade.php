@@ -860,7 +860,7 @@ function fetchFilteredData(pelatihan, batch) {
 
             // Close the modal
             $('#uploadSertifikatModal').modal('hide');
-            tablePaid.ajax.reload(); // Reload datatable setelah upload
+            tablePaid.ajax.reload(null, false); // Reload datatable setelah upload
         },
         error: function(xhr) {
             // Jika upload gagal, tampilkan notifikasi error
@@ -923,7 +923,7 @@ $('#uploadKehadiranButton').on('click', function() {
 
             // Close the modal
             $('#uploadSertifikatKehadiranModal').modal('hide');
-            tablePaid.ajax.reload(); // Reload datatable setelah upload
+            tablePaid.ajax.reload(null, false); // Reload datatable setelah upload
         },
         error: function(xhr) {
             // Jika upload gagal, tampilkan notifikasi error
