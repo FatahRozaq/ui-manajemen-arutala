@@ -70,7 +70,7 @@ Arutala | Update Data Admin
 
                         <!-- Email Field -->
                         <div class="row mb-4">
-                            <label for="email" class="col-sm-2 col-form-label">Email</label>
+                            <label for="email" class="col-sm-2 col-form-label">Email <span class="text-danger">*</span></label>
                             <div class="col-sm-6">
                                 <input type="email" name="email" id="email" class="form-control" disabled>
                                 <span class="text-danger" id="error-email"></span>

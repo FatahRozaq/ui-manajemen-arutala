@@ -130,7 +130,7 @@ Arutala | Tambah Data Agenda
                         <!-- Durasi -->
                         <div id="durasiContainer">
                             <div class="form-group row position-relative mb-1 durasi-item">
-                                <label class="col-sm-3 col-form-label">Durasi <span class="text-danger">*</span></label>
+                                <label class="col-sm-3 col-form-label">Durasi Pelatihan<span class="text-danger">*</span></label>
                                 <div class="col-sm-6">
                                     <div class="input-group">
                                         <input type="text" name="durasi[]" class="form-control" placeholder="Masukkan Durasi">
@@ -193,7 +193,7 @@ Arutala | Tambah Data Agenda
 
                         <!-- Investasi Numerik -->
                         <div class="form-group row position-relative mb-1">
-                            <label class="col-sm-3 col-form-label">Investasi <span class="text-danger">*</span></label>
+                            <label class="col-sm-3 col-form-label">Investasi (Harga)<span class="text-danger">*</span></label>
                             <div class="col-sm-6 input-group">
                                 <input type="number" name="investasi" class="form-control">
                                 
@@ -207,7 +207,7 @@ Arutala | Tambah Data Agenda
                         <!-- Investasi String -->
                         <div id="investasiContainer">
                             <div class="form-group row position-relative mb-1">
-                                <label class="col-sm-3 col-form-label">Investasi Info</label>
+                                <label class="col-sm-3 col-form-label">Keterangan Investasi (Voucher)</label>
                                 <div class="col-sm-6 input-group">
                                     <input type="text" name="investasi_info[]" class="form-control">
                                     <div class="input-group-append">

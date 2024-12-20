@@ -83,7 +83,7 @@ input.form-control, textarea.form-control {
                     
                         <!-- Nama Pelatihan -->
                         <div class="form-group row position-relative">
-                            <label for="trainingInput" class="col-sm-2 col-form-label">Nama Pelatihan</label>
+                            <label for="trainingInput" class="col-sm-2 col-form-label">Nama Pelatihan <span class="text-danger">*</span></label>
                             <div class="col-sm-7">
                                 <input type="text" class="form-control" id="trainingInput" name="nama_pelatihan">
                                 <div class="dropdown-menu" id="trainingDropdown"></div>
@@ -103,7 +103,7 @@ input.form-control, textarea.form-control {
 
                         <!-- Description -->
                         <div class="row mb-3">
-                            <label for="exampleFormControlTextarea1" class="col-form-label col-sm-2">Deskripsi</label>
+                            <label for="exampleFormControlTextarea1" class="col-form-label col-sm-2">Deskripsi <span class="text-danger">*</span></label>
                             <div class="col-sm-7">
                                 <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="deskripsi"></textarea>
                                 <small id="deskripsiError" class="text-danger" style="display:none;"></small>
@@ -112,7 +112,7 @@ input.form-control, textarea.form-control {
 
                         <div id="materiContainer">
                             <div class="form-group row position-relative mb-1">
-                                <label class="col-sm-2 col-form-label">Materi</label>
+                                <label class="col-sm-2 col-form-label">Materi <span class="text-danger">*</span></label>
                                 <div class="col-sm-7 input-group">
                                     <input type="text" class="form-control materi" name="materi[]">
                                     <div class="input-group-append">
@@ -127,7 +127,7 @@ input.form-control, textarea.form-control {
                         
                         <div id="benefitContainer">
                             <div class="form-group row position-relative mb-1 mt-3">
-                                <label class="col-sm-2 col-form-label">Benefit</label>
+                                <label class="col-sm-2 col-form-label">Benefit <span class="text-danger">*</span></label>
                                 <div class="col-sm-7 input-group">
                                     <input type="text" class="form-control benefit" name="benefit[]">
                                     <div class="input-group-append">

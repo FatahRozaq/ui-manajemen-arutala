@@ -146,7 +146,7 @@ Arutala | Update Data Agenda
                         <!-- Durasi -->
                         <div id="durasiContainer">
                             <div class="form-group row position-relative mb-1">
-                                <label class="col-sm-3 col-form-label">Durasi <span class="text-danger">*</span></label>
+                                <label class="col-sm-3 col-form-label">Durasi Pelatihan<span class="text-danger">*</span></label>
                                 <div class="col-sm-7 input-group">
                                     <input type="text" class="form-control" name="durasi[]">
                                     <div class="input-group-append">
@@ -205,7 +205,7 @@ Arutala | Update Data Agenda
 
                         <!-- Investasi Numerik -->
                         <div class="form-group row position-relative mb-1">
-                            <label for="investasiInput" class="col-sm-3 col-form-label">Investasi <span class="text-danger">*</span></label>
+                            <label for="investasiInput" class="col-sm-3 col-form-label">Investasi (Harga)<span class="text-danger">*</span></label>
                             <div class="col-sm-7 input-group">
                                 <input type="number" class="form-control" id="investasiInput" name="investasi">
                                 <small id="error-investasi" class="text-danger" style="display: none;"></small>
@@ -215,7 +215,7 @@ Arutala | Update Data Agenda
                         <!-- Investasi Info -->
                         <div id="investasiInfoContainer">
                             <div class="form-group row position-relative mb-1">
-                                <label class="col-sm-3 col-form-label">Investasi Info</label>
+                                <label class="col-sm-3 col-form-label">Keterangan Investasi</label>
                                 <div class="col-sm-7 input-group">
                                     <input type="text" class="form-control" name="investasi_info[]">
                                     <div class="input-group-append">

@@ -171,7 +171,7 @@ Arutala | Detail Data Agenda
 
                         <!-- Investasi (Numerik) -->
                         <div class="form-group row position-relative mb-3 mt-3">
-                            <label for="investasiInput" class="col-sm-3 col-form-label">Investasi</label>
+                            <label for="investasiInput" class="col-sm-3 col-form-label">Investasi (Harga)</label>
                             <div class="col-sm-7 input-group">
                                 <input type="number" class="form-control" id="investasiInput" aria-label="readonly input example" readonly>
                             </div>
@@ -317,7 +317,7 @@ $(document).ready(function() {
                     data.investasi_info.forEach((investasiInfoItem, index) => {
                         investasiInfoContainer.append(`
                             <div class="form-group row position-relative mb-1 ">
-                                <label class="col-sm-3 col-form-label">${index === 0 ? 'Investasi Info' : ''}</label>
+                                <label class="col-sm-3 col-form-label">${index === 0 ? 'Keterangan Investasi' : ''}</label>
                                 <div class="col-sm-7 input-group">
                                     <input type="text" class="form-control" value="${investasiInfoItem}" aria-label="readonly input example" readonly>
                                 </div>
@@ -349,7 +349,7 @@ $(document).ready(function() {
                     data.durasi.forEach((durasiItem, index) => {
                         durasiContainer.append(`
                             <div class="form-group row position-relative mb-1">
-                                <label class="col-sm-3 col-form-label">${index === 0 ? 'Durasi' : ''}</label>
+                                <label class="col-sm-3 col-form-label">${index === 0 ? 'Durasi Pelatihan' : ''}</label>
                                 <div class="col-sm-7 input-group">
                                     <input type="text" class="form-control" value="${durasiItem}" aria-label="readonly input example" readonly>
                                 </div>
