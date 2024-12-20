@@ -90,12 +90,24 @@ Arutala | Tambah Data Agenda
                         </div>
                         
                         <!-- Nama Pelatihan -->
-                        <div class="form-group row position-relative">
+                        <!-- <div class="form-group row position-relative">
                             <label for="namaPelatihan" class="col-sm-3 col-form-label">Nama Pelatihan <span class="text-danger">*</span></label>
                             <div class="col-sm-6">
                                 <select name="nama_pelatihan" id="namaPelatihan" class="form-control">
-                                    <!-- Options will be populated by JavaScript -->
+                                    
                                 </select>
+                            </div>
+                        </div> -->
+
+                        <div class="row mb-4">
+                            <label for="namaPelatihan" class="col-sm-3 col-form-label">
+                                Nama Pelatihan <span class="text-danger">*</span>
+                            </label>
+                            <div class="col-sm-6">
+                                <select name="nama_pelatihan" id="namaPelatihan">
+                                    <option value="" disabled selected>Pilih Pelatihan...</option>
+                                </select>
+                                <span class="text-danger" id="namaPelatihanError"></span>
                             </div>
                         </div>
 
@@ -312,6 +324,104 @@ $(document).ready(function() {
                 pelatihanSelect.append('<option value="' + pelatihan.nama_pelatihan + '">' + pelatihan.nama_pelatihan + '</option>');
             });
 
+            $('#namaPelatihan').selectize({
+                create: false, // Nonaktifkan opsi untuk menambahkan input baru
+                sortField: 'text',
+                onChange: function (namaPelatihan) {
+                    if (!namaPelatihan) return; // Jika tidak ada pilihan, hentikan eksekusi
+
+                    // Panggil API untuk mendapatkan data pelatihan
+                    fetch(`/api/agenda/pelatihan-data?nama_pelatihan=${encodeURIComponent(namaPelatihan)}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                // Isi deskripsi
+                                document.getElementById('deskripsi').value = data.data.deskripsi;
+
+                                // Kosongkan semua input materi sebelumnya
+                                const materiContainer = document.getElementById('materiContainer');
+                                materiContainer.innerHTML = '';
+
+                                // Tambahkan materi ke input
+                                data.data.materi.forEach((materi, index) => {
+                                    const isFirst = index === 0;
+                                    const newMateriRow = `
+                                        <div class="form-group row position-relative mb-1">
+                                            <label class="col-sm-3 col-form-label">${isFirst ? 'Materi <span class="text-danger">*</span>' : ''}</label>
+                                            <div class="col-sm-6 input-group">
+                                                <input type="text" name="materi[]" class="form-control" value="${materi}" placeholder="Masukkan Materi">
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-outline-${isFirst ? 'success add-materi' : 'secondary remove-materi'}" type="button">
+                                                        <i class="bi bi-${isFirst ? 'plus-circle' : 'dash-circle'}"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    `;
+                                    materiContainer.insertAdjacentHTML('beforeend', newMateriRow);
+                                });
+
+                                // Event listener untuk tombol tambah materi
+                                document.getElementById('materiContainer').addEventListener('click', function (event) {
+                                    if (event.target.closest('.add-materi')) {
+                                        const newMateriRow = `
+                                            <div class="form-group row position-relative mb-1">
+                                                <label class="col-sm-3 col-form-label"></label>
+                                                <div class="col-sm-6 input-group">
+                                                    <input type="text" name="materi[]" class="form-control" placeholder="Masukkan Materi">
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-outline-secondary remove-materi" type="button">
+                                                            <i class="bi bi-dash-circle"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        `;
+                                        materiContainer.insertAdjacentHTML('beforeend', newMateriRow);
+
+                                        // Hilangkan pesan error jika ada baris baru yang ditambahkan
+                                        document.getElementById('materiError').style.display = 'none';
+                                    }
+                                });
+
+                                // Event listener untuk tombol hapus materi
+                                document.getElementById('materiContainer').addEventListener('click', function (event) {
+                                    if (event.target.closest('.remove-materi')) {
+                                        event.target.closest('.form-group').remove();
+
+                                        // Validasi setelah baris dihapus
+                                        const materiInputs = document.querySelectorAll('input[name="materi[]"]');
+                                        const materiError = document.getElementById('materiError');
+
+                                        let isAnyMateriFilled = false;
+
+                                        materiInputs.forEach(input => {
+                                            if (input.value.trim() !== '') {
+                                                isAnyMateriFilled = true;
+                                            }
+                                        });
+
+                                        if (!isAnyMateriFilled) {
+                                            materiError.style.display = 'block';
+                                            materiError.textContent = 'Setidaknya satu materi harus diisi.';
+                                        } else {
+                                            materiError.style.display = 'none';
+                                        }
+                                    }
+                                });
+                            } else {
+                                alert(data.message);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error fetching pelatihan data:', error);
+                        });
+                }
+            });
+
+
+
+
             // Mengisi dropdown Mentor dengan Selectize menggunakan data dari API
             var mentorSelectize = $('#mentorInput').selectize({
                 options: mentors.map(function(mentor) {
@@ -345,120 +455,8 @@ $(document).ready(function() {
         });
 
 
-        document.getElementById('namaPelatihan').addEventListener('change', function () {
-        const namaPelatihan = this.value;
-
-        // Panggil API untuk mendapatkan data pelatihan
-        fetch(`/api/agenda/pelatihan-data?nama_pelatihan=${encodeURIComponent(namaPelatihan)}`)
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Isi deskripsi
-                    document.getElementById('deskripsi').value = data.data.deskripsi;
-
-                    // Kosongkan semua input materi sebelumnya
-                    const materiContainer = document.getElementById('materiContainer');
-                    materiContainer.innerHTML = '';
-
-                    // Tambahkan materi ke input
-                    data.data.materi.forEach((materi, index) => {
-                        const isFirst = index === 0;
-                        const newMateriRow = `
-                            <div class="form-group row position-relative mb-1">
-                                <label class="col-sm-3 col-form-label">${isFirst ? 'Materi <span class="text-danger">*</span>' : ''}</label>
-                                <div class="col-sm-6 input-group">
-                                    <input type="text" name="materi[]" class="form-control" value="${materi}" placeholder="Masukkan Materi">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-outline-${isFirst ? 'success add-materi' : 'secondary remove-materi'}" type="button">
-                                            <i class="bi bi-${isFirst ? 'plus-circle' : 'dash-circle'}"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        `;
-                        materiContainer.insertAdjacentHTML('beforeend', newMateriRow);
-                    });
-                } else {
-                    alert(data.message);
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching pelatihan data:', error);
-            });
-    });
-
-    // Event listener untuk tombol tambah materi
-    document.getElementById('materiContainer').addEventListener('click', function (event) {
-        if (event.target.closest('.add-materi')) {
-            const materiContainer = document.getElementById('materiContainer');
-            const newMateriRow = `
-                <div class="form-group row position-relative mb-1">
-                    <label class="col-sm-3 col-form-label"></label>
-                    <div class="col-sm-6 input-group">
-                        <input type="text" name="materi[]" class="form-control" placeholder="Masukkan Materi">
-                        <div class="input-group-append">
-                            <button class="btn btn-outline-secondary remove-materi" type="button">
-                                <i class="bi bi-dash-circle"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `;
-            materiContainer.insertAdjacentHTML('beforeend', newMateriRow);
-
-            // Hilangkan pesan error jika ada baris baru yang ditambahkan
-            document.getElementById('materiError').style.display = 'none';
-        }
-    });
-
-    // Event listener untuk tombol hapus materi
-    document.getElementById('materiContainer').addEventListener('click', function (event) {
-        if (event.target.closest('.remove-materi')) {
-            event.target.closest('.form-group').remove();
-
-            // Validasi setelah baris dihapus
-            const materiInputs = document.querySelectorAll('input[name="materi[]"]');
-            const materiError = document.getElementById('materiError');
-
-            let isAnyMateriFilled = false;
-
-            materiInputs.forEach(input => {
-                if (input.value.trim() !== '') {
-                    isAnyMateriFilled = true;
-                }
-            });
-
-            if (!isAnyMateriFilled) {
-                materiError.style.display = 'block';
-                materiError.textContent = 'Setidaknya satu materi harus diisi.';
-            } else {
-                materiError.style.display = 'none';
-            }
-        }
-    });
-
-    // Tambah kolom baru pada Materi
-    // $('#materiContainer').on('click', '.add-materi', function () {
-    //     var newMateriRow = `
-    //         <div class="form-group row position-relative mb-1">
-    //             <label class="col-sm-3 col-form-label"></label>
-    //             <div class="col-sm-6 input-group">
-    //                 <input type="text" name="materi[]" class="form-control" placeholder="Masukkan Materi">
-    //                 <div class="input-group-append">
-    //                     <button class="btn btn-outline-secondary remove-materi" type="button"><i class="bi bi-dash-circle"></i></button>
-    //                 </div>
-    //             </div>
-    //         </div>
-    //     `;
-    //     $('#materiContainer').append(newMateriRow);
-    // });
-
-    // // Hapus kolom Materi
-    // $('#materiContainer').on('click', '.remove-materi', function () {
-    //     $(this).closest('.form-group').remove();
-    // });
-
-    // Tambah kolom baru pada Durasi
+        
+    // Event listener untuk durasi di luar Selectize
     $('#durasiContainer').on('click', '.add-durasi', function () {
         var newDurasiRow = `
             <div class="form-group row position-relative mb-1">
@@ -474,11 +472,9 @@ $(document).ready(function() {
         $('#durasiContainer').append(newDurasiRow);
     });
 
-    // Hapus kolom Durasi
     $('#durasiContainer').on('click', '.remove-durasi', function () {
         $(this).closest('.form-group').remove();
     });
-
 
     // Tambah kolom baru pada Investasi
     $('#investasiContainer').on('click', '.add-investasi', function () {
