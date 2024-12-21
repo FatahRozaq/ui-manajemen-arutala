@@ -472,8 +472,9 @@ class ApiSertifikatController extends Controller
                 ->join('agenda_pelatihan', 'agenda_pelatihan.id_agenda', '=', 'pendaftaran_event.id_agenda')
                 ->where('agenda_pelatihan.id_agenda', $agenda->id_agenda)
                 ->where('pendaftar.is_deleted', false)
-                ->orderBy('pendaftar.nama', 'asc') // Sorting by 'nama' of 'pendaftar'
+                ->orderByRaw('LOWER(pendaftar.nama) ASC') 
                 ->get();
+
             
             if ($pendaftarans->isEmpty()) {
                 return response()->json([
