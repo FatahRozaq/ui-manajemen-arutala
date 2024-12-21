@@ -57,7 +57,6 @@ Arutala | Sertifikat Peserta
         border-color: #6c757d; /* Match border with background */
     }
 
-
     @media (max-width: 576px) {
         .button-group {
             flex-direction: column;
@@ -67,12 +66,10 @@ Arutala | Sertifikat Peserta
             width: 100%;
         }
     }
-
 </style>
 @endsection
 
 @section('content')
-
 <div class="pagetitle">
     <h1>My Certificate</h1>
 </div>
@@ -118,9 +115,14 @@ Arutala | Sertifikat Peserta
                         certificateList.append('<p>Anda belum memiliki sertifikat.</p>');
                     } else {
                         certificates.forEach(certificate => {
-                            const isCompetencyDisabled = !certificate.file_sertifikat || certificate.file_sertifikat === '';
-                            const isAttendanceDisabled = !certificate.sertifikat_kehadiran || certificate.sertifikat_kehadiran === '';
-                            
+                            const competencyButton = certificate.qr_kompetensi 
+                                ? `<a href="${certificate.qr_kompetensi}" class="btn btn-success btn-sm btn-custom" target="_blank" rel="noopener noreferrer">Kompetensi</a>`
+                                : `<a href="#" class="btn btn-success btn-sm btn-custom download-competency-cert-btn ${!certificate.file_sertifikat ? 'disabled-link' : ''}" data-idpendaftaran="${certificate.id_pendaftaran}">Kompetensi</a>`;
+
+                            const attendanceButton = certificate.qr_kehadiran 
+                                ? `<a href="${certificate.qr_kehadiran}" class="btn btn-primary btn-sm btn-custom" target="_blank" rel="noopener noreferrer">Kehadiran</a>`
+                                : `<a href="#" class="btn btn-primary btn-sm btn-custom download-attendance-cert-btn ${!certificate.sertifikat_kehadiran ? 'disabled-link' : ''}" data-idpendaftaran="${certificate.id_pendaftaran}">Kehadiran</a>`;
+
                             const card = `
                                 <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
                                     <div class="card h-100 fixed-size">
@@ -131,37 +133,16 @@ Arutala | Sertifikat Peserta
                                                 <p class="text-muted"><i class="fas fa-calendar-alt"></i> ${new Date(certificate.pendaftaran.agenda_pelatihan.start_date).toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' })} - ${new Date(certificate.pendaftaran.agenda_pelatihan.end_date).toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' })}</p>
                                             </div>
                                             <div class="button-group">
-                                                <a href="#" class="btn btn-success btn-sm btn-custom download-competency-cert-btn ${isCompetencyDisabled ? 'disabled-link' : ''}" data-idpendaftaran="${certificate.id_pendaftaran}">
-                                                    Kompetensi
-                                                </a>
-                                                <a href="#" class="btn btn-primary btn-sm btn-custom download-attendance-cert-btn ${isAttendanceDisabled ? 'disabled-link' : ''}" data-idpendaftaran="${certificate.id_pendaftaran}">
-                                                    Kehadiran
-                                                </a>
+                                                ${competencyButton}
+                                                ${attendanceButton}
                                             </div>
                                         </div>
                                     </div>
                                 </div>`;
-                            
                             certificateList.append(card);
                         });
 
-                        // Attach event listener to "Sertifikat Kompetensi" buttons
-                        $('.download-competency-cert-btn').on('click', function(e) {
-                            e.preventDefault();
-                            const idPendaftaran = $(this).data('idpendaftaran');
-                            if (!$(this).hasClass('disabled-link')) {
-                                openCertOptions(idPendaftaran, 'kompetensi');
-                            }
-                        });
-
-                        // Attach event listener to "Sertifikat Kehadiran" buttons
-                        $('.download-attendance-cert-btn').on('click', function(e) {
-                            e.preventDefault();
-                            const idPendaftaran = $(this).data('idpendaftaran');
-                            if (!$(this).hasClass('disabled-link')) {
-                                openCertOptions(idPendaftaran, 'kehadiran');
-                            }
-                        });
+                        attachEventListeners();
                     }
                 })
                 .catch(error => {
@@ -174,7 +155,23 @@ Arutala | Sertifikat Peserta
                 });
         }
 
+        function attachEventListeners() {
+            $('.download-competency-cert-btn').on('click', function(e) {
+                e.preventDefault();
+                const idPendaftaran = $(this).data('idpendaftaran');
+                if (!$(this).hasClass('disabled-link')) {
+                    openCertOptions(idPendaftaran, 'kompetensi');
+                }
+            });
 
+            $('.download-attendance-cert-btn').on('click', function(e) {
+                e.preventDefault();
+                const idPendaftaran = $(this).data('idpendaftaran');
+                if (!$(this).hasClass('disabled-link')) {
+                    openCertOptions(idPendaftaran, 'kehadiran');
+                }
+            });
+        }
 
         function openCertOptions(idPendaftaran, type) {
             Swal.fire({
@@ -231,11 +228,9 @@ Arutala | Sertifikat Peserta
                     responseType: 'blob' // Set response type to blob to handle file download
                 })
                 .then(response => {
-                    // Ambil nama file dari header 'Content-Disposition'
                     const contentDisposition = response.headers['content-disposition'];
-                    let fileName = 'sertifikat.pdf'; // Default jika nama file tidak ditemukan
+                    let fileName = 'sertifikat.pdf';
 
-                    // Jika Content-Disposition mengandung 'filename', ambil nama file
                     if (contentDisposition && contentDisposition.indexOf('filename=') !== -1) {
                         const fileNameMatch = contentDisposition.match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/);
                         if (fileNameMatch != null && fileNameMatch[1]) {
