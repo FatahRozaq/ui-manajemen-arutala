@@ -114,9 +114,9 @@ Arutala | Generate QR Sertifikat
                     <div class="card-body" style="padding-top: 20px;">
                         <h5 class="card-title">Keterangan Pengisian</h5>
                         <ul class="list-group">
-                            <li class="list-group-item">1. **Certificate Number** ditulis dalam format seperti: <code>BC2024.UI/UX.A.11</code> Penjelasan certificate number ada di bawah ini</li>
+                            <li class="list-group-item">1. **Certificate Number** ditulis dalam format seperti: <code>BC2024.UIUX.A.11</code> Penjelasan certificate number ada di bawah ini</li>
                             <li class="list-group-item"><code>BC2024</code> Jenis Pelatihan dan Tahun Pelaksanaan</li>
-                            <li class="list-group-item"><code>UI/UX</code> Kode Nama Pelatihan</li>
+                            <li class="list-group-item"><code>UIUX</code> Kode Nama Pelatihan</li>
                             <li class="list-group-item"><code>C</code> Jenis Sertifikat. C = Competency</li>
                             <li class="list-group-item"><code>11</code> Bulan Terbit</li>
                             <br>
