@@ -115,7 +115,7 @@ Arutala | Data Agenda
                 {
                     "data": null,
                     "render": function(data, type, row) {
-                        let isDisabled = (row.status.toLowerCase() === 'selesai' || row.status.toLowerCase() === 'berjalan');
+                        let isDisabled = (row.status.toLowerCase() === 'testing');
                         let isDisabledDelete = (row.status.toLowerCase() === 'selesai' || row.status.toLowerCase() === 'sedang berlangsung'|| row.status.toLowerCase() === 'pendaftaran berakhir' || row.status.toLowerCase() === 'masa pendaftaran');
                         let updateIcon = `
                             <a href="agendapelatihan/update?id=${row.id_agenda}" title="Update" class="${isDisabled ? 'disabled-link' : ''}">
