@@ -50,9 +50,14 @@
         .file-sertifikat:hover .hover-overlay {
             opacity: 1;
         }
+
+        #content-section {
+            display: none; /* Awalnya disembunyikan */
+        }
     </style>
 </head>
 <body>
+    <div id="content-section">
     <!-- Header -->
     <header id="header" class="header fixed-top d-flex align-items-center justify-content-center" style="height: 70px;">        
         <div class="logo">
@@ -106,222 +111,208 @@
             </div>
         </div>
     </main>
+    </div>
 
     <!-- Vendor JS Files -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const certificateNumber = window.location.pathname.split('/').pop();
-            const apiUrl = `/api/sertifikat/detail-sertifikat/${certificateNumber}`;
-            let fileUrl;
-            axios.get(apiUrl)
-                .then(function (response) {
-                    const data = response.data.data;
-                    let fileUrl = '';
+    document.addEventListener('DOMContentLoaded', function () {
+        const certificateNumber = window.location.pathname.split('/').pop();
+        const apiUrl = `/api/sertifikat/detail-sertifikat/${certificateNumber}`;
+        const contentSection = document.getElementById('content-section');
+        axios.get(apiUrl)
+            .then(function (response) {
+                const data = response.data.data;
+                let fileUrl = '';
 
-                    // Tentukan file URL berdasarkan logika yang diberikan
-                    if (data.sertifikat.certificate_number_kompetensi === certificateNumber) {
-                        fileUrl = data.sertifikat.file_sertifikat;
-                    } else {
-                        fileUrl = data.sertifikat.sertifikat_kehadiran;
-                    }
+                // Tentukan file URL berdasarkan logika yang diberikan
+                if (data.sertifikat.certificate_number_kompetensi === certificateNumber) {
+                    fileUrl = data.sertifikat.file_sertifikat;
+                } else {
+                    fileUrl = data.sertifikat.sertifikat_kehadiran;
+                }
 
-                    const canvas = document.getElementById('pdfCanvas');
-                    const context = canvas.getContext('2d');
-                    const fileExtension = fileUrl.split('.').pop().toLowerCase(); // Ekstensi file
+                const canvas = document.getElementById('pdfCanvas');
+                const context = canvas.getContext('2d');
+                const fileExtension = fileUrl.split('.').pop().toLowerCase(); // Ekstensi file
 
-                    if (fileExtension === 'pdf') {
-                        // Tampilkan PDF menggunakan pdf.js
-                        const pdfjsLib = window['pdfjs-dist/build/pdf'];
-                        pdfjsLib.getDocument(fileUrl).promise.then(function (pdfDoc) {
-                            pdfDoc.getPage(1).then(function (page) {
-                                const viewport = page.getViewport({ scale: 1 });
+                if (fileExtension === 'pdf') {
+                    // Tampilkan PDF menggunakan pdf.js
+                    const pdfjsLib = window['pdfjs-dist/build/pdf'];
+                    pdfjsLib.getDocument(fileUrl).promise.then(function (pdfDoc) {
+                        pdfDoc.getPage(1).then(function (page) {
+                            const viewport = page.getViewport({ scale: 1 });
 
-                                canvas.height = viewport.height;
-                                canvas.width = viewport.width;
+                            canvas.height = viewport.height;
+                            canvas.width = viewport.width;
 
-                                const renderContext = {
-                                    canvasContext: context,
-                                    viewport: viewport
-                                };
+                            const renderContext = {
+                                canvasContext: context,
+                                viewport: viewport
+                            };
 
-                                page.render(renderContext);
-                            });
-                        });
-                    } else if (fileExtension === 'jpg' || fileExtension === 'png' || fileExtension === 'jpeg') {
-                        // Tampilkan gambar langsung pada canvas
-                        const img = new Image();
-                        img.onload = function () {
-                            canvas.height = img.height;
-                            canvas.width = img.width;
-                            context.drawImage(img, 0, 0);
-                        };
-                        img.src = fileUrl;
-                    }
-
-                    // Tambahkan event click untuk menampilkan modal preview
-                    document.querySelector('.file-sertifikat').addEventListener('click', function () {
-                        Swal.fire({
-                            title: 'Preview Sertifikat',
-                            html: `
-                                <div style="width: 100%; height: 500px; text-align: center;">
-                                    ${fileExtension === 'pdf' ? `
-                                        <iframe src="${fileUrl}" style="width: 100%; height: 100%;" frameborder="0"></iframe>
-                                    ` : `
-                                        <img src="${fileUrl}" alt="Preview Sertifikat" style="max-width: 100%; max-height: 100%;">
-                                    `}
-                                    <p style="text-align: center; margin-top: 10px;">
-                                        <a href="${fileUrl}" target="_blank" style="color: #007bff; text-decoration: none;">Buka di tab baru jika tidak bisa ditampilkan</a>
-                                    </p>
-                                </div>
-                            `,
-                            showCloseButton: true,
-                            showCancelButton: true,
-                            confirmButtonText: 'Download',
-                            cancelButtonText: 'Tutup',
-                            customClass: {
-                                popup: 'swal2-large-popup'
-                            },
-                            didOpen: () => {
-                                document.querySelector('.swal2-large-popup').style.width = '90%';
-                            }
-                        }).then(result => {
-                            if (result.isConfirmed) {
-                                // Unduh file menggunakan Blob
-                                fetch(fileUrl)
-                                    .then(response => {
-                                        if (!response.ok) {
-                                            throw new Error('File tidak dapat diunduh.');
-                                        }
-                                        return response.blob();
-                                    })
-                                    .then(blob => {
-                                        const link = document.createElement('a');
-                                        const fileName = fileUrl.split('/').pop();
-                                        
-                                        // Buat URL untuk Blob
-                                        const url = URL.createObjectURL(blob);
-                                        link.href = url;
-                                        link.download = fileName;
-
-                                        // Klik otomatis untuk mengunduh
-                                        document.body.appendChild(link);
-                                        link.click();
-
-                                        // Hapus URL Blob setelah unduhan selesai
-                                        URL.revokeObjectURL(url);
-                                        document.body.removeChild(link);
-                                    })
-                                    .catch(error => {
-                                        console.error('Error:', error);
-                                        Swal.fire('Error', 'Gagal mengunduh file.', 'error');
-                                    });
-                            }
+                            page.render(renderContext);
                         });
                     });
+                } else if (['jpg', 'jpeg', 'png'].includes(fileExtension)) {
+                    // Tampilkan gambar langsung pada canvas
+                    const img = new Image();
+                    img.onload = function () {
+                        canvas.height = img.height;
+                        canvas.width = img.width;
+                        context.drawImage(img, 0, 0);
+                    };
+                    img.src = fileUrl;
+                }
 
-
-
-                    document.getElementById('namaPeserta').textContent = data.pendaftar.nama || 'Nama Peserta';
-                    if(certificateNumber === data.sertifikat.certificate_number_kompetensi){
-                        document.getElementById('idSertifikat').textContent = data.sertifikat.certificate_number_kompetensi || 'N/A';
-                    } else if(certificateNumber === data.sertifikat.certificate_number_kehadiran){
-                        document.getElementById('idSertifikat').textContent = data.sertifikat.certificate_number_kehadiran || 'N/A';
-                    }
-                    
-                    const createdTime = data.sertifikat.created_time;
-                    const modifiedTime = data.sertifikat.modified_time;
-
-                    document.getElementById('tanggalDiberikan').textContent = new Date(
-                        createdTime || modifiedTime 
-                    ).toLocaleDateString('id-ID', { 
-                        day: '2-digit', 
-                        month: 'long', 
-                        year: 'numeric' 
-                    });
-
-                    // Set nilai default untuk namaPelatihan dan deskripsiPelatihan
-                    const namaPelatihanElement = document.getElementById('namaPelatihan');
-                    namaPelatihanElement.textContent = data.pelatihan?.nama_pelatihan || 'Pelatihan Arutala';
-
-                    const deskripsiPelatihanElement = document.getElementById('deskripsiPelatihan');
-                    deskripsiPelatihanElement.textContent = data.agendaPelatihan?.deskripsi || data.pelatihan?.deskripsi || 'Deskripsi Pelatihan';
-
-                    // Tampilkan list materi
-                    const materiList = document.getElementById('materi_list');
-                    materiList.innerHTML = ''; // Kosongkan daftar materi terlebih dahulu
-
-                    // Parse JSON string dari 'materi' dengan pengecekan error
-                    let materiArray = [];
-                    try {
-                        if (data.agendaPelatihan?.materi) {
-                            materiArray = JSON.parse(data.agendaPelatihan.materi);
-                        } else if (data.pelatihan?.materi) {
-                            materiArray = JSON.parse(data.pelatihan.materi);
-                        }
-                    } catch (error) {
-                        console.error("Error parsing 'materi' JSON:", error);
-                    }
-
-                    // Jika ada materi, tampilkan dalam list
-                    if (materiArray.length > 0) {
-                        materiArray.forEach(materi => {
-                            if (materi) { // Pastikan materi tidak kosong/null
-                                const li = document.createElement('li');
-                                li.textContent = materi;
-                                materiList.appendChild(li);
-                            }
-                        });
-                    } else {
-                        // Jika tidak ada materi, sembunyikan elemen list
-                        materiList.style.display = 'none';
-                    }
-
-                    const durasiList = document.getElementById('durasi_list');
-                    durasiList.innerHTML = ''; // Kosongkan daftar sebelum memuat data baru
-
-                    // Parse JSON string dari 'durasi' dengan pengecekan error
-                    let durasiArray = [];
-                    try {
-                        durasiArray = JSON.parse(data.agendaPelatihan.durasi || '[]'); // Default ke array kosong jika null
-                    } catch (error) {
-                        console.error("Error parsing 'durasi' JSON:", error);
-                    }
-
-                    // Jika ada data di durasiArray, tambahkan ke daftar
-                    if (durasiArray.length > 0) {
-                        durasiArray.forEach(durasi => {
-                            if (durasi) { // Pastikan durasi tidak kosong/null
-                                const li = document.createElement('li');
-                                li.textContent = durasi;
-                                durasiList.appendChild(li);
-                            }
-                        });
-                    } else {
-                        // Jika tidak ada data, sembunyikan durasiList
-                        durasiList.style.display = 'none';
-                    }
-
-                    // Tampilkan evaluasi jika ada, atau kosongkan
-                    const evaluasiElement = document.getElementById('evaluasi');
-                    evaluasiElement.textContent = data.agendaPelatihan.evaluasi || '';
-                    if (!data.agendaPelatihan.evaluasi) {
-                        evaluasiElement.style.display = 'none'; // Sembunyikan jika tidak ada evaluasi
-                    }
-
-                })
-                .catch(function (error) {
-                    console.error('Error fetching certificate data:', error);
+                // Tambahkan event click untuk menampilkan modal preview
+                document.querySelector('.file-sertifikat').addEventListener('click', function () {
                     Swal.fire({
-                        title: 'Error!',
-                        text: 'Gagal memuat data sertifikat.',
-                        icon: 'error',
-                        confirmButtonText: 'OK'
+                        title: 'Preview Sertifikat',
+                        html: `
+                            <div style="width: 100%; height: 500px; text-align: center;">
+                                ${fileExtension === 'pdf' ? `
+                                    <iframe src="${fileUrl}" style="width: 100%; height: 100%;" frameborder="0"></iframe>
+                                ` : `
+                                    <img src="${fileUrl}" alt="Preview Sertifikat" style="max-width: 100%; max-height: 100%;">
+                                `}
+                                <p style="text-align: center; margin-top: 10px;">
+                                    <a href="${fileUrl}" target="_blank" style="color: #007bff; text-decoration: none;">Buka di tab baru jika tidak bisa ditampilkan</a>
+                                </p>
+                            </div>
+                        `,
+                        showCloseButton: true,
+                        showCancelButton: true,
+                        confirmButtonText: 'Download',
+                        cancelButtonText: 'Tutup',
+                        customClass: {
+                            popup: 'swal2-large-popup'
+                        },
+                        didOpen: () => {
+                            document.querySelector('.swal2-large-popup').style.width = '90%';
+                        }
+                    }).then(result => {
+                        if (result.isConfirmed) {
+                            // Unduh file menggunakan Blob
+                            fetch(fileUrl)
+                                .then(response => {
+                                    if (!response.ok) {
+                                        throw new Error('File tidak dapat diunduh.');
+                                    }
+                                    return response.blob();
+                                })
+                                .then(blob => {
+                                    const link = document.createElement('a');
+                                    const fileName = fileUrl.split('/').pop();
+
+                                    // Buat URL untuk Blob
+                                    const url = URL.createObjectURL(blob);
+                                    link.href = url;
+                                    link.download = fileName;
+
+                                    // Klik otomatis untuk mengunduh
+                                    document.body.appendChild(link);
+                                    link.click();
+
+                                    // Hapus URL Blob setelah unduhan selesai
+                                    URL.revokeObjectURL(url);
+                                    document.body.removeChild(link);
+                                })
+                                .catch(error => {
+                                    console.error('Error:', error);
+                                    Swal.fire('Error', 'Gagal mengunduh file.', 'error');
+                                });
+                        }
                     });
                 });
-        });
-    </script>
+
+                document.getElementById('namaPeserta').textContent = data.pendaftar.nama || 'Nama Peserta';
+                document.getElementById('idSertifikat').textContent = certificateNumber;
+
+                const createdTime = data.sertifikat.created_time;
+                const modifiedTime = data.sertifikat.modified_time;
+
+                document.getElementById('tanggalDiberikan').textContent = new Date(
+                    createdTime || modifiedTime
+                ).toLocaleDateString('id-ID', {
+                    day: '2-digit',
+                    month: 'long',
+                    year: 'numeric'
+                });
+
+                const namaPelatihanElement = document.getElementById('namaPelatihan');
+                namaPelatihanElement.textContent = data.pelatihan?.nama_pelatihan || 'Pelatihan Arutala';
+
+                const deskripsiPelatihanElement = document.getElementById('deskripsiPelatihan');
+                deskripsiPelatihanElement.textContent = data.agendaPelatihan?.deskripsi || data.pelatihan?.deskripsi || 'Deskripsi Pelatihan';
+
+                const materiList = document.getElementById('materi_list');
+                materiList.innerHTML = '';
+
+                let materiArray = [];
+                try {
+                    if (data.agendaPelatihan?.materi) {
+                        materiArray = JSON.parse(data.agendaPelatihan.materi);
+                    } else if (data.pelatihan?.materi) {
+                        materiArray = JSON.parse(data.pelatihan.materi);
+                    }
+                } catch (error) {
+                    console.error("Error parsing 'materi' JSON:", error);
+                }
+
+                if (materiArray.length > 0) {
+                    materiArray.forEach(materi => {
+                        if (materi) {
+                            const li = document.createElement('li');
+                            li.textContent = materi;
+                            materiList.appendChild(li);
+                        }
+                    });
+                } else {
+                    materiList.style.display = 'none';
+                }
+
+                const durasiList = document.getElementById('durasi_list');
+                durasiList.innerHTML = '';
+
+                let durasiArray = [];
+                try {
+                    durasiArray = JSON.parse(data.agendaPelatihan.durasi || '[]');
+                } catch (error) {
+                    console.error("Error parsing 'durasi' JSON:", error);
+                }
+
+                if (durasiArray.length > 0) {
+                    durasiArray.forEach(durasi => {
+                        if (durasi) {
+                            const li = document.createElement('li');
+                            li.textContent = durasi;
+                            durasiList.appendChild(li);
+                        }
+                    });
+                } else {
+                    durasiList.style.display = 'none';
+                }
+
+                const evaluasiElement = document.getElementById('evaluasi');
+                evaluasiElement.textContent = data.agendaPelatihan.evaluasi || '';
+                if (!data.agendaPelatihan.evaluasi) {
+                    evaluasiElement.style.display = 'none';
+                }
+                contentSection.style.display = 'block';
+            })
+            .catch(function (error) {
+                console.error('Error fetching certificate data:', error);
+                Swal.fire({
+                    title: 'Sertifikat Sedang Diproses',
+                    icon: 'warning',
+                    confirmButtonText: 'OK'
+                });
+            });
+    });
+</script>
+
 </body>
 </html>
