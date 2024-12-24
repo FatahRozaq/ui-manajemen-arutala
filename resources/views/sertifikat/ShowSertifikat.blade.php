@@ -304,9 +304,9 @@
                 contentSection.style.display = 'block';
             })
             .catch(function (error) {
-                console.error('Error fetching certificate data:', error);
+                // console.error('Error fetching certificate data:', error);
                 Swal.fire({
-                    title: 'Sertifikat Sedang Diproses',
+                    title: 'Sertifikat sedang dalam proses pembuatan!',
                     icon: 'warning',
                     confirmButtonText: 'OK'
                 });
