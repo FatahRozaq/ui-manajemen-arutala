@@ -259,6 +259,7 @@ class ApiPesertaPelatihanController extends Controller
         try {
             // Ambil semua data pendaftaran event beserta relasi yang diperlukan
             $pendaftaranEvents = PendaftaranEvent::with(['agendaPelatihan.pelatihan', 'pendaftar'])
+                ->where('is_deleted', false)
                 ->get();
 
             // Siapkan data response
