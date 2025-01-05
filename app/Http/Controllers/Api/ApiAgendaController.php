@@ -131,8 +131,11 @@ class ApiAgendaController extends Controller
             }
 
             // Hitung batch berdasarkan jumlah agenda dengan id_pelatihan yang sama
-            $batchCount = AgendaPelatihan::where('id_pelatihan', $pelatihan->id_pelatihan)->count();
-            $batch = $batchCount + 1;
+            // $batchCount = AgendaPelatihan::where('id_pelatihan', $pelatihan->id_pelatihan)->count();
+            // $batch = $batchCount + 1;
+
+            $maxBatch = AgendaPelatihan::where('id_pelatihan', $pelatihan->id_pelatihan)->max('batch'); 
+            $batch = $maxBatch ? $maxBatch + 1 : 1;
 
             // Simpan data agenda pelatihan
             $agenda = new AgendaPelatihan();
