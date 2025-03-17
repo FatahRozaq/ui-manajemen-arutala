@@ -19,6 +19,8 @@ use App\Http\Controllers\Api\ApiLamanPesertaController;
 use App\Http\Controllers\Api\ApiMasterPelatihanController;
 use App\Http\Controllers\Api\ApiPendaftaranEventController;
 use App\Http\Controllers\Api\ApiPesertaPelatihanController;
+use App\Http\Controllers\Api\ApiKelolaDashboardController;
+use App\Http\Controllers\Api\Dashboard\ApiGetDataController;
 
 /*
 |--------------------------------------------------------------------------
@@ -180,5 +182,14 @@ Route::post('/mayar/webhook', [ApiTransaksiController::class, 'handleWebhook']);
 Route::post('/test-webhook', [ApiTransaksiController::class, 'sendWebhookTest']);
 Route::get('/test-balance', [ApiTransaksiController::class, 'balance']);
 Route::get('/get-transaction', [ApiTransaksiController::class, 'dataTransaksi']);
+
+Route::prefix('kelola-dashboard')->group(function () {
+    Route::post('/convert-sql', [ApiKelolaDashboardController::class, 'convertSql']);
+    Route::get('/tables', [ApiGetDataController::class, 'getAllTables']);
+    Route::get('/columns/{table}', [ApiGetDataController::class, 'getTableColumns']);
+    Route::post('/table-data/{table}', [ApiGetDataController::class, 'getTableDataByColumns']);
+});
+
+
 
 

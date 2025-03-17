@@ -10,4 +10,14 @@ class DashboardController extends Controller
     {
         return view('dashboard');
     }
+
+    public function generateChart()
+    {
+        return view('generateChart');
+    }
+
+    public function dashboardDinamis()
+    {
+        return view('dashboard/index');
+    }
 }

@@ -146,3 +146,9 @@ Route::post('/save-session', [AuthController::class, 'saveSession'])->name('save
 // Route::get('/my-event',  [EventController::class, 'myEvent'])->name('event.history');
 
 Route::get('/export-peserta-pelatihan', [ApiPesertaPelatihanController::class, 'exportExcel']);
+
+Route::get('/chart', function () {
+    return view('generateChart');
+});
+
+Route::get('/kelola-dashboard', [DashboardController::class, 'dashboardDinamis']);
