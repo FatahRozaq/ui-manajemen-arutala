@@ -107,10 +107,10 @@ class ApiGetDataController extends Controller
 
             // Pastikan tabel ada di DB
             $tableExists = DB::select("
-            SELECT table_name
-            FROM information_schema.tables
-            WHERE table_schema = 'public' AND table_name = ?
-        ", [$table]);
+        SELECT table_name
+        FROM information_schema.tables
+        WHERE table_schema = 'public' AND table_name = ?
+    ", [$table]);
 
             if (empty($tableExists)) {
                 return response()->json([
@@ -119,12 +119,8 @@ class ApiGetDataController extends Controller
                 ], 404);
             }
 
-            // Mulai membangun query dengan JOIN antara pelatihan, agenda_pelatihan, dan pendaftaran_event
-            $query = DB::table('pelatihan')
-                ->join('agenda_pelatihan', 'pelatihan.id_pelatihan', '=', 'agenda_pelatihan.id_pelatihan')
-                ->join('pendaftaran_event', 'agenda_pelatihan.id_agenda', '=', 'pendaftaran_event.id_agenda')
-                ->join('pendaftar', 'pendaftaran_event.id_peserta', '=', 'pendaftar.id_pendaftar')
-                ->select($dimensi);
+            // Mulai membangun query
+            $query = DB::table($table)->select($dimensi);
 
             // Jika metriks diisi (tidak null/empty), lakukan COUNT DISTINCT
             if ($metriks) {
@@ -145,14 +141,10 @@ class ApiGetDataController extends Controller
 
             // Untuk debugging, bangun string query manual
             $sqlForDebug = sprintf(
-                "SELECT %s, %s FROM %s 
-            JOIN agenda_pelatihan ON pelatihan.id_pelatihan = agenda_pelatihan.id_pelatihan 
-            JOIN pendaftaran_event ON agenda_pelatihan.id_agenda = pendaftaran_event.id_agenda
-            JOIN pendaftar ON pendaftaran_event.id_peserta = pendaftar.id_pendaftar
-            GROUP BY %s ORDER BY %s DESC",
+                "SELECT %s, %s FROM %s GROUP BY %s ORDER BY %s DESC",
                 implode(', ', $dimensi),
                 $metriks ? "COUNT(DISTINCT {$metriks}) as total_{$metriks}" : "",
-                'pelatihan',
+                $table,
                 implode(', ', $dimensi),
                 $metriks ? "COUNT(DISTINCT {$metriks})" : implode(', ', $dimensi)
             );
