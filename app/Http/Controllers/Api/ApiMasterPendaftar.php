@@ -10,6 +10,7 @@ use App\Exports\PendaftarExport;
 use App\Imports\PendaftarImport;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -443,6 +444,20 @@ class ApiMasterPendaftar extends Controller
                 'error' => $e->getMessage(),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
+    }
+
+    public function hash(Request $request)
+    {
+        $request->validate([
+            'password' => 'required|string',
+        ]);
+
+        $hashed = Hash::make($request->password);
+
+        return response()->json([
+            'original' => $request->password,
+            'hashed' => $hashed,
+        ]);
     }
 
     // public function importExcel(Request $request)

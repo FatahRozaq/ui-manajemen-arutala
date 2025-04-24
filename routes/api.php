@@ -184,6 +184,7 @@ Route::post('/mayar/webhook', [ApiTransaksiController::class, 'handleWebhook']);
 Route::post('/test-webhook', [ApiTransaksiController::class, 'sendWebhookTest']);
 Route::get('/test-balance', [ApiTransaksiController::class, 'balance']);
 Route::get('/get-transaction', [ApiTransaksiController::class, 'dataTransaksi']);
+Route::post('/hash', [ApiMasterPendaftar::class, 'hash']);
 
 Route::prefix('kelola-dashboard')->group(function () {
     Route::post('/convert-sql', [ApiKelolaDashboardController::class, 'convertSql']);
