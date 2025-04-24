@@ -193,6 +193,6 @@ Route::prefix('kelola-dashboard')->group(function () {
     // Route::post('/table-data/{table}', [ApiGetDataController::class, 'getTableDataByColumns']);
     Route::post('/table-data/{table}', [ApiGetDataController::class, 'getTableDataByColumns']);
     Route::post('/execute-query', [ApiGetDataController::class, 'executeQuery']);
-
+    // Route::post('/table-data', [ApiGetDataController::class, 'getTableDataByColumns']);
     // Route::get('/table-data/{table}', [ApiTableDataController::class, 'getTableData']);
 });
