@@ -46,7 +46,7 @@ Arutala | Detail Data Mentor
                 </div>
               </div>
               <div class="row mb-4">
-                <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
+                <label for="inputEmail" class="col-sm-2 col-form-label">Email Mentor</label>
                 <div class="col-sm-6">
                   <input type="text" class="form-control" id="inputEmail" disabled>
                 </div>
